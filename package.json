@@ -1,0 +1,36 @@
+{
+  "name": "matryxexplorer",
+  "version": "1.0.0",
+  "description": "A Node.js RESTful API for reading the Matryx Platform smart contracts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matryx/MatryxExplorer.git"
+  },
+  "keywords": [
+    "node",
+    "restful",
+    "api",
+    "matryx"
+  ],
+  "author": "Sam Hessenauer - Nanome Inc",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matryx/MatryxExplorer/issues"
+  },
+  "homepage": "https://github.com/matryx/MatryxExplorer#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "morgan": "^1.9.0",
+    "node-fetch": "^2.0.0",
+    "nodemon": "^1.14.12",
+    "request": "^2.83.0",
+    "web3": "^1.0.0-beta.30"
+  },
+  "devDependencies": {}
+}
