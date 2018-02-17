@@ -6,9 +6,10 @@ Copyright Nanome Inc 2018
 */
 
 const express = require('express');
+const ethPlatform = require('../../eth/platformCalls');
+
 const router = express.Router();
 
-const ethPlatform = require('../../eth/platformCalls');
 
 // Return a list of all tournaments
 router.get('/', (req, res, next) => {
@@ -19,15 +20,24 @@ router.get('/', (req, res, next) => {
     });
 });
 
+// Return number of tournaments
+router.get('/count', (req, res, next) => {
+        ethPlatform.getTournamentCount().then(function(result){
+            res.status(200).json({
+                results: result
+        });
+    });
+});
+
+//TODO fix this one
 // Return the tournament details for a specific tournament
 router.get('/id/:tournamentID',(req, res, next) => {
     const id = req.params.tournamentID;
-    //TODO logic
-    //tournamentDetails = ethPlatform.getTournamentDetailsById(id);
+    ethPlatform.getTouramentById(id).then(function(result){
         res.status(200).json({
-            message: 'You discovered the specialID',
-            id: id
+            results: result
         });
+    });
 });
 
 // Return the tournament details for a specific tournament
@@ -42,6 +52,7 @@ router.get('/address/:tournamentAddress',(req, res, next) => {
         });
     }
 });
+
 
 
 // router.post('/', (req, res, next) => {

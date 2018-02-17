@@ -11,7 +11,6 @@ const tournamentRoutes = require('./api/routes/tournaments');
 const roundRoutes = require('./api/routes/rounds');
 
 
-
     //tempAPI routes active
     const tempPlatformRoutes = require('./tempApi/platform');
     const tempTournamentRoutes = require('./tempApi/tournaments');
@@ -54,5 +53,8 @@ app.use((error, req, res, next) =>{
     });
 });
 
-// console.log(externalApiCalls.platformInfoApiCall());
+externalApiCalls.platformInfoApiCall().then(function(result){
+    console.log(result);
+});
+
 module.exports = app;
