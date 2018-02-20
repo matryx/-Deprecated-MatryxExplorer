@@ -9,14 +9,14 @@ Copyright Nanome Inc 2018
 const express = require('express');
 const router = express.Router();
 
-const ethPlatform = require('../../eth/platformCalls');
+const ethPlatform = require('../controllers/eth/platformCalls');
 
 // Return a list of all rounds
 router.get('/', (req, res, next) => {
     res.status(200).json({
         //TODO send back the list of tournaments
         //
-        message: 'handling GET requests to /rounds'
+        message: 'handling GET requests to /products'
     });
 });
 

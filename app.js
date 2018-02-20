@@ -3,7 +3,7 @@ const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
-const externalApiCalls = require('./eth/externalApiCalls');
+const externalApiCalls = require('./api/controllers/eth/externalApiCalls');
 
 //Routes
 const platformRoutes = require('./api/routes/platform');

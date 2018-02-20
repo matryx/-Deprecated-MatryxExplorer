@@ -6,7 +6,7 @@ Copyright Nanome 2018
 */
 
 // Imports
-const config = require('../config');
+const config = require('../../../config');
 const externalApiCalls = require('./externalApiCalls')
 
 //delete after solving apicall problem
