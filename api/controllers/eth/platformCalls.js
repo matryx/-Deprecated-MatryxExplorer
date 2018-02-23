@@ -28,8 +28,6 @@ const matryxAddress = "0x450ccbc9f86739c8ff0f454ab69cf2ededa12ca2";
 //old platform
 // const matryxAddress = "0x7c4970b887cfa95062ead0708267009dcd564017";
 
-
-
 // platformInfoApiCall().then(function(result){
 // externalApiCalls.platformInfoApiCall().then(function(result){
 //     contract = new web3.eth.Contract(result.abi, result.address);

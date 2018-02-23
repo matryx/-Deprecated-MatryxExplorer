@@ -2,7 +2,10 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+require('dotenv').config()
 
+
+//process.env.DB_HOST
 const externalApiCalls = require('./api/controllers/eth/externalApiCalls');
 
 //Routes
