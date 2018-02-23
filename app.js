@@ -56,8 +56,7 @@ app.use((error, req, res, next) =>{
     });
 });
 
-externalApiCalls.platformInfoApiCall().then(function(result){
-    console.log(result);
-});
+
+
 
 module.exports = app;
