@@ -13,7 +13,7 @@ const Web3 = require('web3')
 const config = require('../../../config');
 const externalApiCalls = require('./externalApiCalls')
 
-const matryxABI = externalApiCalls.platformInfoApiCall().then((result,error) => {
+const matryxABI = externalApiCalls.platformInfoApiCall().then((result, error) => {
     if(!error){
         // console.log(result);
         let matryxAbi = result.results.abi;
@@ -24,6 +24,8 @@ const matryxABI = externalApiCalls.platformInfoApiCall().then((result,error) => 
         console.log("Error during get Platform API call", error);
     }
 });
+
+
 
 //Develop branch
 /*

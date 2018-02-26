@@ -16,7 +16,7 @@ router.get('/', (req, res, next) => {
     res.status(200).json({
         //TODO send back the list of tournaments
         // tournaments = ethPlatform.getAllTournaments();
-        message: 'handling GET requests to /products'
+        message: 'handling requests to /tournaments'
     });
 });
 
@@ -29,7 +29,6 @@ router.get('/count', (req, res, next) => {
     });
 });
 
-//TODO fix this one
 // Return the tournament details for a specific tournament
 router.get('/id/:tournamentID',(req, res, next) => {
     const id = req.params.tournamentID;
@@ -63,3 +62,5 @@ router.get('/address/:tournamentAddress',(req, res, next) => {
 
 
 module.exports = router;
+
+//TODO Swagger integration
