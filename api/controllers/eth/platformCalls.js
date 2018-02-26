@@ -83,6 +83,114 @@ platformCalls.getTouramentById = function(_tournament_id){
 }
 
 
+
+//Activity Code
+platformCalls.activity = function(){
+    return new Promise((resolve, reject) => {
+        // "news": "0xb794f5ea0ba39494ce839613fffba74279579268 created a new bounty: \"Solve Diabetes\""
+
+        var news = {activity: []};
+
+        platform.events.TournamentCreated(null, (error, event) =>
+        {
+         if(error)
+         {
+           console.log("Error with setting up event: " + error);
+         }
+         else
+         {
+           console.log("Set up queryPerformed event: " + event);
+         }
+
+        })
+        .on('data', (event) => {
+
+        // event TournamentCreated(bytes32 _discipline, address _owner, address _tournamentAddress, string _tournamentName, bytes32 _externalAddress, uint256 _MTXReward, uint256 _entryFee);
+
+         var discipline = event.returnValues[0];
+         var owner = event.returnValues[1];
+         var tournamentName = event.returnValues[3];
+
+         var message = owner + " created a new bounty " + tournamentName;
+         // var messageWithDiscipline = owner + " created a new " + discipline + " bounty " + tournamentName;
+         console.log("news:" + message);
+     }).on('changed', function(event){
+           // remove event from local database
+       }).on('error', function(error){
+           console.log("error in jsoncreator.js: " + error);
+        });
+
+        // "news": "0xb794f5ea0ba39494ce839613fffba74279579268 got rewarded 400 MTX"
+        platform.events.TournamentClosed(null, (error, event) =>
+        {
+         if(error)
+         {
+           console.log("Error with setting up event: " + error);
+         }
+         else
+         {
+           console.log("Set up queryPerformed event: " + event);
+         }
+
+     }).on('data', (event) => {
+
+         // event TournamentClosed(address _tournamentAddress, uint256 _finalRoundNumber, uint256 _winningSubmissionAddress);
+         var tournamentAddress = event.returnValues[0];
+         var winningSubmissionAddress = event.returnValues[2];
+         var submission = new web3.eth.Contract(matryxSubmissionABI, winningSubmissionAddress);
+
+         submission.methods.name.getBalance().then((receipt) => {
+             var rewardAmount = receipt;
+
+             var message = winningSubmissionAddress + " got rewarded " + rewardAmount + " MTX";
+             console.log("news:" + message);
+         })
+     }).on('changed', function(event){
+           // remove event from local database
+       }).on('error', function(error){
+           console.log("error in jsoncreator.js: " + error);
+        });
+
+        // "news": "0xb794f5ea0ba39494ce839613fffba74279579268 entered tournament: \"Erotic Greek Sculpture\""
+        platform.events.UserEnteredTournament(null, (error, event) =>
+        {
+         if(error)
+         {
+           console.log("Error with setting up event: " + error);
+         }
+         else
+         {
+           console.log("Set up queryPerformed event: " + event);
+         }
+
+     }).on('data', (event) => {
+
+         // event UserEnteredTournament(address _entrant, address _tournamentAddress);
+         var entrant = event.returnValues[0];
+         var tournamentAddress = event.returnValues[1];
+         var tournament = new web3.eth.Contract(matryxTournamentABI, matryxTournamentAddress);
+
+         tournament.methods.name.send().then((receipt) => {
+             var tournamentName = receipt;
+
+             var message = entrant + " entered tournament " + tournamentName;
+             console.log("news:" + message);
+         })
+     }).on('changed', function(event){
+           // remove event from local database
+       }).on('error', function(error){
+           console.log("error in jsoncreator.js: " + error);
+        });
+
+
+
+
+
+
+    }
+)};
+
+
 // Get the latest Matryx Platform contract address and abi
 // externalApiCalls.getLatestPlatformInfo()
 //     .then(function (matryx){
