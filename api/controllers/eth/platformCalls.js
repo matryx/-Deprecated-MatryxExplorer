@@ -1,8 +1,8 @@
 /*
 The Matryx Platform Smart Contract interaction file
 
-author - sam@nanome.ai
-Copyright Nanome 2018
+authors - sam@nanome.ai
+Nanome 2018
 */
 
 // Imports
@@ -22,7 +22,7 @@ const matryxABI = externalApiCalls.platformInfoApiCall().then((result, error) =>
         // console.log(result);
         let matryxAbi = result.results.abi;
         let matryxAddress = result.results.address;
-        contract = new web3.eth.Contract(matryxAbi, matryxAddress);
+        contract = web3.eth.Contract(matryxAbi, matryxAddress);
     }
     else{
         console.log("Error during get Platform API call", error);
@@ -39,6 +39,13 @@ Uncomment
 const matryxAbi = [{"constant":true,"inputs":[],"name":"getBalance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_author","type":"address"},{"name":"_submission","type":"address"}],"name":"updateMySubmissions","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_tournamentAddress","type":"address"},{"name":"_finalRoundNumber","type":"uint256"},{"name":"_winningSubmissionIndex","type":"uint256"}],"name":"invokeTournamentClosedEvent","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"myTournaments","outputs":[{"name":"","type":"address[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"balanceIsNonZero","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_sender","type":"address"}],"name":"isOwner","outputs":[{"name":"_isOwner","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"tournamentCount","outputs":[{"name":"_tournamentCount","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_owner","type":"address"},{"name":"_tournamentAddress","type":"address"},{"name":"_tournamentName","type":"string"},{"name":"_externalAddress","type":"bytes32"},{"name":"_MTXReward","type":"uint256"},{"name":"_entryFee","type":"uint256"}],"name":"invokeTournamentOpenedEvent","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_tournamentName","type":"string"},{"name":"_externalAddress","type":"bytes32"},{"name":"_MTXReward","type":"uint256"},{"name":"_entryFee","type":"uint256"}],"name":"createTournament","outputs":[{"name":"_tournamentAddress","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getOwner","outputs":[{"name":"_owner","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_queryID","type":"uint256"},{"name":"_response","type":"uint256"}],"name":"storeQueryResponse","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_index","type":"uint256"}],"name":"getTournamentAtIndex","outputs":[{"name":"_tournamentAddress","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"allTournaments","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_query","type":"bytes32"},{"name":"_sender","type":"address"}],"name":"Query","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"mySubmissions","outputs":[{"name":"","type":"address[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_tournamentAddress","type":"address"}],"name":"getTournament_IsMine","outputs":[{"name":"_isMine","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_toIgnore","type":"uint256"}],"name":"prepareBalance","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_tournamentAddress","type":"address"}],"name":"enterTournament","outputs":[{"name":"_success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"_matryxTournamentFactoryAddress","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"_owner","type":"address"},{"indexed":false,"name":"_tournamentAddress","type":"address"},{"indexed":false,"name":"_tournamentName","type":"string"},{"indexed":false,"name":"_externalAddress","type":"bytes32"},{"indexed":false,"name":"_MTXReward","type":"uint256"},{"indexed":false,"name":"_entryFee","type":"uint256"}],"name":"TournamentCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"_owner","type":"address"},{"indexed":false,"name":"_tournamentAddress","type":"address"},{"indexed":false,"name":"_tournamentName","type":"string"},{"indexed":false,"name":"_externalAddress","type":"bytes32"},{"indexed":false,"name":"_MTXReward","type":"uint256"},{"indexed":false,"name":"_entryFee","type":"uint256"}],"name":"TournamentOpened","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"_tournamentAddress","type":"address"},{"indexed":false,"name":"_finalRoundNumber","type":"uint256"},{"indexed":false,"name":"_winningSubmissionIndex","type":"uint256"}],"name":"TournamentClosed","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"queryID","type":"string"}],"name":"QueryID","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"id","type":"uint256"},{"indexed":false,"name":"sender","type":"address"}],"name":"QueryPerformed","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"storedResponse","type":"uint256"}],"name":"StoredResponse","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"response","type":"uint256"}],"name":"ObtainedResponse","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"newResponse","type":"uint256"},{"indexed":false,"name":"oldResponse","type":"uint256"}],"name":"FailedToStore","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"id","type":"uint256"}],"name":"QueryID","type":"event"}];
 */
 
+
+//Current Deployment
+const matryxAddress = "0x958bb0087b465e632949aa3df420b8cb9f4ce8d9"
+const matryxAbi=JSON.parse("[{\"constant\":true,\"inputs\":[],\"name\":\"getBalance\",\"outputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_author\",\"type\":\"address\"},{\"name\":\"_submission\",\"type\":\"address\"}],\"name\":\"updateMySubmissions\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_tournamentAddress\",\"type\":\"address\"},{\"name\":\"_finalRoundNumber\",\"type\":\"uint256\"},{\"name\":\"_winningSubmissionIndex\",\"type\":\"uint256\"}],\"name\":\"invokeTournamentClosedEvent\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"myTournaments\",\"outputs\":[{\"name\":\"\",\"type\":\"address[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"balanceIsNonZero\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_sender\",\"type\":\"address\"}],\"name\":\"isOwner\",\"outputs\":[{\"name\":\"_isOwner\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"tournamentCount\",\"outputs\":[{\"name\":\"_tournamentCount\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_owner\",\"type\":\"address\"},{\"name\":\"_tournamentAddress\",\"type\":\"address\"},{\"name\":\"_tournamentName\",\"type\":\"string\"},{\"name\":\"_externalAddress\",\"type\":\"bytes32\"},{\"name\":\"_MTXReward\",\"type\":\"uint256\"},{\"name\":\"_entryFee\",\"type\":\"uint256\"}],\"name\":\"invokeTournamentOpenedEvent\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_tournamentName\",\"type\":\"string\"},{\"name\":\"_externalAddress\",\"type\":\"bytes32\"},{\"name\":\"_MTXReward\",\"type\":\"uint256\"},{\"name\":\"_entryFee\",\"type\":\"uint256\"}],\"name\":\"createTournament\",\"outputs\":[{\"name\":\"_tournamentAddress\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getOwner\",\"outputs\":[{\"name\":\"_owner\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_queryID\",\"type\":\"uint256\"},{\"name\":\"_response\",\"type\":\"uint256\"}],\"name\":\"storeQueryResponse\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_index\",\"type\":\"uint256\"}],\"name\":\"getTournamentAtIndex\",\"outputs\":[{\"name\":\"_tournamentAddress\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"allTournaments\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_query\",\"type\":\"bytes32\"},{\"name\":\"_sender\",\"type\":\"address\"}],\"name\":\"Query\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"mySubmissions\",\"outputs\":[{\"name\":\"\",\"type\":\"address[]\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"_tournamentAddress\",\"type\":\"address\"}],\"name\":\"getTournament_IsMine\",\"outputs\":[{\"name\":\"_isMine\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_toIgnore\",\"type\":\"uint256\"}],\"name\":\"prepareBalance\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_tournamentAddress\",\"type\":\"address\"}],\"name\":\"enterTournament\",\"outputs\":[{\"name\":\"_success\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"name\":\"_matryxTournamentFactoryAddress\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"_owner\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"_tournamentAddress\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"_tournamentName\",\"type\":\"string\"},{\"indexed\":false,\"name\":\"_externalAddress\",\"type\":\"bytes32\"},{\"indexed\":false,\"name\":\"_MTXReward\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"_entryFee\",\"type\":\"uint256\"}],\"name\":\"TournamentCreated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"_owner\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"_tournamentAddress\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"_tournamentName\",\"type\":\"string\"},{\"indexed\":false,\"name\":\"_externalAddress\",\"type\":\"bytes32\"},{\"indexed\":false,\"name\":\"_MTXReward\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"_entryFee\",\"type\":\"uint256\"}],\"name\":\"TournamentOpened\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"_tournamentAddress\",\"type\":\"address\"},{\"indexed\":false,\"name\":\"_finalRoundNumber\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"_winningSubmissionIndex\",\"type\":\"uint256\"}],\"name\":\"TournamentClosed\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"queryID\",\"type\":\"string\"}],\"name\":\"QueryID\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"id\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"QueryPerformed\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"storedResponse\",\"type\":\"uint256\"}],\"name\":\"StoredResponse\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"response\",\"type\":\"uint256\"}],\"name\":\"ObtainedResponse\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"newResponse\",\"type\":\"uint256\"},{\"indexed\":false,\"name\":\"oldResponse\",\"type\":\"uint256\"}],\"name\":\"FailedToStore\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"name\":\"id\",\"type\":\"uint256\"}],\"name\":\"QueryID\",\"type\":\"event\"}]");
+
+
+
 // Old platform
 /*
 
@@ -53,13 +60,19 @@ const matryxAbi = [{"constant":true,"inputs":[{"name":"","type":"uint256"}],"nam
 
 // platformInfoApiCall().then(function(result){
 // externalApiCalls.platformInfoApiCall().then(function(result){
-//     contract = new web3.eth.Contract(result.abi, result.address);
+    // contract = web3.eth.Contract(result.abi, result.address);
 // });
 
 // Attach to the RPC
-const web3 = new Web3("http://localhost:8545")
+//@Dev local
+// const web3 = new Web3("http://localhost:8545")
+//@Dev prod env
 // const web3 = new Web3(proccess.env.WEB3_PROVIDER)
-
+//@Dev Matryx Official customRPC
+// const web3 = new Web3("http://customrpc.matryx.ai:8545")
+//@Dev Matryx Elastic IP Address ->
+const web3 = new Web3("http://52.8.65.20:8545")
+contract = new web3.eth.Contract(matryxAbi, matryxAddress);
 
 //TODO Error handling when no chain is attached
 
@@ -149,7 +162,7 @@ platformCalls.activity = function(){
          // event TournamentClosed(address _tournamentAddress, uint256 _finalRoundNumber, uint256 _winningSubmissionAddress);
          var tournamentAddress = event.returnValues[0];
          var winningSubmissionAddress = event.returnValues[2];
-         var submission = new web3.eth.Contract(matryxSubmissionABI, winningSubmissionAddress);
+         var submission = web3.eth.Contract(matryxSubmissionABI, winningSubmissionAddress);
 
          submission.methods.name.getBalance().then((receipt) => {
              var rewardAmount = receipt;
@@ -180,8 +193,7 @@ platformCalls.activity = function(){
          // event UserEnteredTournament(address _entrant, address _tournamentAddress);
          var entrant = event.returnValues[0];
          var tournamentAddress = event.returnValues[1];
-         var tournament = new web3.eth.Contract(matryxTournamentABI, matryxTournamentAddress);
-
+         var tournament = web3.eth.Contract(matryxTournamentABI, matryxTournamentAddress);
          tournament.methods.name.send().then((receipt) => {
              var tournamentName = receipt;
 
@@ -228,8 +240,8 @@ platformCalls.getActivity2 = function(){
          bounty: parseFloat(res['3'])
      });
    });
-});
-}
+};
+
 
 
 /*
@@ -303,13 +315,13 @@ var allTournaments = TournamentCreatedEvent.get(function(error, logs){
 // Get the latest Matryx Platform contract address and abi
 // externalApiCalls.getLatestPlatformInfo()
 //     .then(function (matryx){
-//         contract = new web3.eth.Contract(matryx.results.abi, matryx.results.address)
+//         contract = web3.eth.Contract(matryx.results.abi, matryx.results.address)
 //     });
 
 // console.log(matryx)
 
 // Attach to the contract
-// const contract = new web3.eth.Contract(matryx.results.abi, matryx.results.address)
+// const contract = web3.eth.Contract(matryx.results.abi, matryx.results.address)
 
 
 // getTournamentCount() {
