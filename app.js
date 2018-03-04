@@ -30,15 +30,17 @@ app.use(bodyParser.json());
 app.use('/platform', platformRoutes);
 app.use('/tournament', tournamentRoutes);
 app.use('/rounds', roundRoutes);
+//TODO decide on controller split
 
     //tempAPI routes active
     app.use('/tempAPI/platform', tempPlatformRoutes);
     app.use('/tempAPI/tournament', tempTournamentRoutes);
     app.use('/tempAPI/rounds', tempRoundRoutes);
     app.use('/tempAPI/activity', tempActivityRoutes);
+//TODO add more temp APIs
 
 
-
+//TODO add more error handling and timeout setting
 
 //Error handling
 app.use((req, res, next) =>{
