@@ -13,36 +13,43 @@ const ethPlatform = require('../api/controllers/eth/platformCalls');
 // Return a list of all tournaments
 router.get('/', (req, res, next) => {
     var tournaments = {
-  "tournaments": [
+"tournaments": [
     {
       "tournamentTitle": "Solve Aids",
-      "mtx": "200000.00000",
+      "mtx": 200000.00000,
       "tournamentDescription": "A description of the tournament",
       "categroy": "Pharma",
-      "totalRounds": "3",
-      "currentRound": "1",
-      "numberOfParticipants": "130",
-      "ipType": "50/50"
+      "totalRounds": 3,
+      "currentRound": 1,
+      "numberOfParticipants": 130,
+      "address":"0xa43e6937e49176fd886dcf96850816e324e4d06c",
+      "ipType": "50/50",
+      "tournamentID": 1
     },
     {
       "tournamentTitle": "Help Keita find a home",
-      "mtx": "240000.20",
+      "mtx": 240000.20000,
       "tournamentDescription": "A description of the tournament",
       "categroy": "Space",
-      "totalRounds": "5",
-      "currentRound": "3",
-      "numberOfParticipants": "220",
-      "ipType": "bountyPoster"
+      "totalRounds": 5,
+      "currentRound": 3,
+      "numberOfParticipants": 220,
+      "address":"0xa43e6937e49176fd886dcf96850816e324e4d06d",
+      "ipType": "bountyPoster",
+      "tournamentID": 2
     },
     {
       "tournamentTitle": "Create an Exotic Mug",
-      "mtx": "5000000.20",
+      "mtx": 240000.20000,
       "tournamentDescription": "A description of the tournament",
       "categroy": "Art",
-      "totalRounds": "2",
-      "currentRound": "1",
-      "numberOfParticipants": "80",
-      "ipType": "bountySubmitter"
+      "totalRounds": 2,
+      "currentRound": 1,
+      "address":"0xa43e6937e49176fd886dcf96850816e324e4d06e",
+      "numberOfParticipants": 80,
+      "ipType": "bountySubmitter",
+      "tournamentID": 3
+
     }
   ]
 };
