@@ -20,6 +20,7 @@ router.get('/', (req, res, next) => {
     });
 });
 
+
 // Return number of tournaments
 router.get('/count', (req, res, next) => {
         ethPlatform.getTournamentCount().then(function(result){

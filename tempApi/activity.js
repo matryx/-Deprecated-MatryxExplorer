@@ -13,7 +13,7 @@ const router = express.Router();
 router.get('/', (req, res, next) => {
         var activity = {
         "activity":
-          [
+        [
             {
               "news": "0xb794f5ea0ba39494ce839613fffba74279579268 created a new bounty: \"Solve Diabetes\"",
             },

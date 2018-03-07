@@ -2,6 +2,7 @@ const http = require('http');
 const fetch = require('node-fetch');
 
 
+
 var externalApiCalls = {};
 
 // externalApiCalls.platformInfoApiCall = function () {
