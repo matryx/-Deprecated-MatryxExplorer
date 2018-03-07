@@ -1,9 +1,7 @@
-const http = require('http');
-const fetch = require('node-fetch');
+const http = require('http')
+const fetch = require('node-fetch')
 
-
-
-var externalApiCalls = {};
+var externalApiCalls = {}
 
 // externalApiCalls.platformInfoApiCall = function () {
 //             return fetch('http://health.matryx.ai/latestPlatformInfo').then(results =>{ return results.json()})
@@ -21,17 +19,14 @@ var externalApiCalls = {};
 //     }
 // };
 
-
-externalApiCalls.platformInfoApiCall = async function() {
-    try {
-        const response = await fetch("http://health.matryx.ai/latestPlatformInfo");
+externalApiCalls.platformInfoApiCall = async function () {
+  try {
+    const response = await fetch('http://health.matryx.ai/latestPlatformInfo')
         // console.log(await response.json());
-        return response.json();
-    }
-    catch (err) {
-        console.log('API fetch for platform address and ABI failed ', err);
-    }
+    return response.json()
+  } catch (err) {
+    console.log('API fetch for platform address and ABI failed ', err)
+  }
 }
 
-
-module.exports = externalApiCalls;
+module.exports = externalApiCalls

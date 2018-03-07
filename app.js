@@ -5,19 +5,22 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 require('dotenv').config()
 
-//process.env.DB_HOST
+// process.env.DB_HOST
 const externalApiCalls = require('./api/controllers/eth/externalApiCalls')
 
-//Routes
+// Routes
 const platformRoutes = require('./api/routes/platform')
 const tournamentRoutes = require('./api/routes/tournaments')
 const roundRoutes = require('./api/routes/rounds')
+const submissionRoutes = require('./api/routes/submissions')
+const activityRoutes = require('./api/routes/activity')
 
-//tempAPI routes active
+// tempAPI routes active
 const tempPlatformRoutes = require('./tempApi/platform')
 const tempTournamentRoutes = require('./tempApi/tournaments')
 const tempRoundRoutes = require('./tempApi/rounds')
 const tempActivityRoutes = require('./tempApi/activity')
+const tempSubmissionRoutes = require('./tempApi/submissions')
 
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -25,21 +28,22 @@ app.use(bodyParser.json())
 app.use(cors())
 
 app.use('/platform', platformRoutes)
-app.use('/tournament', tournamentRoutes)
+app.use('/tournaments', tournamentRoutes)
 app.use('/rounds', roundRoutes)
-//TODO decide on controller split
+app.use('/activity', activityRoutes)
+// TODO decide on controller split
 
-//tempAPI routes active
+// tempAPI routes active
 app.use('/tempAPI/platform', tempPlatformRoutes)
-app.use('/tempAPI/tournament', tempTournamentRoutes)
+app.use('/tempAPI/tournaments', tempTournamentRoutes)
 app.use('/tempAPI/rounds', tempRoundRoutes)
 app.use('/tempAPI/activity', tempActivityRoutes)
-//TODO add more temp APIs
+app.use('/tempAPI/submissions', tempSubmissionRoutes)
+// TODO add more temp APIs
 
+// TODO add more error handling and timeout setting
 
-//TODO add more error handling and timeout setting
-
-//Error handling
+// Error handling
 app.use((req, res, next) => {
   const error = new Error('Not Found')
   error.status = 404

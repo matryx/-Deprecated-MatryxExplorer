@@ -1,7 +1,7 @@
 // Will be replaced by staging config
 var config = {
-  rpcURL: "http://localhost:",
+  rpcURL: 'http://localhost:',
   rpcPort: 8545
-};
+}
 
-//TODO .processes.env
+// TODO .processes.env

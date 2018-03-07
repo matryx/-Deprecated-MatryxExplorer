@@ -71,7 +71,6 @@ const matryxAbi = [{"constant":true,"inputs":[{"name":"","type":"uint256"}],"nam
 const web3 = new Web3('http://52.8.65.20:8545')
 contract = new web3.eth.Contract(matryxAbi, matryxAddress)
 
-
 // TODO Error handling when no chain is attached
 
 var platformCalls = {}
