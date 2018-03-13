@@ -363,16 +363,29 @@ var allTournaments = TournamentCreatedEvent.get(function(error, logs){
 
 */
 
-// Get the latest Matryx Platform contract address and abi
-// externalApiCalls.getLatestPlatformInfo()
-//     .then(function (matryx){
-//         contract = web3.eth.Contract(matryx.results.abi, matryx.results.address)
-//     });
+/*
+Rounds
+*/
 
-// console.log(matryx)
+/*
+Submissions
+*/
 
-// Method for getting all the tournaments
-
-// Method for getting the tournament details given an id
+// Get the submission count for the tournament given the tournament address
+platformCalls.getSubmissionCount = function (_tournamentAddress) {
+  return new Promise((resolve, reject) => {
+    tournamentContract = new web3.eth.Contract(tournamentAbi, _tournamentAddress)
+    console.log(tournamentContract)
+    //TODO change the line below since numberOfSubmissions is a variable in the contract
+    // and is not a method. Try accessing it on local-node to swap for here
+    tournamentContract.methods.numberOfSubmissions.call({}, (err, res) => {
+      if (err) reject(err)
+      else {
+        console.log(res)
+        resolve(res)
+      }
+    })
+  })
+}
 
 module.exports = platformCalls

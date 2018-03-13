@@ -71,6 +71,16 @@ router.get('/allTournaments2', (req, res, next) => {
   })
 })
 
+// Return the tournament details for a specific tournament
+router.get('/address/:tournamentAddress/submissionCount', (req, res, next) => {
+  const address = req.params.tournamentAddress
+  ethPlatform.getSubmissionCount(address).then(function (result) {
+    res.status(200).json({
+      results: result
+    })
+  })
+})
+
 // router.post('/', (req, res, next) => {
 //     res.status(200).json({
 //         message: 'handling POST requests to /products'
