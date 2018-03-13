@@ -18,7 +18,7 @@ router.get('/', (req, res, next) => {
         'tournamentTitle': 'Solve Aids',
         'mtx': 200000.00000,
         'tournamentDescription': 'A description of the tournament',
-        'categroy': 'Pharma',
+        'category': 'Pharma',
         'totalRounds': 3,
         'currentRound': 1,
         'numberOfParticipants': 130,
@@ -30,7 +30,7 @@ router.get('/', (req, res, next) => {
         'tournamentTitle': 'Help Keita find a home',
         'mtx': 240000.20000,
         'tournamentDescription': 'A description of the tournament',
-        'categroy': 'Space',
+        'category': 'Space',
         'totalRounds': 5,
         'currentRound': 3,
         'numberOfParticipants': 220,
@@ -42,14 +42,13 @@ router.get('/', (req, res, next) => {
         'tournamentTitle': 'Create an Exotic Mug',
         'mtx': 240000.20000,
         'tournamentDescription': 'A description of the tournament',
-        'categroy': 'Art',
+        'category': 'Art',
         'totalRounds': 2,
         'currentRound': 1,
         'address': '0xa43e6937e49176fd886dcf96850816e324e4d06e',
         'numberOfParticipants': 80,
         'ipType': 'bountySubmitter',
         'tournamentID': 3
-
       }
     ]
   }
@@ -69,7 +68,7 @@ router.get('/id/:tournamentID', (req, res, next) => {
     'mtx': '200000.00000',
     'authorName': '0xe665Dd2C090c7ceFD5C40cb9de00830108A62785',
     'tournamentDescription': 'A description of the tournament',
-    'categroy': 'Pharma',
+    'category': 'Pharma',
     'totalRounds': '3',
     'currentRound': '1',
     'numberOfParticipants': '130',
@@ -89,14 +88,12 @@ router.get('/id/:tournamentID', (req, res, next) => {
         'authorName': '0xe665Dd2C090c7ceFD5C40cb9de00830108A62785',
         'submissionDate': '1519427539',
         'submissionAddress': '0xe665Dd2C090c7ceFD5C40cb9de00830108A62710'
-
       },
       {
         'submissionTitle': 'SubmissionTitle3',
         'authorName': '0xe665Dd2C090c7ceFD5C40cb9de00830108A62785',
         'submissionDate': '1519427539',
         'submissionAddress': '0xe665Dd2C090c7ceFD5C40cb9de00830108A62710'
-
       }
     ]
   }
@@ -114,7 +111,7 @@ router.get('/address/:tournamentAddress', (req, res, next) => {
     'mtx': '200000.00000',
     'authorName': '0xe665Dd2C090c7ceFD5C40cb9de00830108A62785',
     'tournamentDescription': 'A description of the tournament',
-    'categroy': 'Pharma',
+    'category': 'Pharma',
     'totalRounds': '3',
     'currentRound': '1',
     'numberOfParticipants': '130',
