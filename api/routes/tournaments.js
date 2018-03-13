@@ -23,7 +23,28 @@ router.get('/', (req, res, next) => {
 router.get('/count', (req, res, next) => {
   ethPlatform.getTournamentCount().then(function (result) {
     res.status(200).json({
-      results: result
+      tournamentCount: result
+    })
+  })
+})
+
+// Return number of tournaments
+router.get('/allTournaments', (req, res, next) => {
+  ethPlatform.getTournamentCount().then(function (result) {
+    res.status(200).json({
+      tournamentCount: result
+    })
+  })
+})
+
+// Return the tournament details for a specific tournament
+// TODO pass back the tournament details
+router.get('/address/:tournamentAddress', (req, res, next) => {
+  const address = req.params.tournamentAddress
+  details = ethPlatform.getTournamentByAddress(address).then(function (result) {
+    res.status(200).json({
+      tournamentDetails: result,
+      tournamentAddress: address
     })
   })
 })
@@ -38,17 +59,16 @@ router.get('/id/:tournamentID', (req, res, next) => {
   })
 })
 
-// Return the tournament details for a specific tournament
-router.get('/address/:tournamentAddress', (req, res, next) => {
-  const address = req.params.tournamentAddress
-    // TODO logic
-    // tournamentDetails = ethPlatform.getTournamentDetailsByAddress(address);
-  if (id == 'special') {
+/*
+These are all testing functions
+*/
+
+router.get('/allTournaments2', (req, res, next) => {
+  ethPlatform.getAllTournaments2().then(function (result) {
     res.status(200).json({
-      message: 'You discovered the specialID',
-      id: id
+      tournamentCount: result
     })
-  }
+  })
 })
 
 // router.post('/', (req, res, next) => {

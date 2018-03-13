@@ -18,20 +18,21 @@ Uncomment this snippet when the contract ABI and address is already deployed on 
 */
 /*
 const matryxABI = externalApiCalls.platformInfoApiCall().then((result, error) => {
-    if(!error){
+  if (!error) {
         // console.log(result);
-        let matryxAbi = result.results.abi;
-        let matryxAddress = result.results.address;
-        contract = web3.eth.Contract(matryxAbi, matryxAddress);
-    }
-    else{
-        console.log("Error during get Platform API call", error);
-    }
-});
+    let matryxAbi = result.results.abi
+    let matryxAddress = result.results.address
+    contract = web3.eth.Contract(matryxAbi, matryxAddress)
+  } else {
+    console.log('Error during get Platform API call', error)
+  }
+})
 */
 
 /*
 Uncomment
+
+//TODO add the ABI for tournament and submission and rounds from externalApiCalls + locally for testing
 
 */
 // Develop branch
@@ -40,8 +41,10 @@ const matryxAbi = [{"constant":true,"inputs":[],"name":"getBalance","outputs":[{
 */
 
 // Current Deployment
-const matryxAddress = '0x958bb0087b465e632949aa3df420b8cb9f4ce8d9'
+const matryxAddress = '0xc46e279235b78971fa432feb37493e797fc32b54'
 const matryxAbi = JSON.parse('[{"constant":true,"inputs":[],"name":"getBalance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_author","type":"address"},{"name":"_submission","type":"address"}],"name":"updateMySubmissions","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_tournamentAddress","type":"address"},{"name":"_finalRoundNumber","type":"uint256"},{"name":"_winningSubmissionIndex","type":"uint256"}],"name":"invokeTournamentClosedEvent","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"myTournaments","outputs":[{"name":"","type":"address[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"balanceIsNonZero","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_sender","type":"address"}],"name":"isOwner","outputs":[{"name":"_isOwner","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"tournamentCount","outputs":[{"name":"_tournamentCount","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_owner","type":"address"},{"name":"_tournamentAddress","type":"address"},{"name":"_tournamentName","type":"string"},{"name":"_externalAddress","type":"bytes32"},{"name":"_MTXReward","type":"uint256"},{"name":"_entryFee","type":"uint256"}],"name":"invokeTournamentOpenedEvent","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_tournamentName","type":"string"},{"name":"_externalAddress","type":"bytes32"},{"name":"_MTXReward","type":"uint256"},{"name":"_entryFee","type":"uint256"}],"name":"createTournament","outputs":[{"name":"_tournamentAddress","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getOwner","outputs":[{"name":"_owner","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_queryID","type":"uint256"},{"name":"_response","type":"uint256"}],"name":"storeQueryResponse","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_index","type":"uint256"}],"name":"getTournamentAtIndex","outputs":[{"name":"_tournamentAddress","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"allTournaments","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_query","type":"bytes32"},{"name":"_sender","type":"address"}],"name":"Query","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"mySubmissions","outputs":[{"name":"","type":"address[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_tournamentAddress","type":"address"}],"name":"getTournament_IsMine","outputs":[{"name":"_isMine","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_toIgnore","type":"uint256"}],"name":"prepareBalance","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_tournamentAddress","type":"address"}],"name":"enterTournament","outputs":[{"name":"_success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"_matryxTournamentFactoryAddress","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"_owner","type":"address"},{"indexed":false,"name":"_tournamentAddress","type":"address"},{"indexed":false,"name":"_tournamentName","type":"string"},{"indexed":false,"name":"_externalAddress","type":"bytes32"},{"indexed":false,"name":"_MTXReward","type":"uint256"},{"indexed":false,"name":"_entryFee","type":"uint256"}],"name":"TournamentCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"_owner","type":"address"},{"indexed":false,"name":"_tournamentAddress","type":"address"},{"indexed":false,"name":"_tournamentName","type":"string"},{"indexed":false,"name":"_externalAddress","type":"bytes32"},{"indexed":false,"name":"_MTXReward","type":"uint256"},{"indexed":false,"name":"_entryFee","type":"uint256"}],"name":"TournamentOpened","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"_tournamentAddress","type":"address"},{"indexed":false,"name":"_finalRoundNumber","type":"uint256"},{"indexed":false,"name":"_winningSubmissionIndex","type":"uint256"}],"name":"TournamentClosed","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"queryID","type":"string"}],"name":"QueryID","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"id","type":"uint256"},{"indexed":false,"name":"sender","type":"address"}],"name":"QueryPerformed","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"storedResponse","type":"uint256"}],"name":"StoredResponse","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"response","type":"uint256"}],"name":"ObtainedResponse","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"newResponse","type":"uint256"},{"indexed":false,"name":"oldResponse","type":"uint256"}],"name":"FailedToStore","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"id","type":"uint256"}],"name":"QueryID","type":"event"}]')
+
+const tournamentAbi = JSON.parse('[{"constant":true,"inputs":[],"name":"entryFee","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"tournamentOpen","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"maxRounds","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_entrantAddress","type":"address"}],"name":"enterUserInTournament","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"matryxTokenAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_newMaxRounds","type":"uint256"}],"name":"setNumberOfRounds","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_sender","type":"address"}],"name":"isOwner","outputs":[{"name":"_isOwner","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"reviewPeriod","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_bountyMTX","type":"uint256"}],"name":"createRound","outputs":[{"name":"_roundAddress","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"tournamentOpenedTime","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_submissionAddress","type":"address"}],"name":"invokeSubmissionCreatedEvent","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"tournamentClosedTime","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_sender","type":"address"}],"name":"isEntrant","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getExternalAddress","outputs":[{"name":"_externalAddress","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_duration","type":"uint256"}],"name":"startRound","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"submissionCount","outputs":[{"name":"_submissionCount","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"matryxRoundFactoryAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"BountyMTX","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getOwner","outputs":[{"name":"_owner","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"currentRound","outputs":[{"name":"_currentRound","type":"uint256"},{"name":"_currentRoundAddress","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"rounds","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_submissionIndex","type":"uint256"}],"name":"chooseWinner","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_name","type":"string"},{"name":"_author","type":"address"},{"name":"_externalAddress","type":"bytes32"},{"name":"_contributors","type":"address[]"},{"name":"_references","type":"address[]"},{"name":"_publicallyAccessible","type":"bool"}],"name":"createSubmission","outputs":[{"name":"_submissionAddress","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"openTournament","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"roundIsOpen","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_submissionIndex","type":"uint256"}],"name":"closeTournament","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"platformAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"mySubmissions","outputs":[{"name":"","type":"address[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getEntryFee","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"externalAddress","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"timeCreated","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"_platformAddress","type":"address"},{"name":"_matryxRoundFactoryAddress","type":"address"},{"name":"_owner","type":"address"},{"name":"_tournamentName","type":"string"},{"name":"_externalAddress","type":"bytes32"},{"name":"_BountyMTX","type":"uint256"},{"name":"_entryFee","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"_roundIndex","type":"uint256"}],"name":"RoundCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"_roundIndex","type":"uint256"}],"name":"RoundStarted","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"_roundIndex","type":"uint256"},{"indexed":false,"name":"_submissionAddress","type":"address"}],"name":"SubmissionCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"_submissionIndex","type":"uint256"}],"name":"RoundWinnerChosen","type":"event"}]')
 
 // Old platform
 /*
@@ -62,38 +65,73 @@ const matryxAbi = [{"constant":true,"inputs":[{"name":"","type":"uint256"}],"nam
 
 // Attach to the RPC
 // @Dev local
-// const web3 = new Web3("http://localhost:8545")
+// const web3 = new Web3('http://localhost:8545')
 // @Dev prod env
 // const web3 = new Web3(proccess.env.WEB3_PROVIDER)
 // @Dev Matryx Official customRPC
-// const web3 = new Web3("http://customrpc.matryx.ai:8545")
+const web3 = new Web3('http://customrpc.matryx.ai:8545')
 // @Dev Matryx Elastic IP Address ->
-const web3 = new Web3('http://52.8.65.20:8545')
-contract = new web3.eth.Contract(matryxAbi, matryxAddress)
+// const web3 = new Web3('http://52.8.65.20:8545')
+matryxPlatformContract = new web3.eth.Contract(matryxAbi, matryxAddress)
 
 // TODO Error handling when no chain is attached
 
 var platformCalls = {}
 
+/*
+Tournament Calls
+*/
+
 platformCalls.getTournamentCount = function () {
   return new Promise((resolve, reject) => {
-    contract.methods.tournamentCount().call({}, (err, res) => {
+    matryxPlatformContract.methods.tournamentCount().call({}, (err, res) => {
       if (err) reject(err)
       else resolve(parseInt(res))
     })
   })
 }
 
+// TODO Add max's code
+platformCalls.getAllTournaments = function () {
+  return new Promise((resolve, reject) => {
+    matryxPlatformContract.methods.tournamentCount().call({}, (err, res) => {
+      if (err) reject(err)
+      else resolve(parseInt(res))
+    })
+  })
+}
+
+// TODO currently only returns tournament owner, needs to return all tournament info
+platformCalls.getTournamentByAddress = function (_tournamentAddress) {
+  return new Promise((resolve, reject) => {
+      // Attach to the tournament using the ABI and the _tournamentAddress
+    console.log('Starting the contract attachment')
+    tournamentContract = new web3.eth.Contract(tournamentAbi, _tournamentAddress)
+    console.log(tournamentContract)
+    tournamentContract.methods.owner().call({}, (err, res) => {
+      console.log('response is a' + typeof res) // output is a string
+      if (err) reject(err)
+      else resolve(res)
+    })
+  })
+}
+
+// TODO currently returns owner of the tournament, needs to return all the tournament info
 platformCalls.getTouramentById = function (_tournament_id) {
   return new Promise((resolve, reject) => {
-    contract.methods.tournamentByAddress(42 + _tournament_id).call({}, (err, res) => {
+    matryxPlatformContract.methods.allTournaments(_tournament_id).call({}, (err, tournamentAddress) => {
       if (err) reject(err)
       else {
-        resolve({
-          _tournament_id: parseInt(res['0']),
-          title: res['1'],
-          description: res['2'],
-          bounty: parseFloat(res['3'])
+        tournamentContract = new web3.eth.Contract(tournamentAbi, tournamentAddress)
+        tournamentContract.methods.owner().call({}, (err, res) => {
+          console.log('response is a' + typeof res) // output is a string
+          if (err) reject(err)
+          else {
+            resolve({
+              tournamentId: _tournament_id,
+              tournamentOwner: res
+            })
+          }
         })
       }
     })
@@ -111,8 +149,7 @@ platformCalls.activity = function () {
         // "news": "0xb794f5ea0ba39494ce839613fffba74279579268 created a new bounty: \"Solve Diabetes\""
 
     var news = {activity: []}
-
-    platform.events.TournamentCreated(null, (error, event) => {
+    matryxPlatformContract.events.TournamentCreated(null, (error, event) => {
       if (error) {
         console.log('Error with setting up event: ' + error)
       } else {
@@ -136,7 +173,7 @@ platformCalls.activity = function () {
         })
 
         // "news": "0xb794f5ea0ba39494ce839613fffba74279579268 got rewarded 400 MTX"
-    platform.events.TournamentClosed(null, (error, event) => {
+    matryxPlatformContract.events.TournamentClosed(null, (error, event) => {
       if (error) {
         console.log('Error with setting up event: ' + error)
       } else {
@@ -161,7 +198,7 @@ platformCalls.activity = function () {
     })
 
         // "news": "0xb794f5ea0ba39494ce839613fffba74279579268 entered tournament: \"Erotic Greek Sculpture\""
-    platform.events.UserEnteredTournament(null, (error, event) => {
+    matryxPlatformContract.events.UserEnteredTournament(null, (error, event) => {
       if (error) {
         console.log('Error with setting up event: ' + error)
       } else {
@@ -220,10 +257,50 @@ platformCalls.getActivity2 = function () {
   })
 }
 
+// TODO get this working
+platformCalls.getAllTournaments2 = function () {
+  return new Promise((resolve, reject) => {
+    matryxPlatformContract.events.TournamentCreated({fromBlock: 0, toBlock: 'latest'}, (results, error) => {
+      results.get(function (error, logs) {
+        var allDetails = {}
+        for (var i = 0; i < logs.length; i++) {
+          var log = logs[i]
+          console.log('Saving tournament # ' + i)
+
+          var discipline = log.returnValues[0]
+          var owner = log.returnValues[1]
+          var tournamentAddress = log.returnValues[2]
+          var tournamentTitle = log.returnValues[3]
+          var externalAddress = log.returnValues[4]
+          var MTXReward = log.returnValues[5]
+          var entryFee = log.returnValues[6]
+
+          var tournamentDetails =
+            {
+              'tournamentTitle': tournamentTitle,
+              'mtx': MTXReward,
+              'tournamentDescription': '',
+              'category': discipline,
+              'totalRounds': 0,
+              'currentRound': 0,
+              'numberOfParticipants': 0,
+              'ipType': ''
+            }
+          allDetails.push(tournamentDetails)
+          if (i == logs.length - 1) {
+            resolve(allDetails) // TODO swap out for return
+                  // return allTournaments
+          }
+        }
+      })
+    })
+  })
+}
+
 /*
 Logic for View all tournaments
-var MatryxPlatform = web3.eth.contract(MatryxPlatform.abi);
-var platform = MyContract.at(MatryxPlatform.address);
+var matryxPlatformContract = web3.eth.contract(matryxPlatformContract.abi);
+var platform = MyContract.at(matryxPlatformContract.address);
 
 var TournamentCreatedEvent = platform.events.TournamentCreated({fromBlock: 0, toBlock: 'latest'});
 
@@ -294,21 +371,7 @@ var allTournaments = TournamentCreatedEvent.get(function(error, logs){
 
 // console.log(matryx)
 
-// Attach to the contract
-// const contract = web3.eth.Contract(matryx.results.abi, matryx.results.address)
-
-// getTournamentCount() {
-//   return new Promise((resolve, reject) => {
-//     contract.methods.tournamentCount().call({}, (err, res) => {
-//       if (err) reject(err)
-//       else resolve(parseInt(res))
-//     })
-//   })
-// }
-
 // Method for getting all the tournaments
-
-// Method for getting the tournament details given an address
 
 // Method for getting the tournament details given an id
 

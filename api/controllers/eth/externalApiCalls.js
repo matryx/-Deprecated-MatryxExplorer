@@ -12,7 +12,6 @@ var externalApiCalls = {}
 //     try{
 //         let data = await fetch('http://health.matryx.ai/latestPlatformInfo');
 //         return data;
-//
 //     }
 //     catch{
 //

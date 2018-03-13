@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Running mocha tests\" && mocha spec",
-    "start": "nodemon server.js"
+    "start": "echo \"Starting MatryxExplorer\" &&nodemon server.js"
   },
   "repository": {
     "type": "git",
