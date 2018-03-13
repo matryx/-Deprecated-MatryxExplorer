@@ -233,7 +233,6 @@ fromBlock: Number|String - The number of the earliest block (latest may be given
 toBlock: Number|String - The number of the latest block (latest may be given to mean the most recent and pending currently mining, block). By default latest.
 address: String - An address or a list of addresses to only get logs from particular account(s).
 topics: Array of Strings - An array of values which must each appear in the log entries. The order is important, if you want to leave topics out use null, e.g. [null, '0x00...']. You can also pass another array for each topic with options for that topic e.g. [null, ['option1', 'option2']]
-
 */
 
 platformCalls.getActivity2 = function () {
@@ -375,13 +374,10 @@ Submissions
 platformCalls.getSubmissionCount = function (_tournamentAddress) {
   return new Promise((resolve, reject) => {
     tournamentContract = new web3.eth.Contract(tournamentAbi, _tournamentAddress)
-    console.log(tournamentContract)
-    //TODO change the line below since numberOfSubmissions is a variable in the contract
-    // and is not a method. Try accessing it on local-node to swap for here
-    tournamentContract.methods.numberOfSubmissions.call({}, (err, res) => {
+    tournamentContract.methods.submissionCount().call({}, (err, res) => {
       if (err) reject(err)
       else {
-        console.log(res)
+        console.log('There are ' + res + ' submissions for the tournament at address: ' + _tournamentAddress)
         resolve(res)
       }
     })
