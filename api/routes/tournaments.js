@@ -92,8 +92,25 @@ router.get('/address/:tournamentAddress/submissionCount', (req, res, next) => {
   })
 })
 
+//Current Round response given a tournamentAddress
+router.get('/address/:tournamentAddress/currentRound', (req, res, next) => {
+  const address = req.params.tournamentAddress
+  ethPlatform.getCurrentRoundFromTournamentAddress(address).then(function (result) {
+    res.status(200).json({
+      title: result._title,
+      bounty: result._bounty,
+      description: result._description,
+      currentRound: result._currentRound,
+      roundAddress: result._roundAddress,
+      submissions: result._submissions
+    })
+  })
+})
+
 /*
-These are all testing functions
+#################################
+These are all TEST functions
+#################################
 */
 // notsure
 router.get('/allTournaments2', (req, res, next) => {

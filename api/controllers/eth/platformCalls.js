@@ -46,6 +46,11 @@ const matryxAbi = JSON.parse('[{"constant":true,"inputs":[],"name":"getBalance",
 
 const tournamentAbi = JSON.parse('[{"constant":true,"inputs":[],"name":"entryFee","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"tournamentOpen","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"maxRounds","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_entrantAddress","type":"address"}],"name":"enterUserInTournament","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"matryxTokenAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_newMaxRounds","type":"uint256"}],"name":"setNumberOfRounds","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_sender","type":"address"}],"name":"isOwner","outputs":[{"name":"_isOwner","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"reviewPeriod","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_bountyMTX","type":"uint256"}],"name":"createRound","outputs":[{"name":"_roundAddress","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"tournamentOpenedTime","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_submissionAddress","type":"address"}],"name":"invokeSubmissionCreatedEvent","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"tournamentClosedTime","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_sender","type":"address"}],"name":"isEntrant","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getExternalAddress","outputs":[{"name":"_externalAddress","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_duration","type":"uint256"}],"name":"startRound","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"submissionCount","outputs":[{"name":"_submissionCount","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"matryxRoundFactoryAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"BountyMTX","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getOwner","outputs":[{"name":"_owner","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"currentRound","outputs":[{"name":"_currentRound","type":"uint256"},{"name":"_currentRoundAddress","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"rounds","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_submissionIndex","type":"uint256"}],"name":"chooseWinner","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_name","type":"string"},{"name":"_author","type":"address"},{"name":"_externalAddress","type":"bytes32"},{"name":"_contributors","type":"address[]"},{"name":"_references","type":"address[]"},{"name":"_publicallyAccessible","type":"bool"}],"name":"createSubmission","outputs":[{"name":"_submissionAddress","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"openTournament","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"roundIsOpen","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_submissionIndex","type":"uint256"}],"name":"closeTournament","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"platformAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"mySubmissions","outputs":[{"name":"","type":"address[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getEntryFee","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"externalAddress","outputs":[{"name":"","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"timeCreated","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"_platformAddress","type":"address"},{"name":"_matryxRoundFactoryAddress","type":"address"},{"name":"_owner","type":"address"},{"name":"_tournamentName","type":"string"},{"name":"_externalAddress","type":"bytes32"},{"name":"_BountyMTX","type":"uint256"},{"name":"_entryFee","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"_roundIndex","type":"uint256"}],"name":"RoundCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"_roundIndex","type":"uint256"}],"name":"RoundStarted","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"_roundIndex","type":"uint256"},{"indexed":false,"name":"_submissionAddress","type":"address"}],"name":"SubmissionCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"_submissionIndex","type":"uint256"}],"name":"RoundWinnerChosen","type":"event"}]')
 
+const roundAbi = JSON.parse('[{"constant":true,"inputs":[],"name":"tournamentAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"reviewPeriodEndTime","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"bountyMTX","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"matryxTokenAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_sender","type":"address"}],"name":"isOwner","outputs":[{"name":"_isOwner","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"endTime","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"nextRound","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"winningSubmissionIndex","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"roundIndex","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"startTime","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getOwner","outputs":[{"name":"_owner","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"winningSubmissionChosen","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"matryxSubmissionFactoryAddress","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"previousRound","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[{"name":"_tournamentAddress","type":"address"},{"name":"_matryxSubmissionFactoryAddress","type":"address"},{"name":"_owner","type":"address"},{"name":"_bountyMTX","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"constant":true,"inputs":[],"name":"isOpen","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_index","type":"uint256"}],"name":"submissionIsAccessible","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_requester","type":"address"}],"name":"requesterIsContributor","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getSubmissions","outputs":[{"name":"_submissions","type":"address[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_index","type":"uint256"}],"name":"getSubmissionAddress","outputs":[{"name":"_submissionAddress","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_index","type":"uint256"}],"name":"getSubmissionBody","outputs":[{"name":"externalAddress","type":"bytes32"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_index","type":"uint256"}],"name":"getSubmissionAuthor","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_submissionAddress","type":"address"}],"name":"getBalance","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"submissionChosen","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getWinningSubmissionIndex","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"numberOfSubmissions","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_duration","type":"uint256"}],"name":"Start","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_submissionIndex","type":"uint256"}],"name":"chooseWinningSubmission","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_submissionIndex","type":"uint256"},{"name":"_remainingBounty","type":"uint256"}],"name":"awardBounty","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_title","type":"string"},{"name":"_author","type":"address"},{"name":"_externalAddress","type":"bytes32"},{"name":"_references","type":"address[]"},{"name":"_contributors","type":"address[]"},{"name":"_publicallyAccessible","type":"bool"}],"name":"createSubmission","outputs":[{"name":"_submissionAddress","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"function"}]'
+)
+
+const submissionAbi = [{'constant': false, 'inputs': [{'name': '_reference', 'type': 'address'}], 'name': 'addReference', 'outputs': [], 'payable': false, 'stateMutability': 'nonpayable', 'type': 'function'}, {'constant': false, 'inputs': [], 'name': 'getBalance', 'outputs': [{'name': '', 'type': 'uint256'}], 'payable': false, 'stateMutability': 'nonpayable', 'type': 'function'}, {'constant': false, 'inputs': [{'name': '_referenceIndex', 'type': 'uint256'}], 'name': 'removeReference', 'outputs': [], 'payable': false, 'stateMutability': 'nonpayable', 'type': 'function'}, {'constant': false, 'inputs': [{'name': '_title', 'type': 'string'}], 'name': 'updateTitle', 'outputs': [], 'payable': false, 'stateMutability': 'nonpayable', 'type': 'function'}, {'constant': true, 'inputs': [], 'name': 'getExternalAddress', 'outputs': [{'name': '', 'type': 'bytes32'}], 'payable': false, 'stateMutability': 'view', 'type': 'function'}, {'constant': false, 'inputs': [{'name': '_contributorIndex', 'type': 'uint256'}], 'name': 'removeContributor', 'outputs': [], 'payable': false, 'stateMutability': 'nonpayable', 'type': 'function'}, {'constant': true, 'inputs': [], 'name': 'getReferences', 'outputs': [{'name': '', 'type': 'address[]'}], 'payable': false, 'stateMutability': 'view', 'type': 'function'}, {'constant': true, 'inputs': [{'name': '_requester', 'type': 'address'}], 'name': 'isAccessible', 'outputs': [{'name': '', 'type': 'bool'}], 'payable': false, 'stateMutability': 'view', 'type': 'function'}, {'constant': true, 'inputs': [], 'name': 'getAuthor', 'outputs': [{'name': '', 'type': 'address'}], 'payable': false, 'stateMutability': 'view', 'type': 'function'}, {'constant': true, 'inputs': [], 'name': 'getTimeSubmitted', 'outputs': [{'name': '', 'type': 'uint256'}], 'payable': false, 'stateMutability': 'view', 'type': 'function'}, {'constant': true, 'inputs': [], 'name': 'getContributors', 'outputs': [{'name': '', 'type': 'address[]'}], 'payable': false, 'stateMutability': 'view', 'type': 'function'}, {'constant': false, 'inputs': [{'name': '_contributor', 'type': 'address'}], 'name': 'addContributor', 'outputs': [], 'payable': false, 'stateMutability': 'nonpayable', 'type': 'function'}, {'constant': false, 'inputs': [{'name': '_externalAddress', 'type': 'bytes32'}], 'name': 'updateExternalAddress', 'outputs': [], 'payable': false, 'stateMutability': 'nonpayable', 'type': 'function'}, {'constant': false, 'inputs': [], 'name': 'makeExternallyAccessibleDuringTournament', 'outputs': [], 'payable': false, 'stateMutability': 'nonpayable', 'type': 'function'}, {'constant': true, 'inputs': [], 'name': 'getTitle', 'outputs': [{'name': '', 'type': 'string'}], 'payable': false, 'stateMutability': 'view', 'type': 'function'}]
+
 // Old platform
 /*
 
@@ -631,6 +636,46 @@ Rounds
 */
 
 /*
+TODO add the following after talking to max
+_title: '',
+_description: '',
+_submissions: []
+
+*/
+platformCalls.getCurrentRoundFromTournamentAddress = function (_tournamentAddress) {
+  return new Promise((resolve, reject) => {
+    var currentRoundResponse = {
+      _title: '',
+      _bounty: 0,
+      _description: '',
+      _currentRound: 0,
+      _roundAddress: '',
+      _submissions: []
+    }
+
+    tournamentContract = new web3.eth.Contract(tournamentAbi, _tournamentAddress)
+    tournamentContract.methods.currentRound().call({}, (err, _currentRoundInfo) => {
+      if (err) reject(err)
+      else {
+        currentRoundResponse._currentRound = _currentRoundInfo[0]
+        currentRoundResponse._roundAddress = _currentRoundInfo[1]
+
+        roundContract = new web3.eth.Contract(roundAbi, _currentRoundInfo[1])
+
+        roundContract.methods.bountyMTX().call({}, (err, _bounty) => {
+          if (err) reject(err)
+          else {
+            currentRoundResponse._bounty = _bounty
+            console.log(currentRoundResponse)
+            resolve(currentRoundResponse)
+          }
+        })
+      }
+    })
+  })
+}
+
+/*
 Submissions
 */
 
@@ -643,6 +688,100 @@ platformCalls.getSubmissionCount = function (_tournamentAddress) {
       else {
         console.log('There are ' + res + ' submissions for the tournament at address: ' + _tournamentAddress)
         resolve(res)
+      }
+    })
+  })
+}
+
+/* TODO talk to max about getting parent info from submission and round for the BELOW function
+//Need to add
+
+_submissionId: 0,
+  _submissionDescription: '',
+  _submissionJson: [ { _Items: [] } ],
+  _submissionIpfsHash: '',
+    _submissionRewardTotal: 0,
+    _submissionSelectedRound: 0,
+    _parentInfo:
+      [ { _currentRound: 0,
+          _totalRounds: 0,
+          _roundAddress: '',
+          _roundMtx: 0,
+          _tournamentName: '',
+          _tournamentAddress: '' } ] }
+
+*/
+// Get the submission count for the tournament given the tournament address
+platformCalls.getSubmissionByAddress = function (_submissionAddress) {
+  return new Promise((resolve, reject) => {
+    var submissionDetails = {
+      _submissionTitle: '',
+      _submissionAddress: '',
+      _submissionAuthor: '',
+      _submissionId: 0,
+      _submissionDescription: '',
+      _submissionCollaborators: [],
+      _submissionReferences: [],
+      _submissionJson: [
+        {
+          _Items: []
+        }
+      ],
+      _submissionIpfsHash: '',
+      _submissionRewardTotal: 0,
+      _submissionSelectedRound: 0,
+      _submissionDate: '',
+      _parentInfo: [
+        {
+          _currentRound: 0,
+          _totalRounds: 0,
+          _roundAddress: '',
+          _roundMtx: 0,
+          _tournamentName: '',
+          _tournamentAddress: ''
+        }
+      ]
+    }
+
+    submissionContract = new web3.eth.Contract(submissionAbi, _submissionAddress)
+    submissionContract.methods.getTitle().call({}, (err, _title) => {
+      if (err) reject(err)
+      else {
+        submissionDetails._submissionTitle = _title
+        submissionDetails._submissionAddress = _submissionAddress
+
+        submissionContract.methods.getAuthor().call({}, (err, _author) => {
+          if (err) reject(err)
+          else {
+            submissionDetails._submissionAuthor = _author
+            submissionContract.methods.getContributors().call({}, (err, _contributors) => {
+              if (err) reject(err)
+              else {
+                submissionDetails._submissionCollaborators = _contributors
+                submissionContract.methods.getReferences().call({}, (err, _references) => {
+                  if (err) reject(err)
+                  else {
+                    submissionDetails._submissionReferences = _references
+                    submissionContract.methods.getTimeSubmitted().call({}, (err, _timeSubmitted) => {
+                      if (err) reject(err)
+                      else {
+                        submissionDetails._submissionDate = _timeSubmitted
+                        submissionContract.methods.getTimeSubmitted().call({}, (err, _timeSubmitted) => {
+                          if (err) reject(err)
+                          else {
+                            submissionDetails._submissionDate = _timeSubmitted
+                            console.log(submissionDetails)
+                            resolve(submissionDetails)
+                          }
+                        })
+                      }
+                    })
+                  }
+                })
+              }
+            })
+          }
+        })
       }
     })
   })
