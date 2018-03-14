@@ -10,11 +10,9 @@ const ethPlatform = require('../controllers/eth/platformCalls')
 
 const router = express.Router()
 
-// Return a list of all tournaments
+// Return a confirmation the API is live
 router.get('/', (req, res, next) => {
   res.status(200).json({
-        // TODO send back the list of tournaments
-        // tournaments = ethPlatform.getAllTournaments();
     message: 'handling requests to /tournaments'
   })
 })
@@ -28,11 +26,13 @@ router.get('/count', (req, res, next) => {
   })
 })
 
-// Return number of tournaments
+// Return all of the tournaments
+// TODO fix
 router.get('/allTournaments', (req, res, next) => {
-  ethPlatform.getTournamentCount().then(function (result) {
+    // TODO replace function with working model+final name
+  ethPlatform.getAllTournamentsTestBasic().then(function (result) {
     res.status(200).json({
-      tournamentCount: result
+      results: result
     })
   })
 })
@@ -49,6 +49,17 @@ router.get('/address/:tournamentAddress', (req, res, next) => {
   })
 })
 
+// Return the tournament owner for a specific tournament
+router.get('/address/:tournamentAddress/getOwner', (req, res, next) => {
+  const address = req.params.tournamentAddress
+  details = ethPlatform.getTournamentOwnerByAddress(address).then(function (result) {
+    res.status(200).json({
+      tournamentOwner: result.tournamentOwner,
+      tournamentAddress: address
+    })
+  })
+})
+
 // Return the tournament details for a specific tournament
 router.get('/id/:tournamentID', (req, res, next) => {
   const id = req.params.tournamentID
@@ -59,14 +70,14 @@ router.get('/id/:tournamentID', (req, res, next) => {
   })
 })
 
-/*
-These are all testing functions
-*/
-
-router.get('/allTournaments2', (req, res, next) => {
-  ethPlatform.getAllTournaments2().then(function (result) {
+// Return the tournament owner for a specific tournament
+router.get('/id/:tournamentID/getOwner', (req, res, next) => {
+  const id = req.params.tournamentID
+  details = ethPlatform.getTournamentOwnerById(id).then(function (result) {
     res.status(200).json({
-      tournamentCount: result
+      tournamentOwner: result.tournamentOwner,
+      tournamentId: id,
+      tournamentAddress: result.tournamentAddress
     })
   })
 })
@@ -77,6 +88,18 @@ router.get('/address/:tournamentAddress/submissionCount', (req, res, next) => {
   ethPlatform.getSubmissionCount(address).then(function (result) {
     res.status(200).json({
       results: result
+    })
+  })
+})
+
+/*
+These are all testing functions
+*/
+// notsure
+router.get('/allTournaments2', (req, res, next) => {
+  ethPlatform.getAllTournaments2().then(function (result) {
+    res.status(200).json({
+      tournamentCount: result
     })
   })
 })
