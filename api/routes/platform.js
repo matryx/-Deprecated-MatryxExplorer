@@ -5,26 +5,41 @@ author - sam@nanome.ai
 Copyright Nanome Inc 2018
 */
 
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 
-const ethPlatform = require('../controllers/eth/platformCalls');
+const ethPlatform = require('../controllers/eth/platformCalls')
 
+// TODO logic
 
+// Return a message that this route handles all platform specific requests
+router.get('/', (req, res, next) => {
+  res.status(200).json({
+        // TODO send back the list of tournaments
+        //
+    message: 'handling GET requests to /platform'
+  })
+})
 
-//TODO logic
+// TODO fix this one...showing up as undefined due to scope
+// Return a message that this route handles all platform specific requests
+router.get('/address', (req, res, next) => {
+  ethPlatform.matryxAddress.then(function (result) {
+    res.status(200).json({
+      platformAddress: result
+    })
+  })
+})
 
+// TODO fix this one too as it is undefined due to scope
+router.get('/abi', (req, res, next) => {
+  _platformAbi = ethPlatform.matryxAbi
+  console.log(_platformAbi)
+  res.status(200).json({
+    platformAbi: _platformAbi
+  })
+})
 
-// // Return a list of all tournaments
-// router.get('/', (req, res, next) => {
-//     res.status(200).json({
-//         //TODO send back the list of tournaments
-//         //
-//         message: 'handling GET requests to /products'
-//     });
-// });
-//
-//
 // // Return the tournament details for a specific tournament
 // router.get('/id/:tournamentID',(req, res, next) => {
 //     const id = req.params.tournamentID;
@@ -45,12 +60,10 @@ const ethPlatform = require('../controllers/eth/platformCalls');
 //     }
 // });
 
-
 // router.post('/', (req, res, next) => {
 //     res.status(200).json({
 //         message: 'handling POST requests to /products'
 //     });
 // });
 
-
-module.exports = router;
+module.exports = router

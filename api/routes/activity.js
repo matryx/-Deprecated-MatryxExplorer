@@ -10,12 +10,14 @@ const router = express.Router()
 
 const ethPlatform = require('../controllers/eth/platformCalls')
 
-// Return a list of all rounds
+// Return a message that this route handles activity calls
+// TODO return the landing page events to the UI
+//Finish Backend
 router.get('/', (req, res, next) => {
-  res.status(200).json({
-        // TODO send back the list of tournaments
-        //
-    message: 'handling GET requests to /activity'
+  ethPlatform.activity.then(function (result) {
+    res.status(200).json({
+      activity: result
+    })
   })
 })
 

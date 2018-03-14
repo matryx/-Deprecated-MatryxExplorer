@@ -18,7 +18,7 @@ router.get('/', (req, res, next) => {
   })
 })
 
-// Return the tournament details for a specific tournament
+// Return the submission details for a specific submission address
 router.get('/address/:submissionAddress', (req, res, next) => {
   const address = req.params.submissionAddress
   details = ethPlatform.getSubmissionByAddress(address).then(function (result) {
@@ -48,6 +48,10 @@ router.get('/address/:submissionAddress', (req, res, next) => {
     })
   })
 })
+
+//TODO getSubmissionOwnerByAddress
+
+
 //
 // // Return the tournament details for a specific tournament
 // router.get('/address/:submissionAddress', (req, res, next) => {
