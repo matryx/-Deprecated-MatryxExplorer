@@ -32,7 +32,6 @@ app.use('/tournaments', tournamentRoutes)
 app.use('/rounds', roundRoutes)
 app.use('/submissions', submissionRoutes)
 app.use('/activity', activityRoutes)
-// TODO decide on controller split
 
 // tempAPI routes active
 app.use('/tempAPI/platform', tempPlatformRoutes)

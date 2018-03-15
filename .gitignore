@@ -3,3 +3,4 @@ package-lock.json
 .env
 .ignore/
 .idea
+.DS_Store
