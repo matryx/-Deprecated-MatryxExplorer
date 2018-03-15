@@ -30,11 +30,15 @@ const web3 = new Web3('http://localhost:8545')
 matryxPlatformAddress = currentPlatformInfo.address
 matryxPlatformAbi = JSON.parse(currentPlatformInfo.abi)
 
+
+
 console.log('Current Matryx Platform Address in use: \'' + matryxPlatformAddress + '\'')
-matryxPlatformContract = new web3.eth.Contract(matryxPlatformAbi, matryxPlatformAddress)
+// matryxPlatformContract = new web3.eth.Contract(matryxPlatformAbi, matryxPlatformAddress)
 // console.log(matryxPlatformContract)
 // @Dev for terminal javascript console geth ->
-// matryxContract = web3.eth.contract(matryxPlatformAbi).at(matryxPlatformAddress)
+matryxPlatformContract = web3.eth.contract(matryxPlatformAbi).at(matryxPlatformAddress)
+
+console.log(matryxPlatformContract)
 
 // TODO Error handling when no chain is attached
 
