@@ -590,6 +590,8 @@ var allTournaments = TournamentCreatedEvent.get(function(error, logs){
 Rounds
 */
 
+// TODO add a round details response for both round address and id given a tournament address
+
 /*
 TODO add the following after talking to max
 _title: '',

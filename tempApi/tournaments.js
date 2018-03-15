@@ -65,6 +65,7 @@ router.get('/id/:tournamentID', (req, res, next) => {
   const id = req.params.tournamentID
   var tournamentDetails = {
     'tournamentTitle': 'Solve Aids',
+    'tournamentAddress': '0xe665Dd2C090c7ceFD5C40cb9de00830108A62722',
     'mtx': '200000.00000',
     'authorName': '0xe665Dd2C090c7ceFD5C40cb9de00830108A62785',
     'tournamentDescription': 'A description of the tournament',
@@ -108,6 +109,7 @@ router.get('/address/:tournamentAddress', (req, res, next) => {
   const address = req.params.tournamentAddress
   var tournamentDetails = {
     'tournamentTitle': 'Solve Aids',
+    'tournamentAddress': '0xe665Dd2C090c7ceFD5C40cb9de00830108A62722',
     'mtx': '200000.00000',
     'authorName': '0xe665Dd2C090c7ceFD5C40cb9de00830108A62785',
     'tournamentDescription': 'A description of the tournament',
