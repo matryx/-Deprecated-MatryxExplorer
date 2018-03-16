@@ -29,19 +29,20 @@ router.get('/id/:tournamentAddress/round/1', (req, res, next) => {
   possible, this tournament focuses on the latter; See Section IV for technical specifications.',
     'submissions':
     [
-
       {
-        'address': '0xa0e239b0abf4582366adaff486ee268c848c4409',
-        'title': 'Lift-to-drag maximization for single airfoil at M = 0.63'
-
+        'submissionTitle': 'Lift-to-drag maximization for single airfoil at M = 0.63',
+        'submissionDate': '1519427539',
+        'submissionAddress': '0xa0e239b0abf4582366adaff486ee268c848c4409'
       },
       {
-        'address': '0x851b7f3ab81bd8df354f0d7640efcd7288553419',
-        'title': 'High Lift, Low Aspect Ratio Airfoil'
+        'submissionTitle': 'High Lift, Low Aspect Ratio Airfoil',
+        'submissionDate': '1519427539',
+        'submissionAddress': '0x851b7f3ab81bd8df354f0d7640efcd7288553419'
       },
       {
-        'address': '0x32be343b94f860124dc4fee278fdcbd38c102d88',
-        'title': 'Low Reynolds Number Airfoil'
+        'submissionTitle': 'Low Reynolds Number Airfoil',
+        'submissionDate': '1519427539',
+        'submissionAddress': '0x32be343b94f860124dc4fee278fdcbd38c102d88'
       }
     ]
   }
