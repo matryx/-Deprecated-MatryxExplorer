@@ -18,7 +18,11 @@ const currentPlatformInfo = require('../../../data/abi/v2/platform')
  Attach to the RPC
 */
 // @Dev local
-const web3 = new Web3('http://localhost:8545')
+// const web3 = new Web3('http://localhost:8545')
+
+var web3 = new Web3()
+// web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'))
+web3.setProvider(new web3.providers.HttpProvider('http://customrpc.matryx.ai:8545'))
 
 // TODO switch to config variable
 // @Dev prod env
@@ -28,17 +32,18 @@ const web3 = new Web3('http://localhost:8545')
 // const web3 = new Web3('http://customrpc.matryx.ai:8545') // Elastic IP Address -> http://52.8.65.20:8545
 
 matryxPlatformAddress = currentPlatformInfo.address
-matryxPlatformAbi = JSON.parse(currentPlatformInfo.abi)
-
-
+matryxPlatformAbi = currentPlatformInfo.abi
 
 console.log('Current Matryx Platform Address in use: \'' + matryxPlatformAddress + '\'')
-// matryxPlatformContract = new web3.eth.Contract(matryxPlatformAbi, matryxPlatformAddress)
+// matryxPlatformContract = new web3.eth.contract(matryxPlatformAbi, matryxPlatformAddress)
 // console.log(matryxPlatformContract)
 // @Dev for terminal javascript console geth ->
 matryxPlatformContract = web3.eth.contract(matryxPlatformAbi).at(matryxPlatformAddress)
 
-console.log(matryxPlatformContract)
+// console.log(matryxPlatformContract.tournamentCount().call()) // fails "TypeError: this.provider.send is not a function"
+// console.log(matryxPlatformContract.methods.tournamentCount().call()) // ^TypeError: Cannot read property 'tournamentCount' of undefined
+// console.log(matryxPlatformContract.owner())
+console.log(matryxPlatformContract.tournamentCount())
 
 // TODO Error handling when no chain is attached
 
@@ -54,17 +59,20 @@ Tournament Calls
 
 platformCalls.getTournamentCount = function () {
   return new Promise((resolve, reject) => {
-    matryxPlatformContract.methods.tournamentCount().call({}, (err, res) => {
+    matryxPlatformContract.tournamentCount((err, res) => {
       if (err) reject(err)
-      else resolve(parseInt(res))
+      else {
+        // console.log(res)
+        resolve(parseInt(res))
+      }
     })
   })
 }
 
-// TODO Add max's code
+// TODO
 platformCalls.getAllTournaments = function () {
   return new Promise((resolve, reject) => {
-    matryxPlatformContract.methods.tournamentCount().call({}, (err, res) => {
+    matryxPlatformContract.methods.tournamentCount((err, res) => {
       if (err) reject(err)
       else resolve(parseInt(res))
     })
@@ -147,6 +155,7 @@ platformCalls.getTournamentOwnerById = function (_tournament_id) {
 }
 
 // TODO fix this when max updates the platform
+// TODO switch this to a promise.all function to handle all the requests
 platformCalls.getAllTournaments = function (_tournament_id) {
   return new Promise((resolve, reject) => {
       // Setup the object
@@ -242,6 +251,7 @@ var allTournamentsDTO = {
 }
 */
 // TODO after solving the problem in the next function, solve it with these additional methods after max updates the platform
+// TODO switch to a promise.all function instead of .then
 platformCalls.getAllTournamentsTest = function () {
   return new Promise((resolve, reject) => {
       // Setup the object
@@ -706,7 +716,7 @@ platformCalls.getSubmissionByAddress = function (_submissionAddress) {
         }
       ]
     }
-
+// TODO switch to promise.all
     submissionContract = new web3.eth.Contract(submissionAbi, _submissionAddress)
     submissionContract.methods.getTitle().call({}, (err, _title) => {
       if (err) reject(err)
