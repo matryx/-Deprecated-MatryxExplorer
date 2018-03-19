@@ -13,6 +13,7 @@ const config = require('../../../config')
 const externalApiCalls = require('./externalApiCalls')
 const platformInfoV1 = require('../../../data/abi/v1/platform')
 const currentPlatformInfo = require('../../../data/abi/v2/platform')
+const tournamentAbi = require('../../../data/abi/v2/tournament')
 
 /*
  Attach to the RPC
@@ -20,16 +21,15 @@ const currentPlatformInfo = require('../../../data/abi/v2/platform')
 // @Dev local
 // const web3 = new Web3('http://localhost:8545')
 
-var web3 = new Web3()
+let web3 = new Web3()
 // web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'))
-web3.setProvider(new web3.providers.HttpProvider('http://customrpc.matryx.ai:8545'))
+let web3Provider = 'http://customrpc.matryx.ai:8545'
 
+web3.setProvider(new web3.providers.HttpProvider(web3Provider)) // Elastic IP Address -> http://52.8.65.20:8545
+console.log('Connected to: ' + web3Provider)
 // TODO switch to config variable
 // @Dev prod env
 // const web3 = new Web3(proccess.env.WEB3_PROVIDER)
-
-// @Dev Matryx Official customRPC
-// const web3 = new Web3('http://customrpc.matryx.ai:8545') // Elastic IP Address -> http://52.8.65.20:8545
 
 matryxPlatformAddress = currentPlatformInfo.address
 matryxPlatformAbi = currentPlatformInfo.abi
@@ -40,12 +40,13 @@ console.log('Current Matryx Platform Address in use: \'' + matryxPlatformAddress
 // @Dev for terminal javascript console geth ->
 matryxPlatformContract = web3.eth.contract(matryxPlatformAbi).at(matryxPlatformAddress)
 
+// TODO remove these after development
 // console.log(matryxPlatformContract.tournamentCount().call()) // fails "TypeError: this.provider.send is not a function"
 // console.log(matryxPlatformContract.methods.tournamentCount().call()) // ^TypeError: Cannot read property 'tournamentCount' of undefined
 // console.log(matryxPlatformContract.owner())
-console.log(matryxPlatformContract.tournamentCount())
+console.log(matryxPlatformContract.tournamentCount().c)
 
-// TODO Error handling when no chain is attached
+// TODO Error handling when no chain is attached ^
 
 var platformCalls = {}
 
@@ -53,6 +54,7 @@ var platformCalls = {}
 // prepare getFunctionHashes
 // var hashes = getFunctionHashes(matryxAbi)
 // console.log(hashes[0])
+
 /*
 Tournament Calls
 */
@@ -62,7 +64,6 @@ platformCalls.getTournamentCount = function () {
     matryxPlatformContract.tournamentCount((err, res) => {
       if (err) reject(err)
       else {
-        // console.log(res)
         resolve(parseInt(res))
       }
     })
@@ -72,7 +73,7 @@ platformCalls.getTournamentCount = function () {
 // TODO
 platformCalls.getAllTournaments = function () {
   return new Promise((resolve, reject) => {
-    matryxPlatformContract.methods.tournamentCount((err, res) => {
+    matryxPlatformContract.tournamentCount((err, res) => {
       if (err) reject(err)
       else resolve(parseInt(res))
     })
@@ -83,51 +84,53 @@ platformCalls.getAllTournaments = function () {
 platformCalls.getTournamentByAddress = function (_tournamentAddress) {
   return new Promise((resolve, reject) => {
       // Attach to the tournament using the ABI and the _tournamentAddress
-    console.log('Starting the contract attachment')
-    tournamentContract = new web3.eth.Contract(tournamentAbi, _tournamentAddress)
-    console.log(tournamentContract)
+    console.log('Starting the tournament contract attachment at address: ' + _tournamentAddress)
+    tournamentContract = web3.eth.contract(tournamentAbi).at(_tournamentAddress)
+
+    // console.log(tournamentContract)
     // Get tournament details
-    tournamentContract.methods.owner().call({}, (err, res) => {
-      console.log('response is a' + typeof res) // output is a string
+    tournamentContract.owner((err, res) => {
+      // console.log('response is a' + typeof res) // output is a string
       if (err) reject(err)
       else resolve(res)
     })
   })
 }
-
-// TODO currently returns owner of the tournament, needs to return all the tournament info
-platformCalls.getTouramentById = function (_tournament_id) {
-  return new Promise((resolve, reject) => {
-    matryxPlatformContract.methods.allTournaments(_tournament_id).call({}, (err, tournamentAddress) => {
-      if (err) reject(err)
-      else {
-        tournamentContract = new web3.eth.Contract(tournamentAbi, tournamentAddress)
-        tournamentContract.methods.owner().call({}, (err, res) => {
-          console.log('response is a' + typeof res) // output is a string
-          if (err) reject(err)
-          else {
-            resolve({
-              tournamentId: _tournament_id,
-              tournamentOwner: res
-            })
-          }
-        })
-      }
-    })
-  })
-}
+//
+// // TODO currently returns owner of the tournament, needs to return all the tournament info
+// platformCalls.getTouramentById = function (_tournament_id) {
+//   return new Promise((resolve, reject) => {
+//     matryxPlatformContract.methods.allTournaments(_tournament_id).call({}, (err, tournamentAddress) => {
+//       if (err) reject(err)
+//       else {
+//         tournamentContract = new web3.eth.Contract(tournamentAbi, tournamentAddress)
+//         tournamentContract.methods.owner().call({}, (err, res) => {
+//           console.log('response is a' + typeof res) // output is a string
+//           if (err) reject(err)
+//           else {
+//             resolve({
+//               tournamentId: _tournament_id,
+//               tournamentOwner: res
+//             })
+//           }
+//         })
+//       }
+//     })
+//   })
+// }
 
 platformCalls.getTournamentOwnerByAddress = function (_tournamentAddress) {
   return new Promise((resolve, reject) => {
-    tournamentContract = new web3.eth.Contract(tournamentAbi, _tournamentAddress)
-    tournamentContract.methods.owner().call({}, (err, res) => {
+          // Attach to the tournament using the ABI and the _tournamentAddress
+    console.log('Starting the tournament contract attachment at address: ' + _tournamentAddress)
+    tournamentContract = web3.eth.contract(tournamentAbi).at(_tournamentAddress)
+
+        // console.log(tournamentContract)
+        // Get tournament details
+    tournamentContract.owner((err, res) => {
+          // console.log('response is a' + typeof res) // output is a string
       if (err) reject(err)
-      else {
-        resolve({
-          tournamentOwner: res,
-          tournamentAddress: _tournamentAddress
-        })
-      }
+      else resolve(res)
     })
   })
 }
