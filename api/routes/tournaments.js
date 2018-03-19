@@ -7,7 +7,7 @@ Copyright Nanome Inc 2018
 
 const express = require('express')
 const ethPlatform = require('../controllers/eth/platformCalls')
-
+const tournamentController = require('../controllers/tournamentController')
 const router = express.Router()
 
 // Return a confirmation the API is live
@@ -19,7 +19,7 @@ router.get('/', (req, res, next) => {
 
 // Return number of tournaments
 router.get('/count', (req, res, next) => {
-  ethPlatform.getTournamentCount().then(function (result) {
+  tournamentController.count().then(function (result) {
     res.status(200).json({
       tournamentCount: result
     })
@@ -30,9 +30,9 @@ router.get('/count', (req, res, next) => {
 // TODO fix
 router.get('/allTournaments', (req, res, next) => {
     // TODO replace function with working model+final name
-  ethPlatform.getAllTournamentsTestBasicExperimental().then(function (result) {
+  tournamentController.getAllTournaments().then(function (tournaments) {
     res.status(200).json({
-      results: result
+      tournaments
     })
   })
 })

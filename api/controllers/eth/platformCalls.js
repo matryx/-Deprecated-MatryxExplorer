@@ -70,15 +70,15 @@ platformCalls.getTournamentCount = function () {
   })
 }
 
-// TODO
-platformCalls.getAllTournaments = function () {
-  return new Promise((resolve, reject) => {
-    matryxPlatformContract.tournamentCount((err, res) => {
-      if (err) reject(err)
-      else resolve(parseInt(res))
-    })
-  })
-}
+// // TODO
+// platformCalls.getAllTournaments = function () {
+//   return new Promise((resolve, reject) => {
+//     matryxPlatformContract.tournamentCount((err, res) => {
+//       if (err) reject(err)
+//       else resolve(parseInt(res))
+//     })
+//   })
+// }
 
 // TODO currently only returns tournament owner, needs to return all tournament info
 platformCalls.getTournamentByAddress = function (_tournamentAddress) {
@@ -172,90 +172,90 @@ var allTournamentsDTO = {
   'tournamentID': _tournamentID
 }
 */
-// TODO fix this when max updates the platform
-// TODO switch this to a promise.all function to handle all the requests
-platformCalls.getAllTournaments = function (_tournament_id) {
-  return new Promise((resolve, reject) => {
-      // Setup the object
-    var allTournaments = []
-    matryxPlatformContract.tournamentCount((err, _tournamentCount) => {
-        // for loop over the number of tournaments in _tournamentCount
-      for (let i = 0; i < _tournamentCount; i++) {
-            // make a new allTournamentsDTO object
-        allTournamentsDTO = new AllTournamentsDTO() // This doesnt exist yet
-
-        matryxPlatformContract.allTournaments(i, (err, _tournamentAddress) => {
-          if (err) reject(err)
-          else {
-            allTournamentsDTO._address = _tournamentAddress
-            tournamentContract = web3.eth.Contract(tournamentAbi).at(_tournamentAddress)
-            tournamentContract.getTitle((err, _title) => {
-              if (err) reject(err)
-              else {
-                        // set the title for eachTournament
-                allTournamentsDTO._tournamentTitle = _title
-                tournamentContract.BountyMTX((err, _mtx) => {
-                  if (err) reject(err)
-                  else {
-                                // set the bountyMTX for eachTournament
-                    allTournamentsDTO._mtx = _mtx
-                                // TODO access tournamentDescription
-                    tournamentContract.tournamentDescription((err, _description) => {
-                      if (err) reject(err)
-                      else {
-                                        // get the description for eachTournament
-                        allTournamentsDTO._tournamentDescription = _description
-                        tournamentContract.getCategory((err, _category) => {
-                          if (err) reject(err)
-                          else {
-                                                // get the category for eachTournament
-                            allTournamentsDTO._category = _category
-                            tournamentContract.maxRounds((err, _maxRounds) => {
-                              if (err) reject(err)
-                              else {
-                                                        // get the maxRounds for eachTournament
-                                allTournamentsDTO._totalRounds = _maxRounds
-                                tournamentContract.currentRound((err, _currentRound) => {
-                                  if (err) reject(err)
-                                  else {
-                                                                // get the currentRound for eachTournament
-                                    allTournamentsDTO._currentRound = _currentRound[0]
-                                    tournamentContract.numberOfParticipants((err, _numberOfParticipants) => {
-                                      if (err) reject(err)
-                                      else {
-                                                                        // get the numberOfParticipants for eachTournament
-                                        allTournamentsDTO._numberOfParticipants = _numberOfParticipants
-                                        console.log(allTournamentsDTO)
-                                      }
-                                    })
-                                  }
-                                })
-                              }
-                            })
-                          }
-                        })
-                      }
-                    })
-                  }
-                })
-              }
-            })
-          }
-        }).then(
-
-            // Add the push
-            allTournaments.push(allTournamentsDTO)
-
-        )
-      }
-    })
-    resolve(allTournaments)
-  })
-}
+// // TODO fix this when max updates the platform
+// // TODO switch this to a promise.all function to handle all the requests
+// platformCalls.getAllTournaments = function (_tournament_id) {
+//   return new Promise((resolve, reject) => {
+//       // Setup the object
+//     var allTournaments = []
+//     matryxPlatformContract.tournamentCount((err, _tournamentCount) => {
+//         // for loop over the number of tournaments in _tournamentCount
+//       for (let i = 0; i < _tournamentCount; i++) {
+//             // make a new allTournamentsDTO object
+//         allTournamentsDTO = new AllTournamentsDTO() // This doesnt exist yet
+//
+//         matryxPlatformContract.allTournaments(i, (err, _tournamentAddress) => {
+//           if (err) reject(err)
+//           else {
+//             allTournamentsDTO._address = _tournamentAddress
+//             tournamentContract = web3.eth.Contract(tournamentAbi).at(_tournamentAddress)
+//             tournamentContract.getTitle((err, _title) => {
+//               if (err) reject(err)
+//               else {
+//                         // set the title for eachTournament
+//                 allTournamentsDTO._tournamentTitle = _title
+//                 tournamentContract.BountyMTX((err, _mtx) => {
+//                   if (err) reject(err)
+//                   else {
+//                                 // set the bountyMTX for eachTournament
+//                     allTournamentsDTO._mtx = _mtx
+//                                 // TODO access tournamentDescription
+//                     tournamentContract.tournamentDescription((err, _description) => {
+//                       if (err) reject(err)
+//                       else {
+//                                         // get the description for eachTournament
+//                         allTournamentsDTO._tournamentDescription = _description
+//                         tournamentContract.getCategory((err, _category) => {
+//                           if (err) reject(err)
+//                           else {
+//                                                 // get the category for eachTournament
+//                             allTournamentsDTO._category = _category
+//                             tournamentContract.maxRounds((err, _maxRounds) => {
+//                               if (err) reject(err)
+//                               else {
+//                                                         // get the maxRounds for eachTournament
+//                                 allTournamentsDTO._totalRounds = _maxRounds
+//                                 tournamentContract.currentRound((err, _currentRound) => {
+//                                   if (err) reject(err)
+//                                   else {
+//                                                                 // get the currentRound for eachTournament
+//                                     allTournamentsDTO._currentRound = _currentRound[0]
+//                                     tournamentContract.numberOfParticipants((err, _numberOfParticipants) => {
+//                                       if (err) reject(err)
+//                                       else {
+//                                                                         // get the numberOfParticipants for eachTournament
+//                                         allTournamentsDTO._numberOfParticipants = _numberOfParticipants
+//                                         console.log(allTournamentsDTO)
+//                                       }
+//                                     })
+//                                   }
+//                                 })
+//                               }
+//                             })
+//                           }
+//                         })
+//                       }
+//                     })
+//                   }
+//                 })
+//               }
+//             })
+//           }
+//         }).then(
+//
+//             // Add the push
+//             allTournaments.push(allTournamentsDTO)
+//
+//         )
+//       }
+//     })
+//     resolve(allTournaments)
+//   })
+// }
 
 // Working if you check console
 // TODO map array to the route response and handle multiple tournaments
-platformCalls.getAllTournamentsTestBasicExperimental = function () {
+platformCalls.getAllTournaments = function () {
   return new Promise((resolve, reject) => {
       // Setup the array for the tournaments
     var allTournaments = []
@@ -272,7 +272,8 @@ platformCalls.getAllTournamentsTestBasicExperimental = function () {
           numberOfParticipants: 0,
           address: '',
           ipType: '',
-          tournamentID: 0
+          tournamentID: 0,
+          externalAddress: ''
         }
         matryxPlatformContract.allTournaments(i, (err, _tournamentAddress) => {
           if (err) reject(err)
@@ -284,9 +285,9 @@ platformCalls.getAllTournamentsTestBasicExperimental = function () {
               else {
                 // set the bountyMTX for eachTournament
                 allTournamentsDTO.mtx = _mtx.c[0]
-                console.log(allTournamentsDTO)
+                // console.log(allTournamentsDTO)
                 allTournaments.push(allTournamentsDTO)
-                console.log('The length of the array is:' + allTournaments.length)
+                // console.log('The length of the array is:' + allTournaments.length)
 
                 if (i == _tournamentCount - 1) {
                   resolve(allTournaments)

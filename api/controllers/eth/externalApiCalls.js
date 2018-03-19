@@ -35,4 +35,8 @@ externalApiCalls.platformInfoApiCall = async function () {
   }
 }
 
+externalApiCalls.getIpfsData = function (_ipfsHash) {
+  return 'IPFS Hash data that gets returned'
+}
+
 module.exports = externalApiCalls
