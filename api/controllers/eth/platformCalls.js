@@ -294,12 +294,18 @@ platformCalls.getAllTournaments = function () {
                       if (err) reject(err)
                       else {
                         allTournamentsDTO.currentRound = _currentRound[0]
-                        allTournaments.push(allTournamentsDTO)
-                        console.log('The length of the array is:' + allTournaments.length)
+                        tournamentContract.submissionCount((err, _count) => {
+                          if (err) reject(err)
+                          else {
+                            allTournamentsDTO.numberOfParticipants = _count
+                            allTournaments.push(allTournamentsDTO)
+                            console.log('The length of the array is:' + allTournaments.length)
 
-                        if (i == _tournamentCount - 1) {
-                          resolve(allTournaments)
-                        }
+                            if (i == _tournamentCount - 1) {
+                              resolve(allTournaments)
+                            }
+                          }
+                        })
                       }
                     })
                   }
