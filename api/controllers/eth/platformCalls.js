@@ -45,7 +45,17 @@ matryxPlatformContract = web3.eth.contract(matryxPlatformAbi).at(matryxPlatformA
 // console.log(matryxPlatformContract.methods.tournamentCount().call()) // ^TypeError: Cannot read property 'tournamentCount' of undefined
 // console.log(matryxPlatformContract.owner())
 console.log(matryxPlatformContract.tournamentCount().c)
+/* Working Event example */
+/*
+eventFunction()
+function eventFunction () {
+  matryxPlatformContract.allEvents({fromBlock: 0x0, toBlock: 'latest'}).get((err, event) => {
+    console.log(event)
+  })
+  // console.log(events.get())
+}
 
+*/
 // TODO Error handling when no chain is attached ^
 
 var platformCalls = {}
