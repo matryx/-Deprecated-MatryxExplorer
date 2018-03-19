@@ -45,17 +45,7 @@ matryxPlatformContract = web3.eth.contract(matryxPlatformAbi).at(matryxPlatformA
 // console.log(matryxPlatformContract.methods.tournamentCount().call()) // ^TypeError: Cannot read property 'tournamentCount' of undefined
 // console.log(matryxPlatformContract.owner())
 console.log(matryxPlatformContract.tournamentCount().c)
-/* Working Event example */
-/*
-eventFunction()
-function eventFunction () {
-  matryxPlatformContract.allEvents({fromBlock: 0x0, toBlock: 'latest'}).get((err, event) => {
-    console.log(event)
-  })
-  // console.log(events.get())
-}
 
-*/
 // TODO Error handling when no chain is attached ^
 
 var platformCalls = {}
@@ -297,12 +287,16 @@ platformCalls.getAllTournamentsTestBasicExperimental = function () {
                 console.log(allTournamentsDTO)
                 allTournaments.push(allTournamentsDTO)
                 console.log('The length of the array is:' + allTournaments.length)
+
+                if (i == _tournamentCount - 1) {
+                  resolve(allTournaments)
+                }
               }
             })
           }
         })
       }
-    }).then(console.log('The length of the tournament is' + allTournaments.length))
+    })
   })
 }
 
@@ -350,6 +344,45 @@ platformCalls.getAllTournamentsTestBasic = function () {
 }
 
 // Activity Code
+
+/* Working Event example */
+/*
+eventFunction()
+function eventFunction () {
+  matryxPlatformContract.allEvents({fromBlock: 0x0, toBlock: 'latest'}).get((err, event) => {
+    console.log(event)
+  })
+  // console.log(events.get())
+}
+
+*/
+platformCalls.getPlatformActivity = function () {
+  return new Promise((resolve, reject) => {
+    let activityEvents = []
+      // Activity DTO
+    let activityDTO = {
+      eventType: '',
+      address: '',
+      owner: '',
+      name: ''
+    }
+        // Make the Platform activity call
+    matryxPlatformContract.allEvents({fromBlock: 0x0, toBlock: 'latest'}).get((err, events) => {
+      events.forEach((event_i) => {
+          // TODO logic to seperate out different type of Events
+
+        activityDTO.eventType = event_i.event
+        activityDTO.address = event_i.args._tournamentAddress
+        activityDTO.owner = event_i.args._owner
+        activityDTO.name = event_i.args._tournamentName
+        activityEvents.push(activityDTO)
+        console.log(activityDTO)
+      })
+      console.log(activityEvents)
+      resolve(activityEvents)
+    })
+  })
+}
 
 // TODO use web3 to get all previous events for each of the situations (from block to this block) and maybe filter the event
 // TODO https://github.com/ethereum/wiki/wiki/JavaScript-API#web3ethfilter

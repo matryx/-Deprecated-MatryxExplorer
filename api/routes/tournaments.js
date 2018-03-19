@@ -30,7 +30,7 @@ router.get('/count', (req, res, next) => {
 // TODO fix
 router.get('/allTournaments', (req, res, next) => {
     // TODO replace function with working model+final name
-  ethPlatform.getAllTournamentsTestBasic().then(function (result) {
+  ethPlatform.getAllTournamentsTestBasicExperimental().then(function (result) {
     res.status(200).json({
       results: result
     })

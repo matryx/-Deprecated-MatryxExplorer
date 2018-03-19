@@ -12,9 +12,9 @@ const ethPlatform = require('../controllers/eth/platformCalls')
 
 // Return a message that this route handles activity calls
 // TODO return the landing page events to the UI
-//Finish Backend
+// Finish Backend
 router.get('/', (req, res, next) => {
-  ethPlatform.activity.then(function (result) {
+  ethPlatform.getActivity().then(function (result) {
     res.status(200).json({
       activity: result
     })
