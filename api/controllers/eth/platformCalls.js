@@ -356,27 +356,44 @@ function eventFunction () {
 }
 
 */
+
 platformCalls.getPlatformActivity = function () {
   return new Promise((resolve, reject) => {
     let activityEvents = []
-      // Activity DTO
-    let activityDTO = {
-      eventType: '',
-      address: '',
-      owner: '',
-      name: ''
-    }
+
         // Make the Platform activity call
     matryxPlatformContract.allEvents({fromBlock: 0x0, toBlock: 'latest'}).get((err, events) => {
-      events.forEach((event_i) => {
-          // TODO logic to seperate out different type of Events
+      var activityResponse = {
+        news: ''
+      }
+      // Dictionary for event types for switch case
+      let eventDict = {
+        TournamentCreated: 0,
+        TournamentOpened: 1
+      }
 
-        activityDTO.eventType = event_i.event
-        activityDTO.address = event_i.args._tournamentAddress
-        activityDTO.owner = event_i.args._owner
-        activityDTO.name = event_i.args._tournamentName
-        activityEvents.push(activityDTO)
-        console.log(activityDTO)
+      events.forEach((event_i) => {
+          // TODO Fix the switch case, it currently only spits out case 1 regardless of case. Could be break spacing due to linter.
+        switch (eventDict[event_i.event]) {
+          case 0:
+            {
+              activityResponse.news = event_i.args._owner + ' created a new Tournament named ' + '\'' + event_i.args._tournamentName + '\''
+              break
+            }
+          case 1:
+            {
+              activityResponse.news = event_i.args._owner + ' opened their Tournament named ' + '\'' + event_i.args._tournamentName + '\''
+              break
+            }
+          case 2:
+            {
+              console.log('Case should be 2. It is actually: ' + eventDict[event_i.event])
+              break
+            }
+          default:
+            console.log('This event type does not match our records...Something bad happened...')
+        }
+        activityEvents.push(activityResponse)
       })
       console.log(activityEvents)
       resolve(activityEvents)
@@ -384,148 +401,86 @@ platformCalls.getPlatformActivity = function () {
   })
 }
 
-// TODO use web3 to get all previous events for each of the situations (from block to this block) and maybe filter the event
-// TODO https://github.com/ethereum/wiki/wiki/JavaScript-API#web3ethfilter
-// TODO We want to assume that all the data we needs comes from the platform events being triggered and no additional searches are needed
-
-platformCalls.activityAlpha = function () {
-  return new Promise((resolve, reject) => {
-          // TODO swap out for the activity info
-    matryxPlatformContract.allTournaments(_tournament_id, (err, tournamentAddress) => {
-      if (err) reject(err)
-      else {
-        tournamentContract = web3.eth.Contract(tournamentAbi).at(tournamentAddress)
-        tournamentContract.owner((err, res) => {
-          console.log('response is a' + typeof res) // output is a string
-          if (err) reject(err)
-          else {
-            resolve({
-              tournamentId: _tournament_id,
-              tournamentOwner: res
-            })
-          }
-        })
-      }
-    })
-  })
-}
-
-platformCalls.activity = function () {
-  return new Promise((resolve, reject) => {
-        // "news": "0xb794f5ea0ba39494ce839613fffba74279579268 created a new bounty: \"Solve Diabetes\""
-
-    var news = {activity: []}
-    matryxPlatformContract.TournamentCreated((error, event) => {
-      if (error) {
-        console.log('Error with setting up event: ' + error)
-      } else {
-        console.log('Set up queryPerformed event: ' + event)
-      }
-    })
-        .on('data', (event) => {
-        // event TournamentCreated(bytes32 _discipline, address _owner, address _tournamentAddress, string _tournamentName, bytes32 _externalAddress, uint256 _MTXReward, uint256 _entryFee);
-
-          var discipline = event.returnValues[0]
-          var owner = event.returnValues[1]
-          var tournamentName = event.returnValues[3]
-
-          var message = owner + ' created a new bounty ' + tournamentName
-         // var messageWithDiscipline = owner + " created a new " + discipline + " bounty " + tournamentName;
-          console.log('news:' + message)
-        }).on('changed', function (event) {
-           // remove event from local database
-        }).on('error', function (error) {
-          console.log('error in jsoncreator.js: ' + error)
-        })
-
-        // "news": "0xb794f5ea0ba39494ce839613fffba74279579268 got rewarded 400 MTX"
-    matryxPlatformContract.TournamentClosed(null, (error, event) => {
-      if (error) {
-        console.log('Error with setting up event: ' + error)
-      } else {
-        console.log('Set up queryPerformed event: ' + event)
-      }
-    }).on('data', (event) => {
-         // event TournamentClosed(address _tournamentAddress, uint256 _finalRoundNumber, uint256 _winningSubmissionAddress);
-      var tournamentAddress = event.returnValues[0]
-      var winningSubmissionAddress = event.returnValues[2]
-      var submission = web3.eth.contract(matryxSubmissionABI).at(winningSubmissionAddress)
-
-      submission.getBalance().then((receipt) => {
-        var rewardAmount = receipt
-
-        var message = winningSubmissionAddress + ' got rewarded ' + rewardAmount + ' MTX'
-        console.log('news:' + message)
-      })
-    }).on('changed', function (event) {
-           // remove event from local database
-    }).on('error', function (error) {
-      console.log('error in jsoncreator.js: ' + error)
-    })
-
-        // "news": "0xb794f5ea0ba39494ce839613fffba74279579268 entered tournament: \"Erotic Greek Sculpture\""
-    matryxPlatformContract.UserEnteredTournament(null, (error, event) => {
-      if (error) {
-        console.log('Error with setting up event: ' + error)
-      } else {
-        console.log('Set up queryPerformed event: ' + event)
-      }
-    }).on('data', (event) => {
-         // event UserEnteredTournament(address _entrant, address _tournamentAddress);
-      var entrant = event.returnValues[0]
-      var tournamentAddress = event.returnValues[1]
-      var tournament = web3.eth.contract(matryxTournamentABI).at(matryxTournamentAddress)
-      tournament.send().then((receipt) => {
-        var tournamentName = receipt
-
-        var message = entrant + ' entered tournament ' + tournamentName
-        console.log('news:' + message)
-      })
-    }).on('changed', function (event) {
-           // remove event from local database
-    }).on('error', function (error) {
-      console.log('error in jsoncreator.js: ' + error)
-    })
-  }
-)
-}
-
-/*
-Get Activity using web3ethfilter
-
-Input params:
-String|Object - The string "latest" or "pending" to watch for changes in the latest block or pending transactions respectively. Or a filter options object as follows:
-fromBlock: Number|String - The number of the earliest block (latest may be given to mean the most recent and pending currently mining, block). By default latest.
-toBlock: Number|String - The number of the latest block (latest may be given to mean the most recent and pending currently mining, block). By default latest.
-address: String - An address or a list of addresses to only get logs from particular account(s).
-topics: Array of Strings - An array of values which must each appear in the log entries. The order is important, if you want to leave topics out use null, e.g. [null, '0x00...']. You can also pass another array for each topic with options for that topic e.g. [null, ['option1', 'option2']]
-*/
-
-platformCalls.getActivity2 = function () {
-  return new Promise((resolve, reject) => {
-   // contract.methods.tournamentByAddress(42 + _tournament_id).call({}, (err, res) => {
-
-// set the options
-
-// options = {address: "0xc46e279235b78971fa432feb37493e797fc32b54"}
-// web3.eth.filter(options, function (error, result) {if (!error) { console.log(result)}})
-
-    web3.eth.filter(options, function (error, result) {
-      if (!error) {
-        console.log(result)
-      }
-    })
-    if (err) reject(err)
-    else {
-      resolve({
-        _tournament_id: parseInt(res['0']),
-        title: res['1'],
-        description: res['2'],
-        bounty: parseFloat(res['3'])
-      })
-    }
-  })
-}
+// Max's psuedo code
+// platformCalls.activity = function () {
+//   return new Promise((resolve, reject) => {
+//         // "news": "0xb794f5ea0ba39494ce839613fffba74279579268 created a new bounty: \"Solve Diabetes\""
+//
+//     var news = {activity: []}
+//     matryxPlatformContract.TournamentCreated((error, event) => {
+//       if (error) {
+//         console.log('Error with setting up event: ' + error)
+//       } else {
+//         console.log('Set up queryPerformed event: ' + event)
+//       }
+//     })
+//         .on('data', (event) => {
+//         // event TournamentCreated(bytes32 _discipline, address _owner, address _tournamentAddress, string _tournamentName, bytes32 _externalAddress, uint256 _MTXReward, uint256 _entryFee);
+//
+//           var discipline = event.returnValues[0]
+//           var owner = event.returnValues[1]
+//           var tournamentName = event.returnValues[3]
+//
+//           var message = owner + ' created a new bounty ' + tournamentName
+//          // var messageWithDiscipline = owner + " created a new " + discipline + " bounty " + tournamentName;
+//           console.log('news:' + message)
+//         }).on('changed', function (event) {
+//            // remove event from local database
+//         }).on('error', function (error) {
+//           console.log('error in jsoncreator.js: ' + error)
+//         })
+//
+//         // "news": "0xb794f5ea0ba39494ce839613fffba74279579268 got rewarded 400 MTX"
+//     matryxPlatformContract.TournamentClosed(null, (error, event) => {
+//       if (error) {
+//         console.log('Error with setting up event: ' + error)
+//       } else {
+//         console.log('Set up queryPerformed event: ' + event)
+//       }
+//     }).on('data', (event) => {
+//          // event TournamentClosed(address _tournamentAddress, uint256 _finalRoundNumber, uint256 _winningSubmissionAddress);
+//       var tournamentAddress = event.returnValues[0]
+//       var winningSubmissionAddress = event.returnValues[2]
+//       var submission = web3.eth.contract(matryxSubmissionABI).at(winningSubmissionAddress)
+//
+//       submission.getBalance().then((receipt) => {
+//         var rewardAmount = receipt
+//
+//         var message = winningSubmissionAddress + ' got rewarded ' + rewardAmount + ' MTX'
+//         console.log('news:' + message)
+//       })
+//     }).on('changed', function (event) {
+//            // remove event from local database
+//     }).on('error', function (error) {
+//       console.log('error in jsoncreator.js: ' + error)
+//     })
+//
+//         // "news": "0xb794f5ea0ba39494ce839613fffba74279579268 entered tournament: \"Erotic Greek Sculpture\""
+//     matryxPlatformContract.UserEnteredTournament(null, (error, event) => {
+//       if (error) {
+//         console.log('Error with setting up event: ' + error)
+//       } else {
+//         console.log('Set up queryPerformed event: ' + event)
+//       }
+//     }).on('data', (event) => {
+//          // event UserEnteredTournament(address _entrant, address _tournamentAddress);
+//       var entrant = event.returnValues[0]
+//       var tournamentAddress = event.returnValues[1]
+//       var tournament = web3.eth.contract(matryxTournamentABI).at(matryxTournamentAddress)
+//       tournament.send().then((receipt) => {
+//         var tournamentName = receipt
+//
+//         var message = entrant + ' entered tournament ' + tournamentName
+//         console.log('news:' + message)
+//       })
+//     }).on('changed', function (event) {
+//            // remove event from local database
+//     }).on('error', function (error) {
+//       console.log('error in jsoncreator.js: ' + error)
+//     })
+//   }
+// )
+// }
 
 // TODO get this working
 platformCalls.getAllTournaments2 = function () {
@@ -568,7 +523,7 @@ platformCalls.getAllTournaments2 = function () {
 }
 
 /*
-Logic for View all tournaments
+Logic for View all tournaments max psuedocode
 var matryxPlatformContract = web3.eth.contract(matryxPlatformContract.abi);
 var platform = MyContract.at(matryxPlatformContract.address);
 
