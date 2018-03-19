@@ -41,10 +41,13 @@ router.get('/allTournaments', (req, res, next) => {
 // TODO pass back the tournament details
 router.get('/address/:tournamentAddress', (req, res, next) => {
   const address = req.params.tournamentAddress
-  details = ethPlatform.getTournamentByAddress(address).then(function (result) {
+  tournamentController.getTournamentByAddress(address).then(function (result) {
     res.status(200).json({
-      tournamentDetails: result,
-      tournamentAddress: address
+      tournamentDetails: result
+    })
+  }).catch((err) => {
+    res.status(300).json({
+      error: 'Unable to find tournament'
     })
   })
 })

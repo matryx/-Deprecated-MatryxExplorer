@@ -50,11 +50,6 @@ console.log(matryxPlatformContract.tournamentCount().c)
 
 var platformCalls = {}
 
-// TODO use this for events, if not then delete
-// prepare getFunctionHashes
-// var hashes = getFunctionHashes(matryxAbi)
-// console.log(hashes[0])
-
 /*
 Tournament Calls
 */
@@ -70,54 +65,174 @@ platformCalls.getTournamentCount = function () {
   })
 }
 
-// // TODO
-// platformCalls.getAllTournaments = function () {
-//   return new Promise((resolve, reject) => {
-//     matryxPlatformContract.tournamentCount((err, res) => {
-//       if (err) reject(err)
-//       else resolve(parseInt(res))
-//     })
-//   })
-// }
+platformCalls.getAllTournaments = function () {
+  return new Promise((resolve, reject) => {
+      // Setup the array for the tournaments
+    var allTournaments = []
+    matryxPlatformContract.tournamentCount((err, _tournamentCount) => {
+        // for loop over the number of tournaments in _tournamentCount
+      for (let i = 0; i < _tournamentCount; i++) {
+        let allTournamentsDTO = {
+          tournamentTitle: '',
+          mtx: 0,
+          tournamentDescription: '',
+          category: '',
+          totalRounds: 0,
+          currentRound: 0,
+          numberOfParticipants: 0,
+          address: '',
+          ipType: '',
+          tournamentID: 0,
+          externalAddress: ''
+        }
+        matryxPlatformContract.allTournaments(i, (err, _tournamentAddress) => {
+          if (err) reject(err)
+          else {
+            allTournamentsDTO.address = _tournamentAddress
+            tournamentContract = web3.eth.contract(tournamentAbi).at(_tournamentAddress)
+            tournamentContract.BountyMTX((err, _mtx) => {
+              if (err) reject(err)
+              else {
+                allTournamentsDTO.mtx = _mtx.c[0]
+                // console.log(allTournamentsDTO)
+                tournamentContract.getExternalAddress((err, _externalAddress) => {
+                  if (err) reject(err)
+                  else {
+                    allTournamentsDTO.externalAddress = _externalAddress
+                    tournamentContract.currentRound((err, _currentRound) => {
+                      if (err) reject(err)
+                      else {
+                        allTournamentsDTO.currentRound = _currentRound[0]
+                        tournamentContract.submissionCount((err, _count) => {
+                          if (err) reject(err)
+                          else {
+                            allTournamentsDTO.numberOfParticipants = _count
+                            allTournaments.push(allTournamentsDTO)
+                            console.log('The length of the array is:' + allTournaments.length)
+
+                            if (i == _tournamentCount - 1) {
+                              resolve(allTournaments)
+                            }
+                          }
+                        })
+                      }
+                    })
+                  }
+                })
+              }
+            })
+          }
+        })
+      }
+    })
+  })
+}
+
+/*
+"tournamentTitle": "Solve Aids",
+        "tournamentAddress": "0xe665Dd2C090c7ceFD5C40cb9de00830108A62722",
+        "mtx": "200000.00000",
+        "authorName": "0xe665Dd2C090c7ceFD5C40cb9de00830108A62785",
+        "tournamentDescription": "A description of the tournament",
+        "category": "Pharma",
+        "totalRounds": "3",
+        "currentRound": "1",
+        "numberOfParticipants": "130",
+        "ipType": "50/50",
+        "roundEndTime": "1519427539",
+        "participationMTX": "400",
+        "roundReward": "20000",
+        "recentSubmissions": [
+            {
+                "submissionTitle": "SubmissionTitle1",
+                "authorName": "0xe665Dd2C090c7ceFD5C40cb9de00830108A62785",
+                "submissionDate": "1519427539"
+            },
+            {
+                "submissionTitle": "SubmissionTitle2",
+                "authorName": "0xe665Dd2C090c7ceFD5C40cb9de00830108A62785",
+                "submissionDate": "1519427539"
+            },
+            {
+                "submissionTitle": "SubmissionTitle3",
+                "authorName": "0xe665Dd2C090c7ceFD5C40cb9de00830108A62785",
+                "submissionDate": "1519427539"
+            }
+        ]
+*/
 
 // TODO currently only returns tournament owner, needs to return all tournament info
 platformCalls.getTournamentByAddress = function (_tournamentAddress) {
   return new Promise((resolve, reject) => {
-      // Attach to the tournament using the ABI and the _tournamentAddress
-    console.log('Starting the tournament contract attachment at address: ' + _tournamentAddress)
-    tournamentContract = web3.eth.contract(tournamentAbi).at(_tournamentAddress)
+      // Setup the DTO for the tournament
+    let tournamentDetails = {
+      tournamentTitle: '',
+      tournamentAddress: '',
+      mtx: 0,
+      authorName: '',
+      tournamentDescription: '',
+      category: '',
+      totalRounds: 0,
+      currentRound: 0,
+      numberOfParticipants: '',
+      ipType: '',
+      roundEndTime: '',
+      participationMTX: 0,
+      roundReward: 0,
+      recentSubmissions: [],
+      externalAddress: ''
+    }
 
-    // console.log(tournamentContract)
-    // Get tournament details
-    tournamentContract.owner((err, res) => {
-      // console.log('response is a' + typeof res) // output is a string
+    tournamentContract = web3.eth.contract(tournamentAbi).at(_tournamentAddress)
+    tournamentContract.BountyMTX((err, _mtx) => {
       if (err) reject(err)
-      else resolve(res)
+      else {
+        tournamentDetails.tournamentAddress = _tournamentAddress
+        tournamentDetails.mtx = _mtx.c[0]
+        // console.log(allTournamentsDTO)
+        tournamentContract.getExternalAddress((err, _externalAddress) => {
+          if (err) reject(err)
+          else {
+            tournamentDetails.externalAddress = _externalAddress
+            tournamentContract.currentRound((err, _currentRound) => {
+              if (err) reject(err)
+              else {
+                tournamentDetails.currentRound = _currentRound[0]
+                tournamentContract.submissionCount((err, _count) => {
+                  if (err) reject(err)
+                  else {
+                    tournamentDetails.numberOfParticipants = _count
+                    tournamentContract.owner((err, _owner) => {
+                      if (err) reject(err)
+                      else {
+                        tournamentDetails.authorName = _owner
+                        tournamentContract.entryFee((err, _fee) => {
+                          if (err) reject(err)
+                          else {
+                            tournamentDetails.participationMTX = _fee
+                            tournamentContract.maxRounds((err, _maxRounds) => {
+                              if (err) reject(err)
+                              else {
+                                tournamentDetails.totalRounds = _maxRounds
+                                resolve(tournamentDetails)
+                              }
+                            })
+                          }
+                        })
+                      }
+                    })
+                  }
+                })
+              }
+            })
+          }
+        })
+      }
     })
   })
 }
-//
-// // TODO currently returns owner of the tournament, needs to return all the tournament info
-// platformCalls.getTouramentById = function (_tournament_id) {
-//   return new Promise((resolve, reject) => {
-//     matryxPlatformContract.methods.allTournaments(_tournament_id).call({}, (err, tournamentAddress) => {
-//       if (err) reject(err)
-//       else {
-//         tournamentContract = new web3.eth.Contract(tournamentAbi, tournamentAddress)
-//         tournamentContract.methods.owner().call({}, (err, res) => {
-//           console.log('response is a' + typeof res) // output is a string
-//           if (err) reject(err)
-//           else {
-//             resolve({
-//               tournamentId: _tournament_id,
-//               tournamentOwner: res
-//             })
-//           }
-//         })
-//       }
-//     })
-//   })
-// }
+
+// TODO get Tournament Details by ID
 
 platformCalls.getTournamentOwnerByAddress = function (_tournamentAddress) {
   return new Promise((resolve, reject) => {
@@ -252,72 +367,6 @@ var allTournamentsDTO = {
 //     resolve(allTournaments)
 //   })
 // }
-
-// Working if you check console
-// TODO map array to the route response and handle multiple tournaments
-platformCalls.getAllTournaments = function () {
-  return new Promise((resolve, reject) => {
-      // Setup the array for the tournaments
-    var allTournaments = []
-    matryxPlatformContract.tournamentCount((err, _tournamentCount) => {
-        // for loop over the number of tournaments in _tournamentCount
-      for (let i = 0; i < _tournamentCount; i++) {
-        let allTournamentsDTO = {
-          tournamentTitle: '',
-          mtx: 0,
-          tournamentDescription: '',
-          category: '',
-          totalRounds: 0,
-          currentRound: 0,
-          numberOfParticipants: 0,
-          address: '',
-          ipType: '',
-          tournamentID: 0,
-          externalAddress: ''
-        }
-        matryxPlatformContract.allTournaments(i, (err, _tournamentAddress) => {
-          if (err) reject(err)
-          else {
-            allTournamentsDTO.address = _tournamentAddress
-            tournamentContract = web3.eth.contract(tournamentAbi).at(_tournamentAddress)
-            tournamentContract.BountyMTX((err, _mtx) => {
-              if (err) reject(err)
-              else {
-                // set the bountyMTX for eachTournament
-                allTournamentsDTO.mtx = _mtx.c[0]
-                // console.log(allTournamentsDTO)
-                tournamentContract.getExternalAddress((err, _externalAddress) => {
-                  if (err) reject(err)
-                  else {
-                    allTournamentsDTO.externalAddress = _externalAddress
-                    tournamentContract.currentRound((err, _currentRound) => {
-                      if (err) reject(err)
-                      else {
-                        allTournamentsDTO.currentRound = _currentRound[0]
-                        tournamentContract.submissionCount((err, _count) => {
-                          if (err) reject(err)
-                          else {
-                            allTournamentsDTO.numberOfParticipants = _count
-                            allTournaments.push(allTournamentsDTO)
-                            console.log('The length of the array is:' + allTournaments.length)
-
-                            if (i == _tournamentCount - 1) {
-                              resolve(allTournaments)
-                            }
-                          }
-                        })
-                      }
-                    })
-                  }
-                })
-              }
-            })
-          }
-        })
-      }
-    })
-  })
-}
 
 // Working if you check console
 // TODO map array to the route response and handle multiple tournaments

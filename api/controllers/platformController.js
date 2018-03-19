@@ -8,11 +8,16 @@ Nanome 2018
 /*
 Imports
 */
-const config = require('../../../config')
-const externalApiCalls = require('./externalApiCalls')
+const externalApiCalls = require('./eth/externalApiCalls')
 const platformCalls = require('./eth/platformCalls')
+const platformInfo = require('../../data/abi/v2/platform')
 
 var platformController = {}
+
+platformController.latestPlatformInfo = function () {
+  console.log(platformInfo)
+  return platformInfo
+}
 
 // platformController.getActivity = function () {
 //   return new Promise((resolve, reject) => {

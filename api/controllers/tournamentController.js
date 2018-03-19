@@ -41,4 +41,16 @@ tournamentController.getAllTournaments = function () {
   })
 }
 
+tournamentController.getTournamentByAddress = function (_tournamentAddress) {
+  return new Promise((resolve, reject) => {
+    platformCalls.getTournamentByAddress(_tournamentAddress).then(function (result) {
+      let description = externalApiCalls.getIpfsData(result.externalAddress)
+      result.tournamentDescription = description
+      resolve(result)
+    }).catch((err) => {
+      console.log('Not able to get Tournament Details. ' + err)
+    })
+  })
+}
+
 module.exports = tournamentController
