@@ -286,12 +286,24 @@ platformCalls.getAllTournaments = function () {
                 // set the bountyMTX for eachTournament
                 allTournamentsDTO.mtx = _mtx.c[0]
                 // console.log(allTournamentsDTO)
-                allTournaments.push(allTournamentsDTO)
-                // console.log('The length of the array is:' + allTournaments.length)
+                tournamentContract.getExternalAddress((err, _externalAddress) => {
+                  if (err) reject(err)
+                  else {
+                    allTournamentsDTO.externalAddress = _externalAddress
+                    tournamentContract.currentRound((err, _currentRound) => {
+                      if (err) reject(err)
+                      else {
+                        allTournamentsDTO.currentRound = _currentRound[0]
+                        allTournaments.push(allTournamentsDTO)
+                        console.log('The length of the array is:' + allTournaments.length)
 
-                if (i == _tournamentCount - 1) {
-                  resolve(allTournaments)
-                }
+                        if (i == _tournamentCount - 1) {
+                          resolve(allTournaments)
+                        }
+                      }
+                    })
+                  }
+                })
               }
             })
           }
