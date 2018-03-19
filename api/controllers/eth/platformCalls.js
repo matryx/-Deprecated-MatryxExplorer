@@ -137,11 +137,11 @@ platformCalls.getTournamentOwnerByAddress = function (_tournamentAddress) {
 
 platformCalls.getTournamentOwnerById = function (_tournament_id) {
   return new Promise((resolve, reject) => {
-    matryxPlatformContract.methods.allTournaments(_tournament_id).call({}, (err, _tournamentAddress) => {
+    matryxPlatformContract.allTournaments(_tournament_id, (err, _tournamentAddress) => {
       if (err) reject(err)
       else {
-        tournamentContract = new web3.eth.Contract(tournamentAbi, _tournamentAddress)
-        tournamentContract.methods.owner().call({}, (err, res) => {
+        tournamentContract = web3.eth.contract(tournamentAbi).at(_tournamentAddress)
+        tournamentContract.owner((err, res) => {
           console.log('response is a' + typeof res) // output is a string
           if (err) reject(err)
           else {
@@ -157,55 +157,70 @@ platformCalls.getTournamentOwnerById = function (_tournament_id) {
   })
 }
 
+/*
+@Dev
+var allTournamentsDTO = {
+  'tournamentTitle': _tournamentTitle,
+  'mtx': _mtx,
+  'tournamentDescription': _tournamentDescription,
+  'category': _category,
+  'totalRounds': _totalRounds,
+  'currentRound': _currentRound,
+  'numberOfParticipants': _numberOfParticipants,
+  'address': _address,
+  'ipType': _ipType,
+  'tournamentID': _tournamentID
+}
+*/
 // TODO fix this when max updates the platform
 // TODO switch this to a promise.all function to handle all the requests
 platformCalls.getAllTournaments = function (_tournament_id) {
   return new Promise((resolve, reject) => {
       // Setup the object
     var allTournaments = []
-    matryxPlatformContract.methods.tournamentCount().call({}, (err, _tournamentCount) => {
+    matryxPlatformContract.tournamentCount((err, _tournamentCount) => {
         // for loop over the number of tournaments in _tournamentCount
       for (let i = 0; i < _tournamentCount; i++) {
             // make a new allTournamentsDTO object
-        allTournamentsDTO = new AllTournamentsDTO()
+        allTournamentsDTO = new AllTournamentsDTO() // This doesnt exist yet
 
-        matryxPlatformContract.methods.allTournaments(i).call({}, (err, _tournamentAddress) => {
+        matryxPlatformContract.allTournaments(i, (err, _tournamentAddress) => {
           if (err) reject(err)
           else {
             allTournamentsDTO._address = _tournamentAddress
-            tournamentContract = new web3.eth.Contract(tournamentAbi, _tournamentAddress)
-            tournamentContract.methods.getTitle().call({}, (err, _title) => {
+            tournamentContract = web3.eth.Contract(tournamentAbi).at(_tournamentAddress)
+            tournamentContract.getTitle((err, _title) => {
               if (err) reject(err)
               else {
                         // set the title for eachTournament
                 allTournamentsDTO._tournamentTitle = _title
-                tournamentContract.methods.BountyMTX().call({}, (err, _mtx) => {
+                tournamentContract.BountyMTX((err, _mtx) => {
                   if (err) reject(err)
                   else {
                                 // set the bountyMTX for eachTournament
                     allTournamentsDTO._mtx = _mtx
                                 // TODO access tournamentDescription
-                    tournamentContract.methods.tournamentDescription().call({}, (err, _description) => {
+                    tournamentContract.tournamentDescription((err, _description) => {
                       if (err) reject(err)
                       else {
                                         // get the description for eachTournament
                         allTournamentsDTO._tournamentDescription = _description
-                        tournamentContract.methods.getCategory().call({}, (err, _category) => {
+                        tournamentContract.getCategory((err, _category) => {
                           if (err) reject(err)
                           else {
                                                 // get the category for eachTournament
                             allTournamentsDTO._category = _category
-                            tournamentContract.methods.maxRounds().call({}, (err, _maxRounds) => {
+                            tournamentContract.maxRounds((err, _maxRounds) => {
                               if (err) reject(err)
                               else {
                                                         // get the maxRounds for eachTournament
                                 allTournamentsDTO._totalRounds = _maxRounds
-                                tournamentContract.methods.currentRound().call({}, (err, _currentRound) => {
+                                tournamentContract.currentRound((err, _currentRound) => {
                                   if (err) reject(err)
                                   else {
                                                                 // get the currentRound for eachTournament
                                     allTournamentsDTO._currentRound = _currentRound[0]
-                                    tournamentContract.methods.numberOfParticipants().call({}, (err, _numberOfParticipants) => {
+                                    tournamentContract.numberOfParticipants((err, _numberOfParticipants) => {
                                       if (err) reject(err)
                                       else {
                                                                         // get the numberOfParticipants for eachTournament
@@ -238,86 +253,16 @@ platformCalls.getAllTournaments = function (_tournament_id) {
   })
 }
 
-/*
-@Dev
-var allTournamentsDTO = {
-  'tournamentTitle': _tournamentTitle,
-  'mtx': _mtx,
-  'tournamentDescription': _tournamentDescription,
-  'category': _category,
-  'totalRounds': _totalRounds,
-  'currentRound': _currentRound,
-  'numberOfParticipants': _numberOfParticipants,
-  'address': _address,
-  'ipType': _ipType,
-  'tournamentID': _tournamentID
-}
-*/
-// TODO after solving the problem in the next function, solve it with these additional methods after max updates the platform
-// TODO switch to a promise.all function instead of .then
-platformCalls.getAllTournamentsTest = function () {
-  return new Promise((resolve, reject) => {
-      // Setup the object
-    var allTournaments = []
-    matryxPlatformContract.methods.tournamentCount().call({}, (err, _tournamentCount) => {
-        // for loop over the number of tournaments in _tournamentCount
-      for (let i = 0; i < _tournamentCount; i++) {
-            // make a new allTournamentsDTO object
-        allTournamentsDTO = new allTournamentsDTO()
-
-        matryxPlatformContract.methods.allTournaments(i).call({}, (err, _tournamentAddress) => {
-          if (err) reject(err)
-          else {
-            allTournamentsDTO._address = _tournamentAddress
-            tournamentContract = new web3.eth.Contract(tournamentAbi, _tournamentAddress)
-            tournamentContract.methods.BountyMTX().call({}, (err, _mtx) => {
-              if (err) reject(err)
-              else {
-                                // set the bountyMTX for eachTournament
-                allTournamentsDTO._mtx = _mtx
-                tournamentContract.methods.maxRounds().call({}, (err, _maxRounds) => {
-                  if (err) reject(err)
-                  else {
-                                                        // get the maxRounds for eachTournament
-                    allTournamentsDTO._totalRounds = _maxRounds
-                    tournamentContract.methods.currentRound().call({}, (err, _currentRound) => {
-                      if (err) reject(err)
-                      else {
-                                                                // get the currentRound for eachTournament
-                        allTournamentsDTO._currentRound = _currentRound[0]
-                        tournamentContract.methods.submissionCount().call({}, (err, _numberOfParticipants) => {
-                          if (err) reject(err)
-                          else {
-                                                                        // get the numberOfParticipants for eachTournament
-                            allTournamentsDTO._numberOfParticipants = _numberOfParticipants
-                            console.log(allTournamentsDTO)
-                          }
-                        })
-                      }
-                    })
-                  }
-                })
-              }
-            })
-          }
-        }).then(
-                      allTournaments.push(allTournamentsDTO)
-                  )
-      }
-    }).then(resolve(allTournaments))
-  })
-}
-
 // Working if you check console
 // TODO map array to the route response and handle multiple tournaments
-platformCalls.getAllTournamentsTestBasic = function () {
+platformCalls.getAllTournamentsTestBasicExperimental = function () {
   return new Promise((resolve, reject) => {
       // Setup the array for the tournaments
     var allTournaments = []
-    matryxPlatformContract.methods.tournamentCount().call({}, (err, _tournamentCount) => {
+    matryxPlatformContract.tournamentCount((err, _tournamentCount) => {
         // for loop over the number of tournaments in _tournamentCount
       for (let i = 0; i < _tournamentCount; i++) {
-        const allTournamentsDTO = {
+        let allTournamentsDTO = {
           tournamentTitle: '',
           mtx: 0,
           tournamentDescription: '',
@@ -329,16 +274,59 @@ platformCalls.getAllTournamentsTestBasic = function () {
           ipType: '',
           tournamentID: 0
         }
-        matryxPlatformContract.methods.allTournaments(i).call({}, (err, _tournamentAddress) => {
+        matryxPlatformContract.allTournaments(i, (err, _tournamentAddress) => {
           if (err) reject(err)
           else {
             allTournamentsDTO.address = _tournamentAddress
-            tournamentContract = new web3.eth.Contract(tournamentAbi, _tournamentAddress)
-            tournamentContract.methods.BountyMTX().call({}, (err, _mtx) => {
+            tournamentContract = web3.eth.contract(tournamentAbi).at(_tournamentAddress)
+            tournamentContract.BountyMTX((err, _mtx) => {
               if (err) reject(err)
               else {
                 // set the bountyMTX for eachTournament
-                allTournamentsDTO.mtx = _mtx
+                allTournamentsDTO.mtx = _mtx.c[0]
+                console.log(allTournamentsDTO)
+                allTournaments.push(allTournamentsDTO)
+                console.log('The length of the array is:' + allTournaments.length)
+              }
+            })
+          }
+        })
+      }
+    }).then(console.log('The length of the tournament is' + allTournaments.length))
+  })
+}
+
+// Working if you check console
+// TODO map array to the route response and handle multiple tournaments
+platformCalls.getAllTournamentsTestBasic = function () {
+  return new Promise((resolve, reject) => {
+      // Setup the array for the tournaments
+    var allTournaments = []
+    matryxPlatformContract.tournamentCount((err, _tournamentCount) => {
+        // for loop over the number of tournaments in _tournamentCount
+      for (let i = 0; i < _tournamentCount; i++) {
+        let allTournamentsDTO = {
+          tournamentTitle: '',
+          mtx: 0,
+          tournamentDescription: '',
+          category: '',
+          totalRounds: 0,
+          currentRound: 0,
+          numberOfParticipants: 0,
+          address: '',
+          ipType: '',
+          tournamentID: 0
+        }
+        matryxPlatformContract.allTournaments(i, (err, _tournamentAddress) => {
+          if (err) reject(err)
+          else {
+            allTournamentsDTO.address = _tournamentAddress
+            tournamentContract = web3.eth.contract(tournamentAbi).at(_tournamentAddress)
+            tournamentContract.BountyMTX((err, _mtx) => {
+              if (err) reject(err)
+              else {
+                // set the bountyMTX for eachTournament
+                allTournamentsDTO.mtx = _mtx.c[0]
                 console.log(allTournamentsDTO)
                 allTournaments.push(allTournamentsDTO)
               }
@@ -346,9 +334,8 @@ platformCalls.getAllTournamentsTestBasic = function () {
           }
         })
       }
+      resolve(allTournaments)
     })
-    console.log('logs for all Tournaments: ' + allTournaments)
-    resolve(allTournaments)
   })
 }
 
@@ -361,11 +348,11 @@ platformCalls.getAllTournamentsTestBasic = function () {
 platformCalls.activityAlpha = function () {
   return new Promise((resolve, reject) => {
           // TODO swap out for the activity info
-    matryxPlatformContract.methods.allTournaments(_tournament_id).call({}, (err, tournamentAddress) => {
+    matryxPlatformContract.allTournaments(_tournament_id, (err, tournamentAddress) => {
       if (err) reject(err)
       else {
-        tournamentContract = new web3.eth.Contract(tournamentAbi, tournamentAddress)
-        tournamentContract.methods.owner().call({}, (err, res) => {
+        tournamentContract = web3.eth.Contract(tournamentAbi).at(tournamentAddress)
+        tournamentContract.owner((err, res) => {
           console.log('response is a' + typeof res) // output is a string
           if (err) reject(err)
           else {
@@ -385,7 +372,7 @@ platformCalls.activity = function () {
         // "news": "0xb794f5ea0ba39494ce839613fffba74279579268 created a new bounty: \"Solve Diabetes\""
 
     var news = {activity: []}
-    matryxPlatformContract.events.TournamentCreated(null, (error, event) => {
+    matryxPlatformContract.TournamentCreated((error, event) => {
       if (error) {
         console.log('Error with setting up event: ' + error)
       } else {
@@ -409,7 +396,7 @@ platformCalls.activity = function () {
         })
 
         // "news": "0xb794f5ea0ba39494ce839613fffba74279579268 got rewarded 400 MTX"
-    matryxPlatformContract.events.TournamentClosed(null, (error, event) => {
+    matryxPlatformContract.TournamentClosed(null, (error, event) => {
       if (error) {
         console.log('Error with setting up event: ' + error)
       } else {
@@ -419,9 +406,9 @@ platformCalls.activity = function () {
          // event TournamentClosed(address _tournamentAddress, uint256 _finalRoundNumber, uint256 _winningSubmissionAddress);
       var tournamentAddress = event.returnValues[0]
       var winningSubmissionAddress = event.returnValues[2]
-      var submission = web3.eth.Contract(matryxSubmissionABI, winningSubmissionAddress)
+      var submission = web3.eth.contract(matryxSubmissionABI).at(winningSubmissionAddress)
 
-      submission.methods.name.getBalance().then((receipt) => {
+      submission.getBalance().then((receipt) => {
         var rewardAmount = receipt
 
         var message = winningSubmissionAddress + ' got rewarded ' + rewardAmount + ' MTX'
@@ -434,7 +421,7 @@ platformCalls.activity = function () {
     })
 
         // "news": "0xb794f5ea0ba39494ce839613fffba74279579268 entered tournament: \"Erotic Greek Sculpture\""
-    matryxPlatformContract.events.UserEnteredTournament(null, (error, event) => {
+    matryxPlatformContract.UserEnteredTournament(null, (error, event) => {
       if (error) {
         console.log('Error with setting up event: ' + error)
       } else {
@@ -444,8 +431,8 @@ platformCalls.activity = function () {
          // event UserEnteredTournament(address _entrant, address _tournamentAddress);
       var entrant = event.returnValues[0]
       var tournamentAddress = event.returnValues[1]
-      var tournament = web3.eth.Contract(matryxTournamentABI, matryxTournamentAddress)
-      tournament.methods.name.send().then((receipt) => {
+      var tournament = web3.eth.contract(matryxTournamentABI).at(matryxTournamentAddress)
+      tournament.send().then((receipt) => {
         var tournamentName = receipt
 
         var message = entrant + ' entered tournament ' + tournamentName
@@ -500,7 +487,7 @@ platformCalls.getActivity2 = function () {
 // TODO get this working
 platformCalls.getAllTournaments2 = function () {
   return new Promise((resolve, reject) => {
-    matryxPlatformContract.events.TournamentCreated({fromBlock: 0, toBlock: 'latest'}, (results, error) => {
+    matryxPlatformContract.TournamentCreated({fromBlock: 0, toBlock: 'latest'}, (results, error) => {
       results.get(function (error, logs) {
         var allDetails = {}
         for (var i = 0; i < logs.length; i++) {
@@ -627,16 +614,16 @@ platformCalls.getCurrentRoundFromTournamentAddress = function (_tournamentAddres
       _submissions: []
     }
 
-    tournamentContract = new web3.eth.Contract(tournamentAbi, _tournamentAddress)
-    tournamentContract.methods.currentRound().call({}, (err, _currentRoundInfo) => {
+    tournamentContract = web3.eth.contract(tournamentAbi).at(_tournamentAddress)
+    tournamentContract.currentRound((err, _currentRoundInfo) => {
       if (err) reject(err)
       else {
         currentRoundResponse._currentRound = _currentRoundInfo[0]
         currentRoundResponse._roundAddress = _currentRoundInfo[1]
 
-        roundContract = new web3.eth.Contract(roundAbi, _currentRoundInfo[1])
+        roundContract = web3.eth.contract(roundAbi).at(_currentRoundInfo[1])
 
-        roundContract.methods.bountyMTX().call({}, (err, _bounty) => {
+        roundContract.bountyMTX((err, _bounty) => {
           if (err) reject(err)
           else {
             currentRoundResponse._bounty = _bounty
@@ -656,8 +643,8 @@ Submissions
 // Get the submission count for the tournament given the tournament address
 platformCalls.getSubmissionCount = function (_tournamentAddress) {
   return new Promise((resolve, reject) => {
-    tournamentContract = new web3.eth.Contract(tournamentAbi, _tournamentAddress)
-    tournamentContract.methods.submissionCount().call({}, (err, res) => {
+    tournamentContract = web3.eth.contract(tournamentAbi).at(_tournamentAddress)
+    tournamentContract.submissionCount((err, res) => {
       if (err) reject(err)
       else {
         console.log('There are ' + res + ' submissions for the tournament at address: ' + _tournamentAddress)
@@ -720,30 +707,30 @@ platformCalls.getSubmissionByAddress = function (_submissionAddress) {
       ]
     }
 // TODO switch to promise.all
-    submissionContract = new web3.eth.Contract(submissionAbi, _submissionAddress)
-    submissionContract.methods.getTitle().call({}, (err, _title) => {
+    submissionContract = web3.eth.contract(submissionAbi).at(_submissionAddress)
+    submissionContract.getTitle((err, _title) => {
       if (err) reject(err)
       else {
         submissionDetails._submissionTitle = _title
         submissionDetails._submissionAddress = _submissionAddress
 
-        submissionContract.methods.getAuthor().call({}, (err, _author) => {
+        submissionContract.getAuthor((err, _author) => {
           if (err) reject(err)
           else {
             submissionDetails._submissionAuthor = _author
-            submissionContract.methods.getContributors().call({}, (err, _contributors) => {
+            submissionContract.getContributors((err, _contributors) => {
               if (err) reject(err)
               else {
                 submissionDetails._submissionCollaborators = _contributors
-                submissionContract.methods.getReferences().call({}, (err, _references) => {
+                submissionContract.getReferences((err, _references) => {
                   if (err) reject(err)
                   else {
                     submissionDetails._submissionReferences = _references
-                    submissionContract.methods.getTimeSubmitted().call({}, (err, _timeSubmitted) => {
+                    submissionContract.getTimeSubmitted((err, _timeSubmitted) => {
                       if (err) reject(err)
                       else {
                         submissionDetails._submissionDate = _timeSubmitted
-                        submissionContract.methods.getTimeSubmitted().call({}, (err, _timeSubmitted) => {
+                        submissionContract.getTimeSubmitted((err, _timeSubmitted) => {
                           if (err) reject(err)
                           else {
                             submissionDetails._submissionDate = _timeSubmitted
@@ -764,6 +751,30 @@ platformCalls.getSubmissionByAddress = function (_submissionAddress) {
   })
 }
 
+/*
+I got this from:https://github.com/Imaginea/lms
+
+Events example for SC
+
+getRatings(req, res){
+		lms.Rate({}, {
+			fromBlock: 0,
+			toBlock: 'latest'
+		},(e, result) => {
+			if (e) {
+				res.json({
+					logs: e.message,
+					status: false
+				})
+			} else {
+				res.json({
+					args : result.args,
+					status : true
+				});
+			}
+		});
+	}
+    */
 /*
  Helper functions
 // TODO move this to its own controllers

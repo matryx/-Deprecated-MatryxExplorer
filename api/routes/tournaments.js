@@ -92,7 +92,7 @@ router.get('/address/:tournamentAddress/submissionCount', (req, res, next) => {
   })
 })
 
-//Current Round response given a tournamentAddress
+// Current Round response given a tournamentAddress
 router.get('/address/:tournamentAddress/currentRound', (req, res, next) => {
   const address = req.params.tournamentAddress
   ethPlatform.getCurrentRoundFromTournamentAddress(address).then(function (result) {
