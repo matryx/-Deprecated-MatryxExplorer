@@ -92,21 +92,27 @@ router.get('/address/:tournamentAddress/submissionCount', (req, res, next) => {
     res.status(200).json({
       results: result
     })
+  }).catch((err) => {
+    console.log('Not able to retrieve submissionCount: ' + err)
   })
 })
 
+// TODO: Waiting on Max, need to implement the Round is open in order to access this
 // Current Round response given a tournamentAddress
 router.get('/address/:tournamentAddress/currentRound', (req, res, next) => {
   const address = req.params.tournamentAddress
   ethPlatform.getCurrentRoundFromTournamentAddress(address).then(function (result) {
     res.status(200).json({
-      title: result._title,
-      bounty: result._bounty,
-      description: result._description,
-      currentRound: result._currentRound,
-      roundAddress: result._roundAddress,
-      submissions: result._submissions
+      message: 'Awaiting StateControl for QA'
+      // title: result._title,
+      // bounty: result._bounty,
+      // description: result._description,
+      // currentRound: result._currentRound,
+      // roundAddress: result._roundAddress,
+      // submissions: result._submissions
     })
+  }).catch((err) => {
+    console.log('Not able to retrieve latest round: ' + err)
   })
 })
 

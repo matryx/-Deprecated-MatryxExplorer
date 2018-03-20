@@ -83,4 +83,14 @@ tournamentController.getSubmissionCount = function (_tournamentAddress) {
   })
 }
 
+tournamentController.getLatestRound = function (_tournamentAddress) {
+  return new Promise((resolve, reject) => {
+    platformCalls.getCurrentRoundFromTournamentAddress(_tournamentAddress).then(function (result) {
+      resolve(result)
+    }).catch((err) => {
+      console.log('Not able to retrieve latest round. ' + err)
+    })
+  })
+}
+
 module.exports = tournamentController

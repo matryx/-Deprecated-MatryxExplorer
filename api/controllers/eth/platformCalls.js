@@ -508,48 +508,89 @@ var allTournaments = TournamentCreatedEvent.get(function(error, logs){
 Rounds
 */
 
-// TODO:  add a round details response for both round address and id given a tournament address
-
 /*
-// TODO: add the following after talking to max
-_title: '',
-_description: '',
-_submissions: []
-
+{
+  'title': 'Suborbital Spaceplane Airfoil Design',
+  'bounty': 100,
+  'description': 'The process of airfoil design proceeds from a knowledge of \
+the relationship between geometry and pressure distribution. Airfoil design is \
+application specific. Some airfoils need only to minimize drag force while others \
+need to maximize lift. As our aircraft needs to reach upper atmosphere as quickly as \
+possible, this tournament focuses on the latter; See Section IV for technical specifications.',
+  'submissions':
+  [
+    {
+      'submissionTitle': 'Lift-to-drag maximization for single airfoil at M = 0.63',
+      'submissionDate': '1519427539',
+      'submissionAddress': '0xa0e239b0abf4582366adaff486ee268c848c4409'
+    },
+    {
+      'submissionTitle': 'High Lift, Low Aspect Ratio Airfoil',
+      'submissionDate': '1519427539',
+      'submissionAddress': '0x851b7f3ab81bd8df354f0d7640efcd7288553419'
+    },
+    {
+      'submissionTitle': 'Low Reynolds Number Airfoil',
+      'submissionDate': '1519427539',
+      'submissionAddress': '0x32be343b94f860124dc4fee278fdcbd38c102d88'
+    }
+  ]
+}
 */
-// TODO:
+
+// TODO: Implement an open round in order to finish this
 platformCalls.getCurrentRoundFromTournamentAddress = function (_tournamentAddress) {
   return new Promise((resolve, reject) => {
-    var currentRoundResponse = {
-      _title: '',
-      _bounty: 0,
-      _description: '',
-      _currentRound: 0,
-      _roundAddress: '',
-      _submissions: []
+    let roundDetails = {
+      title: '',
+      bounty: 0,
+      externalAddress: '',
+      submissions:
+      []
     }
+    let submissionList =
+      {
+        submissionTitle: '',
+        submissionDate: '',
+        submissionAddress: ''
+      }
 
     tournamentContract = web3.eth.contract(tournamentAbi).at(_tournamentAddress)
     tournamentContract.currentRound((err, _currentRoundInfo) => {
       if (err) reject(err)
       else {
-        currentRoundResponse._currentRound = _currentRoundInfo[0]
-        currentRoundResponse._roundAddress = _currentRoundInfo[1]
-
-        roundContract = web3.eth.contract(roundAbi).at(_currentRoundInfo[1])
-
-        roundContract.bountyMTX((err, _bounty) => {
-          if (err) reject(err)
-          else {
-            currentRoundResponse._bounty = _bounty
-            console.log(currentRoundResponse)
-            resolve(currentRoundResponse)
-          }
-        })
+          // _currentRoundInfo[0]
+          // _currentRoundInfo[1]
+        if (_currentRoundInfo[1] == '0x') reject(err)
+        else {
+          roundContract = web3.eth.contract(roundAbi).at(_currentRoundInfo[1])
+          roundContract.bountyMTX((err, _bounty) => {
+            if (err) reject(err)
+            else {
+              roundDetails._bounty = _bounty
+              roundContract.numberOfSubmission((err, _numberOfSubmissions) => {
+                if (err) reject(err)
+                else {
+                  console.log(_numberOfSubmissions)
+                  roundContract.getSubmissions((err, _submissions) => {
+                    if (err) reject(err)
+                    else {
+                      console.log(_submissions)
+                      console.log(currentRoundResponse)
+                      resolve(currentRoundResponse)
+                    }
+                  })
+                }
+              })
+            }
+          })
+        }
       }
     })
   })
 }
+
+// TODO: getRoundDetailsFromRIdAndTAD
 
 /*
 Submissions
@@ -592,25 +633,6 @@ Submissions
     }
   ]
 }
-*/
-
-/* TODO talk to max about getting parent info from submission and round for the BELOW function
-//Need to add
-
-_submissionId: 0,
-  _submissionDescription: '',
-  _submissionJson: [ { _Items: [] } ],
-  _submissionIpfsHash: '',
-    _submissionRewardTotal: 0,
-    _submissionSelectedRound: 0,
-    _parentInfo:
-      [ { _currentRound: 0,
-          _totalRounds: 0,
-          _roundAddress: '',
-          _roundMtx: 0,
-          _tournamentName: '',
-          _tournamentAddress: '' } ] }
-
 */
 
 // Get the submission details given the submissionAddress
