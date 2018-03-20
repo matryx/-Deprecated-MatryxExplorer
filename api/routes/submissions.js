@@ -9,7 +9,7 @@ const express = require('express')
 const router = express.Router()
 
 const ethPlatform = require('../controllers/eth/platformCalls')
-
+const submissionController = require('../controllers/eth/platformCalls')
 // Return a message showing this endpoint series handles submission requests
 router.get('/', (req, res, next) => {
   res.status(200).json({
@@ -21,7 +21,7 @@ router.get('/', (req, res, next) => {
 // Return the submission details for a specific submission address
 router.get('/address/:submissionAddress', (req, res, next) => {
   const address = req.params.submissionAddress
-  details = ethPlatform.getSubmissionByAddress(address).then(function (result) {
+  details = submissionController.getSubmissionByAddress(address).then(function (result) {
     res.status(200).json({
       submissionTitle: result._submissionTitle,
       submissionAddress: address,
@@ -49,34 +49,14 @@ router.get('/address/:submissionAddress', (req, res, next) => {
   })
 })
 
-//TODO getSubmissionOwnerByAddress
-
-
-//
-// // Return the tournament details for a specific tournament
-// router.get('/address/:submissionAddress', (req, res, next) => {
-//   const address = req.params.submissionAddress
-//   if (id == 'special') {
-//     res.status(200).json({
-//       message: 'Return the submission details',
-//       address: address
-//     })
-//   }
-// })
-//
-// router.post('/getSubmission', (req, res, next) => {
-//   var tournamentID = req.body.tournamentId
-//   var roundID = req.body.roundId
-//   res.status(201).json({
-//     message: 'getSubmission request recieved.',
-//     submissionObject: 'bam'
-//   })
-// })
-
-// router.post('/', (req, res, next) => {
-//     res.status(200).json({
-//         message: 'handling POST requests to /products'
-//     });
-// });
+// Return the submission owner/author for a specific submission address
+router.get('/address/:submissionAddress/getOwner', (req, res, next) => {
+  const address = req.params.submissionAddress
+  submissionController.getSubmissionOwnerByAddress(address).then(function (result) {
+    res.status(200).json({
+      submissionOwner: result
+    })
+  })
+})
 
 module.exports = router

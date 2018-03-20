@@ -14,6 +14,8 @@ const externalApiCalls = require('./externalApiCalls')
 const platformInfoV1 = require('../../../data/abi/v1/platform')
 const currentPlatformInfo = require('../../../data/abi/v2/platform')
 const tournamentAbi = require('../../../data/abi/v2/tournament')
+const submissionAbi = require('../../../data/abi/v2/submission')
+const roundAbi = require('../../../data/abi/v2/round')
 
 /*
  Attach to the RPC
@@ -194,10 +196,10 @@ platformCalls.getTournamentByAddress = function (_tournamentAddress) {
           if (err) reject(err)
           else {
             tournamentDetails.externalAddress = _externalAddress
-            tournamentContract.currentRound((err, _currentRound) => {
+            tournamentContract.maxRounds((err, _maxRounds) => {
               if (err) reject(err)
               else {
-                tournamentDetails.currentRound = _currentRound[0]
+                tournamentDetails.totalRounds = _maxRounds
                 tournamentContract.submissionCount((err, _count) => {
                   if (err) reject(err)
                   else {
@@ -210,11 +212,23 @@ platformCalls.getTournamentByAddress = function (_tournamentAddress) {
                           if (err) reject(err)
                           else {
                             tournamentDetails.participationMTX = _fee
-                            tournamentContract.maxRounds((err, _maxRounds) => {
+                            tournamentContract.currentRound((err, _currentRound) => {
                               if (err) reject(err)
                               else {
-                                tournamentDetails.totalRounds = _maxRounds
-                                resolve(tournamentDetails)
+                                tournamentDetails.currentRound = _currentRound[0]
+                                if (_currentRound[1] == '0x') {
+                                  resolve(tournamentDetails)
+                                } else {
+                                  roundContract = web3.eth.contract(roundAbi).at(_currentRound[1])
+                                  roundContract.endTime((err, _endTime) => {
+                                    if (err) reject(err)
+                                    else {
+                                      tournamentDetails.roundEndTime = _endTime
+                                      console.log(_currentRound[1])
+                                      resolve(tournamentDetails)
+                                    }
+                                  })
+                                }
                               }
                             })
                           }
@@ -236,177 +250,51 @@ platformCalls.getTournamentByAddress = function (_tournamentAddress) {
 
 platformCalls.getTournamentOwnerByAddress = function (_tournamentAddress) {
   return new Promise((resolve, reject) => {
-          // Attach to the tournament using the ABI and the _tournamentAddress
     console.log('Starting the tournament contract attachment at address: ' + _tournamentAddress)
     tournamentContract = web3.eth.contract(tournamentAbi).at(_tournamentAddress)
-
-        // console.log(tournamentContract)
-        // Get tournament details
     tournamentContract.owner((err, res) => {
-          // console.log('response is a' + typeof res) // output is a string
-      if (err) reject(err)
-      else resolve(res)
-    })
-  })
-}
-
-platformCalls.getTournamentOwnerById = function (_tournament_id) {
-  return new Promise((resolve, reject) => {
-    matryxPlatformContract.allTournaments(_tournament_id, (err, _tournamentAddress) => {
       if (err) reject(err)
       else {
-        tournamentContract = web3.eth.contract(tournamentAbi).at(_tournamentAddress)
-        tournamentContract.owner((err, res) => {
-          console.log('response is a' + typeof res) // output is a string
-          if (err) reject(err)
-          else {
-            resolve({
-              tournamentOwner: res,
-              tournamentId: _tournament_id,
-              tournamentAddress: _tournamentAddress
-            })
-          }
-        })
+        console.log(res)
+        resolve(res)
       }
     })
   })
 }
 
-/*
-@Dev
-var allTournamentsDTO = {
-  'tournamentTitle': _tournamentTitle,
-  'mtx': _mtx,
-  'tournamentDescription': _tournamentDescription,
-  'category': _category,
-  'totalRounds': _totalRounds,
-  'currentRound': _currentRound,
-  'numberOfParticipants': _numberOfParticipants,
-  'address': _address,
-  'ipType': _ipType,
-  'tournamentID': _tournamentID
-}
-*/
-// // TODO fix this when max updates the platform
-// // TODO switch this to a promise.all function to handle all the requests
-// platformCalls.getAllTournaments = function (_tournament_id) {
+// TODO resolve when ID is implemented
+// platformCalls.getTournamentOwnerById = function (_tournament_id) {
 //   return new Promise((resolve, reject) => {
-//       // Setup the object
-//     var allTournaments = []
-//     matryxPlatformContract.tournamentCount((err, _tournamentCount) => {
-//         // for loop over the number of tournaments in _tournamentCount
-//       for (let i = 0; i < _tournamentCount; i++) {
-//             // make a new allTournamentsDTO object
-//         allTournamentsDTO = new AllTournamentsDTO() // This doesnt exist yet
-//
-//         matryxPlatformContract.allTournaments(i, (err, _tournamentAddress) => {
+//     matryxPlatformContract.allTournaments(_tournament_id, (err, _tournamentAddress) => {
+//       if (err) reject(err)
+//       else {
+//         tournamentContract = web3.eth.contract(tournamentAbi).at(_tournamentAddress)
+//         tournamentContract.owner((err, res) => {
+//           console.log('response is a' + typeof res) // output is a string
 //           if (err) reject(err)
 //           else {
-//             allTournamentsDTO._address = _tournamentAddress
-//             tournamentContract = web3.eth.Contract(tournamentAbi).at(_tournamentAddress)
-//             tournamentContract.getTitle((err, _title) => {
-//               if (err) reject(err)
-//               else {
-//                         // set the title for eachTournament
-//                 allTournamentsDTO._tournamentTitle = _title
-//                 tournamentContract.BountyMTX((err, _mtx) => {
-//                   if (err) reject(err)
-//                   else {
-//                                 // set the bountyMTX for eachTournament
-//                     allTournamentsDTO._mtx = _mtx
-//                                 // TODO access tournamentDescription
-//                     tournamentContract.tournamentDescription((err, _description) => {
-//                       if (err) reject(err)
-//                       else {
-//                                         // get the description for eachTournament
-//                         allTournamentsDTO._tournamentDescription = _description
-//                         tournamentContract.getCategory((err, _category) => {
-//                           if (err) reject(err)
-//                           else {
-//                                                 // get the category for eachTournament
-//                             allTournamentsDTO._category = _category
-//                             tournamentContract.maxRounds((err, _maxRounds) => {
-//                               if (err) reject(err)
-//                               else {
-//                                                         // get the maxRounds for eachTournament
-//                                 allTournamentsDTO._totalRounds = _maxRounds
-//                                 tournamentContract.currentRound((err, _currentRound) => {
-//                                   if (err) reject(err)
-//                                   else {
-//                                                                 // get the currentRound for eachTournament
-//                                     allTournamentsDTO._currentRound = _currentRound[0]
-//                                     tournamentContract.numberOfParticipants((err, _numberOfParticipants) => {
-//                                       if (err) reject(err)
-//                                       else {
-//                                                                         // get the numberOfParticipants for eachTournament
-//                                         allTournamentsDTO._numberOfParticipants = _numberOfParticipants
-//                                         console.log(allTournamentsDTO)
-//                                       }
-//                                     })
-//                                   }
-//                                 })
-//                               }
-//                             })
-//                           }
-//                         })
-//                       }
-//                     })
-//                   }
-//                 })
-//               }
+//             resolve({
+//               tournamentOwner: res,
+//               tournamentId: _tournament_id,
+//               tournamentAddress: _tournamentAddress
 //             })
 //           }
-//         }).then(
-//
-//             // Add the push
-//             allTournaments.push(allTournamentsDTO)
-//
-//         )
+//         })
 //       }
 //     })
-//     resolve(allTournaments)
 //   })
 // }
 
-// Working if you check console
-// TODO map array to the route response and handle multiple tournaments
-platformCalls.getAllTournamentsTestBasic = function () {
+// Get the submission count for the tournament given the tournament address
+platformCalls.getSubmissionCount = function (_tournamentAddress) {
   return new Promise((resolve, reject) => {
-      // Setup the array for the tournaments
-    var allTournaments = []
-    matryxPlatformContract.tournamentCount((err, _tournamentCount) => {
-        // for loop over the number of tournaments in _tournamentCount
-      for (let i = 0; i < _tournamentCount; i++) {
-        let allTournamentsDTO = {
-          tournamentTitle: '',
-          mtx: 0,
-          tournamentDescription: '',
-          category: '',
-          totalRounds: 0,
-          currentRound: 0,
-          numberOfParticipants: 0,
-          address: '',
-          ipType: '',
-          tournamentID: 0
-        }
-        matryxPlatformContract.allTournaments(i, (err, _tournamentAddress) => {
-          if (err) reject(err)
-          else {
-            allTournamentsDTO.address = _tournamentAddress
-            tournamentContract = web3.eth.contract(tournamentAbi).at(_tournamentAddress)
-            tournamentContract.BountyMTX((err, _mtx) => {
-              if (err) reject(err)
-              else {
-                // set the bountyMTX for eachTournament
-                allTournamentsDTO.mtx = _mtx.c[0]
-                console.log(allTournamentsDTO)
-                allTournaments.push(allTournamentsDTO)
-              }
-            })
-          }
-        })
+    tournamentContract = web3.eth.contract(tournamentAbi).at(_tournamentAddress)
+    tournamentContract.submissionCount((err, res) => {
+      if (err) reject(err)
+      else {
+        console.log('There are ' + res + ' submissions for the tournament at address: ' + _tournamentAddress)
+        resolve(res)
       }
-      resolve(allTournaments)
     })
   })
 }
@@ -550,46 +438,6 @@ platformCalls.getPlatformActivity = function () {
 // )
 // }
 
-// TODO get this working
-platformCalls.getAllTournaments2 = function () {
-  return new Promise((resolve, reject) => {
-    matryxPlatformContract.TournamentCreated({fromBlock: 0, toBlock: 'latest'}, (results, error) => {
-      results.get(function (error, logs) {
-        var allDetails = {}
-        for (var i = 0; i < logs.length; i++) {
-          var log = logs[i]
-          console.log('Saving tournament # ' + i)
-
-          var discipline = log.returnValues[0]
-          var owner = log.returnValues[1]
-          var tournamentAddress = log.returnValues[2]
-          var tournamentTitle = log.returnValues[3]
-          var externalAddress = log.returnValues[4]
-          var MTXReward = log.returnValues[5]
-          var entryFee = log.returnValues[6]
-
-          var tournamentDetails =
-            {
-              'tournamentTitle': tournamentTitle,
-              'mtx': MTXReward,
-              'tournamentDescription': '',
-              'category': discipline,
-              'totalRounds': 0,
-              'currentRound': 0,
-              'numberOfParticipants': 0,
-              'ipType': ''
-            }
-          allDetails.push(tournamentDetails)
-          if (i == logs.length - 1) {
-            resolve(allDetails) // TODO swap out for return
-                  // return allTournaments
-          }
-        }
-      })
-    })
-  })
-}
-
 /*
 Logic for View all tournaments max psuedocode
 var matryxPlatformContract = web3.eth.contract(matryxPlatformContract.abi);
@@ -660,15 +508,16 @@ var allTournaments = TournamentCreatedEvent.get(function(error, logs){
 Rounds
 */
 
-// TODO add a round details response for both round address and id given a tournament address
+// TODO:  add a round details response for both round address and id given a tournament address
 
 /*
-TODO add the following after talking to max
+// TODO: add the following after talking to max
 _title: '',
 _description: '',
 _submissions: []
 
 */
+// TODO:
 platformCalls.getCurrentRoundFromTournamentAddress = function (_tournamentAddress) {
   return new Promise((resolve, reject) => {
     var currentRoundResponse = {
@@ -706,19 +555,44 @@ platformCalls.getCurrentRoundFromTournamentAddress = function (_tournamentAddres
 Submissions
 */
 
-// Get the submission count for the tournament given the tournament address
-platformCalls.getSubmissionCount = function (_tournamentAddress) {
-  return new Promise((resolve, reject) => {
-    tournamentContract = web3.eth.contract(tournamentAbi).at(_tournamentAddress)
-    tournamentContract.submissionCount((err, res) => {
-      if (err) reject(err)
-      else {
-        console.log('There are ' + res + ' submissions for the tournament at address: ' + _tournamentAddress)
-        resolve(res)
-      }
-    })
-  })
+/*
+{
+  'submissionTitle': "Sam's Submission",
+  'submissionAddress': '0x15528Fc3CFf56b4667f988C699ec5983030Ce841',
+  'submissionAuthor': '0x15528Fc3CFf56b4667f988C699ec5983030Ce842',
+  'submissionId': '44',
+  'submissionDescription': 'NanoPro is the future',
+  'submissionCollaborators': [
+    '0x11f2915576Dc51dFFB246959258E8fe5a1913161',
+    '0x0327FF417aa111b61bED5F39e77946b38d6592B3'
+  ],
+  'submissionReferences': [
+    '0x0327FF417aa111b61bED5F39e77946b38d6592B3',
+    '0x58bA5d062E2c2B14DC8B8458872AFef70A9b25EB'
+  ],
+  'submissionJson': [
+    {
+      'Items': [
+        '{"rangeKeys":["t","u","v","w"],"rangePairs":[{"min":{"exclusive":false,"rawText":"0"},"max":{"exclusive":false,"rawText":"8*pi"}},{"min":{"exclusive":false,"rawText":"0"},"max":{"exclusive":false,"rawText":"0"}},{"min":{"exclusive":false,"rawText":"0"},"max":{"exclusive":false,"rawText":"0"}},{"min":{"exclusive":false,"rawText":"0"},"max":{"exclusive":false,"rawText":"0"}}],"ExpressionKeys":[0,1,2],"ExpressionValues":["cos(t)*(2-cos(t))","(sin(t))*(2-cos(t))","-sin(2*t)+(cos(t)-.5)"]}'
+      ]
+    }
+  ],
+  'submissionIpfsHash': 'QmT9qk3CRYbFDWpDFYeAv8T8H1gnongwKhh5J68NLkLir6',
+  'submissionRewardTotal': 1,
+  'submissionSelectedRound': 1,
+  'submissionDate': '',
+  'parentInfo': [
+    {
+      'currentRound': '1',
+      'totalRounds': '3',
+      'roundAddress': '0x11f2915576Dc51dFFB246959258E8fe5a1913161',
+      'roundMtx': 30,
+      'tournamentName': "Sam's Tournament",
+      'tournamentAddress': '0x11f2915576Dc51dFFB246959258E8fe5a1913161'
+    }
+  ]
 }
+*/
 
 /* TODO talk to max about getting parent info from submission and round for the BELOW function
 //Need to add
@@ -738,28 +612,26 @@ _submissionId: 0,
           _tournamentAddress: '' } ] }
 
 */
-// TODO submission description from ipfs hash
-// TODO JSON of submission goes to IPFS -> get hash -> put hash in externalAddress (parent folder)
 
-// Get the submission count for the tournament given the tournament address
+// Get the submission details given the submissionAddress
 platformCalls.getSubmissionByAddress = function (_submissionAddress) {
   return new Promise((resolve, reject) => {
     var submissionDetails = {
       _submissionTitle: '',
       _submissionAddress: '',
       _submissionAuthor: '',
-      _submissionId: 0,
-      _submissionDescription: '',
+      _submissionId: 0, // need
+      _submissionDescription: '', // need
       _submissionCollaborators: [],
       _submissionReferences: [],
       _submissionJson: [
         {
-          _Items: []
+          _Items: [] // need
         }
       ],
       _submissionIpfsHash: '',
-      _submissionRewardTotal: 0,
-      _submissionSelectedRound: 0,
+      _submissionRewardTotal: 0, // need
+      _submissionSelectedRound: 0, // need
       _submissionDate: '',
       _parentInfo: [
         {
@@ -767,13 +639,13 @@ platformCalls.getSubmissionByAddress = function (_submissionAddress) {
           _totalRounds: 0,
           _roundAddress: '',
           _roundMtx: 0,
-          _tournamentName: '',
+          _tournamentName: '', // need
           _tournamentAddress: ''
         }
       ]
     }
-// TODO switch to promise.all
     submissionContract = web3.eth.contract(submissionAbi).at(_submissionAddress)
+    console.log(submissionContract)
     submissionContract.getTitle((err, _title) => {
       if (err) reject(err)
       else {
@@ -796,12 +668,44 @@ platformCalls.getSubmissionByAddress = function (_submissionAddress) {
                       if (err) reject(err)
                       else {
                         submissionDetails._submissionDate = _timeSubmitted
-                        submissionContract.getTimeSubmitted((err, _timeSubmitted) => {
+                        submissionContract.getExternalAddress((err, _externalAddress) => {
                           if (err) reject(err)
                           else {
-                            submissionDetails._submissionDate = _timeSubmitted
-                            console.log(submissionDetails)
-                            resolve(submissionDetails)
+                            submissionDetails._submissionIpfsHash = _externalAddress
+                            submissionContract.tournamentAddress((err, _tournamentAddress) => {
+                              if (err) reject(err)
+                              else {
+                                submissionDetails._parentInfo._tournamentAddress = _tournamentAddress
+                                tournamentContract = web3.eth.contract(tournamentAbi).at(_tournamentAddress)
+                                tournamentContract.currentRound((err, _currentRound) => {
+                                  if (err) reject(err)
+                                  else {
+                                    submissionDetails._parentInfo._currentRound = _currentRound[0]
+                                    submissionContract.roundAddress((err, _roundAddress) => {
+                                      if (err) reject(err)
+                                      else {
+                                        submissionDetails._parentInfo._roundAddress = _roundAddress
+                                        roundContract = web3.eth.contract(roundAbi).at(_roundAddress)
+                                        roundContract.bountyMTX((err, _bountyMTX) => {
+                                          if (err) reject(err)
+                                          else {
+                                            submissionDetails._parentInfo._roundMtx = _bountyMTX
+                                            tournamentContract.maxRounds((err, _maxRounds) => {
+                                              if (err) reject(err)
+                                              else {
+                                                submissionDetails._parentInfo._totalRounds = _maxRounds
+                                        // console.log(submissionDetails)
+                                                resolve(submissionDetails)
+                                              }
+                                            })
+                                          }
+                                        })
+                                      }
+                                    })
+                                  }
+                                })
+                              }
+                            })
                           }
                         })
                       }
@@ -817,55 +721,19 @@ platformCalls.getSubmissionByAddress = function (_submissionAddress) {
   })
 }
 
-/*
-I got this from:https://github.com/Imaginea/lms
-
-Events example for SC
-
-getRatings(req, res){
-		lms.Rate({}, {
-			fromBlock: 0,
-			toBlock: 'latest'
-		},(e, result) => {
-			if (e) {
-				res.json({
-					logs: e.message,
-					status: false
-				})
-			} else {
-				res.json({
-					args : result.args,
-					status : true
-				});
-			}
-		});
-	}
-    */
-/*
- Helper functions
-// TODO move this to its own controllers
-*/
-//
-// function getFunctionHashes (abi) {
-//   var hashes = []
-//   for (var i = 0; i < abi.length; i++) {
-//     var item = abi[i]
-//     if (item.type != 'function') continue
-//     var signature = item.name + '(' + item.inputs.map(function (input) { return input.type }).join(',') + ')'
-//     var hash = web3.sha3(signature)
-//     console.log(item.name + '=' + hash)
-//     hashes.push({name: item.name, hash: hash})
-//   }
-//   return hashes
-// }
-//
-// function findFunctionByHash (hashes, functionHash) {
-//   for (var i = 0; i < hashes.length; i++) {
-//     if (hashes[i].hash.substring(0, 10) == functionHash.substring(0, 10)) {
-//       return hashes[i].name
-//     }
-//   }
-//   return null
-// }
+// TODO: Verify that owner() is a function
+platformCalls.getSubmissionOwnerByAddress = function (_submissionAddress) {
+  return new Promise((resolve, reject) => {
+    console.log('Starting the submission contract attachment at address: ' + _submissionAddress)
+    submissionContract = web3.eth.contract(submissionAbi).at(_submissionAddress)
+    submissionContract.getAuthor((err, res) => {
+      if (err) reject(err)
+      else {
+        console.log(res)
+        resolve(res)
+      }
+    })
+  })
+}
 
 module.exports = platformCalls

@@ -55,40 +55,40 @@ router.get('/address/:tournamentAddress', (req, res, next) => {
 // Return the tournament owner for a specific tournament
 router.get('/address/:tournamentAddress/getOwner', (req, res, next) => {
   const address = req.params.tournamentAddress
-  details = ethPlatform.getTournamentOwnerByAddress(address).then(function (result) {
+  tournamentController.getTournamentOwnerByAddress(address).then(function (result) {
     res.status(200).json({
-      tournamentOwner: result.tournamentOwner,
+      tournamentOwner: result,
       tournamentAddress: address
     })
   })
 })
 
-// Return the tournament details for a specific tournament
-router.get('/id/:tournamentID', (req, res, next) => {
-  const id = req.params.tournamentID
-  ethPlatform.getTouramentById(id).then(function (result) {
-    res.status(200).json({
-      results: result
-    })
-  })
-})
+// // Return the tournament details for a specific tournament
+// router.get('/id/:tournamentID', (req, res, next) => {
+//   const id = req.params.tournamentID
+//   ethPlatform.getTouramentById(id).then(function (result) {
+//     res.status(200).json({
+//       results: result
+//     })
+//   })
+// })
+//
+// // Return the tournament owner for a specific tournament
+// router.get('/id/:tournamentID/getOwner', (req, res, next) => {
+//   const id = req.params.tournamentID
+//   details = ethPlatform.getTournamentOwnerById(id).then(function (result) {
+//     res.status(200).json({
+//       tournamentOwner: result.tournamentOwner,
+//       tournamentId: id,
+//       tournamentAddress: result.tournamentAddress
+//     })
+//   })
+// })
 
-// Return the tournament owner for a specific tournament
-router.get('/id/:tournamentID/getOwner', (req, res, next) => {
-  const id = req.params.tournamentID
-  details = ethPlatform.getTournamentOwnerById(id).then(function (result) {
-    res.status(200).json({
-      tournamentOwner: result.tournamentOwner,
-      tournamentId: id,
-      tournamentAddress: result.tournamentAddress
-    })
-  })
-})
-
-// Return the tournament details for a specific tournament
+// Return the submission count for a specific tournament
 router.get('/address/:tournamentAddress/submissionCount', (req, res, next) => {
   const address = req.params.tournamentAddress
-  ethPlatform.getSubmissionCount(address).then(function (result) {
+  tournamentController.getSubmissionCount(address).then(function (result) {
     res.status(200).json({
       results: result
     })
@@ -112,17 +112,9 @@ router.get('/address/:tournamentAddress/currentRound', (req, res, next) => {
 
 /*
 #################################
-These are all TEST functions
+These are all TEST or HELPER functions
 #################################
 */
-// notsure
-router.get('/allTournaments2', (req, res, next) => {
-  ethPlatform.getAllTournaments2().then(function (result) {
-    res.status(200).json({
-      tournamentCount: result
-    })
-  })
-})
 
 // router.post('/', (req, res, next) => {
 //     res.status(200).json({

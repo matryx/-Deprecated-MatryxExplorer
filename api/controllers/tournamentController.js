@@ -53,4 +53,34 @@ tournamentController.getTournamentByAddress = function (_tournamentAddress) {
   })
 }
 
+tournamentController.getTournamentOwnerByAddress = function (_tournamentAddress) {
+  return new Promise((resolve, reject) => {
+    platformCalls.getTournamentOwnerByAddress(_tournamentAddress).then(function (result) {
+      resolve(result)
+    }).catch((err) => {
+      console.log('Not able to retrieve tournament owner. ' + err)
+    })
+  })
+}
+
+tournamentController.getSubmissionCount = function (_tournamentAddress) {
+  return new Promise((resolve, reject) => {
+    platformCalls.getSubmissionCount(_tournamentAddress).then(function (result) {
+      resolve(result)
+    }).catch((err) => {
+      console.log('Not able to retrieve submission count. ' + err)
+    })
+  })
+}
+
+tournamentController.getSubmissionCount = function (_tournamentAddress) {
+  return new Promise((resolve, reject) => {
+    platformCalls.getSubmissionCount(_tournamentAddress).then(function (result) {
+      resolve(result)
+    }).catch((err) => {
+      console.log('Not able to retrieve submission count. ' + err)
+    })
+  })
+}
+
 module.exports = tournamentController
