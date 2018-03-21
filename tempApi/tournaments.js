@@ -8,8 +8,6 @@ Copyright Nanome Inc 2018
 const express = require('express')
 const router = express.Router()
 
-const ethPlatform = require('../api/controllers/eth/platformCalls')
-
 // Return a list of all tournaments
 router.get('/', (req, res, next) => {
   var tournaments = {

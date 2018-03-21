@@ -6,7 +6,7 @@ Copyright Nanome Inc 2018
 */
 
 const express = require('express')
-const ethPlatform = require('../controllers/eth/platformCalls')
+const ethPlatform = require('../controllers/gateway/platformCalls')
 const tournamentController = require('../controllers/tournamentController')
 const router = express.Router()
 

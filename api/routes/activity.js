@@ -8,7 +8,7 @@ Copyright Nanome Inc 2018
 const express = require('express')
 const router = express.Router()
 
-const ethPlatform = require('../controllers/eth/platformCalls')
+const ethPlatform = require('../controllers/gateway/platformCalls')
 
 // Return a message that this route handles activity calls
 // TODO return the landing page events to the UI

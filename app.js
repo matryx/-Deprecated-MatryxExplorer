@@ -6,7 +6,7 @@ const cors = require('cors')
 require('dotenv').config()
 
 // process.env.DB_HOST
-const externalApiCalls = require('./api/controllers/eth/externalApiCalls')
+const externalApiCalls = require('./api/controllers/gateway/externalApiCalls')
 
 // Routes
 const platformRoutes = require('./api/routes/platform')

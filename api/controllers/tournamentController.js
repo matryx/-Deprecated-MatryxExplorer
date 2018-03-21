@@ -8,8 +8,8 @@ Nanome 2018
 /*
 Imports
 */
-const externalApiCalls = require('./eth/externalApiCalls')
-const platformCalls = require('./eth/platformCalls')
+const externalApiCalls = require('./gateway/externalApiCalls')
+const platformCalls = require('./gateway/platformCalls')
 
 var tournamentController = {}
 

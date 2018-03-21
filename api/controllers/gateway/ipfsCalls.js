@@ -1,5 +1,5 @@
 /*
-The Matryx Platform Smart Contract interaction file
+The MatryxExplorer IPFS calls file
 
 authors - sam@nanome.ai
 Nanome 2018
@@ -9,21 +9,7 @@ const http = require('http')
 const fetch = require('node-fetch')
 
 var externalApiCalls = {}
-
-// externalApiCalls.platformInfoApiCall = function () {
-//             return fetch('http://health.matryx.ai/latestPlatformInfo').then(results =>{ return results.json()})
-//             };
-
-//
-// externalApiCalls.platformInfoApiCall = async function() {
-//     try{
-//         let data = await fetch('http://health.matryx.ai/latestPlatformInfo');
-//         return data;
-//     }
-//     catch{
-//
-//     }
-// };
+ipfsURL = 'https://ipfs.io/ipfs/'
 
 externalApiCalls.platformInfoApiCall = async function () {
   try {

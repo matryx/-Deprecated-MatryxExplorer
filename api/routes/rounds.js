@@ -8,7 +8,7 @@ Copyright Nanome Inc 2018
 const express = require('express')
 const router = express.Router()
 
-const ethPlatform = require('../controllers/eth/platformCalls')
+const ethPlatform = require('../controllers/gateway/platformCalls')
 
 // Return a list of all rounds
 router.get('/', (req, res, next) => {
@@ -38,7 +38,6 @@ router.get('/address/:roundAddress', (req, res, next) => {
     })
   }
 })
-
 
 // router.post('/', (req, res, next) => {
 //     res.status(200).json({
