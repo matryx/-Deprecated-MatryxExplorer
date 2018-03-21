@@ -11,7 +11,7 @@ Imports
 const externalApiCalls = require('./gateway/externalApiCalls')
 const platformCalls = require('./gateway/platformCalls')
 
-var submissionController = {}
+let submissionController = {}
 
 submissionController.getSubmissionCount = function (_submissionAddress) {
   return new Promise((resolve, reject) => {

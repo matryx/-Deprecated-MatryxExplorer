@@ -8,7 +8,7 @@ Nanome 2018
 const http = require('http')
 const fetch = require('node-fetch')
 
-var externalApiCalls = {}
+let externalApiCalls = {}
 ipfsURL = 'https://ipfs.io/ipfs/'
 
 // externalApiCalls.platformInfoApiCall = function () {

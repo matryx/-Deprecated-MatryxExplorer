@@ -50,7 +50,7 @@ console.log(matryxPlatformContract.tournamentCount().c)
 
 // TODO Error handling when no chain is attached ^
 
-var platformCalls = {}
+let platformCalls = {}
 
 /*
 Tournament Calls

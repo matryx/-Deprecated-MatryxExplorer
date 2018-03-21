@@ -7,7 +7,7 @@ require('dotenv').config()
 
 // process.env.DB_HOST
 const externalApiCalls = require('./api/controllers/gateway/externalApiCalls')
-
+const ipfsCalls = require('./api/controllers/gateway/ipfsCalls')
 // Routes
 const platformRoutes = require('./api/routes/platform')
 const tournamentRoutes = require('./api/routes/tournaments')

@@ -11,7 +11,7 @@ Imports
 const externalApiCalls = require('./gateway/externalApiCalls')
 const platformCalls = require('./gateway/platformCalls')
 
-var tournamentController = {}
+let tournamentController = {}
 
 tournamentController.count = function () {
   return new Promise((resolve, reject) => {

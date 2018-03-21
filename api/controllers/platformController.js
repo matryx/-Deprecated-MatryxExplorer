@@ -12,7 +12,7 @@ const externalApiCalls = require('./gateway/externalApiCalls')
 const platformCalls = require('./gateway/platformCalls')
 const platformInfo = require('../../data/abi/v2/platform')
 
-var platformController = {}
+let platformController = {}
 
 platformController.latestPlatformInfo = function () {
   console.log(platformInfo)

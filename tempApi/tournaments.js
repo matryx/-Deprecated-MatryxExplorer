@@ -10,7 +10,7 @@ const router = express.Router()
 
 // Return a list of all tournaments
 router.get('/', (req, res, next) => {
-  var tournaments = {
+  let tournaments = {
     'tournaments': [
       {
         'tournamentTitle': 'Solve Aids',
@@ -61,7 +61,7 @@ router.get('/', (req, res, next) => {
 // Return the tournament details for a specific tournament
 router.get('/id/:tournamentID', (req, res, next) => {
   const id = req.params.tournamentID
-  var tournamentDetails = {
+  let tournamentDetails = {
     'tournamentTitle': 'Solve Aids',
     'tournamentAddress': '0xe665Dd2C090c7ceFD5C40cb9de00830108A62722',
     'mtx': '200000.00000',
@@ -105,7 +105,7 @@ router.get('/id/:tournamentID', (req, res, next) => {
 // Return the tournament details for a specific tournament
 router.get('/address/:tournamentAddress', (req, res, next) => {
   const address = req.params.tournamentAddress
-  var tournamentDetails = {
+  let tournamentDetails = {
     'tournamentTitle': 'Solve Aids',
     'tournamentAddress': '0xe665Dd2C090c7ceFD5C40cb9de00830108A62722',
     'mtx': '200000.00000',

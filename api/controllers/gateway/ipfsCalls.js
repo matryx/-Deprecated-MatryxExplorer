@@ -3,26 +3,33 @@ The MatryxExplorer IPFS calls file
 
 authors - sam@nanome.ai
 Nanome 2018
+
+https://github.com/ipfs/js-ipfs#use-in-nodejs
 */
 
 const http = require('http')
 const fetch = require('node-fetch')
+const IPFS = require('ipfs')
 
-var externalApiCalls = {}
-ipfsURL = 'https://ipfs.io/ipfs/'
+const ipfsNode = new IPFS()
 
-externalApiCalls.platformInfoApiCall = async function () {
-  try {
-    const response = await fetch('http://health.matryx.ai/latestPlatformInfo')
-        // console.log(await response.json());
-    return response.json()
-  } catch (err) {
-    console.log('API fetch for platform address and ABI failed ', err)
-  }
-}
+let ipfsURL = 'https://ipfs.io/ipfs/'
+let ipfsPath = 'QmWaMszSWfs7gp6o3UpvwmSd1Rp9cU1TQsXMXq7sxHJRd7'
 
-externalApiCalls.getIpfsData = function (_ipfsHash) {
+console.log(ipfsNode)
+
+// // This should work but it doesnt.....?
+// ipfsNode.files.cat(ipfsPath, function (err, file) {
+//   if (err) {
+//     throw err
+//   }
+//   console.log(file.toString('utf8'))
+// })
+
+let ipfsCalls = {}
+
+ipfsCalls.getIpfsData = function (_ipfsHash) {
   return 'IPFS Hash data that gets returned'
 }
 
-module.exports = externalApiCalls
+module.exports = ipfsCalls

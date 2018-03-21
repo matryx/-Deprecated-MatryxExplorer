@@ -18,7 +18,7 @@ router.get('/', (req, res, next) => {
 // Return the tournament details for a specific tournament
 router.get('/id/:submissionID/', (req, res, next) => {
   const id = req.params.submissionID
-  var submissionDetails = {
+  let submissionDetails = {
     'submissionTitle': "Sam's Submission",
     'submissionAddress': '0x15528Fc3CFf56b4667f988C699ec5983030Ce841',
     'submissionAuthor': '0x15528Fc3CFf56b4667f988C699ec5983030Ce842',
@@ -63,7 +63,7 @@ router.get('/id/:submissionID/', (req, res, next) => {
 // Return the tournament details for a specific tournament
 router.get('/address/:submissionAddress', (req, res, next) => {
   const address = req.params.submissionAddress
-  var submissionAddress = {
+  let submissionAddress = {
     'submissionTitle': "Sam's Submission",
     'submissionAddress': '0x15528Fc3CFf56b4667f988C699ec5983030Ce841',
     'submissionAuthor': '0x15528Fc3CFf56b4667f988C699ec5983030Ce842',

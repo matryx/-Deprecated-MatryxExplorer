@@ -10,7 +10,7 @@ const router = express.Router()
 
 // Return a list of all tournaments
 router.get('/', (req, res, next) => {
-  var activity = {
+  let activity = {
     'activity':
     [
       {

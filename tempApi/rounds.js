@@ -19,7 +19,7 @@ router.get('/', (req, res, next) => {
 // TODO destroy this and put in the correct one
 router.get('/id/:tournamentAddress/round/1', (req, res, next) => {
   const id = req.params.tournamentAddress
-  var roundDetails = {
+  let roundDetails = {
     'title': 'Suborbital Spaceplane Airfoil Design',
     'bounty': 100,
     'description': 'The process of airfoil design proceeds from a knowledge of \
@@ -56,7 +56,7 @@ router.get('/id/:tournamentAddress/round/1', (req, res, next) => {
 router.get('/id/:roundId', (req, res, next) => {
   const address = req.params.roundId
   // TODO fix this
-  var roundDetails = {
+  let roundDetails = {
     'title': 'Suborbital Spaceplane Airfoil Design',
     'bounty': 100,
     'description': 'The process of airfoil design proceeds from a knowledge of \
@@ -91,7 +91,7 @@ router.get('/id/:roundId', (req, res, next) => {
 router.get('/address/:roundAddress', (req, res, next) => {
   const address = req.params.roundAddress
   // TODO fix this
-  var roundDetails = {
+  let roundDetails = {
     'title': 'Suborbital Spaceplane Airfoil Design',
     'bounty': 100,
     'description': 'The process of airfoil design proceeds from a knowledge of \
