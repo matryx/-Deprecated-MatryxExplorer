@@ -8,6 +8,8 @@ Copyright Nanome Inc 2018
 const express = require('express')
 const ethPlatform = require('../controllers/gateway/platformCalls')
 const tournamentController = require('../controllers/tournamentController')
+
+const tournamentAbiLatest = require('../../data/abi/v2/tournament')
 const router = express.Router()
 
 // Return a confirmation the API is live
@@ -15,6 +17,23 @@ router.get('/', (req, res, next) => {
   res.status(200).json({
     message: 'handling requests to /tournaments'
   })
+})
+
+// Return a confirmation the API is live
+router.get('/getAbi/:version', (req, res, next) => {
+  let version = req.params.version
+  try {
+    let tAbi = require('../../data/abi/' + version + '/tournament')
+    res.status(200).json({
+      abi: tAbi
+    })
+  } catch (err) {
+    console.log('Error yo')
+    res.status(200).json({
+      errorMessage: 'Sorry, that version does not exist.',
+      error: err
+    })
+  }
 })
 
 // Return number of tournaments

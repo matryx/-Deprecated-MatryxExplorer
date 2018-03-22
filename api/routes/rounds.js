@@ -19,6 +19,23 @@ router.get('/', (req, res, next) => {
   })
 })
 
+// Return a confirmation the API is live
+router.get('/getAbi/:version', (req, res, next) => {
+  let version = req.params.version
+  try {
+    let rAbi = require('../../data/abi/' + version + '/round')
+    res.status(200).json({
+      abi: rAbi
+    })
+  } catch (err) {
+    console.log('Error yo')
+    res.status(200).json({
+      errorMessage: 'Sorry, that version does not exist.',
+      error: err
+    })
+  }
+})
+
 // Return the tournament details for a specific tournament
 router.get('/id/:roundId', (req, res, next) => {
   const id = req.params.roundId

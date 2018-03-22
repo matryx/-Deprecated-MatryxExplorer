@@ -21,6 +21,23 @@ router.get('/', (req, res, next) => {
   })
 })
 
+// Return a confirmation the API is live
+router.get('/getAbi/:version', (req, res, next) => {
+  let version = req.params.version
+  try {
+    let sAbi = require('../../data/abi/' + version + '/submission')
+    res.status(200).json({
+      abi: sAbi
+    })
+  } catch (err) {
+    console.log('Error yo')
+    res.status(200).json({
+      errorMessage: 'Sorry, that version does not exist.',
+      error: err
+    })
+  }
+})
+
 // Return the submission details for a specific submission address
 router.get('/address/:submissionAddress', (req, res, next) => {
   const address = req.params.submissionAddress
