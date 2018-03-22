@@ -10,6 +10,7 @@ Imports
 */
 const externalApiCalls = require('./gateway/externalApiCalls')
 const platformCalls = require('./gateway/platformCalls')
+const ipfsCalls = require('./gateway/ipfsCalls')
 
 let submissionController = {}
 
@@ -43,6 +44,30 @@ submissionController.getSubmissionOwnerByAddress = function (_submissionAddress)
       resolve(result)
     }).catch((err) => {
       console.log('Not able to retrieve submission owner. ' + err)
+    })
+  })
+}
+
+submissionController.getIpfsDataForSubmission = function (_submissionAddress, _ipfsHash) {
+  return new Promise((resolve, reject) => {
+    console.log('Making gateway call...')
+    ipfsCalls.getIpfsData(_ipfsHash).then(function (result) {
+      console.log(result)
+      resolve(result)
+    }).catch((err) => {
+      console.log('Not able to retrieve submission owner. ' + err)
+    })
+  })
+}
+
+submissionController.uploadToIpfs = function (_files) {
+  return new Promise((resolve, reject) => {
+    console.log('Making gateway call...')
+    ipfsCalls.uploadToIpfs(_files).then(function (result) {
+      console.log(result)
+      resolve(result)
+    }).catch((err) => {
+      console.log('Not able to upload to IPFS. ' + err)
     })
   })
 }

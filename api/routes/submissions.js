@@ -11,6 +11,8 @@ const router = express.Router()
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 const ethPlatform = require('../controllers/gateway/platformCalls')
 const submissionController = require('../controllers/submissionController')
+const ipfsCalls = require('../controllers/gateway/ipfsCalls')
+
 // Return a message showing this endpoint series handles submission requests
 router.get('/', (req, res, next) => {
   res.status(200).json({
@@ -66,7 +68,22 @@ router.get('/address/:submissionAddress/getIpfsData/:ipfsHash', (req, res, next)
   const ipfsHash = req.params.ipfsHash
   console.log('Retrieving submission data from IPFS using externalAddress: ' + ipfsHash)
   // submissionController.getSubmissionOwnerByAddress(address).then(function (result) {
-  externalApiCalls.davidIPFS(ipfsHash).then(function (result) {
+  submissionController.getIpfsDataForSubmission(address, ipfsHash).then(function (result) {
+    res.status(200).json({
+      hashResult: result
+    })
+  })
+})
+
+// Return the submission owner/author for a specific submission address
+router.post('/address/:submissionAddress/uploadToIpfs', (req, res, next) => {
+  const address = req.params.submissionAddress
+
+  // TODO get the req files and description etc
+  // const _file = req.body.description
+
+  console.log('Uploading files to IPFS')
+  submissionController.uploadToIpfs(address).then(function (result) {
     res.status(200).json({
       hashResult: result
     })

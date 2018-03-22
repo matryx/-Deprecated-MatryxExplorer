@@ -10,26 +10,43 @@ https://github.com/ipfs/js-ipfs#use-in-nodejs
 const http = require('http')
 const fetch = require('node-fetch')
 const IPFS = require('ipfs')
+const series = require('async/series')
 
 const ipfsNode = new IPFS()
 
+// Upload the text
+
 let ipfsURL = 'https://ipfs.io/ipfs/'
-let ipfsPath = 'QmWaMszSWfs7gp6o3UpvwmSd1Rp9cU1TQsXMXq7sxHJRd7'
-
-console.log(ipfsNode)
-
-// // This should work but it doesnt.....?
-// ipfsNode.files.cat(ipfsPath, function (err, file) {
-//   if (err) {
-//     throw err
-//   }
-//   console.log(file.toString('utf8'))
-// })
 
 let ipfsCalls = {}
 
+// TODO: Add file navigation and extraction for correct data and file response
 ipfsCalls.getIpfsData = function (_ipfsHash) {
-  return 'IPFS Hash data that gets returned'
+  console.log('Gateway call recieved. Hitting IPFS Node for data at hash: ' + _ipfsHash)
+  return new Promise((resolve, reject) => {
+    ipfsNode.files.cat(_ipfsHash, (err, data) => {
+      if (err) { reject(err) }
+
+      console.log('\nIPFS Node Call Completed. File content:')
+      console.log(data.toString('utf8'))
+
+      resolve(data.toString('utf8'))
+    })
+  })
+}
+
+ipfsCalls.uploadToIpfs = function (_file) {
+  console.log('Gateway call recieved. Hitting IPFS Node for data hash')
+  return new Promise((resolve, reject) => {
+    ipfsNode.files.add({
+      path: 'hello.txt',
+      content: Buffer.from('Hello World 101')
+    }, (err, filesAdded) => {
+      if (err) { return cb(err) }
+      console.log('\nAdded file:', filesAdded[0].path, filesAdded[0].hash)
+      resolve(filesAdded[0].hash)
+    })
+  })
 }
 
 module.exports = ipfsCalls
