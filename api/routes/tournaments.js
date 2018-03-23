@@ -9,7 +9,6 @@ const express = require('express')
 const ethPlatform = require('../controllers/gateway/platformCalls')
 const tournamentController = require('../controllers/tournamentController')
 
-const tournamentAbiLatest = require('../../data/abi/v2/tournament')
 const router = express.Router()
 
 // Return a confirmation the API is live
