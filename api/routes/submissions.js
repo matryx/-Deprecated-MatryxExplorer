@@ -7,11 +7,14 @@ Copyright Nanome Inc 2018
 
 const express = require('express')
 const router = express.Router()
-
+const bodyParser = require('body-parser')
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 const ethPlatform = require('../controllers/gateway/platformCalls')
 const submissionController = require('../controllers/submissionController')
 const ipfsCalls = require('../controllers/gateway/ipfsCalls')
+
+let jsonParser = bodyParser.json({ extended: true })
+let bodyParserUrlEncoded = bodyParser.urlencoded({ extended: true })
 
 // Return a message showing this endpoint series handles submission requests
 router.get('/', (req, res, next) => {
@@ -93,14 +96,16 @@ router.get('/address/:submissionAddress/getIpfsData/:ipfsHash', (req, res, next)
 })
 
 // Return the submission owner/author for a specific submission address
-router.post('/address/:submissionAddress/uploadToIpfs', (req, res, next) => {
+router.post('/address/:submissionAddress/uploadToIpfs', jsonParser, (req, res, next) => {
+  if (!req.body) return res.sendStatus(400)
+  console.log(req.body)
   const address = req.params.submissionAddress
 
   // TODO get the req files and description etc
-  // const _file = req.body.description
+  const _description = req.body.description
 
   console.log('Uploading files to IPFS')
-  submissionController.uploadToIpfs(address).then(function (result) {
+  submissionController.uploadToIpfs(_description).then(function (result) {
     res.status(200).json({
       hashResult: result
     })

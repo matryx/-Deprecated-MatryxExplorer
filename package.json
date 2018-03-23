@@ -29,13 +29,14 @@
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
+    "ipfs": "^0.28.2",
     "morgan": "^1.9.0",
     "node-fetch": "^2.1.1",
     "nodemon": "^1.17.2",
     "npm": "^5.7.1",
     "request": "^2.85.0",
-    "web3": "github:ethereum/web3.js",
-    "ipfs": "^0.28.2"
+    "tmp": "0.0.33",
+    "web3": "github:ethereum/web3.js"
   },
   "devDependencies": {
     "babel-plugin-captains-log": "^1.0.1",

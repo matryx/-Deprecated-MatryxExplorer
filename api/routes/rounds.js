@@ -28,7 +28,7 @@ router.get('/getAbi/:version', (req, res, next) => {
       abi: rAbi
     })
   } catch (err) {
-    console.log('Error yo')
+    console.log('Error loading the ABI')
     res.status(200).json({
       errorMessage: 'Sorry, that version does not exist.',
       error: err
