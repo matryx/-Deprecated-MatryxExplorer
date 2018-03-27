@@ -25,22 +25,22 @@ router.get('/', (req, res, next) => {
 router.get('/getLatestInfo', (req, res, next) => {
   response = platformController.latestPlatformInfo()
   res.status(200).json({
-    platformAddress: response.address,
-    platformAbi: response.abi
+    address: response.address,
+    abi: response.abi
   })
 })
 
 router.get('/getLatestAddress', (req, res, next) => {
   response = platformController.latestPlatformInfo()
   res.status(200).json({
-    platformAddress: response.address
+    address: response.address
   })
 })
 
 router.get('/getLatestAbi', (req, res, next) => {
   response = platformController.latestPlatformInfo()
   res.status(200).json({
-    platformAbi: response.abi
+    abi: response.abi
   })
 })
 

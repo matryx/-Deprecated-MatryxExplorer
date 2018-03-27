@@ -265,15 +265,6 @@ router.post('/address/:submissionAddress/uploadToIpfs', (req, res, next) => {
             })
           }
         })
-
-        // TODO: IPFS Call for the entire folder
-
-        // res.writeHead(200, {'content-type': 'multipart/form-data'})
-        // res.write('received fields:\n\n ' + util.inspect(fields))
-        // res.write('\n\n')
-        // // res.write(descriptionHash)
-        // res.write('\n\n')
-        // res.end('received files:\n\n ' + util.inspect(files))
       })
   form.parse(req)
 })
@@ -281,5 +272,77 @@ router.post('/address/:submissionAddress/uploadToIpfs', (req, res, next) => {
 /*
 These are are experiemental
 */
+
+// This can handle a file and the description and stores the file upload AND the description into a temp folder which is perfect, and passes everything to IPFS and gets back a hash
+router.post('/address/:submissionAddress/uploadToIpfsOneFile', (req, res, next) => {
+  var form = new formidable.IncomingForm(),
+    files = [],
+    fields = []
+
+  var tmpobj = tmp.dirSync()
+  console.log('Dir: ', tmpobj.name)
+
+  form.uploadDir = tmpobj.name
+
+  // tmp.dir(function _tempDirCreated (err, path, cleanupCallback) {
+  //   if (err) throw err
+  //
+  //   console.log('Dir: ', path)
+  //   form.uploadDir = path
+  // })
+
+// TODO: Throw this all in a try/catch block
+  form
+      .on('field', function (field, value) {
+        // console.log(field, value)
+        fields.push([field, value])
+      })
+      .on('file', function (field, file) {
+        // console.log(field, file)
+        files.push([field, file])
+      })
+      .on('progress', function (bytesReceived, bytesExpected) {
+        var percent = (bytesReceived / bytesExpected * 100) | 0
+        console.log('Uploading: %' + percent + '\r')
+      })
+      .on('end', function () {
+          // Logic for handling the files + IPFS
+        console.log('-> Upload Complete')
+
+        let tempDirectory = tmpobj.name
+
+        // console.log(util.inspect(files[0][1].path)) // This is where the first file was stored
+        // console.log(fields[0][0]) // This is if the first field is 'description', it returns 'description' and fields[0][1] is the description content
+
+        // Check to see if there is a description header
+        fields.forEach(function (field) {
+          if (field[0] == 'description') {
+            console.log(field[1]) // This is the description content
+            descriptionContent = Buffer.from(field[1])
+            descriptionPath = tempDirectory + '/description.txt'
+            console.log(descriptionPath)
+            // Store the descriptionContent into the tempFolder
+            ipfsCalls.storeDescriptionToTmp(descriptionContent, descriptionPath).then(function (result) {
+              console.log(result)
+
+              // TODO: callIPFS upload the whole folder in the tempDirectory and get back a hash
+              ipfsCalls.pushTmpFolderToIPFS(tempDirectory).then(function (ipfsHashResult) {
+                res.status(200).json({
+                  folderHash: ipfsHashResult
+                })
+              })
+            })
+          }
+        })
+        fs.readdir(tempDirectory, (err, files) => {
+          console.log('These are the files in the directory')
+          files.forEach(file => {
+            console.log(file)
+          })
+        })
+      })
+  form.parse(req)
+  // tmpobj.cleanupCallback()
+})
 
 module.exports = router

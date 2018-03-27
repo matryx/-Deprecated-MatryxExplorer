@@ -13,10 +13,11 @@ const Web3 = require('web3')
 const config = require('../../../config')
 const externalApiCalls = require('./externalApiCalls')
 const platformInfoV1 = require('../../../data/abi/v1/platform')
-const currentPlatformInfo = require('../../../data/abi/v2/platform')
 const tournamentAbi = require('../../../data/abi/v2/tournament')
 const submissionAbi = require('../../../data/abi/v2/submission')
 const roundAbi = require('../../../data/abi/v2/round')
+// const currentPlatformInfo = require('../../../data/abi/v2/platform')
+const currentPlatformInfo = require('../../../data/abi/dev/platform')
 
 /*
  Attach to the RPC

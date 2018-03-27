@@ -21,7 +21,7 @@ router.get('/', (req, res, next) => {
 router.get('/getAbi', (req, res, next) => {
   let tokenData = token
   res.status(200).json({
-    tokenAbi: tokenData.abi
+    abi: tokenData.abi
   })
 })
 
@@ -29,7 +29,7 @@ router.get('/getAbi', (req, res, next) => {
 router.get('/getAddress', (req, res, next) => {
   let tokenData = token
   res.status(200).json({
-    tokenAddress: tokenData.address
+    address: tokenData.address
   })
 })
 
@@ -38,8 +38,8 @@ router.get('/getLatestInfo', (req, res, next) => {
   let tokenData = token
 
   res.status(200).json({
-    tokenAddress: tokenData.address,
-    tokenAbi: tokenData.abi
+    address: tokenData.address,
+    abi: tokenData.abi
   })
 })
 

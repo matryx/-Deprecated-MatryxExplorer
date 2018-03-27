@@ -2,6 +2,430 @@
   "address": "0x6a85aa9547303d0acbb3f31d5cce3c42ca03885a",
   "abi": [
     {
+      "constant": true,
+      "inputs": [],
+      "name": "matryxTokenAddress",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_sender",
+          "type": "address"
+        }
+      ],
+      "name": "isOwner",
+      "outputs": [
+        {
+          "name": "_isOwner",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "bytes32"
+        },
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "tournamentByCategory",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "name": "categoryCount",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getOwner",
+      "outputs": [
+        {
+          "name": "_owner",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_queryID",
+          "type": "uint256"
+        },
+        {
+          "name": "_response",
+          "type": "uint256"
+        }
+      ],
+      "name": "storeQueryResponse",
+      "outputs": [
+        {
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "categories",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "allTournaments",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_query",
+          "type": "bytes32"
+        },
+        {
+          "name": "_sender",
+          "type": "address"
+        }
+      ],
+      "name": "Query",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "_matryxTokenAddress",
+          "type": "address"
+        },
+        {
+          "name": "_matryxPeerFactoryAddress",
+          "type": "address"
+        },
+        {
+          "name": "_matryxTournamentFactoryAddress",
+          "type": "address"
+        },
+        {
+          "name": "_matryxSubmissionTrustLibAddress",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_discipline",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "name": "_owner",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_tournamentAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_tournamentName",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "name": "_externalAddress",
+          "type": "bytes"
+        },
+        {
+          "indexed": false,
+          "name": "_MTXReward",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "_entryFee",
+          "type": "uint256"
+        }
+      ],
+      "name": "TournamentCreated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_owner",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_tournamentAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_tournamentName",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "name": "_externalAddress",
+          "type": "bytes"
+        },
+        {
+          "indexed": false,
+          "name": "_MTXReward",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "_entryFee",
+          "type": "uint256"
+        }
+      ],
+      "name": "TournamentOpened",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_tournamentAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_finalRoundNumber",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "_winningSubmissionAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_MTXReward",
+          "type": "uint256"
+        }
+      ],
+      "name": "TournamentClosed",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_entrant",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_tournamentAddress",
+          "type": "address"
+        }
+      ],
+      "name": "UserEnteredTournament",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "queryID",
+          "type": "string"
+        }
+      ],
+      "name": "QueryID",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "sender",
+          "type": "address"
+        }
+      ],
+      "name": "QueryPerformed",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "storedResponse",
+          "type": "uint256"
+        }
+      ],
+      "name": "StoredResponse",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "response",
+          "type": "uint256"
+        }
+      ],
+      "name": "ObtainedResponse",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "newResponse",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "oldResponse",
+          "type": "uint256"
+        }
+      ],
+      "name": "FailedToStore",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "id",
+          "type": "uint256"
+        }
+      ],
+      "name": "QueryID",
+      "type": "event"
+    },
+    {
       "constant": false,
       "inputs": [
         {
@@ -168,6 +592,47 @@
       "constant": false,
       "inputs": [
         {
+          "name": "_owner",
+          "type": "address"
+        },
+        {
+          "name": "_submission",
+          "type": "address"
+        }
+      ],
+      "name": "updateSubmissions",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_submissionAddress",
+          "type": "address"
+        },
+        {
+          "name": "_tournamentAddress",
+          "type": "address"
+        }
+      ],
+      "name": "removeSubmission",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
           "name": "_tournamentAddress",
           "type": "address"
         }
@@ -187,7 +652,7 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_discipline",
+          "name": "_category",
           "type": "string"
         },
         {
@@ -224,39 +689,12 @@
     },
     {
       "constant": false,
-      "inputs": [
-        {
-          "name": "_owner",
-          "type": "address"
-        },
-        {
-          "name": "_submission",
-          "type": "address"
-        }
-      ],
-      "name": "updateSubmissions",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "_submissionAddress",
-          "type": "address"
-        },
-        {
-          "name": "_tournamentAddress",
-          "type": "address"
-        }
-      ],
-      "name": "removeSubmission",
+      "inputs": [],
+      "name": "createPeer",
       "outputs": [
         {
           "name": "",
-          "type": "bool"
+          "type": "address"
         }
       ],
       "payable": false,
@@ -398,20 +836,6 @@
     {
       "constant": true,
       "inputs": [],
-      "name": "tournamentCount",
-      "outputs": [
-        {
-          "name": "_tournamentCount",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
       "name": "getTokenAddress",
       "outputs": [
         {
@@ -487,6 +911,39 @@
         {
           "name": "",
           "type": "address[]"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "tournamentCount",
+      "outputs": [
+        {
+          "name": "_tournamentCount",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_index",
+          "type": "uint256"
+        }
+      ],
+      "name": "getTournamentAtIndex",
+      "outputs": [
+        {
+          "name": "_tournamentAddress",
+          "type": "address"
         }
       ],
       "payable": false,
