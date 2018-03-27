@@ -300,6 +300,20 @@ platformCalls.getSubmissionCount = function (_tournamentAddress) {
   })
 }
 
+// Get the submission count for the tournament given the tournament address
+platformCalls.isTournamentEntrant = function (_tournamentAddress, _potentialEntrantAddress) {
+  return new Promise((resolve, reject) => {
+    tournamentContract = web3.eth.contract(tournamentAbi).at(_tournamentAddress)
+    tournamentContract.isEntrant(_potentialEntrantAddress, (err, res) => {
+      if (err) reject(err)
+      else {
+        console.log('The potential entrant at address:  ' + _potentialEntrantAddress + ' at tournament at address: ' + _tournamentAddress + ' is ' + res)
+        resolve(res)
+      }
+    })
+  })
+}
+
 // Activity Code
 
 /* Working Event example */

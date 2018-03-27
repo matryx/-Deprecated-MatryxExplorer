@@ -134,6 +134,18 @@ router.get('/address/:tournamentAddress/currentRound', (req, res, next) => {
   })
 })
 
+// Return if the potentantial address given is an entrant for a specific tournament
+router.get('/address/:tournamentAddress/isEntrant/:potentialEntrantAddress', (req, res, next) => {
+  const tournamentAddress = req.params.tournamentAddress
+  const potentialEntrantAddress = req.params.potentialEntrantAddress
+  tournamentController.isEntrant(tournamentAddress, potentialEntrantAddress).then(function (result) {
+    res.status(200).json({
+      isEntrant: result,
+      tournamentAddress: tournamentAddress
+    })
+  })
+})
+
 /*
 #################################
 These are all TEST or HELPER functions

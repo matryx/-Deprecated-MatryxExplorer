@@ -12,6 +12,7 @@ const fetch = require('node-fetch')
 const IPFS = require('ipfs')
 const series = require('async/series')
 const tmp = require('tmp')
+var fs = require('fs')
 
 const ipfsNode = new IPFS()
 
@@ -49,6 +50,47 @@ ipfsCalls.uploadDescriptionOnlyToIPFS = function (descriptionContent, descriptio
       if (err) { return cb(err) }
       console.log('\nAdded file:', filesAdded[0].path, filesAdded[0].hash)
       resolve(filesAdded[0].hash)
+    })
+  })
+}
+
+// Take in the description and the path and store it as description.txt in the path
+ipfsCalls.storeDescriptionToTmp = function (_description, _path) {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(_path, _description, function (err) {
+      if (err) {
+        return console.log(err)
+      }
+
+      console.log('The file was saved!' + '   path = ' + _path + '  description: ' + _description)
+      resolve(_path, _description)
+    })
+  })
+}
+
+ipfsCalls.pushTmpFolderToIPFS = function (tempDirectory) {
+  return new Promise((resolve, reject) => {
+    let ipfsFilesToUpload = []
+      // parse the tmp folder to grab all of the files in there
+    fs.readdir(tempDirectory, (err, files) => {
+      console.log('These are the files in the directory')
+      // Store them in the format that IPFS loves
+      files.forEach(file => {
+        let ipfsFile = {
+          path: tempDirectory + '/' + file,
+          content: Buffer.from(file)
+        }
+        // Add them to the array
+        ipfsFilesToUpload.push(ipfsFile)
+        console.log(file)
+      })
+      // Now make the IPFS calls
+      ipfsNode.files.add(ipfsFilesToUpload, (err, filesAdded) => {
+        if (err) { return cb(err) }
+        console.log('\nAdded file:', filesAdded[0].path, filesAdded[0].hash)
+        // Resolve all the hashes
+        resolve(filesAdded[0].hash)
+      })
     })
   })
 }

@@ -93,4 +93,18 @@ tournamentController.getLatestRound = function (_tournamentAddress) {
   })
 }
 
+tournamentController.isEntrant = function (_tournamentAddress, _potentialEntrantAddress) {
+  return new Promise((resolve, reject) => {
+    platformCalls.isTournamentEntrant(_tournamentAddress, _potentialEntrantAddress).then(function (result) {
+      resolve(result)
+    }).catch((err) => {
+      console.log('Not able to retrieve latest round. ' + err)
+    })
+  })
+}
+
+// TODO: Is entrant
+
+// TODO:  is creator
+
 module.exports = tournamentController
