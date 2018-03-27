@@ -30,7 +30,7 @@ ipfsCalls.getIpfsData = function (_ipfsHash) {
       if (err) { reject(err) }
 
       console.log('\nIPFS Node Call Completed. File content:')
-      console.log(data.toString('utf8'))
+      console.log(data.toString('utf8')) // This returns a URL
 
       resolve(data.toString('utf8'))
     })
