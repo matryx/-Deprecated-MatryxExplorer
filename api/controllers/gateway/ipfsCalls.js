@@ -36,6 +36,27 @@ ipfsCalls.getIpfsData = function (_ipfsHash) {
   })
 }
 
+// This is what is working for the file submission
+ipfsCalls.uploadDescriptionOnlyToIPFS = function (descriptionContent, descriptionPath) {
+  console.log('Gateway call recieved. Hitting IPFS Node for data hash')
+  return new Promise((resolve, reject) => {
+    ipfsNode.files.add({
+      path: descriptionPath,
+      content: descriptionContent
+
+      // TODO pin the files so they dont disappear after 24 hours
+    }, (err, filesAdded) => {
+      if (err) { return cb(err) }
+      console.log('\nAdded file:', filesAdded[0].path, filesAdded[0].hash)
+      resolve(filesAdded[0].hash)
+    })
+  })
+}
+
+/*
+EXPERIMENTAL FUNCTIONS
+*/
+
 ipfsCalls.uploadToIpfs = function (_description) {
   console.log('Gateway call recieved. Hitting IPFS Node for data hash')
   return new Promise((resolve, reject) => {
@@ -52,16 +73,6 @@ ipfsCalls.uploadToIpfs = function (_description) {
   })
 }
 
-// TODO: This is working but need to put it in the controller to handle the files right when they are received and pass the path as a input to ipfsCalls
-// tmp.dir(function _tempDirCreated (err, path, cleanupCallback) {
-//   if (err) throw err
-//
-//   console.log('Dir: ', path)
-//
-//   // Manual cleanup
-//   cleanupCallback()
-// })
-
 ipfsCalls.uploadFileToIpfs = function (_file) {
   console.log('Gateway call recieved. Hitting IPFS Node for data hash')
   return new Promise((resolve, reject) => {
@@ -75,5 +86,49 @@ ipfsCalls.uploadFileToIpfs = function (_file) {
     })
   })
 }
+
+/*
+HELPER FUNCTIONS AND NOTES
+*/
+
+/*
+
+//TODO: This is working but need to put it in the controller to handle the files right when they are received and pass the path as a input to ipfsCalls
+tmp.dir(function _tempDirCreated (err, path, cleanupCallback) {
+  if (err) throw err
+
+  console.log('Dir: ', path)
+
+  // Manual cleanup
+  cleanupCallback()
+})
+
+//https://github.com/danwrong/restler
+fs.stat("image.jpg", function(err, stats) {
+    restler.post("http://posttestserver.com/post.php", {
+        multipart: true,
+        data: {
+            "folder_id": "0",
+            "filename": restler.file("image.jpg", null, stats.size, null, "image/jpg")
+        }
+    }).on("complete", function(data) {
+        console.log(data);
+    });
+});
+
+// multipart request sending a 321567 byte long file using https
+rest.post('https://twaud.io/api/v1/upload.json', {
+  multipart: true,
+  username: 'danwrong',
+  password: 'wouldntyouliketoknow',
+  data: {
+    'sound[message]': 'hello from restler!',
+    'sound[file]': rest.file('doug-e-fresh_the-show.mp3', null, 321567, null, 'audio/mpeg')
+  }
+}).on('complete', function(data) {
+  console.log(data.audio_url);
+});
+
+*/
 
 module.exports = ipfsCalls

@@ -8,6 +8,7 @@ Nanome 2018
 /*
 Imports
 */
+
 const Web3 = require('web3')
 const config = require('../../../config')
 const externalApiCalls = require('./externalApiCalls')
@@ -46,7 +47,7 @@ matryxPlatformContract = web3.eth.contract(matryxPlatformAbi).at(matryxPlatformA
 // console.log(matryxPlatformContract.tournamentCount().call()) // fails "TypeError: this.provider.send is not a function"
 // console.log(matryxPlatformContract.methods.tournamentCount().call()) // ^TypeError: Cannot read property 'tournamentCount' of undefined
 // console.log(matryxPlatformContract.owner())
-console.log(matryxPlatformContract.tournamentCount().c)
+console.log('There are ' + matryxPlatformContract.tournamentCount().c[0] + ' tournaments on the Platform.')
 
 // TODO Error handling when no chain is attached ^
 

@@ -2,49 +2,7 @@
     {
       "constant": true,
       "inputs": [],
-      "name": "tournamentAddress",
-      "outputs": [
-        {
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "roundAddress",
-      "outputs": [
-        {
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "_reference",
-          "type": "address"
-        }
-      ],
-      "name": "addReference",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [],
-      "name": "getBalance",
+      "name": "approvedReferences",
       "outputs": [
         {
           "name": "",
@@ -52,7 +10,7 @@
         }
       ],
       "payable": false,
-      "stateMutability": "nonpayable",
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -75,41 +33,13 @@
       "type": "function"
     },
     {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "_referenceIndex",
-          "type": "uint256"
-        }
-      ],
-      "name": "removeReference",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "_title",
-          "type": "string"
-        }
-      ],
-      "name": "updateTitle",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
       "constant": true,
       "inputs": [],
-      "name": "getExternalAddress",
+      "name": "trustDelegate",
       "outputs": [
         {
           "name": "",
-          "type": "bytes32"
+          "type": "address"
         }
       ],
       "payable": false,
@@ -117,27 +47,32 @@
       "type": "function"
     },
     {
-      "constant": false,
-      "inputs": [
+      "constant": true,
+      "inputs": [],
+      "name": "approvalTrust",
+      "outputs": [
         {
-          "name": "_contributorIndex",
-          "type": "uint256"
+          "name": "",
+          "type": "uint128"
         }
       ],
-      "name": "removeContributor",
-      "outputs": [],
       "payable": false,
-      "stateMutability": "nonpayable",
+      "stateMutability": "view",
       "type": "function"
     },
     {
       "constant": true,
-      "inputs": [],
-      "name": "getReferences",
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "approvingPeers",
       "outputs": [
         {
           "name": "",
-          "type": "address[]"
+          "type": "address"
         }
       ],
       "payable": false,
@@ -176,25 +111,11 @@
       "constant": true,
       "inputs": [
         {
-          "name": "_requester",
-          "type": "address"
-        }
-      ],
-      "name": "isAccessible",
-      "outputs": [
-        {
           "name": "",
-          "type": "bool"
+          "type": "uint256"
         }
       ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "getAuthor",
+      "name": "missingReferences",
       "outputs": [
         {
           "name": "",
@@ -222,11 +143,189 @@
     {
       "constant": true,
       "inputs": [],
-      "name": "getTimeSubmitted",
+      "name": "totalReferenceCount",
       "outputs": [
         {
           "name": "",
           "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "totalPossibleTrust",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "_platformAddress",
+          "type": "address"
+        },
+        {
+          "name": "_tournamentAddress",
+          "type": "address"
+        },
+        {
+          "name": "_roundAddress",
+          "type": "address"
+        },
+        {
+          "name": "_title",
+          "type": "string"
+        },
+        {
+          "name": "_submissionOwner",
+          "type": "address"
+        },
+        {
+          "name": "_submissionAuthor",
+          "type": "address"
+        },
+        {
+          "name": "_externalAddress",
+          "type": "bytes"
+        },
+        {
+          "name": "_references",
+          "type": "address[]"
+        },
+        {
+          "name": "_contributors",
+          "type": "address[]"
+        },
+        {
+          "name": "_publicallyAccessibleDuringTournament",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getTournament",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getRound",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_requester",
+          "type": "address"
+        }
+      ],
+      "name": "isAccessible",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getTitle",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getAuthor",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getExternalAddress",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getReferences",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address[]"
         }
       ],
       "payable": false,
@@ -248,6 +347,210 @@
       "type": "function"
     },
     {
+      "constant": true,
+      "inputs": [],
+      "name": "getTimeSubmitted",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getTimeUpdated",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "makeExternallyAccessibleDuringTournament",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_title",
+          "type": "string"
+        }
+      ],
+      "name": "updateTitle",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_externalAddress",
+          "type": "bytes"
+        }
+      ],
+      "name": "updateExternalAddress",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_newTrustDelegate",
+          "type": "address"
+        }
+      ],
+      "name": "setTrustDelegate",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_reference",
+          "type": "address"
+        }
+      ],
+      "name": "addReference",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_reference",
+          "type": "address"
+        }
+      ],
+      "name": "addressIsFlagged",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        },
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_reference",
+          "type": "address"
+        }
+      ],
+      "name": "removeReference",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "receiveReferenceRequest",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "cancelReferenceRequest",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_reference",
+          "type": "address"
+        }
+      ],
+      "name": "approveReference",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_reference",
+          "type": "address"
+        }
+      ],
+      "name": "removeReferenceApproval",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_reference",
+          "type": "address"
+        }
+      ],
+      "name": "flagMissingReference",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_reference",
+          "type": "address"
+        }
+      ],
+      "name": "removeMissingReferenceFlag",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "constant": false,
       "inputs": [
         {
@@ -265,11 +568,34 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_externalAddress",
-          "type": "bytes32"
+          "name": "_contributorIndex",
+          "type": "uint256"
         }
       ],
-      "name": "updateExternalAddress",
+      "name": "removeContributor",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "getBalance",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "withdrawReward",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -279,20 +605,11 @@
       "constant": false,
       "inputs": [
         {
-          "name": "newOwner",
+          "name": "_recipient",
           "type": "address"
         }
       ],
-      "name": "transferOwnership",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [],
-      "name": "makeExternallyAccessibleDuringTournament",
+      "name": "withdrawReward",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -301,11 +618,11 @@
     {
       "constant": true,
       "inputs": [],
-      "name": "getTitle",
+      "name": "getTransferAmount",
       "outputs": [
         {
           "name": "",
-          "type": "string"
+          "type": "uint256"
         }
       ],
       "payable": false,
@@ -313,46 +630,12 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "name": "_tournamentAddress",
-          "type": "address"
-        },
-        {
-          "name": "_roundAddress",
-          "type": "address"
-        },
-        {
-          "name": "_title",
-          "type": "string"
-        },
-        {
-          "name": "_submissionAuthor",
-          "type": "address"
-        },
-        {
-          "name": "_externalAddress",
-          "type": "bytes32"
-        },
-        {
-          "name": "_references",
-          "type": "address[]"
-        },
-        {
-          "name": "_contributors",
-          "type": "address[]"
-        },
-        {
-          "name": "_timeSubmitted",
-          "type": "uint256"
-        },
-        {
-          "name": "_publicallyAccessibleDuringTournament",
-          "type": "bool"
-        }
-      ],
+      "constant": false,
+      "inputs": [],
+      "name": "deleteSubmission",
+      "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
-      "type": "constructor"
+      "type": "function"
     }
   ]

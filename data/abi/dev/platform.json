@@ -1,5 +1,5 @@
 {
-  "address": "0x0b38f887c683cb76c93e256a4feff7ef26710e32",
+  "address": "0x57dbd74c08207baa4c464386dcf2f857dd55512c",
   "abi":[
     {
       "constant": true,
@@ -246,7 +246,7 @@
         {
           "indexed": false,
           "name": "_externalAddress",
-          "type": "bytes32"
+          "type": "bytes"
         },
         {
           "indexed": false,
@@ -283,7 +283,7 @@
         {
           "indexed": false,
           "name": "_externalAddress",
-          "type": "bytes32"
+          "type": "bytes"
         },
         {
           "indexed": false,
@@ -442,7 +442,7 @@
         },
         {
           "name": "_externalAddress",
-          "type": "bytes32"
+          "type": "bytes"
         },
         {
           "name": "_MTXReward",
@@ -661,7 +661,7 @@
         },
         {
           "name": "_externalAddress",
-          "type": "bytes32"
+          "type": "bytes"
         },
         {
           "name": "_BountyMTX",
@@ -721,7 +721,7 @@
       "type": "function"
     },
     {
-      "constant": false,
+      "constant": true,
       "inputs": [
         {
           "name": "_sender",
@@ -736,11 +736,11 @@
         }
       ],
       "payable": false,
-      "stateMutability": "nonpayable",
+      "stateMutability": "view",
       "type": "function"
     },
     {
-      "constant": false,
+      "constant": true,
       "inputs": [
         {
           "name": "_peer",
@@ -759,7 +759,7 @@
         }
       ],
       "payable": false,
-      "stateMutability": "nonpayable",
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -851,6 +851,20 @@
       "constant": true,
       "inputs": [],
       "name": "getSubmissionTrustLibrary",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getRoundLibAddress",
       "outputs": [
         {
           "name": "",

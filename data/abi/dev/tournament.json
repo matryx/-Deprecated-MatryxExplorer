@@ -1,8 +1,50 @@
 [
     {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_submissionAddress",
+          "type": "address"
+        }
+      ],
+      "name": "invokeSubmissionCreatedEvent",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_submissionAddress",
+          "type": "address"
+        },
+        {
+          "name": "_author",
+          "type": "address"
+        }
+      ],
+      "name": "removeSubmission",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "constant": true,
-      "inputs": [],
-      "name": "tournamentOpen",
+      "inputs": [
+        {
+          "name": "_sender",
+          "type": "address"
+        }
+      ],
+      "name": "isEntrant",
       "outputs": [
         {
           "name": "",
@@ -14,20 +56,173 @@
       "type": "function"
     },
     {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "_entrantAddress",
-          "type": "address"
-        }
-      ],
-      "name": "enterUserInTournament",
+      "constant": true,
+      "inputs": [],
+      "name": "isOpen",
       "outputs": [
         {
-          "name": "success",
+          "name": "",
           "type": "bool"
         }
       ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "isInReview",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "roundIsOpen",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getPlatform",
+      "outputs": [
+        {
+          "name": "_platformAddress",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getExternalAddress",
+      "outputs": [
+        {
+          "name": "_externalAddress",
+          "type": "bytes"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "currentRound",
+      "outputs": [
+        {
+          "name": "_currentRound",
+          "type": "uint256"
+        },
+        {
+          "name": "_currentRoundAddress",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "mySubmissions",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "submissionCount",
+      "outputs": [
+        {
+          "name": "_submissionCount",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "entrantCount",
+      "outputs": [
+        {
+          "name": "_entrantCount",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_title",
+          "type": "string"
+        }
+      ],
+      "name": "setTitle",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_externalAddress",
+          "type": "bytes"
+        }
+      ],
+      "name": "setExternalAddress",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_entryFee",
+          "type": "uint256"
+        }
+      ],
+      "name": "setEntryFee",
+      "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
@@ -41,6 +236,34 @@
         }
       ],
       "name": "setNumberOfRounds",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_discipline",
+          "type": "string"
+        }
+      ],
+      "name": "setDiscipline",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_submissionAddress",
+          "type": "address"
+        }
+      ],
+      "name": "chooseWinner",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
@@ -69,54 +292,11 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_submissionAddress",
-          "type": "address"
-        }
-      ],
-      "name": "invokeSubmissionCreatedEvent",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "_sender",
-          "type": "address"
-        }
-      ],
-      "name": "isEntrant",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "getExternalAddress",
-      "outputs": [
-        {
-          "name": "_externalAddress",
-          "type": "bytes32"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
           "name": "_duration",
+          "type": "uint256"
+        },
+        {
+          "name": "_reviewPeriod",
           "type": "uint256"
         }
       ],
@@ -127,65 +307,52 @@
       "type": "function"
     },
     {
-      "constant": true,
-      "inputs": [],
-      "name": "submissionCount",
-      "outputs": [
-        {
-          "name": "_submissionCount",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "currentRound",
-      "outputs": [
-        {
-          "name": "_currentRound",
-          "type": "uint256"
-        },
-        {
-          "name": "_currentRoundAddress",
-          "type": "address"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "constant": false,
       "inputs": [
         {
-          "name": "_submissionIndex",
-          "type": "uint256"
+          "name": "_entrantAddress",
+          "type": "address"
         }
       ],
-      "name": "chooseWinner",
-      "outputs": [],
+      "name": "enterUserInTournament",
+      "outputs": [
+        {
+          "name": "success",
+          "type": "bool"
+        }
+      ],
       "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
+      "constant": true,
+      "inputs": [],
+      "name": "getEntryFee",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "constant": false,
       "inputs": [
         {
-          "name": "_name",
+          "name": "_title",
           "type": "string"
         },
         {
-          "name": "_author",
+          "name": "_owner",
           "type": "address"
         },
         {
           "name": "_externalAddress",
-          "type": "bytes32"
+          "type": "bytes"
         },
         {
           "name": "_contributors",
@@ -209,71 +376,6 @@
       ],
       "payable": false,
       "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [],
-      "name": "openTournament",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "roundIsOpen",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "_submissionIndex",
-          "type": "uint256"
-        }
-      ],
-      "name": "closeTournament",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "mySubmissions",
-      "outputs": [
-        {
-          "name": "_submissions",
-          "type": "address[]"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "getEntryFee",
-      "outputs": [
-        {
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
       "type": "function"
     }
   ]
