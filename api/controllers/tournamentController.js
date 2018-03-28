@@ -29,9 +29,12 @@ tournamentController.getAllTournaments = function () {
       result.forEach((tournament) => {
           // Loop through each response and get the IPFS hash
           // Make an IPFS call to retrieve the description and/or image
-        let description = externalApiCalls.getIpfsData(tournament.externalAddress)
+        // let description = externalApiCalls.getIpfsData(tournament.externalAddress)
           // Pass the descriptions back into the responses
-        tournament.tournamentDescription = description
+        tournament.tournamentDescription = 'The description should be here, but since max did not pass in the correct IPFS hash I cant get it for you. Sorry, dude'
+        tournament.externalAddress = 'QmYdbXBhekWjoTu3kKYb7NLJFy6bG9USCP6TVAPm8hhQ7e'
+        tournament.category = 'Other'
+
         responses.push(tournament)
       })
       resolve(result)

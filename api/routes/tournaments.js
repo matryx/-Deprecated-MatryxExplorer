@@ -35,6 +35,23 @@ router.get('/getAbi/:version', (req, res, next) => {
   }
 })
 
+// Return a confirmation the API is live
+router.get('/getLatestAbi', (req, res, next) => {
+  let version = req.params.version
+  try {
+    let tAbi = require('../../data/abi/' + v2 + '/tournament')
+    res.status(200).json({
+      abi: tAbi
+    })
+  } catch (err) {
+    console.log('Error yo')
+    res.status(200).json({
+      errorMessage: 'Sorry, that version does not exist.',
+      error: err
+    })
+  }
+})
+
 // Return number of tournaments
 router.get('/count', (req, res, next) => {
   tournamentController.count().then(function (result) {
@@ -157,6 +174,21 @@ These are all TEST or HELPER functions
 //         message: 'handling POST requests to /products'
 //     });
 // });
+
+/*
+#################################
+These are all EXPERIMENTAL functions
+#################################
+*/
+
+// Return if the potentantial address given is an entrant for a specific tournament
+router.get('/testPublicVarGetter', (req, res, next) => {
+  ethPlatform.testPublicVarGetter().then(function (result) {
+    res.status(200).json({
+      results: result
+    })
+  })
+})
 
 module.exports = router
 

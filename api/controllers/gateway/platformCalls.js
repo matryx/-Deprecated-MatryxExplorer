@@ -13,8 +13,8 @@ const Web3 = require('web3')
 const config = require('../../../config')
 const externalApiCalls = require('./externalApiCalls')
 const platformInfoV1 = require('../../../data/abi/v1/platform')
-const tournamentAbi = require('../../../data/abi/v2/tournament')
-const submissionAbi = require('../../../data/abi/v2/submission')
+const tournamentAbi = require('../../../data/abi/dev/tournament')
+const submissionAbi = require('../../../data/abi/dev/submission')
 const roundAbi = require('../../../data/abi/v2/round')
 // const currentPlatformInfo = require('../../../data/abi/v2/platform')
 const currentPlatformInfo = require('../../../data/abi/dev/platform')
@@ -44,10 +44,6 @@ console.log('Current Matryx Platform Address in use: \'' + matryxPlatformAddress
 // @Dev for terminal javascript console geth ->
 matryxPlatformContract = web3.eth.contract(matryxPlatformAbi).at(matryxPlatformAddress)
 
-// TODO remove these after development
-// console.log(matryxPlatformContract.tournamentCount().call()) // fails "TypeError: this.provider.send is not a function"
-// console.log(matryxPlatformContract.methods.tournamentCount().call()) // ^TypeError: Cannot read property 'tournamentCount' of undefined
-// console.log(matryxPlatformContract.owner())
 console.log('There are ' + matryxPlatformContract.tournamentCount().c[0] + ' tournaments on the Platform.')
 
 // TODO Error handling when no chain is attached ^
@@ -69,11 +65,23 @@ platformCalls.getTournamentCount = function () {
   })
 }
 
+platformCalls.testPublicVarGetter = function () {
+  return new Promise((resolve, reject) => {
+    matryxPlatformContract.matryxTokenAddress((err, res) => {
+      if (err) reject(err)
+      else {
+        resolve(res)
+      }
+    })
+  })
+}
+
 platformCalls.getAllTournaments = function () {
   return new Promise((resolve, reject) => {
       // Setup the array for the tournaments
     var allTournaments = []
     matryxPlatformContract.tournamentCount((err, _tournamentCount) => {
+      console.log('There are this many tournaments: ' + _tournamentCount)
         // for loop over the number of tournaments in _tournamentCount
       for (let i = 0; i < _tournamentCount; i++) {
         let allTournamentsDTO = {
@@ -94,7 +102,7 @@ platformCalls.getAllTournaments = function () {
           else {
             allTournamentsDTO.address = _tournamentAddress
             tournamentContract = web3.eth.contract(tournamentAbi).at(_tournamentAddress)
-            tournamentContract.BountyMTX((err, _mtx) => {
+            tournamentContract.Bounty((err, _mtx) => {
               if (err) reject(err)
               else {
                 allTournamentsDTO.mtx = _mtx.c[0]
@@ -102,21 +110,48 @@ platformCalls.getAllTournaments = function () {
                 tournamentContract.getExternalAddress((err, _externalAddress) => {
                   if (err) reject(err)
                   else {
+                    // console.log(_externalAddress)
+                    // _externalAddress = web3.toAscii(_externalAddress)
+                    // console.log(_externalAddress + 'ends up being this ')
                     allTournamentsDTO.externalAddress = _externalAddress
-                    tournamentContract.currentRound((err, _currentRound) => {
+                    tournamentContract.title((err, _title) => {
                       if (err) reject(err)
                       else {
-                        allTournamentsDTO.currentRound = _currentRound[0]
-                        tournamentContract.submissionCount((err, _count) => {
+                        // TODO: for some reason the tournament title changes every time I call it...
+                        allTournamentsDTO.tournamentTitle = _title
+                        tournamentContract.discipline((err, _category) => {
                           if (err) reject(err)
                           else {
-                            allTournamentsDTO.numberOfParticipants = _count
-                            allTournaments.push(allTournamentsDTO)
-                            console.log('The length of the array is:' + allTournaments.length)
+                            // TODO: category is not working?
+                            console.log('The category should be: ' + _category)
+                            allTournamentsDTO.category = _category
+                            tournamentContract.maxRounds((err, _totalRounds) => {
+                              if (err) reject(err)
+                              else {
+                            // console.log(_externalAddress)
+                            // _externalAddress = web3.toAscii(_externalAddress)
+                            // console.log(_externalAddress + 'ends up being this ')
+                                allTournamentsDTO.totalRounds = _totalRounds
+                                tournamentContract.currentRound((err, _currentRound) => {
+                                  if (err) reject(err)
+                                  else {
+                                    allTournamentsDTO.currentRound = _currentRound[0].c[0]
+                                    tournamentContract.submissionCount((err, _count) => {
+                                      if (err) reject(err)
+                                      else {
+                                        allTournamentsDTO.numberOfParticipants = _count.c[0]
+                                        allTournaments.push(allTournamentsDTO)
+                                        console.log('The length of the array is:' + allTournaments.length)
 
-                            if (i == _tournamentCount - 1) {
-                              resolve(allTournaments)
-                            }
+                                        if (i == _tournamentCount - 1) {
+                                          resolve(allTournaments)
+                                        }
+                                      }
+                                    })
+                                  }
+                                })
+                              }
+                            })
                           }
                         })
                       }
@@ -214,23 +249,31 @@ platformCalls.getTournamentByAddress = function (_tournamentAddress) {
                           if (err) reject(err)
                           else {
                             tournamentDetails.participationMTX = _fee
-                            tournamentContract.currentRound((err, _currentRound) => {
+
+                            tournamentContract.title((err, _title) => {
                               if (err) reject(err)
                               else {
-                                tournamentDetails.currentRound = _currentRound[0]
-                                if (_currentRound[1] == '0x') {
-                                  resolve(tournamentDetails)
-                                } else {
-                                  roundContract = web3.eth.contract(roundAbi).at(_currentRound[1])
-                                  roundContract.endTime((err, _endTime) => {
-                                    if (err) reject(err)
-                                    else {
-                                      tournamentDetails.roundEndTime = _endTime
-                                      console.log(_currentRound[1])
+                                tournamentDetails.tournamentTitle = _title
+                                console.log('The title is: ' + _title)
+                                tournamentContract.currentRound((err, _currentRound) => {
+                                  if (err) reject(err)
+                                  else {
+                                    tournamentDetails.currentRound = _currentRound[0]
+                                    if (_currentRound[1] == '0x') {
                                       resolve(tournamentDetails)
+                                    } else {
+                                      roundContract = web3.eth.contract(roundAbi).at(_currentRound[1])
+                                      roundContract.endTime((err, _endTime) => {
+                                        if (err) reject(err)
+                                        else {
+                                          tournamentDetails.roundEndTime = _endTime
+                                          console.log(_currentRound[1])
+                                          resolve(tournamentDetails)
+                                        }
+                                      })
                                     }
-                                  })
-                                }
+                                  }
+                                })
                               }
                             })
                           }
