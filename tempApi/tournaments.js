@@ -137,36 +137,57 @@ router.get('/address/:tournamentAddress', (req, res, next) => {
       }
     ]
   }
-
-  // Return the tournament details for a specific tournament
-  router.get('/address/:tournamentAddress/round/:roundId', (req, res, next) => {
-    const id = req.params.roundId
-    const address = req.params.tournamentAddress
-    let roundDetails =
-      {
-        'roundBounty': 100,
-        'roundAddress': address,
-        'submissions':
-        [
-          {
-            'address': '0xa0e239b0abf4582366adaff486ee268c848c4409',
-            'title': 'Lift-to-drag maximization for single airfoil at M = 0.63'
-          },
-          {
-            'address': '0x851b7f3ab81bd8df354f0d7640efcd7288553419',
-            'title': 'High Lift, Low Aspect Ratio Airfoil'
-          },
-          {
-            'address': '0x32be343b94f860124dc4fee278fdcbd38c102d88',
-            'title': 'Low Reynolds Number Airfoil'
-          }
-        ]
-      }
-  })
-
   res.status(200).json({
     message: 'This is a temp API with tournamentID' + address,
     data: tournamentDetails
+  })
+})
+
+  // Return the tournament details for a specific tournament
+router.get('/address/:tournamentAddress/round/:roundId', (req, res, next) => {
+  const id = req.params.roundId
+  const address = req.params.tournamentAddress
+  let roundDetails =
+    {
+      'roundBounty': 100,
+      'roundAddress': address,
+      'roundStatus': 'open',
+      'winningSubmissions': [
+        {
+          'submissionAddress': '0xa0e239b0abf4582366adaff486ee268c848c4409',
+          'mtxPayout': '90'
+        },
+        {
+          'submissionAddress': '0xa0e239b0abf4582366adaff486ee268c848c4499',
+          'mtxPayout': '10'
+        }
+      ],
+      'submissions':
+      [
+        {
+          'address': '0xa0e239b0abf4582366adaff486ee268c848c4409',
+          'title': 'Lift-to-drag maximization for single airfoil at M = 0.63',
+          'submissionDate': '1519427539'
+
+        },
+        {
+          'address': '0x851b7f3ab81bd8df354f0d7640efcd7288553419',
+          'title': 'High Lift, Low Aspect Ratio Airfoil',
+          'submissionDate': '1519427539'
+
+        },
+        {
+          'address': '0x32be343b94f860124dc4fee278fdcbd38c102d88',
+          'title': 'Low Reynolds Number Airfoil',
+          'submissionDate': '1519427539'
+
+        }
+      ]
+    }
+
+  res.status(200).json({
+    message: 'This is a temp API with tournamentID' + address,
+    data: roundDetails
   })
 })
 
