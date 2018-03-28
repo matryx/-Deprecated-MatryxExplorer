@@ -9,29 +9,29 @@ Nanome 2018
 Imports
 */
 
+// const version = process.env.PLATFORM_VERSION
+const version = 'dev'
+
 const Web3 = require('web3')
 const config = require('../../../config')
 const externalApiCalls = require('./externalApiCalls')
-const platformInfoV1 = require('../../../data/abi/v1/platform')
-const tournamentAbi = require('../../../data/abi/dev/tournament')
-const submissionAbi = require('../../../data/abi/dev/submission')
-const roundAbi = require('../../../data/abi/v2/round')
-// const currentPlatformInfo = require('../../../data/abi/v2/platform')
-const currentPlatformInfo = require('../../../data/abi/dev/platform')
+const platformInfo = require('../../../data/abi/' + version + '/platform')
+const tournamentAbi = require('../../../data/abi/' + version + '/tournament')
+const submissionAbi = require('../../../data/abi/' + version + '/submission')
+const roundAbi = require('../../../data/abi/' + version + '/round')
+const currentPlatformInfo = require('../../../data/abi/' + version + '/platform')
 
 /*
  Attach to the RPC
 */
-// @Dev local
-// const web3 = new Web3('http://localhost:8545')
 
 let web3 = new Web3()
-// web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'))
-let web3Provider = 'http://customrpc.matryx.ai:8545'
 
-web3.setProvider(new web3.providers.HttpProvider(web3Provider)) // Elastic IP Address -> http://52.8.65.20:8545
-console.log('Connected to: ' + web3Provider)
 // TODO switch to config variable
+let web3Provider = 'http://customrpc.matryx.ai:8545'
+web3.setProvider(new web3.providers.HttpProvider(web3Provider)) // Elastic IP Address -> http://52.8.65.20:8545
+
+console.log('Connected to: ' + web3Provider)
 // @Dev prod env
 // const web3 = new Web3(proccess.env.WEB3_PROVIDER)
 
@@ -39,9 +39,7 @@ matryxPlatformAddress = currentPlatformInfo.address
 matryxPlatformAbi = currentPlatformInfo.abi
 
 console.log('Current Matryx Platform Address in use: \'' + matryxPlatformAddress + '\'')
-// matryxPlatformContract = new web3.eth.contract(matryxPlatformAbi, matryxPlatformAddress)
-// console.log(matryxPlatformContract)
-// @Dev for terminal javascript console geth ->
+
 matryxPlatformContract = web3.eth.contract(matryxPlatformAbi).at(matryxPlatformAddress)
 
 console.log('There are ' + matryxPlatformContract.tournamentCount().c[0] + ' tournaments on the Platform.')
@@ -223,7 +221,7 @@ platformCalls.getTournamentByAddress = function (_tournamentAddress) {
     }
 
     tournamentContract = web3.eth.contract(tournamentAbi).at(_tournamentAddress)
-    tournamentContract.BountyMTX((err, _mtx) => {
+    tournamentContract.Bounty((err, _mtx) => {
       if (err) reject(err)
       else {
         tournamentDetails.tournamentAddress = _tournamentAddress
@@ -232,7 +230,7 @@ platformCalls.getTournamentByAddress = function (_tournamentAddress) {
         tournamentContract.getExternalAddress((err, _externalAddress) => {
           if (err) reject(err)
           else {
-            tournamentDetails.externalAddress = _externalAddress
+            tournamentDetails.externalAddress = web3.toAscii(_externalAddress)
             tournamentContract.maxRounds((err, _maxRounds) => {
               if (err) reject(err)
               else {
@@ -267,8 +265,16 @@ platformCalls.getTournamentByAddress = function (_tournamentAddress) {
                                         if (err) reject(err)
                                         else {
                                           tournamentDetails.roundEndTime = _endTime
-                                          console.log(_currentRound[1])
-                                          resolve(tournamentDetails)
+
+                                          roundContract.bounty((err, _roundBounty) => {
+                                            if (err) reject(err)
+                                            else {
+                                              tournamentDetails.roundReward = _roundBounty
+
+                                              console.log(_currentRound[1])
+                                              resolve(tournamentDetails)
+                                            }
+                                          })
                                         }
                                       })
                                     }

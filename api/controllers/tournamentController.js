@@ -27,14 +27,19 @@ tournamentController.getAllTournaments = function () {
         // assign the output to the the responses
       console.log(result)
       result.forEach((tournament) => {
-          // Loop through each response and get the IPFS hash
-          // Make an IPFS call to retrieve the description and/or image
-        // let description = externalApiCalls.getIpfsData(tournament.externalAddress)
-          // Pass the descriptions back into the responses
         tournament.tournamentDescription = 'The description should be here, but since max did not pass in the correct IPFS hash I cant get it for you. Sorry, dude'
         tournament.externalAddress = 'QmYdbXBhekWjoTu3kKYb7NLJFy6bG9USCP6TVAPm8hhQ7e'
         tournament.category = 'Other'
+        /*
+        // TODO: take the extenal address
+        externalAddress = tournament.externalAddress
+        //call the IPFS getter for the value
+        ipfsCalls.getDescriptionFromHash(externalAddress).then(function(result){
+        tournament.tournamentDescription = result
+        })
 
+        //
+        */
         responses.push(tournament)
       })
       resolve(result)
@@ -47,8 +52,8 @@ tournamentController.getAllTournaments = function () {
 tournamentController.getTournamentByAddress = function (_tournamentAddress) {
   return new Promise((resolve, reject) => {
     platformCalls.getTournamentByAddress(_tournamentAddress).then(function (result) {
-      let description = externalApiCalls.getIpfsData(result.externalAddress)
-      result.tournamentDescription = description
+      // let description = externalApiCalls.getIpfsData(result.externalAddress)
+      result.tournamentDescription = 'description'
       resolve(result)
     }).catch((err) => {
       console.log('Not able to get Tournament Details. ' + err)
@@ -105,9 +110,5 @@ tournamentController.isEntrant = function (_tournamentAddress, _potentialEntrant
     })
   })
 }
-
-// TODO: Is entrant
-
-// TODO:  is creator
 
 module.exports = tournamentController

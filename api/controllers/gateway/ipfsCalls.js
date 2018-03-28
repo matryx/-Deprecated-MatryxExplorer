@@ -103,7 +103,7 @@ ipfsCalls.uploadToIpfs = function (_description) {
   console.log('Gateway call recieved. Hitting IPFS Node for data hash')
   return new Promise((resolve, reject) => {
     ipfsNode.files.add({
-      path: 'hello.txt',
+      path: 'description.txt',
       content: Buffer.from(_description)
 
       // TODO pin the files so they dont disappear after 24 hours
@@ -119,8 +119,8 @@ ipfsCalls.uploadFileToIpfs = function (_file) {
   console.log('Gateway call recieved. Hitting IPFS Node for data hash')
   return new Promise((resolve, reject) => {
     ipfsNode.files.add({
-      path: 'hello.txt',
-      content: Buffer.from('Hello World 101')
+      path: 'description.txt',
+      content: Buffer.from('This is a description for the tournament')
     }, (err, filesAdded) => {
       if (err) { return cb(err) }
       console.log('\nAdded file:', filesAdded[0].path, filesAdded[0].hash)

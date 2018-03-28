@@ -15,6 +15,7 @@ const roundRoutes = require('./api/routes/rounds')
 const submissionRoutes = require('./api/routes/submissions')
 const activityRoutes = require('./api/routes/activity')
 const tokenRoutes = require('./api/routes/token')
+const testingRoutes = require('./api/routes/testing/testing')
 
 // tempAPI routes active
 const tempPlatformRoutes = require('./tempApi/platform')
@@ -34,6 +35,7 @@ app.use('/rounds', roundRoutes)
 app.use('/submissions', submissionRoutes)
 app.use('/activity', activityRoutes)
 app.use('/token', tokenRoutes)
+app.use('/testing', testingRoutes)
 
 // tempAPI routes active
 app.use('/tempAPI/platform', tempPlatformRoutes)
@@ -41,7 +43,6 @@ app.use('/tempAPI/tournaments', tempTournamentRoutes)
 app.use('/tempAPI/rounds', tempRoundRoutes)
 app.use('/tempAPI/activity', tempActivityRoutes)
 app.use('/tempAPI/submissions', tempSubmissionRoutes)
-// TODO add more temp APIs
 
 // TODO add more error handling and timeout setting
 

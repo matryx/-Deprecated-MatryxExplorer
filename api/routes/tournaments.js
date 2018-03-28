@@ -12,9 +12,12 @@ const tournamentController = require('../controllers/tournamentController')
 const router = express.Router()
 
 // Return a confirmation the API is live
+// TODO: Fix the fact it returns randomly different responses each time.
 router.get('/', (req, res, next) => {
-  res.status(200).json({
-    message: 'handling requests to /tournaments'
+  tournamentController.getAllTournaments().then(function (tournaments) {
+    res.status(200).json({
+      data: tournaments
+    })
   })
 })
 
@@ -62,12 +65,11 @@ router.get('/count', (req, res, next) => {
 })
 
 // Return all of the tournaments
-// TODO fix
 router.get('/allTournaments', (req, res, next) => {
     // TODO replace function with working model+final name
   tournamentController.getAllTournaments().then(function (tournaments) {
     res.status(200).json({
-      tournaments
+      data: tournaments
     })
   })
 })
@@ -180,15 +182,6 @@ These are all TEST or HELPER functions
 These are all EXPERIMENTAL functions
 #################################
 */
-
-// Return if the potentantial address given is an entrant for a specific tournament
-router.get('/testPublicVarGetter', (req, res, next) => {
-  ethPlatform.testPublicVarGetter().then(function (result) {
-    res.status(200).json({
-      results: result
-    })
-  })
-})
 
 module.exports = router
 
