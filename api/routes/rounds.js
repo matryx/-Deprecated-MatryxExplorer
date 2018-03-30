@@ -9,6 +9,10 @@ const express = require('express')
 const router = express.Router()
 
 const ethPlatform = require('../controllers/gateway/platformCalls')
+const externalApiCalls = require('../controllers/gateway/externalApiCalls')
+
+// TODO: switch to .env
+let latestVersion = 'v2'
 
 // Return a list of all rounds
 router.get('/', (req, res, next) => {
@@ -19,14 +23,16 @@ router.get('/', (req, res, next) => {
   })
 })
 
-// Return a confirmation the API is live
-router.get('/getAbi/:version', (req, res, next) => {
+// TODO: add error response for invalid responses
+router.get('/getLatestAbi', (req, res, next) => {
   let version = req.params.version
   try {
-    let rAbi = require('../../data/abi/' + version + '/round')
-    res.status(200).json({
-      abi: rAbi
-    })
+    externalApiCalls.getMatryxRoundAbi(latestVersion).then(function (resultingAbi) {
+      console.log(resultingAbi)
+      res.status(200).json({
+        abi: resultingAbi
+      })
+    }) // implement catch logic later for v1
   } catch (err) {
     console.log('Error loading the ABI')
     res.status(200).json({
@@ -36,22 +42,21 @@ router.get('/getAbi/:version', (req, res, next) => {
   }
 })
 
-// Return the tournament details for a specific tournament
-router.get('/id/:roundId', (req, res, next) => {
-  const id = req.params.roundId
-  res.status(200).json({
-    message: 'You discovered the rounds response for a roundID',
-    id: id
-  })
-})
-
-// Return the tournament details for a specific tournament
-router.get('/address/:roundAddress', (req, res, next) => {
-  const id = req.params.roundAddress
-  if (id == 'special') {
+// TODO: add error response for invalid responses
+router.get('/getAbi/:version', (req, res, next) => {
+  let version = req.params.version
+  try {
+    externalApiCalls.getMatryxRoundAbi(version).then(function (resultingAbi) {
+      console.log(resultingAbi)
+      res.status(200).json({
+        abi: resultingAbi
+      })
+    })
+  } catch (err) {
+    console.log('Error loading the ABI')
     res.status(200).json({
-      message: 'You discovered the rounds response given a roundAddress',
-      id: id
+      errorMessage: 'Sorry, that version does not exist.',
+      error: err
     })
   }
 })

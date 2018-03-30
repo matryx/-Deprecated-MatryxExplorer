@@ -21,16 +21,17 @@ router.get('/', (req, res, next) => {
   })
 })
 
-// Return a confirmation the API is live
-router.get('/getAbi/:version', (req, res, next) => {
+router.get('/getLatestAbi', (req, res, next) => {
   let version = req.params.version
   try {
-    let tAbi = require('../../data/abi/' + version + '/tournament')
-    res.status(200).json({
-      abi: tAbi
+    externalApiCalls.getMatryxTournamentAbi(latestVersion).then(function (resultingAbi) {
+      console.log(resultingAbi)
+      res.status(200).json({
+        abi: resultingAbi
+      })
     })
   } catch (err) {
-    console.log('Error yo')
+    console.log('Error loading the ABI')
     res.status(200).json({
       errorMessage: 'Sorry, that version does not exist.',
       error: err
@@ -38,16 +39,18 @@ router.get('/getAbi/:version', (req, res, next) => {
   }
 })
 
-// Return a confirmation the API is live
-router.get('/getLatestAbi', (req, res, next) => {
+// TODO: add error response for invalid responses
+router.get('/getAbi/:version', (req, res, next) => {
   let version = req.params.version
   try {
-    let tAbi = require('../../data/abi/' + v2 + '/tournament')
-    res.status(200).json({
-      abi: tAbi
-    })
+    externalApiCalls.getMatryxTournamentAbi(version).then(function (resultingAbi) {
+      console.log(resultingAbi)
+      res.status(200).json({
+        abi: resultingAbi
+      })
+    })// implement catch logic later for v1
   } catch (err) {
-    console.log('Error yo')
+    console.log('Error loading the ABI')
     res.status(200).json({
       errorMessage: 'Sorry, that version does not exist.',
       error: err

@@ -22,6 +22,8 @@ const router = express.Router()
 
 let jsonParser = bodyParser.json({ extended: true })
 let bodyParserUrlEncoded = bodyParser.urlencoded({ extended: true })
+// TODO: switch to .env
+let latestVersion = 'v2'
 
 // Return a message showing this endpoint series handles submission requests
 router.get('/', (req, res, next) => {
@@ -31,16 +33,36 @@ router.get('/', (req, res, next) => {
   })
 })
 
-// Return a confirmation the API is live
+router.get('/getLatestAbi', (req, res, next) => {
+  let version = req.params.version
+  try {
+    externalApiCalls.getMatryxSubmissionAbi(latestVersion).then(function (resultingAbi) {
+      console.log(resultingAbi)
+      res.status(200).json({
+        abi: resultingAbi
+      })
+    })
+  } catch (err) {
+    console.log('Error loading the ABI')
+    res.status(200).json({
+      errorMessage: 'Sorry, that version does not exist.',
+      error: err
+    })
+  }
+})
+
+// TODO: add error response for invalid responses
 router.get('/getAbi/:version', (req, res, next) => {
   let version = req.params.version
   try {
-    let sAbi = require('../../data/abi/' + version + '/submission')
-    res.status(200).json({
-      abi: sAbi
-    })
+    externalApiCalls.getMatryxSubmissionAbi(version).then(function (resultingAbi) {
+      console.log(resultingAbi)
+      res.status(200).json({
+        abi: resultingAbi
+      })
+    })// implement catch logic later for v1
   } catch (err) {
-    console.log('Error yo')
+    console.log('Error loading the ABI')
     res.status(200).json({
       errorMessage: 'Sorry, that version does not exist.',
       error: err

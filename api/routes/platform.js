@@ -12,6 +12,10 @@ const router = express.Router()
 
 const ethPlatform = require('../controllers/gateway/platformCalls')
 const platformController = require('../controllers/platformController')
+const externalApiCalls = require('../controllers/gateway/externalApiCalls')
+
+// TODO: get from .env
+let latestVersion = 'v2'
 
 // Return a message that this route handles all platform specific requests
 router.get('/', (req, res, next) => {
@@ -23,35 +27,12 @@ router.get('/', (req, res, next) => {
 // TODO fix this one...showing up as undefined due to scope
 // Return a message that this route handles all platform specific requests
 router.get('/getLatestInfo', (req, res, next) => {
-  response = platformController.latestPlatformInfo()
-  res.status(200).json({
-    address: response.address,
-    abi: response.abi
-  })
-})
-
-router.get('/getLatestAddress', (req, res, next) => {
-  response = platformController.latestPlatformInfo()
-  res.status(200).json({
-    address: response.address
-  })
-})
-
-router.get('/getLatestAbi', (req, res, next) => {
-  response = platformController.latestPlatformInfo()
-  res.status(200).json({
-    abi: response.abi
-  })
-})
-
-// Return a confirmation the API is live
-router.get('/getInfo/:version', (req, res, next) => {
-  let version = req.params.version
   try {
-    let rAbi = require('../../data/abi/' + version + '/platform')
-    res.status(200).json({
-      address: rAbi.address,
-      abi: rAbi.abi
+    externalApiCalls.getMatryxPlatformInfo(latestVersion).then(function (resultingInfo) {
+      res.status(200).json({
+        address: resultingInfo.address,
+        abi: resultingInfo.abi
+      })
     })
   } catch (err) {
     console.log('Error loading the ABI')
@@ -61,13 +42,66 @@ router.get('/getInfo/:version', (req, res, next) => {
     })
   }
 })
+
+router.get('/getLatestAddress', (req, res, next) => {
+  try {
+    externalApiCalls.getMatryxPlatformInfo(latestVersion).then(function (resultingInfo) {
+      res.status(200).json({
+        address: resultingInfo.address
+      })
+    })
+  } catch (err) {
+    console.log('Error loading the ABI')
+    res.status(200).json({
+      errorMessage: 'Sorry, that version does not exist.',
+      error: err
+    })
+  }
+})
+
+router.get('/getLatestAbi', (req, res, next) => {
+  try {
+    externalApiCalls.getMatryxPlatformInfo(latestVersion).then(function (resultingInfo) {
+      res.status(200).json({
+        abi: resultingInfo.abi
+      })
+    })
+  } catch (err) {
+    console.log('Error loading the ABI')
+    res.status(200).json({
+      errorMessage: 'Sorry, that version does not exist.',
+      error: err
+    })
+  }
+})
+
+// Return a confirmation the API is live
+router.get('/getInfo/:version', (req, res, next) => {
+  let version = req.params.version
+  try {
+    externalApiCalls.getMatryxPlatformAbi(version).then(function (resultingInfo) {
+      res.status(200).json({
+        address: resultingInfo.address,
+        abi: resultingInfo.abi
+      })
+    })
+  } catch (err) {
+    console.log('Error loading the ABI')
+    res.status(200).json({
+      errorMessage: 'Sorry, that version does not exist.',
+      error: err
+    })
+  }
+})
+
 // Return a confirmation the API is live
 router.get('/getAddress/:version', (req, res, next) => {
   let version = req.params.version
   try {
-    let rAbi = require('../../data/abi/' + version + '/platform')
-    res.status(200).json({
-      address: rAbi.address
+    externalApiCalls.getMatryxPlatformAddress(version).then(function (resultingAddress) {
+      res.status(200).json({
+        address: resultingAddress
+      })
     })
   } catch (err) {
     console.log('Error loading the ABI')
@@ -82,9 +116,10 @@ router.get('/getAddress/:version', (req, res, next) => {
 router.get('/getAbi/:version', (req, res, next) => {
   let version = req.params.version
   try {
-    let rAbi = require('../../data/abi/' + version + '/platform')
-    res.status(200).json({
-      abi: rAbi.abi
+    externalApiCalls.getMatryxPlatformAbi(version).then(function (resultingAbi) {
+      res.status(200).json({
+        abi: resultingAbi.abi
+      })
     })
   } catch (err) {
     console.log('Error loading the ABI')
@@ -94,11 +129,5 @@ router.get('/getAbi/:version', (req, res, next) => {
     })
   }
 })
-
-// router.post('/', (req, res, next) => {
-//     res.status(200).json({
-//         message: 'handling POST requests to /products'
-//     });
-// });
 
 module.exports = router
