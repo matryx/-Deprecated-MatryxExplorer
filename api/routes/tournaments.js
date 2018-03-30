@@ -8,8 +8,10 @@ Copyright Nanome Inc 2018
 const express = require('express')
 const ethPlatform = require('../controllers/gateway/platformCalls')
 const tournamentController = require('../controllers/tournamentController')
+const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 
 const router = express.Router()
+let latestVersion = process.env.LATEST_VERSION
 
 // Return a confirmation the API is live
 // TODO: Fix the fact it returns randomly different responses each time.
@@ -22,7 +24,7 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/getLatestAbi', (req, res, next) => {
-  let version = req.params.version
+  console.log('/getLatestAbi hit')
   try {
     externalApiCalls.getMatryxTournamentAbi(latestVersion).then(function (resultingAbi) {
       console.log(resultingAbi)

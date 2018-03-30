@@ -9,8 +9,7 @@ Nanome 2018
 Imports
 */
 
-// const version = process.env.PLATFORM_VERSION
-const version = 'dev'
+const version = process.env.PLATFORM_VERSION
 
 const Web3 = require('web3')
 const config = require('../../../config')
@@ -27,13 +26,10 @@ const currentPlatformInfo = require('../../../data/abi/' + version + '/platform'
 
 let web3 = new Web3()
 
-// TODO switch to config variable
-let web3Provider = 'http://customrpc.matryx.ai:8545'
+let web3Provider = process.env.CUSTOMRPC
 web3.setProvider(new web3.providers.HttpProvider(web3Provider)) // Elastic IP Address -> http://52.8.65.20:8545
 
 console.log('Connected to: ' + web3Provider)
-// @Dev prod env
-// const web3 = new Web3(proccess.env.WEB3_PROVIDER)
 
 matryxPlatformAddress = currentPlatformInfo.address
 matryxPlatformAbi = currentPlatformInfo.abi

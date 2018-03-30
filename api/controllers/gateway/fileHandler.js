@@ -6,7 +6,7 @@ Nanome 2018
 */
 
 let fileHandler = {}
-ipfsURL = 'https://ipfs.io/ipfs/'
+ipfsURL = process.env.IPFS_URL
 
 fileHandler.getDescriptionContent = function (fields, tempDirectory) {
   return new Promise((resolve, reject) => {

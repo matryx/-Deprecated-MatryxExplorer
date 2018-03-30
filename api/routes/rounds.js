@@ -11,8 +11,7 @@ const router = express.Router()
 const ethPlatform = require('../controllers/gateway/platformCalls')
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 
-// TODO: switch to .env
-let latestVersion = 'v2'
+let latestVersion = process.env.LATEST_VERSION
 
 // Return a list of all rounds
 router.get('/', (req, res, next) => {

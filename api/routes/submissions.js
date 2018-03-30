@@ -22,8 +22,7 @@ const router = express.Router()
 
 let jsonParser = bodyParser.json({ extended: true })
 let bodyParserUrlEncoded = bodyParser.urlencoded({ extended: true })
-// TODO: switch to .env
-let latestVersion = 'v2'
+let latestVersion = process.env.LATEST_VERSION
 
 // Return a message showing this endpoint series handles submission requests
 router.get('/', (req, res, next) => {

@@ -14,8 +14,7 @@ const ethPlatform = require('../controllers/gateway/platformCalls')
 const platformController = require('../controllers/platformController')
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 
-// TODO: get from .env
-let latestVersion = 'v2'
+let latestVersion = process.env.LATEST_VERSION
 
 // Return a message that this route handles all platform specific requests
 router.get('/', (req, res, next) => {

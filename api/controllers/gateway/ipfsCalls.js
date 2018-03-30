@@ -18,7 +18,7 @@ const ipfsNode = new IPFS()
 
 // TODO: Create the IPFS cluster in the localhost and make the calls to hold all the data from various nodes
 
-let ipfsURL = 'https://ipfs.io/ipfs/'
+let ipfsURL = process.env.IPFS_URL
 
 let ipfsCalls = {}
 
