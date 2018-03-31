@@ -11,7 +11,7 @@ const tournamentController = require('../controllers/tournamentController')
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 
 const router = express.Router()
-let latestVersion = process.env.LATEST_VERSION
+let latestVersion = process.env.PLATFORM_VERSION
 
 // Return a confirmation the API is live
 // TODO: Fix the fact it returns randomly different responses each time.
@@ -29,7 +29,7 @@ router.get('/getLatestAbi', (req, res, next) => {
     externalApiCalls.getMatryxTournamentAbi(latestVersion).then(function (resultingAbi) {
       console.log(resultingAbi)
       res.status(200).json({
-        abi: resultingAbi
+        abi: resultingAbi.abi
       })
     })
   } catch (err) {
@@ -48,7 +48,7 @@ router.get('/getAbi/:version', (req, res, next) => {
     externalApiCalls.getMatryxTournamentAbi(version).then(function (resultingAbi) {
       console.log(resultingAbi)
       res.status(200).json({
-        abi: resultingAbi
+        abi: resultingAbi.abi
       })
     })// implement catch logic later for v1
   } catch (err) {

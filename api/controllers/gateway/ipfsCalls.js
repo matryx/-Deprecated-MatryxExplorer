@@ -37,23 +37,6 @@ ipfsCalls.getIpfsData = function (_ipfsHash) {
   })
 }
 
-// This is what is working for the file submission
-ipfsCalls.uploadDescriptionOnlyToIPFS = function (descriptionContent, descriptionPath) {
-  console.log('Gateway call recieved. Hitting IPFS Node for data hash')
-  return new Promise((resolve, reject) => {
-    ipfsNode.files.add({
-      path: descriptionPath,
-      content: descriptionContent
-
-      // TODO pin the files so they dont disappear after 24 hours
-    }, (err, filesAdded) => {
-      if (err) { return cb(err) }
-      console.log('\nAdded file:', filesAdded[0].path, filesAdded[0].hash)
-      resolve(filesAdded[0].hash)
-    })
-  })
-}
-
 // Take in the description and the path and store it as description.txt in the path
 ipfsCalls.storeDescriptionToTmp = function (_description, _path) {
   return new Promise((resolve, reject) => {
@@ -76,9 +59,11 @@ ipfsCalls.pushTmpFolderToIPFS = function (tempDirectory) {
       console.log('These are the files in the directory')
       // Store them in the format that IPFS loves
       files.forEach(file => {
+    // Get the content of the file with the path and file name and then buffer into content
+        let fileContents = fs.readFileSync(tempDirectory + '/' + file)
         let ipfsFile = {
           path: tempDirectory + '/' + file,
-          content: Buffer.from(file)
+          content: Buffer.from(fileContents)
         }
         // Add them to the array
         ipfsFilesToUpload.push(ipfsFile)
@@ -99,12 +84,32 @@ ipfsCalls.pushTmpFolderToIPFS = function (tempDirectory) {
 EXPERIMENTAL FUNCTIONS
 */
 
-ipfsCalls.uploadToIpfs = function (_description) {
+// TODO: Add file navigation and extraction for correct data and file response
+ipfsCalls.getIpfsDataFiles = function (_ipfsHash) {
+  console.log('Gateway call recieved. Hitting IPFS Node for data at hash: ' + _ipfsHash)
+  return new Promise((resolve, reject) => {
+    ipfsNode.files.cat(_ipfsHash, (err, data) => {
+      if (err) { reject(err) }
+
+      console.log('\nIPFS Node Call Completed. File content:')
+      console.log(data.toString('utf8')) // This returns a URL
+
+      resolve(data.toString('utf8'))
+    })
+  })
+}
+
+/*
+HELPER FUNCTIONS AND NOTES
+*/
+
+// This is what is working for the file submission
+ipfsCalls.uploadDescriptionOnlyToIPFS = function (descriptionContent, descriptionPath) {
   console.log('Gateway call recieved. Hitting IPFS Node for data hash')
   return new Promise((resolve, reject) => {
     ipfsNode.files.add({
-      path: 'description.txt',
-      content: Buffer.from(_description)
+      path: descriptionPath,
+      content: descriptionContent
 
       // TODO pin the files so they dont disappear after 24 hours
     }, (err, filesAdded) => {
@@ -114,24 +119,6 @@ ipfsCalls.uploadToIpfs = function (_description) {
     })
   })
 }
-
-ipfsCalls.uploadFileToIpfs = function (_file) {
-  console.log('Gateway call recieved. Hitting IPFS Node for data hash')
-  return new Promise((resolve, reject) => {
-    ipfsNode.files.add({
-      path: 'description.txt',
-      content: Buffer.from('This is a description for the tournament')
-    }, (err, filesAdded) => {
-      if (err) { return cb(err) }
-      console.log('\nAdded file:', filesAdded[0].path, filesAdded[0].hash)
-      resolve(filesAdded[0].hash)
-    })
-  })
-}
-
-/*
-HELPER FUNCTIONS AND NOTES
-*/
 
 /*
 

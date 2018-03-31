@@ -72,4 +72,20 @@ submissionController.uploadToIpfs = function (_files) {
   })
 }
 
+/*
+EXPERIMENTAL
+*/
+
+submissionController.uploadJsonAndDescriptionToIPFS = function (jsonContent, description) {
+  return new Promise((resolve, reject) => {
+    console.log('Making gateway call...')
+    ipfsCalls.uploadJsonAndDescriptionToIPFS(jsonContent, description).then(function (result) {
+      console.log(result)
+      resolve(result)
+    }).catch((err) => {
+      console.log('Not able to upload to IPFS. ' + err)
+    })
+  })
+}
+
 module.exports = submissionController

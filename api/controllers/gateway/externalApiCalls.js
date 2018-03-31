@@ -24,14 +24,10 @@ externalApiCalls.getMatryxPlatformInfo = function (branch) {
       let matryxPlatformAbiUrl = 'https://raw.githubusercontent.com/matryx/matryx-alpha-source/' + branch + '/build/contracts/MatryxPlatform.json'
 
       fetch(matryxPlatformAbiUrl).then(function (result) {
-        console.log('Getting Platform Abi from Matryx Platform Github')
+        console.log('Getting Platform Abi from Matryx Platform Github for: ' + branch)
         let jsonResult = result.json()
-
-      // TODO: When max fixes network migration files to save correctly then activate
-      // resolve(jsonResult.networks.777.address)
-        let tempAddressResponse = require('../../../data/abi/QA/platform')
-        jsonResult = tempAddressResponse
-
+        jsonResult = jsonResult
+        // You need to get the address by adding results['networks']['777']['address'] to the promise call who uses this function
         resolve(jsonResult)
       })
     }
@@ -52,20 +48,16 @@ externalApiCalls.getMatryxPlatformAddress = function (branch) {
     let matryxPlatformAbiUrl = 'https://raw.githubusercontent.com/matryx/matryx-alpha-source/' + branch + '/build/contracts/MatryxPlatform.json'
 
     fetch(matryxPlatformAbiUrl).then(function (result) {
-      console.log('Getting Platform Abi from Matryx Platform Github')
+      console.log('Getting Platform Abi from Matryx Platform Github for: ' + branch)
       let jsonResult = result.json()
-
-      // TODO: When max fixes network migration files to save correctly then activate
-      // resolve(jsonResult.networks.777.address)
-      let tempAddressResponse = require('../../../data/abi/QA/platform')
-      jsonResult = tempAddressResponse.address
-
+      jsonResult = jsonResult
+      // You need to get the address by adding results['networks']['777']['address'] to the promise call who uses this function
       resolve(jsonResult)
     })
   })
 }
-// TODO: Add error handling for non valid versions.
 
+// TODO: Add error handling for non valid versions.
 externalApiCalls.getMatryxPlatformAbi = function (branch) {
   return new Promise((resolve, reject) => {
     if (branch == 'v1') {
@@ -79,7 +71,7 @@ externalApiCalls.getMatryxPlatformAbi = function (branch) {
     let matryxPlatformAbiUrl = 'https://raw.githubusercontent.com/matryx/matryx-alpha-source/' + branch + '/build/contracts/MatryxPlatform.json'
 
     fetch(matryxPlatformAbiUrl).then(function (result) {
-      console.log('Getting Platform Abi from Matryx Platform Github')
+      console.log('Getting Platform Abi from Matryx Platform Github for: ' + branch)
       let jsonResult = result.json()
       resolve(jsonResult)
     })
@@ -89,7 +81,6 @@ externalApiCalls.getMatryxPlatformAbi = function (branch) {
 // TODO: Add error handling for non valid versions.
 externalApiCalls.getMatryxTournamentAbi = function (branch) {
   return new Promise((resolve, reject) => {
-    console.log('externalApiCalls called')
     if (branch == 'v1') {
       reject('Abi does not exist')
     }
@@ -100,14 +91,8 @@ externalApiCalls.getMatryxTournamentAbi = function (branch) {
       let matryxTournamentAbiUrl = 'https://raw.githubusercontent.com/matryx/matryx-alpha-source/' + branch + '/build/contracts/MatryxTournament.json'
 
       fetch(matryxTournamentAbiUrl).then(function (result) {
-        console.log('Getting Round Abi from Matryx Round Github')
+        console.log('Getting Tournament Abi from Matryx Platform Github for: ' + branch)
         let jsonResult = result.json()
-
-      // TODO: When max fixes network migration files to save correctly then activate
-      // resolve(jsonResult.networks.777.address)
-        let tempAddressResponse = require('../../../data/abi/QA/tournament')
-        jsonResult = tempAddressResponse
-
         resolve(jsonResult)
       })
     }
@@ -117,7 +102,6 @@ externalApiCalls.getMatryxTournamentAbi = function (branch) {
 // TODO: Add error handling for non valid versions.
 externalApiCalls.getMatryxSubmissionAbi = function (branch) {
   return new Promise((resolve, reject) => {
-    console.log('externalApiCalls called')
     if (branch == 'v1') {
       reject('Abi does not exist')
     }
@@ -128,14 +112,8 @@ externalApiCalls.getMatryxSubmissionAbi = function (branch) {
       let matryxSubmissionAbiUrl = 'https://raw.githubusercontent.com/matryx/matryx-alpha-source/' + branch + '/build/contracts/MatryxSubmission.json'
 
       fetch(matryxSubmissionAbiUrl).then(function (result) {
-        console.log('Getting Round Abi from Matryx Round Github')
+        console.log('Getting Submission Abi from Matryx Platform Github for: ' + branch)
         let jsonResult = result.json()
-
-      // TODO: When max fixes network migration files to save correctly then activate
-      // resolve(jsonResult.networks.777.address)
-        let tempAddressResponse = require('../../../data/abi/QA/submission')
-        jsonResult = tempAddressResponse
-
         resolve(jsonResult)
       })
     }
@@ -145,7 +123,6 @@ externalApiCalls.getMatryxSubmissionAbi = function (branch) {
 // TODO: Add error handling for non valid versions.
 externalApiCalls.getMatryxRoundAbi = function (branch) {
   return new Promise((resolve, reject) => {
-    console.log('externalApiCalls called')
     if (branch == 'v1') {
       reject('Abi does not exist')
     }
@@ -156,14 +133,8 @@ externalApiCalls.getMatryxRoundAbi = function (branch) {
       let matryxRoundAbiUrl = 'https://raw.githubusercontent.com/matryx/matryx-alpha-source/' + branch + '/build/contracts/MatryxRound.json'
 
       fetch(matryxRoundAbiUrl).then(function (result) {
-        console.log('Getting Round Abi from Matryx Round Github')
+        console.log('Getting Rounds Abi from Matryx Platform Github for: ' + branch)
         let jsonResult = result.json()
-
-      // TODO: When max fixes network migration files to save correctly then activate
-      // resolve(jsonResult.networks.777.address)
-        let tempAddressResponse = require('../../../data/abi/QA/round')
-        jsonResult = tempAddressResponse
-
         resolve(jsonResult)
       })
     }

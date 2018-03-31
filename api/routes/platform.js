@@ -14,7 +14,7 @@ const ethPlatform = require('../controllers/gateway/platformCalls')
 const platformController = require('../controllers/platformController')
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 
-let latestVersion = process.env.LATEST_VERSION
+let latestVersion = process.env.PLATFORM_VERSION
 
 // Return a message that this route handles all platform specific requests
 router.get('/', (req, res, next) => {
@@ -28,9 +28,11 @@ router.get('/', (req, res, next) => {
 router.get('/getLatestInfo', (req, res, next) => {
   try {
     externalApiCalls.getMatryxPlatformInfo(latestVersion).then(function (resultingInfo) {
+      let addressReturned = resultingInfo['networks']['777']['address']
+      let abiReturned = resultingInfo.abi
       res.status(200).json({
-        address: resultingInfo.address,
-        abi: resultingInfo.abi
+        address: addressReturned,
+        abi: abiReturned
       })
     })
   } catch (err) {

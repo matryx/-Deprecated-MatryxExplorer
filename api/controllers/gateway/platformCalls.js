@@ -14,35 +14,43 @@ const version = process.env.PLATFORM_VERSION
 const Web3 = require('web3')
 const config = require('../../../config')
 const externalApiCalls = require('./externalApiCalls')
-const platformInfo = require('../../../data/abi/' + version + '/platform')
-const tournamentAbi = require('../../../data/abi/' + version + '/tournament')
-const submissionAbi = require('../../../data/abi/' + version + '/submission')
-const roundAbi = require('../../../data/abi/' + version + '/round')
-const currentPlatformInfo = require('../../../data/abi/' + version + '/platform')
-
-/*
- Attach to the RPC
-*/
-
-let web3 = new Web3()
 
 let web3Provider = process.env.CUSTOMRPC
-web3.setProvider(new web3.providers.HttpProvider(web3Provider)) // Elastic IP Address -> http://52.8.65.20:8545
-
-console.log('Connected to: ' + web3Provider)
-
-matryxPlatformAddress = currentPlatformInfo.address
-matryxPlatformAbi = currentPlatformInfo.abi
-
-console.log('Current Matryx Platform Address in use: \'' + matryxPlatformAddress + '\'')
-
-matryxPlatformContract = web3.eth.contract(matryxPlatformAbi).at(matryxPlatformAddress)
-
-console.log('There are ' + matryxPlatformContract.tournamentCount().c[0] + ' tournaments on the Platform.')
-
-// TODO Error handling when no chain is attached ^
-
 let platformCalls = {}
+
+let matryxPlatformAbi
+let matryxPlatformAddress
+let tournamentAbi
+let submissionAbi
+let roundAbi
+
+externalApiCalls.getMatryxTournamentAbi(version).then(function (results) {
+  tournamentAbi = results.abi
+})
+externalApiCalls.getMatryxRoundAbi(version).then(function (results) {
+  roundAbi = results.abi
+})
+externalApiCalls.getMatryxSubmissionAbi(version).then(function (results) {
+  submissionAbi = results.abi
+})
+
+externalApiCalls.getMatryxPlatformInfo(version).then(function (results) {
+  matryxPlatformAddress = results['networks']['777']['address']
+  matryxPlatformAbi = JSON.stringify(results.abi)
+  matryxPlatformAbi = JSON.parse(matryxPlatformAbi)
+
+// Attach to the RPC
+  let web3 = new Web3()
+
+  web3.setProvider(new web3.providers.HttpProvider(web3Provider)) // Elastic IP Address -> http://52.8.65.20:8545
+  console.log('Connected to: ' + web3Provider)
+
+  console.log('Current Matryx Platform Address in use: \'' + matryxPlatformAddress + '\'')
+  matryxPlatformContract = web3.eth.contract(matryxPlatformAbi).at(matryxPlatformAddress)
+
+  console.log('There are ' + matryxPlatformContract.tournamentCount().c[0] + ' tournaments on the Platform.')
+})
+// TODO Error handling when no chain is attached ^
 
 /*
 Tournament Calls

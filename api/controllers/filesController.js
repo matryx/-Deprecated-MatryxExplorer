@@ -10,6 +10,7 @@ Imports
 */
 
 const ipfsCalls = require('./gateway/ipfsCalls')
+
 let filesController = {}
 
 filesController.latestPlatformInfo = function () {

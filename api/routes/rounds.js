@@ -11,7 +11,7 @@ const router = express.Router()
 const ethPlatform = require('../controllers/gateway/platformCalls')
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 
-let latestVersion = process.env.LATEST_VERSION
+let latestVersion = process.env.PLATFORM_VERSION
 
 // Return a list of all rounds
 router.get('/', (req, res, next) => {
@@ -29,7 +29,7 @@ router.get('/getLatestAbi', (req, res, next) => {
     externalApiCalls.getMatryxRoundAbi(latestVersion).then(function (resultingAbi) {
       console.log(resultingAbi)
       res.status(200).json({
-        abi: resultingAbi
+        abi: resultingAbi.abi
       })
     }) // implement catch logic later for v1
   } catch (err) {
