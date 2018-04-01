@@ -217,6 +217,18 @@ matryxPlatformCalls.getTournamentTitle = function (tournamentAddress) {
   })
 }
 
+matryxPlatformCalls.getTournamentOwner = function (tournamentAddress) {
+  return new Promise((resolve, reject) => {
+    tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
+    tournamentContract.owner((err, res) => {
+      if (err) reject(err)
+      else {
+        resolve(res)
+      }
+    })
+  })
+}
+
 matryxPlatformCalls.getTournamentBounty = function (tournamentAddress) {
   return new Promise((resolve, reject) => {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
@@ -327,7 +339,8 @@ matryxPlatformCalls.getExternalAddressTournament = function (tournamentAddress) 
     tournamentContract.getExternalAddress((err, res) => {
       if (err) reject(err)
       else {
-        resolve(res)
+        _externalAddress = web3.toAscii(res)
+        resolve(_externalAddress)
       }
     })
   })
@@ -387,6 +400,26 @@ matryxPlatformCalls.getEntryFeeOfTournament = function (tournamentAddress) {
       if (err) reject(err)
       else {
         resolve(res)
+      }
+    })
+  })
+}
+
+matryxPlatformCalls.getCurrentRoundEndTimeFromTournament = function (tournamentAddress) {
+  return new Promise((resolve, reject) => {
+    tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
+    // get the current round address
+    tournamentContract.currentRound((err, res) => {
+      if (err) reject(err)
+      else {
+        roundAddress = res[1]
+        roundContract = web3.eth.contract(roundAbi).at(roundAddress)
+        roundContract.endTime((err, res) => {
+          if (err) reject(err)
+          else {
+            resolve(res)
+          }
+        })
       }
     })
   })
@@ -561,7 +594,9 @@ matryxPlatformCalls.getSubmissionExternalAddress = function (submissionAddress) 
     submissionContract.getExternalAddress((err, res) => {
       if (err) reject(err)
       else {
-        resolve(res)
+        _externalAddress = web3.toAscii(res)
+
+        resolve(_externalAddress)
       }
     })
   })

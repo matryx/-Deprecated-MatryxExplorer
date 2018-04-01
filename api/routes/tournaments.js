@@ -24,16 +24,6 @@ router.get('/', (req, res, next) => {
   })
 })
 
-// // Return a confirmation the API is live
-// // TODO: Fix the fact it returns randomly different responses each time.
-// router.get('/', (req, res, next) => {
-//   tournamentController.getAllTournaments().then(function (tournaments) {
-//     res.status(200).json({
-//       data: tournaments
-//     })
-//   })
-// })
-
 router.get('/getLatestAbi', (req, res, next) => {
   console.log('/getLatestAbi hit')
   try {
@@ -90,17 +80,33 @@ router.get('/allTournaments', (req, res, next) => {
   })
 })
 
+// // Return the tournament details for a specific tournament
+// // TODO pass back the tournament details
+// router.get('/address/:tournamentAddress', (req, res, next) => {
+//   const address = req.params.tournamentAddress
+//   tournamentController.getTournamentByAddress(address).then(function (result) {
+//     res.status(200).json({
+//       tournamentDetails: result
+//     })
+//   }).catch((err) => {
+//     res.status(300).json({
+//       error: 'Unable to find tournament'
+//     })
+//   })
+// })
+
 // Return the tournament details for a specific tournament
 // TODO pass back the tournament details
 router.get('/address/:tournamentAddress', (req, res, next) => {
   const address = req.params.tournamentAddress
-  tournamentController.getTournamentByAddress(address).then(function (result) {
+  tournamentController2.getTournamentByAddress(address).then(function (result) {
     res.status(200).json({
       tournamentDetails: result
     })
   }).catch((err) => {
     res.status(300).json({
-      error: 'Unable to find tournament'
+      error: 'Unable to find tournament',
+      errorMsg: err.name
     })
   })
 })

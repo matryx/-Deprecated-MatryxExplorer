@@ -77,6 +77,73 @@ tournamentController2.getAllTournaments = function () {
   })
 }
 
+tournamentController2.getTournamentByAddress = function (_tournamentAddress) {
+  console.log('Executing TournamentController for getting Tournament details at: ' + _tournamentAddress)
+  return new Promise((resolve, reject) => {
+    let responses = []
+    let tournamentDataCalls = []
+    let submissions = []
+
+    let tournamentData = {
+      tournamentTitle: '',
+      tournamentAdddress: '',
+      mtx: 0,
+      authorName: '',
+      tournamentDescription: '',
+      category: '',
+      totalRounds: 0,
+      currentRound: 0,
+      numberOfParticipants: 0,
+      ipType: '',
+      roundEndTime: '',
+      participationMTX: 0,
+      roundReward: 0,
+      externalAddress: '',
+      submissions: []
+    }
+    let submission = {
+      submissionTitle: '',
+      submissionAuthor: '',
+      submissionDate: ''
+    }
+
+    tournamentDataCalls.push(matryxPlatformCalls.getTournamentTitle(_tournamentAddress))
+    tournamentDataCalls.push(matryxPlatformCalls.getTournamentBounty(_tournamentAddress))
+    tournamentDataCalls.push(matryxPlatformCalls.getTournamentOwner(_tournamentAddress))
+        // tournamentDataCalls.push(matryxPlatformCalls.getTournamentDescription(tournamentAddress))   //Waiting for max to give me a valid reponse for the external Address
+    tournamentDataCalls.push(matryxPlatformCalls.getTournamentCategory(_tournamentAddress))
+    tournamentDataCalls.push(matryxPlatformCalls.getTournamentMaxRounds(_tournamentAddress))
+    tournamentDataCalls.push(matryxPlatformCalls.currentRoundOfTournament(_tournamentAddress))
+    tournamentDataCalls.push(matryxPlatformCalls.entrantCountOfTournament(_tournamentAddress))
+    tournamentDataCalls.push(matryxPlatformCalls.getCurrentRoundEndTimeFromTournament(_tournamentAddress))
+    tournamentDataCalls.push(matryxPlatformCalls.getEntryFeeOfTournament(_tournamentAddress))
+    tournamentDataCalls.push(matryxPlatformCalls.getExternalAddressTournament(_tournamentAddress))
+    // tournamentDataCalls.push(matryxPlatformCalls.getSubmissionsFromTournament(_tournamentAddress)) // TODO:
+
+            // Promise all for the data inside the tournaments
+    Promise.all(tournamentDataCalls).then(function (values) {
+            // Attach to the tournament Data
+      tournamentData.tournamentTitle = values[0]
+      tournamentData.tournamentAdddress = _tournamentAddress
+      tournamentData.mtx = values[1]
+      tournamentData.authorName = values[2]
+      tournamentData.tournamentDescription = 'Waiting for valid IPFS hash'
+      tournamentData.category = values[3]
+      tournamentData.totalRounds = values[4]
+      tournamentData.currentRound = values[5]
+      tournamentData.numberOfParticipants = values[6]
+      tournamentData.ipType = ''
+      tournamentData.roundEndTime = values[7]
+      tournamentData.participationMTX = values[8]
+      tournamentData.externalAddress = values[9]
+          // tournamentData.submissions = values[10]
+
+      resolve(tournamentData)
+      responses.push(tournamentData)
+    })
+  })
+}
+
 /*
 OLD STUFFS
 */
