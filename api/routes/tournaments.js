@@ -8,6 +8,7 @@ Copyright Nanome Inc 2018
 const express = require('express')
 const ethPlatform = require('../controllers/gateway/platformCalls')
 const tournamentController = require('../controllers/tournamentController')
+const tournamentController2 = require('../controllers/tournamentController2')
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 
 const router = express.Router()
@@ -16,12 +17,22 @@ let latestVersion = process.env.PLATFORM_VERSION
 // Return a confirmation the API is live
 // TODO: Fix the fact it returns randomly different responses each time.
 router.get('/', (req, res, next) => {
-  tournamentController.getAllTournaments().then(function (tournaments) {
+  tournamentController2.getAllTournaments().then(function (tournaments) {
     res.status(200).json({
       data: tournaments
     })
   })
 })
+
+// // Return a confirmation the API is live
+// // TODO: Fix the fact it returns randomly different responses each time.
+// router.get('/', (req, res, next) => {
+//   tournamentController.getAllTournaments().then(function (tournaments) {
+//     res.status(200).json({
+//       data: tournaments
+//     })
+//   })
+// })
 
 router.get('/getLatestAbi', (req, res, next) => {
   console.log('/getLatestAbi hit')
@@ -175,6 +186,14 @@ router.get('/address/:tournamentAddress/isEntrant/:potentialEntrantAddress', (re
 These are all TEST or HELPER functions
 #################################
 */
+
+// router.get('/getAllTournamentsTest', (req, res, next) => {
+//   tournamentController2.getAllTournaments().then(function (tournaments) {
+//     res.status(200).json({
+//       data: tournaments
+//     })
+//   })
+// })
 
 // router.post('/', (req, res, next) => {
 //     res.status(200).json({

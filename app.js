@@ -15,6 +15,7 @@ const roundRoutes = require('./api/routes/rounds')
 const submissionRoutes = require('./api/routes/submissions')
 const activityRoutes = require('./api/routes/activity')
 const tokenRoutes = require('./api/routes/token')
+const ipfsRoutes = require('./api/routes/ipfs')
 const testingRoutes = require('./api/routes/testing/testing')
 
 // tempAPI routes active
@@ -35,6 +36,7 @@ app.use('/rounds', roundRoutes)
 app.use('/submissions', submissionRoutes)
 app.use('/activity', activityRoutes)
 app.use('/token', tokenRoutes)
+app.use('/ipfs', ipfsRoutes)
 app.use('/testing', testingRoutes)
 
 // tempAPI routes active
@@ -44,7 +46,7 @@ app.use('/tempAPI/rounds', tempRoundRoutes)
 app.use('/tempAPI/activity', tempActivityRoutes)
 app.use('/tempAPI/submissions', tempSubmissionRoutes)
 
-// TODO add more error handling and timeout setting
+// TODO add more error handling and timeout settings
 
 // Error handling
 app.use((req, res, next) => {

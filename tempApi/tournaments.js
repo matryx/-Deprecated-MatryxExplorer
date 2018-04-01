@@ -22,7 +22,8 @@ router.get('/', (req, res, next) => {
         'numberOfParticipants': 130,
         'address': '0xa43e6937e49176fd886dcf96850816e324e4d06c',
         'ipType': '50/50',
-        'tournamentID': 1
+        'tournamentID': 1,
+        'externalAddress': 'QmYdbXBhekWjoTu3kKYb7NLJFy6bG9USCP6TVAPm8hhQ7e'
       },
       {
         'tournamentTitle': 'Help Keita find a home',
@@ -34,7 +35,9 @@ router.get('/', (req, res, next) => {
         'numberOfParticipants': 220,
         'address': '0xa43e6937e49176fd886dcf96850816e324e4d06d',
         'ipType': 'bountyPoster',
-        'tournamentID': 2
+        'tournamentID': 2,
+        'externalAddress': 'QmYdbXBhekWjoTu3kKYb7NLJFy6bG9USCP6TVAPm8hhQ7e'
+
       },
       {
         'tournamentTitle': 'Create an Exotic Mug',
@@ -46,7 +49,9 @@ router.get('/', (req, res, next) => {
         'address': '0xa43e6937e49176fd886dcf96850816e324e4d06e',
         'numberOfParticipants': 80,
         'ipType': 'bountySubmitter',
-        'tournamentID': 3
+        'tournamentID': 3,
+        'externalAddress': 'QmYdbXBhekWjoTu3kKYb7NLJFy6bG9USCP6TVAPm8hhQ7e'
+
       }
     ]
   }

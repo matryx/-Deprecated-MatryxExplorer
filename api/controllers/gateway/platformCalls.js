@@ -16,6 +16,10 @@ const config = require('../../../config')
 const externalApiCalls = require('./externalApiCalls')
 
 let web3Provider = process.env.CUSTOMRPC
+let web3 = new Web3()
+web3.setProvider(new web3.providers.HttpProvider(web3Provider)) // Elastic IP Address -> http://52.8.65.20:8545
+console.log('Connected to: ' + web3Provider)
+
 let platformCalls = {}
 
 let matryxPlatformAbi
@@ -40,10 +44,6 @@ externalApiCalls.getMatryxPlatformInfo(version).then(function (results) {
   matryxPlatformAbi = JSON.parse(matryxPlatformAbi)
 
 // Attach to the RPC
-  let web3 = new Web3()
-
-  web3.setProvider(new web3.providers.HttpProvider(web3Provider)) // Elastic IP Address -> http://52.8.65.20:8545
-  console.log('Connected to: ' + web3Provider)
 
   console.log('Current Matryx Platform Address in use: \'' + matryxPlatformAddress + '\'')
   matryxPlatformContract = web3.eth.contract(matryxPlatformAbi).at(matryxPlatformAddress)
@@ -121,7 +121,7 @@ platformCalls.getAllTournaments = function () {
                       else {
                         // TODO: for some reason the tournament title changes every time I call it...
                         allTournamentsDTO.tournamentTitle = _title
-                        tournamentContract.discipline((err, _category) => {
+                        tournamentContract.category((err, _category) => {
                           if (err) reject(err)
                           else {
                             // TODO: category is not working?

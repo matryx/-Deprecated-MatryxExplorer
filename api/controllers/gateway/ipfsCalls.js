@@ -80,21 +80,57 @@ ipfsCalls.pushTmpFolderToIPFS = function (tempDirectory) {
   })
 }
 
-/*
-EXPERIMENTAL FUNCTIONS
-*/
-
-// TODO: Add file navigation and extraction for correct data and file response
 ipfsCalls.getIpfsDataFiles = function (_ipfsHash) {
   console.log('Gateway call recieved. Hitting IPFS Node for data at hash: ' + _ipfsHash)
   return new Promise((resolve, reject) => {
-    ipfsNode.files.cat(_ipfsHash, (err, data) => {
-      if (err) { reject(err) }
+    ipfsNode.files.get(_ipfsHash).then(function (results) {
+        // Create a temp storage space
 
-      console.log('\nIPFS Node Call Completed. File content:')
-      console.log(data.toString('utf8')) // This returns a URL
+        // Store all the file names into an array
+      let ipfsFiles = []
+      let ipfsFileContents = []
 
-      resolve(data.toString('utf8'))
+      let ipfsResults = {}
+
+      results.forEach((file) => {
+          // Only grab the files that we want
+        if (file.content) {
+          let fileName = file.path.toString('utf8').replace(_ipfsHash, '').replace('/', '')
+          console.log(fileName)
+
+          ipfsFileContents.push(fileName)
+
+          // Check to see if one is the description.txt file
+          if (fileName == 'description.txt') {
+              // I want to buffer that into a string
+            console.log('The description content is the following: ' + file.content.toString('utf8'))
+            description = file.content.toString('utf8')
+            ipfsResults.description = description
+          }
+          // Check to see if one is the jsonContent.json file
+          if (fileName == 'jsonContent.json') {
+              // I want to buffer that into a string and convert to a json
+            jsonContent = JSON.parse(file.content.toString('utf8'))
+            console.log('The JSON content is the following: ' + JSON.stringify(jsonContent))
+            ipfsResults.jsonContent = jsonContent
+          }
+
+          if (fileName != 'description.txt' && fileName != 'jsonContent.json') {
+              // TODO:  Check the type of fileContent to see what it is
+            console.log('This is a file: ' + fileName)
+
+              // Create a link to download the file
+            downloadLinkToFile = process.env.IPFS_URL + file.path.toString('utf8')
+            // console.log(downloadLinkToFile)
+            ipfsFiles.push(downloadLinkToFile)
+          }
+        }
+      })
+      console.log('The following files are in the IPFS folder: ')
+      console.log(ipfsFileContents)
+
+      ipfsResults.ipfsFiles = ipfsFiles
+      resolve(ipfsResults)
     })
   })
 }
@@ -116,6 +152,49 @@ ipfsCalls.uploadDescriptionOnlyToIPFS = function (descriptionContent, descriptio
       if (err) { return cb(err) }
       console.log('\nAdded file:', filesAdded[0].path, filesAdded[0].hash)
       resolve(filesAdded[0].hash)
+    })
+  })
+}
+
+/*
+EXPERIMENTAL FUNCTIONS
+*/
+
+ipfsCalls.getIpfsDescriptionOnly = function (_ipfsHash) {
+  console.log('Gateway call recieved. Hitting IPFS Node for data at hash: ' + _ipfsHash)
+  return new Promise((resolve, reject) => {
+    ipfsNode.files.get(_ipfsHash).then(function (results) {
+        // Create a temp storage space
+
+        // Store all the file names into an array
+      let ipfsFiles = []
+      let ipfsFileContents = []
+
+      let ipfsResults = {}
+
+      results.forEach((file) => {
+          // Only grab the files that we want
+        if (file.content) {
+          let fileName = file.path.toString('utf8').replace(_ipfsHash, '').replace('/', '')
+          console.log(fileName)
+
+          ipfsFileContents.push(fileName)
+
+          // Check to see if one is the description.txt file
+          if (fileName == 'description.txt') {
+              // I want to buffer that into a string
+            console.log('The description content is the following: ' + file.content.toString('utf8'))
+            description = file.content.toString('utf8')
+            ipfsResults.description = description
+          }
+        }
+      })
+
+      console.log('The following files are in the IPFS folder: ')
+      console.log(ipfsResults)
+
+      // ipfsResults.ipfsFiles = ipfsFiles.description
+      resolve(ipfsResults.description)
     })
   })
 }
