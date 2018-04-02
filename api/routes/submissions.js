@@ -75,28 +75,7 @@ router.get('/address/:submissionAddress', (req, res, next) => {
   const address = req.params.submissionAddress
   details = submissionController.getSubmissionByAddress(address).then(function (result) {
     res.status(200).json({
-      submissionTitle: result._submissionTitle,
-      submissionAddress: address,
-      submissionAuthor: result._submissionAuthor,
-      submissionId: result._submissionId,
-      submissionDescription: result._submissionDescription,
-      submissionCollaborators: result._submissionCollaborators,
-      submissionReferences: result._submissionReferences,
-      submissionJson: result._submissionJson,
-      submissionIpfsHash: result._submissionIpfsHash,
-      submissionRewardTotal: result._submissionRewardTotal,
-      submissionSelectedRound: result._submissionSelectedRound,
-      submissionDate: result._submissionDate,
-      parentInfo: [
-        {
-          currentRound: result._parentInfo._currentRound,
-          totalRounds: result._parentInfo._totalRounds,
-          roundAddress: result._parentInfo._roundAddress,
-          roundMtx: result._parentInfo._roundMtx,
-          tournamentName: result._parentInfo._tournamentName,
-          tournamentAddress: result._parentInfo._tournamentAddress
-        }
-      ]
+      submissionDetails: result
     })
   })
 })
@@ -111,344 +90,39 @@ router.get('/address/:submissionAddress/getOwner', (req, res, next) => {
   })
 })
 
-// Return the submission owner/author for a specific submission address
-router.get('/address/:submissionAddress/getIpfsData/:ipfsHash', (req, res, next) => {
-  const address = req.params.submissionAddress
-  const ipfsHash = req.params.ipfsHash
-  console.log('Retrieving submission data from IPFS using externalAddress: ' + ipfsHash)
-  // submissionController.getSubmissionOwnerByAddress(address).then(function (result) {
-  submissionController.getIpfsDataForSubmission(address, ipfsHash).then(function (result) {
-    res.status(200).json({
-      hashResult: result
-    })
-  })
-})
-
 /*
-Takes in a multipart/form-data post call with the following inputs
-@input description (string)
-@input jsonContent (stringify(json))
-@input files (files)
-
-It puts them in a temp folder and then uploads them to IPFS and returns a hash
-
-@returns IPFS Hash (string)
-*/
-router.post('/address/:submissionAddress/uploadToIPFS', (req, res, next) => {
-  var form = new formidable.IncomingForm(),
-    files = [],
-    fields = []
-
-  var tmpobj = tmp.dirSync()
-  console.log('Dir: ', tmpobj.name)
-
-  form.uploadDir = tmpobj.name
-
-// TODO: Throw this all in a try/catch block
-  form
-      .on('field', function (field, value) {
-        // console.log(field, value)
-        fields.push([field, value])
-      })
-      .on('file', function (field, file) {
-        // console.log(field, file)
-        files.push([field, file])
-      })
-      .on('progress', function (bytesReceived, bytesExpected) {
-        var percent = (bytesReceived / bytesExpected * 100) | 0
-        console.log('Uploading: %' + percent + '\r')
-      })
-      .on('end', function () {
-          // Logic for handling the files + IPFS
-        console.log('-> Upload Complete')
-
-        let tempDirectory = tmpobj.name
-
-        // console.log(util.inspect(files[0][1].path)) // This is where the first file was stored
-        // console.log(fields[0][0]) // This is if the first field is 'description', it returns 'description' and fields[0][1] is the description content
-
-        // // TODO: filesContent
-        // Check to see if there is any filesContent key in the fields
-
-        fields.forEach(function (field) {
-            // Check to see if there is a description key in the fields
-          if (field[0] == 'description') {
-            console.log(field[1]) // This is the description content
-            descriptionContent = Buffer.from(field[1])
-            descriptionPath = tempDirectory + '/description.txt'
-            // Store the descriptionContent into the tempFolder
-            ipfsCalls.storeDescriptionToTmp(descriptionContent, descriptionPath).then(function (result) {
-              console.log(result)
-            })
-          }
-          // Check to see if there is a jsonContent key in the fields
-          if (field[0] == 'jsonContent') {
-            console.log(field[1]) // This is the json content
-            jsonContent = Buffer.from(field[1])
-            jsonPath = tempDirectory + '/jsonContent.json'
-            ipfsCalls.storeDescriptionToTmp(jsonContent, jsonPath).then(function (result) {
-              console.log(result)
-            })
-          }
-        })
-
-        // Add the tmp folder to IPFS and get back a hash
-        ipfsCalls.pushTmpFolderToIPFS(tempDirectory).then(function (ipfsHashResult) {
-          res.status(200).json({
-            folderHash: ipfsHashResult
-          })
-        })
-
-        fs.readdir(tempDirectory, (err, files) => {
-          console.log('These are the files in the directory')
-          files.forEach(file => {
-            console.log(file)
-          })
-        })
-      })
-  form.parse(req)
-})
-
-/*
-These are are experiemental
+These are are experiemental or old
 */
 
-// // This can handle a file and the description and stores the file upload AND the description into a temp folder which is perfect, and passes everything to IPFS and gets back a hash
-// router.post('/address/:submissionAddress/uploadToIpfsOneFile', (req, res, next) => {
-//   var form = new formidable.IncomingForm(),
-//     files = [],
-//     fields = []
-//
-//   var tmpobj = tmp.dirSync()
-//   console.log('Dir: ', tmpobj.name)
-//
-//   form.uploadDir = tmpobj.name
-//
-//   // tmp.dir(function _tempDirCreated (err, path, cleanupCallback) {
-//   //   if (err) throw err
-//   //
-//   //   console.log('Dir: ', path)
-//   //   form.uploadDir = path
-//   // })
-//
-// // TODO: Throw this all in a try/catch block
-//   form
-//       .on('field', function (field, value) {
-//         // console.log(field, value)
-//         fields.push([field, value])
-//       })
-//       .on('file', function (field, file) {
-//         // console.log(field, file)
-//         files.push([field, file])
-//       })
-//       .on('progress', function (bytesReceived, bytesExpected) {
-//         var percent = (bytesReceived / bytesExpected * 100) | 0
-//         console.log('Uploading: %' + percent + '\r')
-//       })
-//       .on('end', function () {
-//           // Logic for handling the files + IPFS
-//
-//         console.log('-> Upload Complete')
-//
-//         // TODO: Add a check to see how many files were uploaded
-//         /*
-//         files.forEach(){
-//
+// // Return the submission details for a specific submission address
+// router.get('/address/:submissionAddress', (req, res, next) => {
+//   const address = req.params.submissionAddress
+//   details = submissionController.getSubmissionByAddress(address).then(function (result) {
+//     res.status(200).json({
+//       submissionTitle: result._submissionTitle,
+//       submissionAddress: address,
+//       submissionAuthor: result._submissionAuthor,
+//       submissionId: result._submissionId,
+//       submissionDescription: result._submissionDescription,
+//       submissionCollaborators: result._submissionCollaborators,
+//       submissionReferences: result._submissionReferences,
+//       submissionJson: result._submissionJson,
+//       submissionIpfsHash: result._submissionIpfsHash,
+//       submissionRewardTotal: result._submissionRewardTotal,
+//       submissionSelectedRound: result._submissionSelectedRound,
+//       submissionDate: result._submissionDate,
+//       parentInfo: [
+//         {
+//           currentRound: result._parentInfo._currentRound,
+//           totalRounds: result._parentInfo._totalRounds,
+//           roundAddress: result._parentInfo._roundAddress,
+//           roundMtx: result._parentInfo._roundMtx,
+//           tournamentName: result._parentInfo._tournamentName,
+//           tournamentAddress: result._parentInfo._tournamentAddress
 //         }
-//         */
-//         // TODO: Get the exact folder location from the path when I created the temp dir
-//         // let tempDirectory = '/var/folders/rq/4rg3yzq13ql05mg9xmgj4kl00000gn/T/'
-//         let tempDirectory = tmpobj.name
-//
-//         console.log(util.inspect(files[0][1].path)) // This is where the first file was stored
-//         console.log(fields[0][0]) // This is if the first field is 'description', it returns 'description' and fields[0][1] is the description content
-//
-//         // Check to see if there is a description header
-//         fields.forEach(function (field) {
-//           if (field[0] == 'description') {
-//                 // // TODO: Buffer stream into description.txt and put into temp folder
-//             console.log(field[1]) // This is the description content
-//             descriptionContent = Buffer.from(field[1])
-//             descriptionPath = tempDirectory + '/description.txt'
-//             console.log(descriptionPath)
-//             // Store the descriptionContent into the tempFolder
-//             ipfsCalls.storeDescriptionToTmp(descriptionContent, descriptionPath).then(function (result) {
-//               // fs.readdir(tempDirectory, (err, files) => {
-//               //   console.log('These are the files in the directory')
-//               //   files.forEach(file => {
-//               //     console.log(file)
-//               //   })
-//               // })
-//               console.log(result)
-//
-//               // TODO: callIPFS upload the whole folder in the tempDirectory and get back a hash
-//               ipfsCalls.pushTmpFolderToIPFS(tempDirectory).then(function (ipfsHashResult) {
-//                 res.status(200).json({
-//                   folderHash: ipfsHashResult
-//                 })
-//               })
-//             })
-//             // //For now I am uploading directly to IPFS
-//             // ipfsCalls.uploadDescriptionOnlyToIPFS(descriptionContent, descriptionPath).then(function (result) {
-//             //   console.log(result)
-//             //   res.status(200).json({
-//             //     fileHash: result
-//             //   }
-//             //   // TODO: add this when I can extract the tempDirectory automatically
-//             //   // cleanupCallback()
-//             //   )
-//             // })
-//           }
-//         })
-//         fs.readdir(tempDirectory, (err, files) => {
-//           console.log('These are the files in the directory')
-//           files.forEach(file => {
-//             console.log(file)
-//           })
-//         })
-//       })
-//   form.parse(req)
-// })
-// // This can handle a file and the description and stores the file upload AND the description into a temp folder which is perfect, and passes everything to IPFS and gets back a hash
-// router.post('/address/:submissionAddress/uploadToIpfsOneFile', (req, res, next) => {
-//   var form = new formidable.IncomingForm(),
-//     files = [],
-//     fields = []
-//
-//   var tmpobj = tmp.dirSync()
-//   console.log('Dir: ', tmpobj.name)
-//
-//   form.uploadDir = tmpobj.name
-//
-//   // tmp.dir(function _tempDirCreated (err, path, cleanupCallback) {
-//   //   if (err) throw err
-//   //
-//   //   console.log('Dir: ', path)
-//   //   form.uploadDir = path
-//   // })
-//
-// // TODO: Throw this all in a try/catch block
-//   form
-//       .on('field', function (field, value) {
-//         // console.log(field, value)
-//         fields.push([field, value])
-//       })
-//       .on('file', function (field, file) {
-//         // console.log(field, file)
-//         files.push([field, file])
-//       })
-//       .on('progress', function (bytesReceived, bytesExpected) {
-//         var percent = (bytesReceived / bytesExpected * 100) | 0
-//         console.log('Uploading: %' + percent + '\r')
-//       })
-//       .on('end', function () {
-//           // Logic for handling the files + IPFS
-//         console.log('-> Upload Complete')
-//
-//         let tempDirectory = tmpobj.name
-//
-//         // console.log(util.inspect(files[0][1].path)) // This is where the first file was stored
-//         // console.log(fields[0][0]) // This is if the first field is 'description', it returns 'description' and fields[0][1] is the description content
-//
-//         // Check to see if there is a description header
-//         fields.forEach(function (field) {
-//           if (field[0] == 'description') {
-//             console.log(field[1]) // This is the description content
-//             descriptionContent = Buffer.from(field[1])
-//             descriptionPath = tempDirectory + '/description.txt'
-//             console.log(descriptionPath)
-//             // Store the descriptionContent into the tempFolder
-//             ipfsCalls.storeDescriptionToTmp(descriptionContent, descriptionPath).then(function (result) {
-//               console.log(result)
-//
-//               // TODO: callIPFS upload the whole folder in the tempDirectory and get back a hash
-//               ipfsCalls.pushTmpFolderToIPFS(tempDirectory).then(function (ipfsHashResult) {
-//                 res.status(200).json({
-//                   folderHash: ipfsHashResult
-//                 })
-//               })
-//             })
-//           }
-//         })
-//         fs.readdir(tempDirectory, (err, files) => {
-//           console.log('These are the files in the directory')
-//           files.forEach(file => {
-//             console.log(file)
-//           })
-//         })
-//       })
-//   form.parse(req)
-//   // tmpobj.cleanupCallback()
-// })
-//
-// // This CAN handle multiple files, but I am using it to upload a description.txt
-// router.post('/address/:submissionAddress/uploadToIpfs', (req, res, next) => {
-//   var form = new formidable.IncomingForm(),
-//     files = [],
-//     fields = []
-//
-//   tmp.dir(function _tempDirCreated (err, path, cleanupCallback) {
-//     if (err) throw err
-//
-//     console.log('Dir: ', path)
-//     form.uploadDir = path
+//       ]
+//     })
 //   })
-//
-// // TODO: Throw this all in a try/catch block
-//   form
-//       .on('field', function (field, value) {
-//         // console.log(field, value)
-//         fields.push([field, value])
-//       })
-//       .on('file', function (field, file) {
-//         // console.log(field, file)
-//         files.push([field, file])
-//       })
-//       .on('progress', function (bytesReceived, bytesExpected) {
-//         var percent = (bytesReceived / bytesExpected * 100) | 0
-//         console.log('Uploading: %' + percent + '\r')
-//       })
-//       .on('end', function () {
-//           // Logic for handling the files + IPFS
-//
-//         console.log('-> Upload Complete')
-//
-//         // TODO: Add a check to see how many files were uploaded
-//         /*
-//         files.forEach(){
-//
-//         }
-//         */
-//         // TODO: Get the exact folder location from the path when I created the temp dir
-//         let tempDirectory = '/var/folders/rq/4rg3yzq13ql05mg9xmgj4kl00000gn/T/'
-//
-//         console.log(util.inspect(files[0][1].path)) // This is where the first file was stored
-//         console.log(fields[0][0]) // This is if the first field is 'description', it returns 'description' and fields[0][1] is the description content
-//
-//         // Check to see if there is a description header
-//         fields.forEach(function (field) {
-//           if (field[0] == 'description') {
-//                 // // TODO: Buffer stream into description.txt and put into temp folder
-//             console.log(field[1]) // This is the description content
-//             descriptionContent = Buffer.from(field[1])
-//             descriptionPath = tempDirectory + 'description.txt'
-//             console.log(descriptionPath)
-//             // Store the descriptionContent into the tempFolder
-//
-//             // For now I am uploading directly to IPFS
-//             ipfsCalls.uploadDescriptionOnlyToIPFS(descriptionContent, descriptionPath).then(function (result) {
-//               console.log(result)
-//               res.status(200).json({
-//                 fileHash: result
-//               }
-//               // TODO: add this when I can extract the tempDirectory automatically
-//               // cleanupCallback()
-//               )
-//             })
-//           }
-//         })
-//       })
-//   form.parse(req)
 // })
 
 module.exports = router

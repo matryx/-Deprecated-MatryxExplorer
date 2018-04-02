@@ -651,7 +651,7 @@ matryxPlatformCalls.getSubmissionsFromRound = function (roundAddress) {
             }
 
             submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
-            submissionContract.title((err, _title) => {
+            submissionContract.getTitle((err, _title) => {
               submission.address = submissionAddress
               submission.title = _title
               submissionResults.push(submission)
@@ -731,6 +731,8 @@ matryxPlatformCalls.getTournamentInfoFromRoundAddress = function (_roundAddress)
 */
 
 matryxPlatformCalls.getSubmissionTitle = function (submissionAddress) {
+  console.log('>MatryxPlatformCalls: Retrieving submission title from: ' + submissionAddress)
+
   return new Promise((resolve, reject) => {
     submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
     submissionContract.getTitle((err, res) => {
@@ -743,6 +745,8 @@ matryxPlatformCalls.getSubmissionTitle = function (submissionAddress) {
 }
 
 matryxPlatformCalls.getSubmissionAuthor = function (submissionAddress) {
+  console.log('>MatryxPlatformCalls: Retrieving submission author from: ' + submissionAddress)
+
   return new Promise((resolve, reject) => {
     submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
     submissionContract.getAuthor((err, res) => {
@@ -755,6 +759,8 @@ matryxPlatformCalls.getSubmissionAuthor = function (submissionAddress) {
 }
 
 matryxPlatformCalls.getSubmissionExternalAddress = function (submissionAddress) {
+  console.log('>MatryxPlatformCalls: Retrieving submission external address from: ' + submissionAddress)
+
   return new Promise((resolve, reject) => {
     submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
     submissionContract.getExternalAddress((err, res) => {
@@ -769,6 +775,8 @@ matryxPlatformCalls.getSubmissionExternalAddress = function (submissionAddress) 
 }
 
 matryxPlatformCalls.getSubmissionReferences = function (submissionAddress) {
+  console.log('>MatryxPlatformCalls: Retrieving submission references from: ' + submissionAddress)
+
   return new Promise((resolve, reject) => {
     submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
     submissionContract.getReferences((err, res) => {
@@ -781,6 +789,8 @@ matryxPlatformCalls.getSubmissionReferences = function (submissionAddress) {
 }
 
 matryxPlatformCalls.getSubmissionContributors = function (submissionAddress) {
+  console.log('>MatryxPlatformCalls: Retrieving submission contributors from: ' + submissionAddress)
+
   return new Promise((resolve, reject) => {
     submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
     submissionContract.getContributors((err, res) => {
@@ -793,6 +803,8 @@ matryxPlatformCalls.getSubmissionContributors = function (submissionAddress) {
 }
 
 matryxPlatformCalls.getSubmissionTimeSubmitted = function (submissionAddress) {
+  console.log('>MatryxPlatformCalls: Retrieving submission time submitted from: ' + submissionAddress)
+
   return new Promise((resolve, reject) => {
     submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
     submissionContract.getTimeSubmitted((err, res) => {
@@ -805,6 +817,7 @@ matryxPlatformCalls.getSubmissionTimeSubmitted = function (submissionAddress) {
 }
 
 matryxPlatformCalls.getSubmissionTimeUpdated = function (submissionAddress) {
+  console.log('>MatryxPlatformCalls: Retrieving submission time updated from: ' + submissionAddress)
   return new Promise((resolve, reject) => {
     submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
     submissionContract.getTimeUpdated((err, res) => {
@@ -817,8 +830,11 @@ matryxPlatformCalls.getSubmissionTimeUpdated = function (submissionAddress) {
 }
 
 matryxPlatformCalls.getSubmissionBalance = function (submissionAddress) {
+  console.log('>MatryxPlatformCalls: Retrieving submission balance from: ' + submissionAddress)
+
   return new Promise((resolve, reject) => {
     submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
+    console.log(submissionContract)
     submissionContract.getBalance((err, res) => {
       if (err) reject(err)
       else {
@@ -829,6 +845,7 @@ matryxPlatformCalls.getSubmissionBalance = function (submissionAddress) {
 }
 
 matryxPlatformCalls.getRoundAddressFromSubmission = function (submissionAddress) {
+  console.log('>MatryxPlatformCalls: Retrieving round address from submission: ' + submissionAddress)
   return new Promise((resolve, reject) => {
     submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
     submissionContract.getRound((err, res) => {
@@ -840,6 +857,8 @@ matryxPlatformCalls.getRoundAddressFromSubmission = function (submissionAddress)
   })
 }
 matryxPlatformCalls.getTournamentAddressFromSubmission = function (submissionAddress) {
+  console.log('>MatryxPlatformCalls: Retrieving tournament address from submission: ' + submissionAddress)
+
   return new Promise((resolve, reject) => {
     submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
     submissionContract.getTournament((err, res) => {
@@ -852,6 +871,8 @@ matryxPlatformCalls.getTournamentAddressFromSubmission = function (submissionAdd
 }
 
 matryxPlatformCalls.getSubmissionDescription = function (submissionAddress) {
+  console.log('>MatryxPlatformCalls: Retrieving submission description from: ' + submissionAddress)
+
   return new Promise((resolve, reject) => {
     submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
     submissionContract.getExternalAddress((err, res) => {
@@ -872,6 +893,8 @@ matryxPlatformCalls.getSubmissionDescription = function (submissionAddress) {
 }
 
 matryxPlatformCalls.getSubmissionContents = function (submissionAddress) {
+  console.log('>MatryxPlatformCalls: Retrieving submission contents from: ' + submissionAddress)
+
   return new Promise((resolve, reject) => {
     submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
     submissionContract.getExternalAddress((err, res) => {
@@ -892,6 +915,7 @@ matryxPlatformCalls.getSubmissionContents = function (submissionAddress) {
 }
 
 matryxPlatformCalls.getRoundInfoFromSubmission = function (submissionAddress) {
+  console.log('>MatryxPlatformCalls: Retrieving Round info from submission: ' + submissionAddress)
   return new Promise((resolve, reject) => {
     matryxPlatformCalls.getRoundAddressFromSubmission(submissionAddress, (err, roundAddress) => {
       if (err)reject(err)
@@ -908,6 +932,8 @@ matryxPlatformCalls.getRoundInfoFromSubmission = function (submissionAddress) {
 }
 
 matryxPlatformCalls.getTournamentInfoFromSubmission = function (submissionAddress) {
+  console.log('>MatryxPlatformCalls: Retrieving tournament info from submission: ' + submissionAddress)
+
   return new Promise((resolve, reject) => {
     matryxPlatformCalls.getTournamentAddressFromSubmission(submissionAddress, (err, tournamentAddress) => {
       if (err)reject(err)
@@ -929,6 +955,7 @@ matryxPlatformCalls.getTournamentInfoFromSubmission = function (submissionAddres
 }
 
 matryxPlatformCalls.getSubmissionParentInfo = function (submissionAddress) {
+  console.log('>MatryxPlatformCalls: Retrieving parent info for submission: ' + submissionAddress)
   return new Promise((resolve, reject) => {
     submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
 

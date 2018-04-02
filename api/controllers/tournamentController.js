@@ -25,8 +25,11 @@ tournamentController.getAllTournaments = function () {
 
     // Get all the tournament addresses
     matryxPlatformCalls.getAllTournamentAddresses().then(function (tournamentAddresses) {
+      console.log(tournamentAddresses)
       for (i = 0; i < tournamentAddresses.length; i++) {
         tournamentAddress = tournamentAddresses[i]
+        console.log(tournamentAddress)
+
         let tournamentDataCalls = []
         let tournamentData = {
           tournamentTitle: '',

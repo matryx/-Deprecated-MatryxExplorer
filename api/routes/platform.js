@@ -11,7 +11,6 @@ const express = require('express')
 const router = express.Router()
 
 const ethPlatform = require('../controllers/gateway/platformCalls')
-const platformController = require('../controllers/platformController')
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 
 let latestVersion = process.env.PLATFORM_VERSION
