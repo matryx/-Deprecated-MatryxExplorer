@@ -47,11 +47,12 @@ roundController.getRoundDetails = function (_roundAddress) {
       console.log('The values are: ')
       console.log(values)
       roundResponse.tournamentTitle = values[0].tournamentTitle
-      roundResponse.roundMtx = values[1].c[0]
+      roundResponse.roundMtx = values[1]
       roundResponse.tournamentDescription = values[0].tournamentDescription
       roundResponse.tournamentAddress = values[0].tournamentAddress
       roundResponse.roundStatus = values[2].roundStatusValue
       roundResponse.submissions = values[2].submissionResults
+      console.log(values[2])
 
       resolve(roundResponse)
     })

@@ -891,17 +891,13 @@ matryxPlatformCalls.getSubmissionDescription = function (submissionAddress) {
     submissionContract.getExternalAddress((err, res) => {
       if (err) reject(err)
       else {
-        _descriptionResponse = web3.toAscii(res)
-        ipfsCalls.getIpfsDescriptionOnly(_descriptionResponse, (err, res) => {
-          if (err) reject(err)
-          else {
-            console.log(res)
-            resolve(res)
-          }
+        _externalAddress = web3.toAscii(res)
+        ipfsCalls.getIpfsDescriptionOnly(_externalAddress).then(function (description) {
+          resolve(description)
         })
-          // Call IPFS with external address and return the description
       }
     })
+          // Call IPFS with external address and return the description
   })
 }
 
@@ -914,12 +910,9 @@ matryxPlatformCalls.getSubmissionContents = function (submissionAddress) {
       if (err) reject(err)
       else {
         _externalAddress = web3.toAscii(res)
-        ipfsCalls.getIpfsDataFiles(_externalAddress, (err, res) => {
-          if (err) reject(err)
-          else {
-            console.log(res)
-            resolve(res)
-          }
+        ipfsCalls.getIpfsDataFiles(_externalAddress).then(function (ipfsResults) {
+          console.log(res)
+          resolve(ipfsResults)
         })
           // Call IPFS with external address and return the description
       }
@@ -930,16 +923,10 @@ matryxPlatformCalls.getSubmissionContents = function (submissionAddress) {
 matryxPlatformCalls.getRoundInfoFromSubmission = function (submissionAddress) {
   console.log('>MatryxPlatformCalls: Retrieving Round info from submission: ' + submissionAddress)
   return new Promise((resolve, reject) => {
-    matryxPlatformCalls.getRoundAddressFromSubmission(submissionAddress, (err, roundAddress) => {
-      if (err)reject(err)
-      else {
-        matryxPlatformCalls.getRoundBounty(roundAddress, (err, mtx) => {
-          if (err)reject(err)
-          else {
-            resolve(roundAddress, web3.fromWei(mtx.toString()))
-          }
-        })
-      }
+    matryxPlatformCalls.getRoundAddressFromSubmission(submissionAddress).then(function (roundAddress) {
+      matryxPlatformCalls.getRoundBounty(roundAddress).then(function (mtx) {
+        resolve(roundAddress, web3.fromWei(mtx.toString()))
+      })
     })
   })
 }
@@ -948,21 +935,12 @@ matryxPlatformCalls.getTournamentInfoFromSubmission = function (submissionAddres
   console.log('>MatryxPlatformCalls: Retrieving tournament info from submission: ' + submissionAddress)
 
   return new Promise((resolve, reject) => {
-    matryxPlatformCalls.getTournamentAddressFromSubmission(submissionAddress, (err, tournamentAddress) => {
-      if (err)reject(err)
-      else {
-        matryxPlatformCalls.getTournamentTitle(tournamentAddress, (err, title) => {
-          if (err)reject(err)
-          else {
-            matryxPlatformCalls.getCurrentRoundFromTournamentAddress(tournamentAddress, (err, currentRound) => {
-              if (err)reject(err)
-              else {
-                resolve(tournamentAddress, title, currentRound)
-              }
-            })
-          }
+    matryxPlatformCalls.getTournamentAddressFromSubmission(submissionAddress).then(function (tournamentAddress) {
+      matryxPlatformCalls.getTournamentTitle(tournamentAddress).then(function (title) {
+        matryxPlatformCalls.currentRoundOfTournament(tournamentAddress).then(function (currentRound) {
+          resolve(tournamentAddress, title, currentRound)
         })
-      }
+      })
     })
   })
 }
@@ -970,8 +948,6 @@ matryxPlatformCalls.getTournamentInfoFromSubmission = function (submissionAddres
 matryxPlatformCalls.getSubmissionParentInfo = function (submissionAddress) {
   console.log('>MatryxPlatformCalls: Retrieving parent info for submission: ' + submissionAddress)
   return new Promise((resolve, reject) => {
-    submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
-
     let parentInfoItem = {
       currentRound: 0, // tournament
       roundAddress: '',
@@ -985,7 +961,7 @@ matryxPlatformCalls.getSubmissionParentInfo = function (submissionAddress) {
     parentInfoCalls.push(matryxPlatformCalls.getTournamentInfoFromSubmission(submissionAddress))
 
     Promise.all(parentInfoCalls).then(function (values) {
-      console.log(values)
+      console.log('parentInfoCalls = ' + values)
       parentInfoItem.currentRound = values[1][2]
       parentInfoItem.roundAddress = values[0][0]
       parentInfoItem.roundMtx = values[0][1]

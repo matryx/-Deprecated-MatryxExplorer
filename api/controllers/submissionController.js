@@ -83,15 +83,15 @@ submissionController.getSubmissionByAddress = function (_submissionAddress) {
 
     submissionDataCalls.push(matryxPlatformCalls.getSubmissionTitle(_submissionAddress))
     submissionDataCalls.push(matryxPlatformCalls.getSubmissionAuthor(_submissionAddress))
-    // submissionDataCalls.push(matryxPlatformCalls.getSubmissionDescription(_submissionAddress)) //// TODO: MAX
+    submissionDataCalls.push(matryxPlatformCalls.getSubmissionDescription(_submissionAddress)) // // TODO: MAX
     submissionDataCalls.push(matryxPlatformCalls.getSubmissionContributors(_submissionAddress))
     submissionDataCalls.push(matryxPlatformCalls.getSubmissionReferences(_submissionAddress))
-    // submissionDataCalls.push(matryxPlatformCalls.getSubmissionContents(_submissionAddress)) // TODO: MAX
+    submissionDataCalls.push(matryxPlatformCalls.getSubmissionContents(_submissionAddress)) // TODO: MAX
     submissionDataCalls.push(matryxPlatformCalls.getSubmissionExternalAddress(_submissionAddress))
     // submissionDataCalls.push(matryxPlatformCalls.getSubmissionBalance(_submissionAddress))
     // submissionDataCalls.push(matryxPlatformCalls.getSubmissionSelectedRound(_submissionAddress)) // TODO: MAX what is this
     submissionDataCalls.push(matryxPlatformCalls.getSubmissionTimeSubmitted(_submissionAddress))
-    // submissionDataCalls.push(matryxPlatformCalls.getSubmissionParentInfo(_submissionAddress))
+    submissionDataCalls.push(matryxPlatformCalls.getSubmissionParentInfo(_submissionAddress))
           // Promise all for the data inside the submissions
 
     Promise.all(submissionDataCalls).then(function (values) {
@@ -101,15 +101,15 @@ submissionController.getSubmissionByAddress = function (_submissionAddress) {
       submissionData.submissionAddress = _submissionAddress
       submissionData.submissionAuthor = values[1]
       submissionData.submissionId = ''
-      submissionData.submissionDescription = 'Waiting for valid IPFS hash' // TODO:
-      submissionData.submissionCollaborators = values[2]
-      submissionData.submissionReferences = values[3]
-      // submissionData.submissionContents = values[5]
-      submissionData.submissionExternalAddress = values[4]
+      submissionData.submissionDescription = values[2]
+      submissionData.submissionCollaborators = values[3]
+      submissionData.submissionReferences = values[4]
+      submissionData.submissionContents = values[5] // turn this into a []
+      submissionData.submissionExternalAddress = values[6]
       // submissionData.submissionRewardTotal = values[5]
       submissionData.submissionSelectedRound = 0
-      submissionData.submissionDate = values[5]
-      // submissionData.parentInfo = values[6]
+      submissionData.submissionDate = values[7]
+      submissionData.parentInfo = values[8]
             // submissions.submissions = values[10]
 
       resolve(submissionData)
