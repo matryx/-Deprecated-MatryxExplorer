@@ -10,6 +10,8 @@ const router = express.Router()
 
 const ethPlatform = require('../controllers/gateway/platformCalls')
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
+const roundController = require('../controllers/roundController')
+const matryxPlatformCalls = require('../controllers/gateway/matryxPlatformCalls')
 
 let latestVersion = process.env.PLATFORM_VERSION
 
@@ -58,6 +60,45 @@ router.get('/getAbi/:version', (req, res, next) => {
       error: err
     })
   }
+})
+
+// TODO: add error response for invalid responses
+router.get('/address/:address', (req, res, next) => {
+  let _roundAddress = req.params.address
+  console.log('>RoundRouter: Retrieving Round Details for: ' + _roundAddress)
+  try {
+    roundController.getRoundDetails(_roundAddress).then(function (_roundDetails) {
+      res.status(200).json({
+        data: _roundDetails
+      })
+    })
+  } catch (err) {
+    res.status(500).json({
+      errName: err.name,
+      errMsg: err.message
+    })
+  }
+})
+
+// Does this even work? test
+// TODO: add error response for invalid responses
+router.get('/address/:address/submission/:submissionIndex', (req, res, next) => {
+  let _roundAddress = req.params.address
+  let _submissionIndex = req.params.submissionIndex
+
+  matryxPlatformCalls.getSubmissionAddressFromRound(_roundAddress, _submissionIndex, (err, _submissionAddress) => {
+    if (err) {
+      res.status(500).json({
+        errorName: err.name
+      })
+    } else {
+      res.status(200).json({
+        roundAddress: _roundAddress,
+        submissionIndex: _submissionIndex,
+        submissionAddress: _submissionAddress
+      })
+    }
+  })
 })
 
 // router.post('/', (req, res, next) => {

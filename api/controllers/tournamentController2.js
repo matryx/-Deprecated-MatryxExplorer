@@ -77,6 +77,9 @@ tournamentController2.getAllTournaments = function () {
   })
 }
 
+// TODO: submissions call
+// TODO: getDescription only when max gives back a correct hash-> also error handle for this.
+
 tournamentController2.getTournamentByAddress = function (_tournamentAddress) {
   console.log('Executing TournamentController for getting Tournament details at: ' + _tournamentAddress)
   return new Promise((resolve, reject) => {
@@ -93,6 +96,7 @@ tournamentController2.getTournamentByAddress = function (_tournamentAddress) {
       category: '',
       totalRounds: 0,
       currentRound: 0,
+      currentRoundAddress: '',
       numberOfParticipants: 0,
       ipType: '',
       roundEndTime: '',
@@ -114,6 +118,7 @@ tournamentController2.getTournamentByAddress = function (_tournamentAddress) {
     tournamentDataCalls.push(matryxPlatformCalls.getTournamentCategory(_tournamentAddress))
     tournamentDataCalls.push(matryxPlatformCalls.getTournamentMaxRounds(_tournamentAddress))
     tournamentDataCalls.push(matryxPlatformCalls.currentRoundOfTournament(_tournamentAddress))
+    tournamentDataCalls.push(matryxPlatformCalls.currentRoundAddressOfTournament(_tournamentAddress))
     tournamentDataCalls.push(matryxPlatformCalls.entrantCountOfTournament(_tournamentAddress))
     tournamentDataCalls.push(matryxPlatformCalls.getCurrentRoundEndTimeFromTournament(_tournamentAddress))
     tournamentDataCalls.push(matryxPlatformCalls.getEntryFeeOfTournament(_tournamentAddress))
@@ -131,11 +136,12 @@ tournamentController2.getTournamentByAddress = function (_tournamentAddress) {
       tournamentData.category = values[3]
       tournamentData.totalRounds = values[4]
       tournamentData.currentRound = values[5]
-      tournamentData.numberOfParticipants = values[6]
+      tournamentData.currentRoundAddress = values[6]
+      tournamentData.numberOfParticipants = values[7]
       tournamentData.ipType = ''
-      tournamentData.roundEndTime = values[7]
-      tournamentData.participationMTX = values[8]
-      tournamentData.externalAddress = values[9]
+      tournamentData.roundEndTime = values[8]
+      tournamentData.participationMTX = values[9]
+      tournamentData.externalAddress = values[10]
           // tournamentData.submissions = values[10]
 
       resolve(tournamentData)

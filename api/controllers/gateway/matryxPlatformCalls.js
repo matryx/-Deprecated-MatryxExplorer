@@ -242,6 +242,7 @@ matryxPlatformCalls.getTournamentBounty = function (tournamentAddress) {
 }
 
 matryxPlatformCalls.getTournamentDescription = function (tournamentAddress) {
+  console.log('>MatryxPlatformCalls: Retrieving Tournament Description at: ' + tournamentAddress)
   return new Promise((resolve, reject) => {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
     tournamentContract.getExternalAddress((err, res) => {
@@ -251,8 +252,12 @@ matryxPlatformCalls.getTournamentDescription = function (tournamentAddress) {
         ipfsCalls.getIpfsDescriptionOnly(_descriptionResponse, (err, res) => {
           if (err) reject(err)
           else {
-            console.log(res)
-            resolve(res)
+            if (res) {
+              console.log(res)
+              resolve(res)
+            } else {
+              resolve('Unable to retrieve description due to empty IPFS response')
+            }
           }
         })
           // Call IPFS with external address and return the description
@@ -476,12 +481,14 @@ matryxPlatformCalls.getRoundBounty = function (roundAddress) {
   })
 }
 
+// TODO: does not work
 matryxPlatformCalls.getRoundSubmissions = function (roundAddress) {
   return new Promise((resolve, reject) => {
     roundContract = web3.eth.contract(roundAbi).at(roundAddress)
     roundContract.getSubmissions((err, res) => {
       if (err) reject(err)
       else {
+        console.log(res)
         resolve(res)
       }
     })
@@ -556,6 +563,135 @@ matryxPlatformCalls.numberOfSubmissions = function (roundAddress) {
       else {
         resolve(res)
       }
+    })
+  })
+}
+
+matryxPlatformCalls.roundStatus = function (roundAddress) {
+  return new Promise((resolve, reject) => {
+      // Logic for roundStatus
+    roundContract = web3.eth.contract(roundAbi).at(roundAddress)
+    roundContract.isOpen((err, isOpenResult) => {
+      if (isOpenResult == true) {
+        resolve('isOpen')
+      } else {
+        roundContract.isInReview((err, isInReviewResult) => {
+          if (isInReviewResult == true) { resolve('inReview') } else {
+            resolve('isClosed')
+          }
+        })
+      }
+    })
+  })
+}
+
+matryxPlatformCalls.getSubmissionsFromRound = function (roundAddress) {
+  return new Promise((resolve, reject) => {
+    let fullResponse = {
+      roundStatusValue: '',
+      submissionResults: []
+    }
+
+    let submissionResults = []
+    // Check to see if the round is closed or unavailable
+    matryxPlatformCalls.roundStatus(roundAddress).then(function (roundStatusValue) {
+      if (roundStatusValue == 'inReview') {
+        console.log('>MatryxPlatformCalls: Round Status = ' + roundStatusValue)
+        fullResponse.roundStatusValue = roundStatusValue
+        resolve(fullResponse)
+      }
+      if (roundStatusValue == 'isOpen') {
+        console.log('>MatryxPlatformCalls: Round Status = ' + roundStatusValue)
+        console.log('Submission results are: ' + submissionResults)
+        fullResponse.roundStatusValue = roundStatusValue
+        resolve(fullResponse)
+      } else if (roundStatusValue == 'isClosed') {
+        console.log('>MatryxPlatformCalls: Round Status = ' + roundStatusValue)
+
+        console.log('Retrieving all all submissionAddresses..')
+
+        matryxPlatformCalls.getRoundSubmissions(roundAddress).then(function (submissionAddresses) {
+          console.log(submissionAddresses)
+
+    // Check number of submission
+          submissionAddresses.forEach(function (submissionAddress) {
+            let submission = {
+              address: '',
+              title: ''
+            }
+
+            submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
+            submissionContract.title((err, _title) => {
+              submission.address = submissionAddress
+              submission.title = _title
+              submissionResults.push(submission)
+
+              if (submissionResults.length == submissionAddresses.length) {
+                fullResponse.submissionResults = submissionResults
+                fullResponse.roundStatusValue = roundStatusValue
+                resolve(fullResponse)
+              }
+            })
+          })
+        })
+      }
+    })
+  })
+}
+
+matryxPlatformCalls.getSubmissionsFromRound2 = function (roundAddress) {
+  return new Promise((resolve, reject) => {
+    let submissionResults = []
+    roundContract = web3.eth.contract(roundAbi).at(roundAddress)
+    roundContract.getSubmissions((err, submissionAddresses) => {
+      console.log('These are the submission Addresses: ' + submissionAddresses)
+      submissionAddresses.forEach(function (submissionAddress) {
+        let submission = {
+          address: '',
+          title: ''
+        }
+
+        submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
+        submissionContract.title((err, _title) => {
+          submission.address = submissionAddress
+          submission.title = _title
+          submissionResults.push(submission)
+
+          if (submissionResults.length == submissionAddresses.length) {
+            resolve(submissionResults)
+          }
+        })
+      })
+    })
+  })
+}
+
+matryxPlatformCalls.getTournamentInfoFromRoundAddress = function (_roundAddress) {
+  console.log('>MatryxPlatformCalls: getTournamentInfoFromRoundAddress(' + _roundAddress + ')')
+  return new Promise((resolve, reject) => {
+    let tournamentInfo = {
+      tournamentAddress: '',
+      tournamentTitle: '',
+      tournamentDescription: ''
+    }
+    // Get the parent Tournament address
+    matryxPlatformCalls.getParentTournamentFromRound(_roundAddress).then(function (_tournamentAddress) {
+      console.log('parentTournament is: ' + _tournamentAddress)
+      tournamentInfo.tournamentAddress = _tournamentAddress
+      matryxPlatformCalls.getTournamentTitle(_tournamentAddress).then(function (_tournamentTitle) {
+        tournamentInfo.tournamentTitle = _tournamentTitle
+
+        console.log('tournamentTitle is: ' + _tournamentTitle)
+
+        // matryxPlatformCalls.getTournamentDescription(_tournamentAddress).then(function (_tournamentDescription) {
+          // console.log('tournamentDescription is: ' + _tournamentDescription)
+          // tournamentInfo.tournamentDescription = _tournamentDescription
+        tournamentInfo.tournamentDescription = 'TODO fill in with valid description or err'
+
+        console.log('tournamentInfoFromRoundAddress is: ' + tournamentInfo)
+        resolve(tournamentInfo)
+        // })
+      })
     })
   })
 }
@@ -662,15 +798,134 @@ matryxPlatformCalls.getSubmissionBalance = function (submissionAddress) {
   })
 }
 
-matryxPlatformCalls.getSubmissionBalance = function (submissionAddress) {
+matryxPlatformCalls.getRoundAddressFromSubmission = function (submissionAddress) {
   return new Promise((resolve, reject) => {
     submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
-    submissionContract.getBalance((err, res) => {
+    submissionContract.getRound((err, res) => {
       if (err) reject(err)
       else {
         resolve(res)
       }
     })
+  })
+}
+matryxPlatformCalls.getTournamentAddressFromSubmission = function (submissionAddress) {
+  return new Promise((resolve, reject) => {
+    submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
+    submissionContract.getTournament((err, res) => {
+      if (err) reject(err)
+      else {
+        resolve(res)
+      }
+    })
+  })
+}
+
+matryxPlatformCalls.getSubmissionDescription = function (submissionAddress) {
+  return new Promise((resolve, reject) => {
+    submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
+    submissionContract.getExternalAddress((err, res) => {
+      if (err) reject(err)
+      else {
+        _descriptionResponse = web3.toAscii(res)
+        ipfsCalls.getIpfsDescriptionOnly(_descriptionResponse, (err, res) => {
+          if (err) reject(err)
+          else {
+            console.log(res)
+            resolve(res)
+          }
+        })
+          // Call IPFS with external address and return the description
+      }
+    })
+  })
+}
+
+matryxPlatformCalls.getSubmissionContents = function (submissionAddress) {
+  return new Promise((resolve, reject) => {
+    submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
+    submissionContract.getExternalAddress((err, res) => {
+      if (err) reject(err)
+      else {
+        _externalAddress = web3.toAscii(res)
+        ipfsCalls.getIpfsDataFiles(_externalAddress, (err, res) => {
+          if (err) reject(err)
+          else {
+            console.log(res)
+            resolve(res)
+          }
+        })
+          // Call IPFS with external address and return the description
+      }
+    })
+  })
+}
+
+matryxPlatformCalls.getRoundInfoFromSubmission = function (submissionAddress) {
+  return new Promise((resolve, reject) => {
+    matryxPlatformCalls.getRoundAddressFromSubmission(submissionAddress, (err, roundAddress) => {
+      if (err)reject(err)
+      else {
+        matryxPlatformCalls.getRoundBounty(roundAddress, (err, mtx) => {
+          if (err)reject(err)
+          else {
+            resolve(roundAddress, mtx)
+          }
+        })
+      }
+    })
+  })
+}
+
+matryxPlatformCalls.getTournamentInfoFromSubmission = function (submissionAddress) {
+  return new Promise((resolve, reject) => {
+    matryxPlatformCalls.getTournamentAddressFromSubmission(submissionAddress, (err, tournamentAddress) => {
+      if (err)reject(err)
+      else {
+        matryxPlatformCalls.getTournamentTitle(tournamentAddress, (err, title) => {
+          if (err)reject(err)
+          else {
+            matryxPlatformCalls.getCurrentRoundFromTournamentAddress(tournamentAddress, (err, currentRound) => {
+              if (err)reject(err)
+              else {
+                resolve(tournamentAddress, title, currentRound)
+              }
+            })
+          }
+        })
+      }
+    })
+  })
+}
+
+matryxPlatformCalls.getSubmissionParentInfo = function (submissionAddress) {
+  return new Promise((resolve, reject) => {
+    submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
+
+    let parentInfoItem = {
+      currentRound: 0, // tournament
+      roundAddress: '',
+      roundMtx: 0,
+      tournamentName: '', // tournament
+      tournamentAddress: '' // tournament
+    }
+    let parentInfoCalls = []
+
+    parentInfoCalls.push(matryxPlatformCalls.getRoundInfoFromSubmission(submissionAddress))
+    parentInfoCalls.push(matryxPlatformCalls.getTournamentInfoFromSubmission(submissionAddress))
+
+    Promise.all(parentInfoCalls).then(function (values) {
+      console.log(values)
+      parentInfoItem.currentRound = values[1][2]
+      parentInfoItem.roundAddress = values[0][0]
+      parentInfoItem.roundMtx = values[0][1]
+      parentInfoItem.tournamentName = values[1][1]
+      parentInfoItem.tournamentAddress = values[1][0]
+
+      resolve(parentInfoItem)
+    })
+
+          // Call IPFS with external address and return the description
   })
 }
 
