@@ -8,6 +8,7 @@ Copyright Nanome Inc 2018
 const express = require('express')
 const ethPlatform = require('../controllers/gateway/platformCalls')
 const tournamentController = require('../controllers/tournamentController')
+const roundController = require('../controllers/roundController')
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 
 const router = express.Router()
@@ -127,6 +128,27 @@ router.get('/address/:tournamentAddress/currentRound', (req, res, next) => {
     })
   }).catch((err) => {
     console.log('Not able to retrieve latest round: ' + err)
+  })
+})
+
+router.get('/address/:tournamentAddress/round/:roundId', (req, res, next) => {
+  const tournamentAddress = req.params.tournamentAddress
+  const roundId = req.params.roundId
+  console.log('>TournamentRouter: Retrieving Round Details for round ' + roundId + ' of tournmament' + tournamentAddress)
+
+  tournamentController.getRoundAddress(tournamentAddress, roundId).then(function (roundAddress) {
+    try {
+      roundController.getRoundDetails(roundAddress).then(function (_roundDetails) {
+        res.status(200).json({
+          data: _roundDetails
+        })
+      })
+    } catch (err) {
+      res.status(500).json({
+        errName: err.name,
+        errMsg: err.message
+      })
+    }
   })
 })
 

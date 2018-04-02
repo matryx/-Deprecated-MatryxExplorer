@@ -203,4 +203,14 @@ tournamentController.getAllRoundAddresses = function (_tournamentAddress) {
   })
 }
 
+tournamentController.getRoundAddress = function (_tournamentAddress, _roundId) {
+  return new Promise((resolve, reject) => {
+    matryxPlatformCalls.getRoundAddressByIndex(_tournamentAddress, _roundId).then(function (result) {
+      resolve(result)
+    }).catch((err) => {
+      console.log('Not able to retrieve latest round. ' + err)
+    })
+  })
+}
+
 module.exports = tournamentController

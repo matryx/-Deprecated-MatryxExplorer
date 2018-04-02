@@ -460,6 +460,20 @@ matryxPlatformCalls.getAllRoundAddresses = function (tournamentAddress) {
     })
   })
 }
+
+matryxPlatformCalls.getRoundAddressByIndex = function (tournamentAddress, roundIndex) {
+  return new Promise((resolve, reject) => {
+    tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
+    tournamentContract.rounds(roundIndex, (err, roundAddress) => {
+      console.log('Round address = ' + roundAddress)
+            // console.log(roundAddress == '0x')
+      if (roundAddress != '0x') {
+        resolve(roundAddress)
+      }
+        // TODO: Throw error
+    })
+  })
+}
 /*
 * ROUND
 */

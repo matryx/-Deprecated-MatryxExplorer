@@ -26,7 +26,6 @@ externalApiCalls.getMatryxPlatformInfo = function (branch) {
       fetch(matryxPlatformAbiUrl).then(function (result) {
         console.log('Getting Platform Abi from Matryx Platform Github for: ' + branch)
         let jsonResult = result.json()
-        jsonResult = jsonResult
         // You need to get the address by adding results['networks']['777']['address'] to the promise call who uses this function
         resolve(jsonResult)
       })

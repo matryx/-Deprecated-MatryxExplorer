@@ -27,8 +27,11 @@ router.get('/', (req, res, next) => {
 router.get('/getLatestInfo', (req, res, next) => {
   try {
     externalApiCalls.getMatryxPlatformInfo(latestVersion).then(function (resultingInfo) {
+      console.log(resultingInfo)
       let addressReturned = resultingInfo['networks']['777']['address']
-      let abiReturned = resultingInfo.abi
+      let abiReturned = JSON.stringify(resultingInfo.abi)
+      abiReturned = JSON.parse(abiReturned)
+
       res.status(200).json({
         address: addressReturned,
         abi: abiReturned
