@@ -235,7 +235,8 @@ matryxPlatformCalls.getTournamentBounty = function (tournamentAddress) {
     tournamentContract.Bounty((err, res) => {
       if (err) reject(err)
       else {
-        resolve(parseInt(res.toString()))
+        console.log(web3.fromWei(res.toString()))
+        resolve(web3.fromWei(res.toString()))
       }
     })
   })
@@ -517,7 +518,7 @@ matryxPlatformCalls.getRoundBounty = function (roundAddress) {
     roundContract.getBounty((err, res) => {
       if (err) reject(err)
       else {
-        resolve(res)
+        resolve(web3.fromWei(res.toString()))
       }
     })
   })
@@ -935,7 +936,7 @@ matryxPlatformCalls.getRoundInfoFromSubmission = function (submissionAddress) {
         matryxPlatformCalls.getRoundBounty(roundAddress, (err, mtx) => {
           if (err)reject(err)
           else {
-            resolve(roundAddress, mtx)
+            resolve(roundAddress, web3.fromWei(mtx.toString()))
           }
         })
       }
