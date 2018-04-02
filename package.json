@@ -5,10 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Running mocha tests\" && mocha spec",
-    "start": "echo \"Starting MatryxExplorer in development\" &&nodemon server.js",
-    "start dev": "echo \"Starting MatryxExplorer in development\" &&nodemon server.js",
-    "start qa": "echo \"echo \"Starting MatryxExplorer in QA\" &&nodemon server.js",
-    "start prod": "echo \"Starting MatryxExplorer in production mode\" &&node server.js"
+    "dev": "echo \"Starting MatryxExplorer in development\" && nodemon server.js ",
+    "start": "echo \"Starting MatryxExplorer in development with forever\" && forever server.js "
+
   },
   "repository": {
     "type": "git",
