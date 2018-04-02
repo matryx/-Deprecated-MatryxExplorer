@@ -430,6 +430,36 @@ matryxPlatformCalls.getCurrentRoundEndTimeFromTournament = function (tournamentA
   })
 }
 
+matryxPlatformCalls.getAllRoundAddresses = function (tournamentAddress) {
+  return new Promise((resolve, reject) => {
+    tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
+    let roundAddressList = []
+    tournamentContract.maxRounds((err, totalRounds) => {
+      if (err) reject(err)
+      else {
+        tournamentContract.currentRound((err, currentRoundResult) => {
+          console.log(currentRoundResult[0].c[0])
+          if (err) reject(err)
+          else {
+            for (i = 0; i < totalRounds; i++) {
+              tournamentContract.rounds(i, (err, roundAddress) => {
+                console.log('Round address = ' + roundAddress)
+            // console.log(roundAddress == '0x')
+                if (roundAddress != '0x') {
+                  roundAddressList.push(roundAddress)
+                }
+
+                if (roundAddressList.length == currentRoundResult[0].c[0]) {
+                  resolve(roundAddressList)
+                }
+              })
+            }
+          }
+        })
+      }
+    })
+  })
+}
 /*
 * ROUND
 */

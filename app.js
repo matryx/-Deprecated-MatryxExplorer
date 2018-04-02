@@ -46,6 +46,7 @@ app.use('/tempAPI/rounds', tempRoundRoutes)
 app.use('/tempAPI/activity', tempActivityRoutes)
 app.use('/tempAPI/submissions', tempSubmissionRoutes)
 
+console.log('стремиться к победе')
 // TODO add more error handling and timeout settings
 
 // Error handling
