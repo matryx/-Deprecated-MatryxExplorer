@@ -8,16 +8,14 @@ Copyright Nanome Inc 2018
 const express = require('express')
 const ethPlatform = require('../controllers/gateway/platformCalls')
 const tournamentController = require('../controllers/tournamentController')
-const tournamentController2 = require('../controllers/tournamentController2')
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 
 const router = express.Router()
 let latestVersion = process.env.PLATFORM_VERSION
 
 // Return a confirmation the API is live
-// TODO: Fix the fact it returns randomly different responses each time.
 router.get('/', (req, res, next) => {
-  tournamentController2.getAllTournaments().then(function (tournaments) {
+  tournamentController.getAllTournaments().then(function (tournaments) {
     res.status(200).json({
       data: tournaments
     })
@@ -80,26 +78,11 @@ router.get('/allTournaments', (req, res, next) => {
   })
 })
 
-// // Return the tournament details for a specific tournament
-// // TODO pass back the tournament details
-// router.get('/address/:tournamentAddress', (req, res, next) => {
-//   const address = req.params.tournamentAddress
-//   tournamentController.getTournamentByAddress(address).then(function (result) {
-//     res.status(200).json({
-//       tournamentDetails: result
-//     })
-//   }).catch((err) => {
-//     res.status(300).json({
-//       error: 'Unable to find tournament'
-//     })
-//   })
-// })
-
 // Return the tournament details for a specific tournament
 // TODO pass back the tournament details
 router.get('/address/:tournamentAddress', (req, res, next) => {
   const address = req.params.tournamentAddress
-  tournamentController2.getTournamentByAddress(address).then(function (result) {
+  tournamentController.getTournamentByAddress(address).then(function (result) {
     res.status(200).json({
       tournamentDetails: result
     })
@@ -122,28 +105,6 @@ router.get('/address/:tournamentAddress/getOwner', (req, res, next) => {
   })
 })
 
-// // Return the tournament details for a specific tournament
-// router.get('/id/:tournamentID', (req, res, next) => {
-//   const id = req.params.tournamentID
-//   ethPlatform.getTouramentById(id).then(function (result) {
-//     res.status(200).json({
-//       results: result
-//     })
-//   })
-// })
-//
-// // Return the tournament owner for a specific tournament
-// router.get('/id/:tournamentID/getOwner', (req, res, next) => {
-//   const id = req.params.tournamentID
-//   details = ethPlatform.getTournamentOwnerById(id).then(function (result) {
-//     res.status(200).json({
-//       tournamentOwner: result.tournamentOwner,
-//       tournamentId: id,
-//       tournamentAddress: result.tournamentAddress
-//     })
-//   })
-// })
-
 // Return the submission count for a specific tournament
 router.get('/address/:tournamentAddress/submissionCount', (req, res, next) => {
   const address = req.params.tournamentAddress
@@ -160,15 +121,9 @@ router.get('/address/:tournamentAddress/submissionCount', (req, res, next) => {
 // Current Round response given a tournamentAddress
 router.get('/address/:tournamentAddress/currentRound', (req, res, next) => {
   const address = req.params.tournamentAddress
-  ethPlatform.getCurrentRoundFromTournamentAddress(address).then(function (result) {
+  tournamentController.getCurrentRound(address).then(function (result) {
     res.status(200).json({
-      message: 'Awaiting StateControl for QA'
-      // title: result._title,
-      // bounty: result._bounty,
-      // description: result._description,
-      // currentRound: result._currentRound,
-      // roundAddress: result._roundAddress,
-      // submissions: result._submissions
+      currentRound: result
     })
   }).catch((err) => {
     console.log('Not able to retrieve latest round: ' + err)
@@ -194,7 +149,7 @@ These are all TEST or HELPER functions
 */
 
 // router.get('/getAllTournamentsTest', (req, res, next) => {
-//   tournamentController2.getAllTournaments().then(function (tournaments) {
+//   tournamentController.getAllTournaments().then(function (tournaments) {
 //     res.status(200).json({
 //       data: tournaments
 //     })
