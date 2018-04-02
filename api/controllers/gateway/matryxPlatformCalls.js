@@ -248,19 +248,17 @@ matryxPlatformCalls.getTournamentDescription = function (tournamentAddress) {
     tournamentContract.getExternalAddress((err, res) => {
       if (err) reject(err)
       else {
-        _descriptionResponse = web3.toAscii(res)
-        ipfsCalls.getIpfsDescriptionOnly(_descriptionResponse, (err, res) => {
-          if (err) reject(err)
-          else {
-            if (res) {
-              console.log(res)
-              resolve(res)
-            } else {
-              resolve('Unable to retrieve description due to empty IPFS response')
-            }
+        _externalAddress = web3.toAscii(res)
+        console.log('The external address of the tournament is: ' + _externalAddress)
+        ipfsCalls.getIpfsDescriptionOnly(_externalAddress).then(function (_descriptionResponse) {
+          console.log(_descriptionResponse)
+          if (_descriptionResponse) {
+            console.log('This should be the description itself: ' + res)
+            resolve(_descriptionResponse)
+          } else {
+            resolve('Unable to retrieve description due to empty IPFS response')
           }
         })
-          // Call IPFS with external address and return the description
       }
     })
   })
@@ -997,6 +995,65 @@ matryxPlatformCalls.getSubmissionParentInfo = function (submissionAddress) {
     })
 
           // Call IPFS with external address and return the description
+  })
+}
+
+/*
+Activity
+*/
+
+matryxPlatformCalls.getPlatformActivity = function () {
+  return new Promise((resolve, reject) => {
+    let activityEvents = []
+
+          // Make the Platform activity call
+    matryxPlatformContract.allEvents({fromBlock: 0x0, toBlock: 'latest'}).get((err, events) => {
+        // Dictionary for event types for switch case
+      let eventDict = {
+        TournamentCreated: 0,
+        TournamentOpened: 1,
+        UserEnteredTournament: 2
+
+      }
+
+      // events.forEach((event_i) => {
+      for (i = 0; i < events.length; i++) {
+        event_i = events[i]
+
+        let activityResponse = {
+          news: ''
+        }
+          // last event ->
+        console.log(eventDict[event_i.event])
+            // TODO Fix the switch case, it currently only spits out case 1 regardless of case. Could be break spacing due to linter.
+        switch (eventDict[event_i.event]) {
+          case 0:
+            {
+              activityResponse.news = event_i.args._owner + ' created a new Tournament named ' + '\'' + event_i.args._tournamentName + '\''
+              break
+            }
+          case 1:
+            {
+              activityResponse.news = event_i.args._owner + ' opened their Tournament named ' + '\'' + event_i.args._tournamentName + '\''
+              break
+            }
+          case 2:
+            {
+              activityResponse.news = event_i.args._entrant + ' entered the Tournament: ' + '\'' + event_i.args._tournamentAddress + '\''
+              break
+            }
+          default:
+            console.log('This event type does not match our records...Something bad happened...')
+            activityResponse.news = ''
+        }
+        console.log('The activity response is: ' + activityResponse)
+        activityEvents.push(activityResponse)
+        if (activityEvents.length == events.length) {
+          resolve(activityEvents)
+        }
+      }
+      // console.log(activityEvents)
+    })
   })
 }
 

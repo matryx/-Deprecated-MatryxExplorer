@@ -161,40 +161,16 @@ EXPERIMENTAL FUNCTIONS
 */
 
 ipfsCalls.getIpfsDescriptionOnly = function (_ipfsHash) {
-  console.log('Gateway call recieved. Hitting IPFS Node for data at hash: ' + _ipfsHash)
+  console.log('>IpfsCalls: getDescriptionOnly gateway call recieved. Hitting IPFS Node for data at hash: ' + _ipfsHash)
   return new Promise((resolve, reject) => {
+    _ipfsHash = _ipfsHash + '/description.txt'
+    let response = ''
     ipfsNode.files.get(_ipfsHash).then(function (results) {
-        // Create a temp storage space
-
-        // Store all the file names into an array
-      let ipfsFiles = []
-      let ipfsFileContents = []
-
-      let ipfsResults = {}
-
-      results.forEach((file) => {
-          // Only grab the files that we want
-        if (file.content) {
-          let fileName = file.path.toString('utf8').replace(_ipfsHash, '').replace('/', '')
-          console.log(fileName)
-
-          ipfsFileContents.push(fileName)
-
-          // Check to see if one is the description.txt file
-          if (fileName == 'description.txt') {
-              // I want to buffer that into a string
-            console.log('The description content is the following: ' + file.content.toString('utf8'))
-            description = file.content.toString('utf8')
-            ipfsResults.description = description
-          }
-        }
-      })
-
-      console.log('The following files are in the IPFS folder: ')
-      console.log(ipfsResults)
-
-      // ipfsResults.ipfsFiles = ipfsFiles.description
-      resolve(ipfsResults.description)
+      response = results[0].content.toString('utf8')
+      console.log(response)
+      resolve(response)
+    }).catch(function (error) {
+      console.log('Please throw an error: ' + error.message)
     })
   })
 }

@@ -27,7 +27,7 @@ tournamentController.getAllTournaments = function () {
     matryxPlatformCalls.getAllTournamentAddresses().then(function (tournamentAddresses) {
       console.log(tournamentAddresses)
       for (i = 0; i < tournamentAddresses.length; i++) {
-        tournamentAddress = tournamentAddresses[i]
+        let tournamentAddress = tournamentAddresses[i]
         console.log(tournamentAddress)
 
         let tournamentDataCalls = []
@@ -47,7 +47,7 @@ tournamentController.getAllTournaments = function () {
 
         tournamentDataCalls.push(matryxPlatformCalls.getTournamentTitle(tournamentAddress))
         tournamentDataCalls.push(matryxPlatformCalls.getTournamentBounty(tournamentAddress))
-        // tournamentDataCalls.push(matryxPlatformCalls.getTournamentDescription(tournamentAddress))   //Waiting for max to give me a valid reponse for the external Address
+        tournamentDataCalls.push(matryxPlatformCalls.getTournamentDescription(tournamentAddress))
         tournamentDataCalls.push(matryxPlatformCalls.getTournamentCategory(tournamentAddress))
         tournamentDataCalls.push(matryxPlatformCalls.getTournamentMaxRounds(tournamentAddress))
         tournamentDataCalls.push(matryxPlatformCalls.currentRoundOfTournament(tournamentAddress))
@@ -59,15 +59,15 @@ tournamentController.getAllTournaments = function () {
             // Attach to the tournament Data
           tournamentData.tournamentTitle = values[0]
           tournamentData.mtx = values[1]
-          tournamentData.tournamentDescription = 'Filler Description until Max gives me a valid hash'
-          tournamentData.category = values[2]
-          tournamentData.totalRounds = values[3]
-          tournamentData.currentRound = values[4]
-          tournamentData.numberOfParticipants = values[5]
+          tournamentData.tournamentDescription = values[2]
+          tournamentData.category = values[3]
+          tournamentData.totalRounds = values[4]
+          tournamentData.currentRound = values[5]
+          tournamentData.numberOfParticipants = values[6]
           tournamentData.address = tournamentAddress
           tournamentData.ipType = ''
           tournamentData.tournamentId = ''
-          tournamentData.externalAddress = values[6]
+          tournamentData.externalAddress = values[7]
 
           responses.push(tournamentData)
           if (responses.length == tournamentAddresses.length) {
@@ -117,7 +117,7 @@ tournamentController.getTournamentByAddress = function (_tournamentAddress) {
     tournamentDataCalls.push(matryxPlatformCalls.getTournamentTitle(_tournamentAddress))
     tournamentDataCalls.push(matryxPlatformCalls.getTournamentBounty(_tournamentAddress))
     tournamentDataCalls.push(matryxPlatformCalls.getTournamentOwner(_tournamentAddress))
-        // tournamentDataCalls.push(matryxPlatformCalls.getTournamentDescription(tournamentAddress))   //Waiting for max to give me a valid reponse for the external Address
+    tournamentDataCalls.push(matryxPlatformCalls.getTournamentDescription(_tournamentAddress))
     tournamentDataCalls.push(matryxPlatformCalls.getTournamentCategory(_tournamentAddress))
     tournamentDataCalls.push(matryxPlatformCalls.getTournamentMaxRounds(_tournamentAddress))
     tournamentDataCalls.push(matryxPlatformCalls.currentRoundOfTournament(_tournamentAddress))
@@ -131,20 +131,21 @@ tournamentController.getTournamentByAddress = function (_tournamentAddress) {
             // Promise all for the data inside the tournaments
     Promise.all(tournamentDataCalls).then(function (values) {
             // Attach to the tournament Data
+      console.log(values)
       tournamentData.tournamentTitle = values[0]
       tournamentData.tournamentAdddress = _tournamentAddress
       tournamentData.mtx = values[1]
       tournamentData.authorName = values[2]
-      tournamentData.tournamentDescription = 'Waiting for valid IPFS hash'
-      tournamentData.category = values[3]
-      tournamentData.totalRounds = values[4]
-      tournamentData.currentRound = values[5]
-      tournamentData.currentRoundAddress = values[6]
-      tournamentData.numberOfParticipants = values[7]
+      tournamentData.tournamentDescription = values[3]
+      tournamentData.category = values[4]
+      tournamentData.totalRounds = values[5]
+      tournamentData.currentRound = values[6]
+      tournamentData.currentRoundAddress = values[7]
+      tournamentData.numberOfParticipants = values[8]
       tournamentData.ipType = ''
-      tournamentData.roundEndTime = values[8]
-      tournamentData.participationMTX = values[9]
-      tournamentData.externalAddress = values[10]
+      tournamentData.roundEndTime = values[9]
+      tournamentData.participationMTX = values[10]
+      tournamentData.externalAddress = values[11]
           // tournamentData.submissions = values[10]
 
       resolve(tournamentData)

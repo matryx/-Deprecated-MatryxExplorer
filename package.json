@@ -34,6 +34,7 @@
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
+    "forever": "^0.15.3",
     "formidable": "^1.2.1",
     "fs": "0.0.1-security",
     "ipfs": "^0.28.2",

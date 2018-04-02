@@ -14,7 +14,8 @@ const util = require('util')
 const router = express.Router()
 
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
-const platformCalls = require('../controllers/gateway/platformCalls')
+// const platformCalls = require('../controllers/gateway/platformCalls')
+const matryxPlatformCalls = require('../controllers/gateway/matryxPlatformCalls')
 const ipfsCalls = require('../controllers/gateway/ipfsCalls')
 
 // Return a message that this route handles activity calls
@@ -30,6 +31,30 @@ router.get('/download/hash/:hash', (req, res, next) => {
   let hash = req.params.hash
   console.log(hash)
   ipfsCalls.getIpfsDataFiles(hash).then(function (result) {
+    res.status(200).json({
+      message: result
+    })
+  })
+})
+
+router.get('/getDescription/hash/:hash', (req, res, next) => {
+  let hash = req.params.hash
+  console.log(hash)
+  ipfsCalls.getIpfsDescriptionOnly(hash).then(function (result) {
+    res.status(200).json({
+      message: result
+    })
+  }).catch(function (err) {
+    res.status(500).json({
+      message: err.message
+    })
+  })
+})
+
+router.get('/getTournamentDescription/address/:address', (req, res, next) => {
+  let address = req.params.address
+  console.log(address)
+  matryxPlatformCalls.getTournamentDescription(address).then(function (result) {
     res.status(200).json({
       message: result
     })
