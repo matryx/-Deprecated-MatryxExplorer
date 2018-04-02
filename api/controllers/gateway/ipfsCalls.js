@@ -165,8 +165,13 @@ ipfsCalls.getIpfsDescriptionOnly = function (_ipfsHash) {
   return new Promise((resolve, reject) => {
     _ipfsHash = _ipfsHash + '/description.txt'
     let response = ''
+    console.log('About to call IPFS node to get data')
     ipfsNode.files.get(_ipfsHash).then(function (results) {
       response = results[0].content.toString('utf8')
+
+      console.log('>IpfsNode: getFiles results', results)
+      console.log('>IpfsNode: getResponseResolved response', response)
+
       console.log(response)
       resolve(response)
     }).catch(function (error) {

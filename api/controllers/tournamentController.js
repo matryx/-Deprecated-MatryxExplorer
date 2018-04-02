@@ -76,6 +76,9 @@ tournamentController.getAllTournaments = function () {
           console.log(values)
         })
       }
+    }).catch(function (err) {
+      console.log(err.message)
+      reject(err)
     })
   })
 }

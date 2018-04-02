@@ -13,7 +13,7 @@ An open-source node.js api to read the MatryxPlatform to be consumed by anyone c
 ```
 npm install
 ```
-
+# serve with hot reload at localhost:3000
 ```
-npm start
+npm run dev
 ```
