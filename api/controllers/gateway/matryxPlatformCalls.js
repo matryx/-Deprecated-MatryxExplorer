@@ -403,7 +403,7 @@ matryxPlatformCalls.getEntryFeeOfTournament = function (tournamentAddress) {
     tournamentContract.getEntryFee((err, res) => {
       if (err) reject(err)
       else {
-        resolve(res)
+        resolve(web3.fromWei(res.toString()))
       }
     })
   })

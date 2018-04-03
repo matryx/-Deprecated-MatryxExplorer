@@ -26,8 +26,9 @@ let options = {
 }
 
 const ipfsNode = new IPFS(options)
-// console.log(ipfsNode)
-// ipfsNode.swarm.peers()
+console.log(ipfsNode)
+// console.log(ipfsNode.dht.findprovs('QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ'))
+
 // TODO: Create the IPFS cluster in the localhost and make the calls to hold all the data from various nodes
 
 let ipfsURL = process.env.IPFS_URL
@@ -39,11 +40,15 @@ ipfsNode.on('ready', () => {
   // Your node is now ready to use \o/
   console.log('IPFS Online Status: ', ipfsNode.isOnline())
 
-  console.log(ipfsNode.swarm)
+  // console.log(ipfsNode.config.get())
+  // console.log(ipfsNode.swarm)
   ipfsNode.swarm.connect(ipfsPeer, (err, result) => {
     console.log('connecting: ', result)
     ipfsNode.swarm.peers((err, peerCount) => {
       console.log('There are this many peers: ', peerCount)
+      // ipfsNode.dht.findprovs('QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ', (err, findProvsResult) => {
+      //   console.log('findProvsResult: ', findProvsResult)
+      // })
     })
   })
 
@@ -63,7 +68,17 @@ ipfsNode.on('ready', () => {
 ipfsCalls.connectToPeer = function (_presetPeer) {
   ipfsNode.swarm.connect(_presetPeer, (err, result) => {
     if (err) { return onError(err) }
-    console.log('Connected to: ', _presetPeer, 'nodeResponse: ', result)
+  })
+}
+
+ipfsCalls.validateIpfsHashExists = function (_ipfsHash) {
+  return new Promise((resolve, reject) => {
+        // ipfs dht findprovs QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ | wc -l
+    ipfsNode.dht.findprovs(_ipfsHash, (err, result) => {
+      console.log('The IPFS hash: ', _ipfsHash, ' is connected by ', result, 'peers')
+      resolve(result)
+    })
+        // either curl or use ipfs js to validate
   })
 }
 
@@ -208,6 +223,9 @@ EXPERIMENTAL FUNCTIONS
 ipfsCalls.getIpfsDescriptionOnly = function (_ipfsHash) {
   console.log('>IpfsCalls: getDescriptionOnly gateway call recieved. Hitting IPFS Node for data at hash: ' + _ipfsHash)
   return new Promise((resolve, reject) => {
+      // Check first to see that the hash is even available before making the call
+    // console.log('# of hash peers: ', result)
+
     _ipfsHash = _ipfsHash + '/description.txt'
     let response = ''
     console.log('About to call IPFS node to get data')
@@ -265,6 +283,10 @@ rest.post('https://twaud.io/api/v1/upload.json', {
   console.log(data.audio_url);
 });
 
+*/
+
+/*
+HELPER FUNCTIONS
 */
 
 module.exports = ipfsCalls

@@ -29,7 +29,7 @@ router.get('/', (req, res, next) => {
 
 router.get('/download/hash/:hash', (req, res, next) => {
   let hash = req.params.hash
-  console.log(hash)
+  console.log(result)
   ipfsCalls.getIpfsDataFiles(hash).then(function (result) {
     res.status(200).json({
       message: result
@@ -41,6 +41,7 @@ router.get('/getDescription/hash/:hash', (req, res, next) => {
   let hash = req.params.hash
   console.log(hash)
   ipfsCalls.getIpfsDescriptionOnly(hash).then(function (result) {
+    console.log('The returned result is: ', result)
     res.status(200).json({
       message: result
     })
