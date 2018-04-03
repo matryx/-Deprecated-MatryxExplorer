@@ -29,13 +29,9 @@ roundController.getRoundDetails = function (_roundAddress) {
       submissions: []
     }
 
-    // promise all
-    let submission = {
-      address: '',
-      title: ''
-    }
-
     let promiseCallStack = []
+
+// TODO: Check to see if the round is the current round of the tournament and return status Only
 
     promiseCallStack.push(matryxPlatformCalls.getTournamentInfoFromRoundAddress(_roundAddress))
     promiseCallStack.push(matryxPlatformCalls.getRoundBounty(_roundAddress))

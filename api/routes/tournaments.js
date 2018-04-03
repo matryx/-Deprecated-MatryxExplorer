@@ -89,28 +89,11 @@ router.get('/allTournaments', (req, res, next) => {
   })
 })
 
-// Return the tournament details for a specific tournament
-// TODO pass back the tournament details
-router.get('/address/:tournamentAddress', (req, res, next) => {
-  const address = req.params.tournamentAddress
-  tournamentController.getTournamentByAddress(address).then(function (result) {
-    res.status(200).json({
-      tournamentDetails: result
-    })
-  }).catch((err) => {
-    res.status(300).json({
-      error: 'Unable to find tournament',
-      errorMsg: err.name
-    })
-  })
-})
-
-// // TEMP IPFS DOWN
 // // Return the tournament details for a specific tournament
 // // TODO pass back the tournament details
 // router.get('/address/:tournamentAddress', (req, res, next) => {
 //   const address = req.params.tournamentAddress
-//   tournamentController.getTournamentByAddressNoIPFS(address).then(function (result) {
+//   tournamentController.getTournamentByAddress(address).then(function (result) {
 //     res.status(200).json({
 //       tournamentDetails: result
 //     })
@@ -121,6 +104,23 @@ router.get('/address/:tournamentAddress', (req, res, next) => {
 //     })
 //   })
 // })
+
+// TEMP IPFS DOWN
+// Return the tournament details for a specific tournament
+// TODO pass back the tournament details
+router.get('/address/:tournamentAddress', (req, res, next) => {
+  const address = req.params.tournamentAddress
+  tournamentController.getTournamentByAddressNoIPFS(address).then(function (result) {
+    res.status(200).json({
+      tournamentDetails: result
+    })
+  }).catch((err) => {
+    res.status(300).json({
+      error: 'Unable to find tournament',
+      errorMsg: err.name
+    })
+  })
+})
 
 // Return the tournament owner for a specific tournament
 router.get('/address/:tournamentAddress/getOwner', (req, res, next) => {
@@ -163,7 +163,16 @@ router.get('/address/:tournamentAddress/round/:roundId', (req, res, next) => {
   const roundId = req.params.roundId
   console.log('>TournamentRouter: Retrieving Round Details for round ' + roundId + ' of tournmament' + tournamentAddress)
 
+  // TODO: Clean the input for the correct response
+// TODO: Check to see how many rounds are in the tournament
+// TODO: check to see if the round is even open at all
+
+    // tournamentController.numberOfRounds(tournamentAddress).then(function(roundCount){
+    //     if(roundId)
+    // })
+
   tournamentController.getRoundAddress(tournamentAddress, roundId).then(function (roundAddress) {
+    console.log('The round address is: ' + roundAddress)
     try {
       roundController.getRoundDetails(roundAddress).then(function (_roundDetails) {
         res.status(200).json({

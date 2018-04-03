@@ -7,7 +7,6 @@
     "test": "echo \"Running mocha tests\" && mocha spec",
     "dev": "echo \"Starting MatryxExplorer in development\" && nodemon server.js ",
     "start": "echo \"Starting MatryxExplorer in development with forever\" && forever server.js "
-
   },
   "repository": {
     "type": "git",

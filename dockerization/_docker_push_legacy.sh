@@ -1,3 +1,5 @@
+cd ..
+
 # Build docker
 docker build --no-cache -t matryx-alpha-explorer:latest .
 # Tag docker

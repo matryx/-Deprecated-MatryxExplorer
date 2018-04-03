@@ -660,20 +660,27 @@ matryxPlatformCalls.getSubmissionsFromRound = function (roundAddress) {
           submissionAddresses.forEach(function (submissionAddress) {
             let submission = {
               address: '',
-              title: ''
+              title: '',
+              submissionDate: ''
             }
 
             submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
             submissionContract.getTitle((err, _title) => {
               submission.address = submissionAddress
               submission.title = _title
-              submissionResults.push(submission)
+              console.log('The following is the submission values: ')
+              submissionContract.getTimeSubmitted((err, _timeSubmitted) => {
+                submission.submissionDate = _timeSubmitted
+                console.log(submission)
 
-              if (submissionResults.length == submissionAddresses.length) {
-                fullResponse.submissionResults = submissionResults
-                fullResponse.roundStatusValue = roundStatusValue
-                resolve(fullResponse)
-              }
+                submissionResults.push(submission)
+
+                if (submissionResults.length == submissionAddresses.length) {
+                  fullResponse.submissionResults = submissionResults
+                  fullResponse.roundStatusValue = roundStatusValue
+                  resolve(fullResponse)
+                }
+              })
             })
           })
         })
