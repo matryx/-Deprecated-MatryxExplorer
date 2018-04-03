@@ -140,4 +140,19 @@ externalApiCalls.getMatryxRoundAbi = function (branch) {
   })
 }
 
+// TODO: Add error handling for non valid versions.
+externalApiCalls.curlIpfsIo = function (_hash) {
+  console.log('externalApiCalls about to fetch for : ', _hash)
+  return new Promise((resolve, reject) => {
+    try {
+      fetch(ipfsURL + _hash).then(function (ignore) {
+        console.log('externalApiCalls fetched with results: ', ignore)
+        resolve()
+      })
+    } catch (err) {
+      console.log('externalApiCalls could not fetch results')
+    }
+  })
+}
+
 module.exports = externalApiCalls

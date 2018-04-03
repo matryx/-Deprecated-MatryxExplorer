@@ -14,13 +14,58 @@ const series = require('async/series')
 const tmp = require('tmp')
 var fs = require('fs')
 
-const ipfsNode = new IPFS()
+let options = {
+  config: {
+    Addresses: {
+      Swarm: [
+        // '/dns4/wrtc-star.discovery.libp2p.io/tcp/443/wss/p2p-webrtc-star'
+        '/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star'
+      ]
+    }
+  }
+}
 
+const ipfsNode = new IPFS(options)
+// console.log(ipfsNode)
+// ipfsNode.swarm.peers()
 // TODO: Create the IPFS cluster in the localhost and make the calls to hold all the data from various nodes
 
 let ipfsURL = process.env.IPFS_URL
+let ipfsPeer = process.env.IPFS_DAEMON_PEER_ID
 
 let ipfsCalls = {}
+
+ipfsNode.on('ready', () => {
+  // Your node is now ready to use \o/
+  console.log('IPFS Online Status: ', ipfsNode.isOnline())
+
+  console.log(ipfsNode.swarm)
+  ipfsNode.swarm.connect(ipfsPeer, (err, result) => {
+    console.log('connecting: ', result)
+    ipfsNode.swarm.peers((err, peerCount) => {
+      console.log('There are this many peers: ', peerCount)
+    })
+  })
+
+  // ipfsCalls.connectToPeer(ipfsPeer, (err, result) => {
+  //   console.log('peerConnectedResult: ', )
+  //   console.log(result)
+  // })
+  // check my peer list
+  // ipfsNode.swarm.peers()
+  // // stopping a node
+  // ipfsNode.stop(() => {
+  //   // node is now 'offline'
+  //   console.log('Online status ', ipfsNode.isOnline())
+  // })
+})
+
+ipfsCalls.connectToPeer = function (_presetPeer) {
+  ipfsNode.swarm.connect(_presetPeer, (err, result) => {
+    if (err) { return onError(err) }
+    console.log('Connected to: ', _presetPeer, 'nodeResponse: ', result)
+  })
+}
 
 // TODO: Add file navigation and extraction for correct data and file response
 ipfsCalls.getIpfsData = function (_ipfsHash) {
@@ -166,6 +211,8 @@ ipfsCalls.getIpfsDescriptionOnly = function (_ipfsHash) {
     _ipfsHash = _ipfsHash + '/description.txt'
     let response = ''
     console.log('About to call IPFS node to get data')
+    console.log('Online status ', ipfsNode.isOnline())
+
     ipfsNode.files.get(_ipfsHash).then(function (results) {
       response = results[0].content.toString('utf8')
 

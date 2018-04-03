@@ -130,9 +130,11 @@ router.post('/upload', (req, res, next) => {
 
         // Add the tmp folder to IPFS and get back a hash
         ipfsCalls.pushTmpFolderToIPFS(tempDirectory).then(function (ipfsHashResult) {
+          // externalApiCalls.curlIpfsIo(ipfsHashResult).then(function (tmp) {
           res.status(200).json({
             folderHash: ipfsHashResult
           })
+          // })
         })
 
         fs.readdir(tempDirectory, (err, files) => {
