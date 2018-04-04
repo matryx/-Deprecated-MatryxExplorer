@@ -733,6 +733,36 @@ matryxPlatformCalls.getTournamentInfoFromRoundAddress = function (_roundAddress)
 
         console.log('tournamentTitle is: ' + _tournamentTitle)
 
+        matryxPlatformCalls.getTournamentDescription(_tournamentAddress).then(function (_tournamentDescription) {
+          console.log('tournamentDescription is: ' + _tournamentDescription)
+          tournamentInfo.tournamentDescription = _tournamentDescription
+        // tournamentInfo.tournamentDescription = 'TODO fill in with valid description or err'
+
+          console.log('tournamentInfoFromRoundAddress is: ' + tournamentInfo)
+          resolve(tournamentInfo)
+        })
+      })
+    })
+  })
+}
+
+matryxPlatformCalls.getTournamentInfoFromRoundAddressNoIPFS = function (_roundAddress) {
+  console.log('>MatryxPlatformCalls: getTournamentInfoFromRoundAddress(' + _roundAddress + ')')
+  return new Promise((resolve, reject) => {
+    let tournamentInfo = {
+      tournamentAddress: '',
+      tournamentTitle: '',
+      tournamentDescription: ''
+    }
+    // Get the parent Tournament address
+    matryxPlatformCalls.getParentTournamentFromRound(_roundAddress).then(function (_tournamentAddress) {
+      console.log('parentTournament is: ' + _tournamentAddress)
+      tournamentInfo.tournamentAddress = _tournamentAddress
+      matryxPlatformCalls.getTournamentTitle(_tournamentAddress).then(function (_tournamentTitle) {
+        tournamentInfo.tournamentTitle = _tournamentTitle
+
+        console.log('tournamentTitle is: ' + _tournamentTitle)
+
         // matryxPlatformCalls.getTournamentDescription(_tournamentAddress).then(function (_tournamentDescription) {
           // console.log('tournamentDescription is: ' + _tournamentDescription)
           // tournamentInfo.tournamentDescription = _tournamentDescription

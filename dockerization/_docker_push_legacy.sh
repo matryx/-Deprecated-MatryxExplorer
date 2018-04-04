@@ -1,3 +1,5 @@
+cp ./devDockerfile ../Dockerfile
+
 cd ..
 
 # Build docker

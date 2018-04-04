@@ -70,26 +70,26 @@ router.get('/getAbi/:version', (req, res, next) => {
   }
 })
 
-// // Return the submission details for a specific submission address
-// router.get('/address/:submissionAddress', (req, res, next) => {
-//   const address = req.params.submissionAddress
-//   details = submissionController.getSubmissionByAddress(address).then(function (result) {
-//     res.status(200).json({
-//       submissionDetails: result
-//     })
-//   })
-// })
-
-// TEMP NO IPFS
 // Return the submission details for a specific submission address
 router.get('/address/:submissionAddress', (req, res, next) => {
   const address = req.params.submissionAddress
-  details = submissionController.getSubmissionByAddressNoIPFS(address).then(function (result) {
+  details = submissionController.getSubmissionByAddress(address).then(function (result) {
     res.status(200).json({
       submissionDetails: result
     })
   })
 })
+
+// // TEMP NO IPFS
+// // Return the submission details for a specific submission address
+// router.get('/address/:submissionAddress', (req, res, next) => {
+//   const address = req.params.submissionAddress
+//   details = submissionController.getSubmissionByAddressNoIPFS(address).then(function (result) {
+//     res.status(200).json({
+//       submissionDetails: result
+//     })
+//   })
+// })
 
 // Return the submission owner/author for a specific submission address
 router.get('/address/:submissionAddress/getOwner', (req, res, next) => {

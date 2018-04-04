@@ -1,3 +1,4 @@
+cp ./qaDockerfile ../Dockerfile
 cd ..
 
 # Build docker

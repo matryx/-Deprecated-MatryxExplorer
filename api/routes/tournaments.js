@@ -14,24 +14,24 @@ const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 const router = express.Router()
 let latestVersion = process.env.PLATFORM_VERSION
 
-// Temp
-// Return a confirmation the API is live
-router.get('/', (req, res, next) => {
-  tournamentController.getAllTournamentsNoIpfs().then(function (tournaments) {
-    res.status(200).json({
-      data: tournaments
-    })
-  })
-})
-
+// // Temp NO IPFS
 // // Return a confirmation the API is live
 // router.get('/', (req, res, next) => {
-//   tournamentController.getAllTournaments().then(function (tournaments) {
+//   tournamentController.getAllTournamentsNoIpfs().then(function (tournaments) {
 //     res.status(200).json({
 //       data: tournaments
 //     })
 //   })
 // })
+
+// Return a confirmation the API is live
+router.get('/', (req, res, next) => {
+  tournamentController.getAllTournaments().then(function (tournaments) {
+    res.status(200).json({
+      data: tournaments
+    })
+  })
+})
 
 router.get('/getLatestAbi', (req, res, next) => {
   console.log('/getLatestAbi hit')
@@ -89,28 +89,11 @@ router.get('/allTournaments', (req, res, next) => {
   })
 })
 
-// // Return the tournament details for a specific tournament
-// // TODO pass back the tournament details
-// router.get('/address/:tournamentAddress', (req, res, next) => {
-//   const address = req.params.tournamentAddress
-//   tournamentController.getTournamentByAddress(address).then(function (result) {
-//     res.status(200).json({
-//       tournamentDetails: result
-//     })
-//   }).catch((err) => {
-//     res.status(300).json({
-//       error: 'Unable to find tournament',
-//       errorMsg: err.name
-//     })
-//   })
-// })
-
-// TEMP IPFS DOWN
 // Return the tournament details for a specific tournament
 // TODO pass back the tournament details
 router.get('/address/:tournamentAddress', (req, res, next) => {
   const address = req.params.tournamentAddress
-  tournamentController.getTournamentByAddressNoIPFS(address).then(function (result) {
+  tournamentController.getTournamentByAddress(address).then(function (result) {
     res.status(200).json({
       tournamentDetails: result
     })
@@ -121,6 +104,23 @@ router.get('/address/:tournamentAddress', (req, res, next) => {
     })
   })
 })
+//
+// // TEMP IPFS DOWN
+// // Return the tournament details for a specific tournament
+// // TODO pass back the tournament details
+// router.get('/address/:tournamentAddress', (req, res, next) => {
+//   const address = req.params.tournamentAddress
+//   tournamentController.getTournamentByAddressNoIPFS(address).then(function (result) {
+//     res.status(200).json({
+//       tournamentDetails: result
+//     })
+//   }).catch((err) => {
+//     res.status(300).json({
+//       error: 'Unable to find tournament',
+//       errorMsg: err.name
+//     })
+//   })
+// })
 
 // Return the tournament owner for a specific tournament
 router.get('/address/:tournamentAddress/getOwner', (req, res, next) => {
