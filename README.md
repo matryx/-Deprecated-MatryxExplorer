@@ -5,6 +5,9 @@
 [![logo](https://github.com/matryx/matryx-alpha-source/blob/master/assets/Matryx-Logo-Black-1600px.png)](http://matryx.ai)
 An open-source node.js api to read the MatryxPlatform and interact with IPFS to be consumed by anyone creating Matryx interfaces.
 
+
+[![BuildStatus](https://travis-ci.org/matryx/MatryxExplorer.svg?branch=master)](https://travis-ci.org/matryx/MatryxExplorer)
+
 [![npm_Version](https://img.shields.io/badge/npm-5.7.1-brightgreen.svg)](http://npmjs.com)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 ### Check out our full documentation at matryx.readthedocs.io
@@ -138,4 +141,5 @@ tail -f /proc/:processID/fd/1
 Everything should be running correctly. Make sure you configured your AWS instance in order to change the security settings to allow port 3000 to be accessed.
 
 Best,
+
 The Matryx Team
