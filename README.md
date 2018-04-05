@@ -1,11 +1,13 @@
 
 # MatryxExplorer
-### An open-source NodeJS API to easily read the Matryx Platform with full IPFS integration
+### An open-source NodeJS API to easily read the Matryx Platform with full IPFS integration.
+
 [![logo](https://github.com/matryx/matryx-alpha-source/blob/master/assets/Matryx-Logo-Black-1600px.png)](http://matryx.ai)
 An open-source node.js api to read the MatryxPlatform and interact with IPFS to be consumed by anyone creating Matryx interfaces.
 
 [![npm_Version](https://img.shields.io/badge/npm-5.7.1-brightgreen.svg)](http://npmjs.com)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
+### Check out our full documentation at matryx.readthedocs.io
 
 
 # Running the API
@@ -77,7 +79,7 @@ Copy this hash for later-
 The `QmS4ustL54uo8FzR9455qaxZwuMiUhyvMcX9Ba8nUH4uVv` hash is your IPFS peer identity.
 
 **9. Change the config to add a websocket at port 9999**
-```./ipfs config --json Addresses '{ "API": "/ip4/127.0.0.1/tcp/5001", "Announce": [], "Gateway": "/ip4/127.0.0.1/tcp/8080", "NoAnnounce": [], "Swarm": [ "/ip4/0.0.0.0/tcp/4001", "/ip6/::/tcp/4001", "/ip4/127.0.0.1/tcp/9999/ws" ]}'```
+* ```./ipfs config --json Addresses '{ "API": "/ip4/127.0.0.1/tcp/5001", "Announce": [], "Gateway": "/ip4/127.0.0.1/tcp/8080", "NoAnnounce": [], "Swarm": [ "/ip4/0.0.0.0/tcp/4001", "/ip6/::/tcp/4001", "/ip4/127.0.0.1/tcp/9999/ws" ]}'```
 
 You can look at your IPFS config by typing
 ```ipfs config show```
