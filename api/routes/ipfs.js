@@ -29,7 +29,7 @@ router.get('/', (req, res, next) => {
 
 router.get('/download/hash/:hash', (req, res, next) => {
   let hash = req.params.hash
-  console.log(result)
+  console.log('>IPFS Router: /download/hash/', hash, 'hit')
   ipfsCalls.getIpfsDataFiles(hash).then(function (result) {
     res.status(200).json({
       message: result
