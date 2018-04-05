@@ -1,0 +1,115 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Interacting with Ipfs &#8212; MatryxExplorer  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="interacting-with-ipfs">
+<h1>Interacting with Ipfs<a class="headerlink" href="#interacting-with-ipfs" title="Permalink to this headline">¶</a></h1>
+<p>The big part of the Ethereum Blockchain is that lots of data being written to the blockchain is a bad idea. It is very costly and could run into errors in the future.
+As part of the shift towards WEB3.0, decentralized and distributed storage will be a huge part of the internet stack going forward. As per most decentralized applications (DAPPS), because the landscape for tokenized decentralized and distributed storage networks are not complete, everyone uses IPFS or Interplanetary File System.</p>
+<p>IPFS in this application works in the following ways:</p>
+<p>When you decide to create a tournament or make a contribution/submission, you will attach data to your transaction, whether it is a Tournament Description or a Submission containing large custom files.
+Storing them on IPFS in order for our platform to access them needs to be done a certain way in order to parse the files.
+It comes down to 3 main request body keys. The API accepts multipart/form-data and can handle multiple files using a POST call.</p>
+<p>text: <cite>description</cite>,
+text: <cite>jsonContent</cite>,
+file: <cite>filesContent</cite></p>
+<p>When the API accepts the POST call, it will take that data and stores it to local storage. It then extracts the description and jsonContent key is available into a .txt file and is saved to the temp file along with any other files tagged with the key <cite>filesContent</cite>. It then provides the PATH of the directory to the IPFS node in order to get back a hash of the data which can be accessed by other IPFS nodes.</p>
+<p>A major restriction in the development of the Matryx Explorer is that the IPFS-JS module does not support Peer Discovery at this time…A critical part of IPFS. Thus we are required to run an IPFS node right next to MatryxExplorer to get it to connect.
+You will need to adjust a few things such as setting the Web Socket in the IPFS Daemon to be activated and so the MatryxExplorer API can reach it.</p>
+<p>In order to set the IPFS daemon
+1. Download IPFS</p>
+<p>2. Run IPFS init
+<cite>ipfs init</cite></p>
+<p>3. Show your config
+<cite>ipfs config show</cite></p>
+<p>4. Run the following command in order to add the web-socket listener to port 9999 for the application.
+<cite>ipfs config –json Addresses ‘{ “API”: “/ip4/127.0.0.1/tcp/5001”, “Announce”: [], “Gateway”: “/ip4/127.0.0.1/tcp/8080”, “NoAnnounce”: [], “Swarm”: [ “/ip4/0.0.0.0/tcp/4001”, “/ip6/::/tcp/4001”, “/ip4/127.0.0.1/tcp/9999/ws” ]}’</cite></p>
+<p>5. Run the ipfs Daemon
+<cite>ipfs daemon</cite></p>
+<p>In order to run it in the background and keep it up type:
+<cite>nohup ipfs daemon &amp;</cite></p>
+<p>You can check if that worked by searching for the process and see the Process ID (PID)
+<cite>ps -A | grep “ipfs”</cite></p>
+<p>In the event you want to stop the IPFS node, you may kill the PID
+<cite>kill &lt;PID&gt;</cite></p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/ipfs.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Nanome Inc.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/ipfs.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
