@@ -143,3 +143,7 @@ Everything should be running correctly. Make sure you configured your AWS instan
 Best,
 
 The Matryx Team
+
+
+Architecture Below:
+[![architecture](https://github.com/matryx/MatryxExplorer/blob/master/assets/MatryxArchitecture2018.png)](https://github.com/matryx/MatryxExplorer/blob/master/assets/MatryxArchitecture2018.png)
