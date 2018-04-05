@@ -10,7 +10,6 @@ Nanome 2018
 Imports
 */
 const externalApiCalls = require('./gateway/externalApiCalls')
-const platformCalls = require('./gateway/platformCalls')
 const ipfsCalls = require('./gateway/ipfsCalls')
 const matryxPlatformCalls = require('./gateway/matryxPlatformCalls')
 
