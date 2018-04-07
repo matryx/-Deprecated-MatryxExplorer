@@ -1,0 +1,423 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>API &mdash; MatryxExplorer  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Interacting with Ipfs" href="ipfs.html" />
+    <link rel="prev" title="MatryxExplorer Documentation" href="index.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> MatryxExplorer
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#activity">Activity</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1"><strong>/activity/</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#platform">Platform</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#getlatestinfo"><strong>/getLatestInfo</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#getlatestaddress"><strong>/getLatestAddress</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#getlatestabi"><strong>/getLatestAbi</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#getinfo-version"><strong>/getInfo/:version</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#getaddress-version"><strong>/getAddress/:version</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#getabi-version"><strong>/getAbi/:version</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#tournament">Tournament</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tournaments"><strong>/tournaments/</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#count"><strong>/count</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#round">Round</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#submission">Submission</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#interplanetary-file-system-ipfs">Interplanetary File System (IPFS)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#token">Token</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ipfs.html">Interacting with Ipfs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="help.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">Matryx License Agreement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html#contact">Contact</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MatryxExplorer</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/RESTful.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="api">
+<h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="activity">
+<h2>Activity<a class="headerlink" href="#activity" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3><strong>/activity/</strong><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Curl:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">explorer</span><span class="o">.</span><span class="n">matryx</span><span class="o">.</span><span class="n">ai</span><span class="p">:</span><span class="mi">3000</span><span class="o">/</span><span class="n">activity</span>
+</pre></div>
+</div>
+<p>Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;activity&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;news&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;publicAddress&gt; created a new Tournament named &#39;Triton X-9000&#39;&quot;</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;news&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;publicAddress&gt; opened their Tournament named &#39;Triton X-9000&#39;&quot;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The activity is generated by looking at events fired from the Matryx Platform on the blockchain.</p>
+</div>
+</div>
+<div class="section" id="platform">
+<h2>Platform<a class="headerlink" href="#platform" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="getlatestinfo">
+<h3><strong>/getLatestInfo</strong><a class="headerlink" href="#getlatestinfo" title="Permalink to this headline">¶</a></h3>
+<p>Curl:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">explorer</span><span class="o">.</span><span class="n">matryx</span><span class="o">.</span><span class="n">ai</span><span class="p">:</span><span class="mi">3000</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">getLatestInfo</span>
+</pre></div>
+</div>
+<p>Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;addressOfLatestPlatform&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;abi&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Where the abi value is a large ABI response in JSON parsed format.</p>
+</div>
+<div class="section" id="getlatestaddress">
+<h3><strong>/getLatestAddress</strong><a class="headerlink" href="#getlatestaddress" title="Permalink to this headline">¶</a></h3>
+<p>Curl:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">explorer</span><span class="o">.</span><span class="n">matryx</span><span class="o">.</span><span class="n">ai</span><span class="p">:</span><span class="mi">3000</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">getLatestAddress</span>
+</pre></div>
+</div>
+<p>Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;addressOfLatestPlatform&gt;&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="getlatestabi">
+<h3><strong>/getLatestAbi</strong><a class="headerlink" href="#getlatestabi" title="Permalink to this headline">¶</a></h3>
+<p>Curl:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">explorer</span><span class="o">.</span><span class="n">matryx</span><span class="o">.</span><span class="n">ai</span><span class="p">:</span><span class="mi">3000</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">getLatestAbi</span>
+</pre></div>
+</div>
+<p>Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;abi&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Where the abi value is a large ABI response in JSON parsed format.</p>
+</div>
+<div class="section" id="getinfo-version">
+<h3><strong>/getInfo/:version</strong><a class="headerlink" href="#getinfo-version" title="Permalink to this headline">¶</a></h3>
+<p>Where the :version param is the branch of the Matryx Platform you want to use
+ie: master, QA, develop
+It grabs it directly from the /build folder of <a class="reference external" href="http://github.com/matryx/MatryxPlatform">http://github.com/matryx/MatryxPlatform</a></p>
+<p>Curl</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">explorer</span><span class="o">.</span><span class="n">matryx</span><span class="o">.</span><span class="n">ai</span><span class="p">:</span><span class="mi">3000</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">getInfo</span><span class="o">/</span><span class="n">master</span>
+</pre></div>
+</div>
+<p>Response</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;abi&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Where the abi value is a large ABI response in JSON parsed format for that version of the Matryx Platform.</p>
+</div>
+<div class="section" id="getaddress-version">
+<h3><strong>/getAddress/:version</strong><a class="headerlink" href="#getaddress-version" title="Permalink to this headline">¶</a></h3>
+<p>Where the :version param is the branch of the Matryx Platform you want to use
+ie: master, QA, develop
+It grabs it directly from the /build folder of <a class="reference external" href="http://github.com/matryx/MatryxPlatform">http://github.com/matryx/MatryxPlatform</a></p>
+<p>Curl</p>
+<p>curl -X GET <a class="reference external" href="http://explorer.matryx.ai:3000/platform/getAddress/master">http://explorer.matryx.ai:3000/platform/getAddress/master</a></p>
+<p>Response</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;EthereumAddressOfPlatform&gt;&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="getabi-version">
+<h3><strong>/getAbi/:version</strong><a class="headerlink" href="#getabi-version" title="Permalink to this headline">¶</a></h3>
+<p id="curl-1">Where the :version param is the branch of the Matryx Platform you want to use
+ie: master, QA, develop
+It grabs it directly from the /build folder of <a class="reference external" href="http://github.com/matryx/MatryxPlatform">http://github.com/matryx/MatryxPlatform</a></p>
+<p>Curl</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">explorer</span><span class="o">.</span><span class="n">matryx</span><span class="o">.</span><span class="n">ai</span><span class="p">:</span><span class="mi">3000</span><span class="o">/</span><span class="n">platform</span><span class="o">/</span><span class="n">getAbi</span><span class="o">/</span><span class="n">master</span>
+</pre></div>
+</div>
+<p>Response</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;abi&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="tournament">
+<h2>Tournament<a class="headerlink" href="#tournament" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="tournaments">
+<h3><strong>/tournaments/</strong><a class="headerlink" href="#tournaments" title="Permalink to this headline">¶</a></h3>
+<p id="id2">Curl:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">explorer</span><span class="o">.</span><span class="n">matryx</span><span class="o">.</span><span class="n">ai</span><span class="p">:</span><span class="mi">3000</span><span class="o">/</span><span class="n">tournaments</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>returns</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;tournamentTitle&quot;</span><span class="p">:</span> <span class="s2">&quot;Title of the Tournament&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;mtx&quot;</span><span class="p">:</span> <span class="s2">&quot;50&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;tournamentDescription&quot;</span><span class="p">:</span> <span class="s2">&quot;description of the tournament&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;math&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;totalRounds&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+      <span class="s2">&quot;currentRound&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="s2">&quot;numberOfParticipants&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;0xb1f659ebfc5bc3777c6fdfff5402f136e698149f&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;ipType&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;tournamentId&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;externalAddress&quot;</span><span class="p">:</span> <span class="s2">&quot;QmewXg6HCJ8kVcCKSrBXk8fawLru5Po3XaNgd4aGRrNa1N&quot;</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="count">
+<h3><strong>/count</strong><a class="headerlink" href="#count" title="Permalink to this headline">¶</a></h3>
+<p>Curl:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">explorer</span><span class="o">.</span><span class="n">matryx</span><span class="o">.</span><span class="n">ai</span><span class="p">:</span><span class="mi">3000</span><span class="o">/</span><span class="n">tournaments</span><span class="o">/</span><span class="n">count</span>
+</pre></div>
+</div>
+<p>Response</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;tournamentCount&quot;</span><span class="p">:</span> <span class="mi">3</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="round">
+<h2>Round<a class="headerlink" href="#round" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="submission">
+<h2>Submission<a class="headerlink" href="#submission" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="interplanetary-file-system-ipfs">
+<h2>Interplanetary File System (IPFS)<a class="headerlink" href="#interplanetary-file-system-ipfs" title="Permalink to this headline">¶</a></h2>
+<p>IPFS</p>
+</div>
+<div class="section" id="token">
+<h2>Token<a class="headerlink" href="#token" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ipfs.html" class="btn btn-neutral float-right" title="Interacting with Ipfs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="MatryxExplorer Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Nanome Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
+      });
+  </script> 
+
+</body>
+</html>

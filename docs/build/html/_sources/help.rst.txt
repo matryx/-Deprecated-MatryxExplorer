@@ -1,4 +1,8 @@
-HELP
-====
+FAQ
+========================
 
-Need help? Message us at hell@nanome.ai
+
+
+
+
+Need help? Message us at help@nanome.ai

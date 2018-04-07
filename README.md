@@ -7,6 +7,7 @@ An open-source node.js api to read the MatryxPlatform and interact with IPFS to 
 
 
 [![BuildStatus](https://travis-ci.org/matryx/MatryxExplorer.svg?branch=master)](https://travis-ci.org/matryx/MatryxExplorer)
+[![Documentation Status](https://readthedocs.org/projects/matryxexplorer/badge/?version=latest)](http://matryxexplorer.readthedocs.io/en/latest/?badge=latest)
 
 [![npm_Version](https://img.shields.io/badge/npm-5.7.1-brightgreen.svg)](http://npmjs.com)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
