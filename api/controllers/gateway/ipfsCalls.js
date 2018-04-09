@@ -43,7 +43,7 @@ ipfsNode.on('ready', () => {
   // console.log(ipfsNode.config.get())
   // console.log(ipfsNode.swarm)
   ipfsNode.swarm.connect(ipfsPeer, (err, result) => {
-    console.log('connecting: ', result)
+    console.log('connecting to peers: ', result)
     ipfsNode.swarm.peers((err, peerCount) => {
       console.log('There are this many peers: ', peerCount)
       // ipfsNode.dht.findprovs('QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ', (err, findProvsResult) => {
