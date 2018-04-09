@@ -1,4 +1,5 @@
 const express = require('express')
+const compression = require('compression')
 const app = express()
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
@@ -25,6 +26,8 @@ const tempRoundRoutes = require('./tempApi/rounds')
 const tempActivityRoutes = require('./tempApi/activity')
 const tempSubmissionRoutes = require('./tempApi/submissions')
 
+// Enable GZIP compression
+app.use(compression())
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
