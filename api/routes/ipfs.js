@@ -14,7 +14,6 @@ const util = require('util')
 const router = express.Router()
 
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
-// const platformCalls = require('../controllers/gateway/platformCalls')
 const matryxPlatformCalls = require('../controllers/gateway/matryxPlatformCalls')
 const ipfsCalls = require('../controllers/gateway/ipfsCalls')
 
@@ -29,7 +28,7 @@ router.get('/', (req, res, next) => {
 
 router.get('/download/hash/:hash', (req, res, next) => {
   let hash = req.params.hash
-  console.log(result)
+  console.log('>IPFS Router: /download/hash/', hash, 'hit')
   ipfsCalls.getIpfsDataFiles(hash).then(function (result) {
     res.status(200).json({
       message: result

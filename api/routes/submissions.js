@@ -13,7 +13,6 @@ const fs = require('fs')
 const util = require('util')
 
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
-const ethPlatform = require('../controllers/gateway/platformCalls')
 const submissionController = require('../controllers/submissionController')
 const ipfsCalls = require('../controllers/gateway/ipfsCalls')
 const fileHandler = require('../controllers/gateway/fileHandler')

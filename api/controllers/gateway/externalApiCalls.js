@@ -4,6 +4,7 @@ The Matryx Platform Smart Contract interaction file
 authors - sam@nanome.ai
 Nanome 2018
 */
+'use strict'
 
 const http = require('http')
 const fetch = require('node-fetch')

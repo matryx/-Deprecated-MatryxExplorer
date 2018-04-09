@@ -6,7 +6,6 @@ Copyright Nanome Inc 2018
 */
 
 const express = require('express')
-const ethPlatform = require('../controllers/gateway/platformCalls')
 const tournamentController = require('../controllers/tournamentController')
 const roundController = require('../controllers/roundController')
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')

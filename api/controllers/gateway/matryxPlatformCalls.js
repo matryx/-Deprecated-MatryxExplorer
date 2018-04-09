@@ -934,7 +934,6 @@ matryxPlatformCalls.getSubmissionDescription = function (submissionAddress) {
         })
       }
     })
-          // Call IPFS with external address and return the description
   })
 }
 
