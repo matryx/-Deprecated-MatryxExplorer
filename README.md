@@ -128,18 +128,6 @@ ssh -i "<path/to/your/.pemFile>" ec2-user@<yourEC2ipAddress> 'bash -s' < remote-
 rm remote-actions.txt
 ```
 
-The output will look like this:
-```[ec2-user@ip-172-31-19-210 bin]$ ./ipfs init
-initializing IPFS node at /home/ec2-user/.ipfs
-generating 2048-bit RSA keypair...done
-peer identity: QmNto2pqQGcjzTX7feseTe6ytEmTWpMotbAQtgFpg9eaqH
-to get started, enter:
-
-	ipfs cat /ipfs/QmS4ustL54uo8FzR9455qaxZwuMiUhyvMcX9Ba8nUH4uVv/readme
-```
-Copy this hash for later-
-The `QmS4ustL54uo8FzR9455qaxZwuMiUhyvMcX9Ba8nUH4uVv` hash is your IPFS peer identity.
-
 **9. It will now be running!**
 * Make sure to check the logs of MatryxExplorer to see that there is the correct peer connected
 * Make sure your EC2 security group is configured with the following ports
