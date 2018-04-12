@@ -49,26 +49,84 @@ Hold down ‘control’ and press ‘A’ then ‘D’
 **2. Update your EC2 instance**
  ```sudo yum update```
 
-**3. Install Git**  
-* ```sudo yum install git```
+**3. Install Docker**  
+* ```sudo yum install docker```
 
-**4. Install node and npm**
-* ```sudo yum install nodejs npm --enablerepo=epel```
-* ```sudo npm -g install npm```
-
-**5. Install go**
-* ```sudo yum install go```
-
-**6. Get and Install IPFS**
-```export PATH=$PATH:/usr/local/go/bin
-export PATH=$PATH:$GOPATH/bin
-go get -u -d github.com/ipfs/go-ipfs
-cd go/src/github.com/ipfs/go-ipfs
-make install
+**4. Run MatryxIPFS on your docker instance**
+* Go to the MatryxIPFS repository and do a Docker Build and then push it using the following script
 ```
-*7. Go to the Go bin and initialize IPFS**
-* ```cd ~/go/bin```
-*  ```./ipfs init```
+echo "" > remote-actions.txt
+
+echo "sudo yum update -y" >> remote-actions.txt
+echo "sudo yum install -y docker" >> remote-actions.txt
+echo "sudo service docker start" >> remote-actions.txt
+
+echo -n "sudo " >> remote-actions.txt
+aws ecr get-login --no-include-email --region us-west-1 >> remote-actions.txt
+
+echo "sudo docker network create --subnet=172.18.0.0/16 --driver=bridge matryx-explorer-network" >> remote-actions.txt
+
+echo "sudo docker volume create matryx-ipfs-volume" >> remote-actions.txt
+echo "sudo docker stop matryx-ipfs" >> remote-actions.txt
+echo "sudo docker rm -f matryx-ipfs" >> remote-actions.txt
+echo "sudo docker run \
+    -dit --restart unless-stopped \
+    --name=matryx-ipfs \
+    --net=matryx-explorer-network --ip 172.18.0.22 \
+    -v matryx-ipfs-volume:/root \
+    -p 8080:8080 -p 4001:4001 -p 5001:5001 -p 443:443 \
+    matryx-ipfs" >> remote-actions.txt
+
+ssh -i "<path/to/your/.pemFile>" ec2-user@<yourEC2ipAddress> 'bash -s' < remote-actions.txt
+
+rm remote-actions.txt
+
+```
+
+**5. Get the IPFS Peer ID Hash**
+* When you ssh into your EC2 instance, use a ```docker logs -f <containerID>```
+and copy the Peer ID hash (it looks like `QmQ88tsHquF5reE7Bbe8PDpeXo1yzqbZBBKoqh9xV5V5la`, I just made a random one) for later
+
+
+**6. Change the .env for the MatryxExplorer file to point at the IPFS node**
+* Now we need to make sure that your MatryxExplorer instance points at the IPFS node you have running. In the '.env' file, swap out the existing Peer ID hash for the one you copied above. It should look like: 
+```
+IPFS_DAEMON_PEER_ID='/ip4/172.18.0.22/tcp/9999/ws/ipfs/QmQ88tsHquF5reE7Bbe8PDpeXo1yzqbZBBKoqh9xV5V5la'
+```
+* Make sure to save
+
+**7. Build and deploy MatryxExplorer**
+* Run a docker build
+	```docker build .```
+*  Now deploy to your EC2 instance using a script like this:
+```
+echo "" > remote-actions.txt
+
+echo "sudo yum update -y" >> remote-actions.txt
+echo "sudo yum install -y docker" >> remote-actions.txt
+echo "sudo service docker start" >> remote-actions.txt
+
+echo -n "sudo " >> remote-actions.txt
+aws ecr get-login --no-include-email --region us-west-1 >> remote-actions.txt
+
+echo "sudo docker network create --subnet=172.18.0.0/16 --driver=bridge matryx-explorer-network" >> remote-actions.txt
+
+
+echo "sudo docker volume create matryx-alpha-explorer-volume" >> remote-actions.txt
+echo "sudo docker stop matryx-alpha-explorer" >> remote-actions.txt
+echo "sudo docker rm -f matryx-alpha-explorer" >> remote-actions.txt
+echo "sudo docker run \
+    -dit --restart unless-stopped \
+    --name=matryx-alpha-explorer \
+    --net=matryx-explorer-network \
+    -v matryx-alpha-explorer-volume:/root \
+    -p 80:3000 \
+    matryx-alpha-explorer" >> remote-actions.txt
+
+ssh -i "<path/to/your/.pemFile>" ec2-user@<yourEC2ipAddress> 'bash -s' < remote-actions.txt
+
+rm remote-actions.txt
+```
 
 The output will look like this:
 ```[ec2-user@ip-172-31-19-210 bin]$ ./ipfs init
@@ -82,64 +140,17 @@ to get started, enter:
 Copy this hash for later-
 The `QmS4ustL54uo8FzR9455qaxZwuMiUhyvMcX9Ba8nUH4uVv` hash is your IPFS peer identity.
 
-**9. Change the config to add a websocket at port 9999**
-* ```./ipfs config --json Addresses '{ "API": "/ip4/127.0.0.1/tcp/5001", "Announce": [], "Gateway": "/ip4/127.0.0.1/tcp/8080", "NoAnnounce": [], "Swarm": [ "/ip4/0.0.0.0/tcp/4001", "/ip6/::/tcp/4001", "/ip4/127.0.0.1/tcp/9999/ws" ]}'```
-
-You can look at your IPFS config by typing
-```ipfs config show```
-
-Look at the 'Addresses' portion under 'Swarm'
-
-It should look like:
+**9. It will now be running!**
+* Make sure to check the logs of MatryxExplorer to see that there is the correct peer connected
+* Make sure your EC2 security group is configured with the following ports
 ```
-"Addresses": {
-  "API": "/ip4/127.0.0.1/tcp/5001",
-  "Announce": [],
-  "Gateway": "/ip4/127.0.0.1/tcp/8080",
-  "NoAnnounce": [],
-  "Swarm": [
-    "/ip4/0.0.0.0/tcp/4001",
-    "/ip6/::/tcp/4001",
-    "/ip4/127.0.0.1/tcp/9999/ws"
-  ]
-  ```
-
-
-**10. Run the IPFS Daemon**
- ```nohup ./ipfs daemon &```
-Hold down ‘control’ and press ‘A’ then ‘D’
-(this will boot you out of your EC2, go ahead and shell back in)
-
-**11. Check to make sure it is running in the background still**
-```ps -eaf|grep "ipfs"```
-
-**12: Clone and Run the MatryxExplorer**
-```git clone https://github.com/matryx/MatryxExplorer
-cd MatryxExplorer
-npm install
+80
+22
+4001
+443
+5001
 ```
-**13. Swap out your PeerID in the .env file**
-Place your peer identity from above (example: QmS4ustL54uo8FzR9455qaxZwuMiUhyvMcX9Ba8nUH4uVv) in the .env file of Matryx Explorer
-Now you need to replace the end of the 'IPFS_DAEMON_PEER_ID' .env variable for MatryxExplorer to use this.
-
-**14. Run the app in the background**
-```nohup npm start &```
-Then Hold down ‘control’ and press ‘A’ then ‘D’
-(this will boot you out of your EC2, go ahead and shell back in)
-
-**13. See if the process is running**
-```ps -A | grep "node"```
-
-You should see it running like so with the first number being your processID:
-```
-[ec2-user@ip-172-31-19-210 ~]$ ps -A | grep "node"
-17156 ?        00:00:00 node
-17552 ?        00:00:01 node <defunct>
-```
-14. To follow the logs of the process
-tail -f /proc/:processID/fd/1
-
-Everything should be running correctly. Make sure you configured your AWS instance in order to change the security settings to allow port 3000 to be accessed.
+	
 
 Best,
 
