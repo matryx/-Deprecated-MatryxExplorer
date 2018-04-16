@@ -106,6 +106,13 @@ router.post('/upload', (req, res, next) => {
         // console.log(util.inspect(files[0][1].path)) // This is where the first file was stored
         // console.log(fields[0][0]) // This is if the first field is 'description', it returns 'description' and fields[0][1] is the description content
 
+        // TODO Loop through the files and grab the 'name' param and rename the file
+        files.forEach(function (file) {
+          fs.rename(file[1].path, form.uploadDir + '/' + file[1].name, function (err) {
+            if (err) console.log('ERROR: ' + err)
+          })
+        })
+
         fields.forEach(function (field) {
             // Check to see if there is a description key in the fields
           if (field[0] == 'description') {
