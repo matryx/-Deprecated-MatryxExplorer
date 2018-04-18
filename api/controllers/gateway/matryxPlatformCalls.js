@@ -54,16 +54,27 @@ externalApiCalls.getMatryxPlatformInfo(version).then(function (results) {
 * PLATFORM
 */
 
-matryxPlatformCalls.getTournamentCount = function () {
-  return new Promise((resolve, reject) => {
-    matryxPlatformContract.tournamentCount((err, res) => {
-      if (err) reject(err)
-      else {
-        resolve(parseInt(res))
-      }
-    })
-  })
+matryxPlatformCalls.getTournamentCount = async function () {
+  try {
+    let tournamentCount = await matryxPlatformContract.tournamentCount()
+    if (tournamentCount) {
+      return tournamentCount
+    }
+  } catch (err) {
+    throw new Error(err)
+  }
 }
+
+// matryxPlatformCalls.getAllTournamentsAsync = async function (index) {
+//   try {
+//     let tournament = await matryxPlatformContract.allTournaments(index)
+//     if (tournament) {
+//       return tournament
+//     }
+//   } catch (err) {
+//     throw new Error(err)
+//   }
+// }
 
 matryxPlatformCalls.allTournaments = function (index) {
   return new Promise((resolve, reject) => {
@@ -176,6 +187,30 @@ matryxPlatformCalls.getTournamentAtIndex = function (index) {
     })
   })
 }
+//
+// // TODO: redo this to put them in the same order everytime using a Dictionary
+// matryxPlatformCalls.getAllTournamentAddresses = function () {
+//   return new Promise((resolve, reject) => {
+//     let addressList = []
+//       // Get the number of tournaments from the platform
+//     matryxPlatformContract.tournamentCount((err, tournamentCount) => {
+//       for (i = 0; i < tournamentCount; i++) {
+//         // console.log(i)
+//         let j = i
+//         matryxPlatformContract.getTournamentAtIndex(j, (err, tournamentAddress) => {
+//           console.log('Tournament #: ' + j + ' is at address: ' + tournamentAddress)
+//           addressList.push(tournamentAddress)
+//
+//           if (addressList.length == tournamentCount) {
+//             console.log('The addresses of the tournaments are: ' + addressList)
+//             console.log(addressList.length)
+//             resolve(addressList)
+//           }
+//         })
+//       }
+//     })
+//   })
+// }
 
 // TODO: redo this to put them in the same order everytime using a Dictionary
 matryxPlatformCalls.getAllTournamentAddresses = function () {
@@ -183,10 +218,16 @@ matryxPlatformCalls.getAllTournamentAddresses = function () {
     let addressList = []
       // Get the number of tournaments from the platform
     matryxPlatformContract.tournamentCount((err, tournamentCount) => {
+      if (err) {
+        throw new Error(err)
+      }
       for (i = 0; i < tournamentCount; i++) {
         // console.log(i)
         let j = i
         matryxPlatformContract.getTournamentAtIndex(j, (err, tournamentAddress) => {
+          if (err) {
+            throw new Error(err)
+          }
           console.log('Tournament #: ' + j + ' is at address: ' + tournamentAddress)
           addressList.push(tournamentAddress)
 
