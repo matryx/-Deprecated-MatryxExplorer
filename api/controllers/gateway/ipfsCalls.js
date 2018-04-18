@@ -28,7 +28,6 @@ let options = {
 const ipfsNode = new IPFS(options)
 // console.log(ipfsNode)
 // console.log(ipfsNode.dht.findprovs('QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ'))
-
 // TODO: Create the IPFS cluster in the localhost and make the calls to hold all the data from various nodes
 
 let ipfsURL = process.env.IPFS_URL
@@ -82,7 +81,6 @@ ipfsCalls.validateIpfsHashExists = function (_ipfsHash) {
   })
 }
 
-// TODO: Add file navigation and extraction for correct data and file response
 ipfsCalls.getIpfsData = function (_ipfsHash) {
   console.log('Gateway call recieved. Hitting IPFS Node for data at hash: ' + _ipfsHash)
   return new Promise((resolve, reject) => {

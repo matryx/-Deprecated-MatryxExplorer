@@ -65,18 +65,37 @@ router.get('/count', (req, res, next) => {
     res.status(200).json({
       tournamentCount: result
     })
+  }).catch(function (error) {
+    console.log(error)
+    res.status(500).json({
+      errorMessage: error.message
+    })
   })
 })
 
-// Return all of the tournaments
+// Return number of tournaments
 router.get('/allTournaments', (req, res, next) => {
-    // TODO replace function with working model+final name
   tournamentController.getAllTournaments().then(function (tournaments) {
     res.status(200).json({
       data: tournaments
     })
+  }).catch(function (error) {
+    console.log(error)
+    res.status(500).json({
+      errorMessage: error.message
+    })
   })
 })
+
+// // Return all of the tournaments
+// router.get('/allTournaments', (req, res, next) => {
+//     // TODO replace function with working model+final name
+//   tournamentController.getAllTournaments().then(function (tournaments) {
+//     res.status(200).json({
+//       data: tournaments
+//     })
+//   })
+// })
 
 // Return the tournament details for a specific tournament
 // TODO pass back the tournament details
