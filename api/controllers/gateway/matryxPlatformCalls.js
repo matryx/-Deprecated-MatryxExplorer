@@ -65,17 +65,6 @@ matryxPlatformCalls.getTournamentCount = async function () {
   }
 }
 
-// matryxPlatformCalls.getAllTournamentsAsync = async function (index) {
-//   try {
-//     let tournament = await matryxPlatformContract.allTournaments(index)
-//     if (tournament) {
-//       return tournament
-//     }
-//   } catch (err) {
-//     throw new Error(err)
-//   }
-// }
-
 matryxPlatformCalls.allTournaments = function (index) {
   return new Promise((resolve, reject) => {
     matryxPlatformContract.allTournaments(index, (err, res) => {
@@ -100,16 +89,29 @@ matryxPlatformCalls.allEvents = function (fromBlock, toBlock, param) {
   })
 }
 
-matryxPlatformCalls.getTournamentByCategory = function (category) {
-  return new Promise((resolve, reject) => {
-    matryxPlatformContract.getTournamentByCategory(category, (err, res) => {
-      if (err) reject(err)
-      else {
-        resolve(res)
-      }
-    })
-  })
+matryxPlatformCalls.getTournamentsByCategory = async function (category) {
+  try {
+    console.log('category passed is: ', category)
+    let tournaments = await matryxPlatformContract.getTournamentsByCategory(category)
+
+    if (tournaments) {
+      return tournaments
+    }
+  } catch (err) {
+    throw new Error(err)
+  }
 }
+
+// matryxPlatformCalls.getTournamentByCategory = function (category) {
+//   return new Promise((resolve, reject) => {
+//     matryxPlatformContract.getTournamentByCategory(category, (err, res) => {
+//       if (err) reject(err)
+//       else {
+//         resolve(res)
+//       }
+//     })
+//   })
+// }
 
 matryxPlatformCalls.getCategoryCount = function (category) {
   return new Promise((resolve, reject) => {

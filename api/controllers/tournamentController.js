@@ -225,6 +225,18 @@ tournamentController.getRoundAddress = function (_tournamentAddress, _roundId) {
   })
 }
 
+tournamentController.getTournamentsByCategory = async function (category) {
+  try {
+    let addressess = await matryxPlatformCalls.getTournamentsByCategory(category)
+    if (addressess) {
+      return addressess
+    }
+  } catch (err) {
+    throw new Error(err)
+    console.log('message received from platform calls: ', err)
+  }
+}
+
 /*
 Experiemental or testing methods
 */
