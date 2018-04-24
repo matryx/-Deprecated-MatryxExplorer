@@ -45,9 +45,9 @@ externalApiCalls.getMatryxPlatformInfo(version).then(function (results) {
   matryxPlatformAbi = JSON.parse(matryxPlatformAbi)
 
   console.log('Current Matryx Platform Address in use: \'' + matryxPlatformAddress + '\'')
-  matryxPlatformContract = web3.eth.contract(matryxPlatformAbi).at(matryxPlatformAddress)
+  // matryxPlatformContract = web3.eth.contract(matryxPlatformAbi).at(matryxPlatformAddress)
 
-  console.log('There are ' + matryxPlatformContract.tournamentCount().c[0] + ' tournaments on the Platform.')
+  // console.log('There are ' + matryxPlatformContract.tournamentCount().c[0] + ' tournaments on the Platform.')
 })
 
 /*
@@ -65,17 +65,20 @@ matryxPlatformCalls.getTournamentCount = async function () {
   }
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.allTournaments = function (index) {
   return new Promise((resolve, reject) => {
     matryxPlatformContract.allTournaments(index, (err, res) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        reject(err)
+      } else {
         resolve(res)
       }
     })
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.allEvents = function (fromBlock, toBlock, param) {
   return new Promise((resolve, reject) => {
     matryxPlatformContract.allEvents({fromBlock: 0x0, toBlock: 'latest'}, (err, res) => {
@@ -113,82 +116,73 @@ matryxPlatformCalls.getTournamentsByCategory = async function (category) {
 //   })
 // }
 
-matryxPlatformCalls.getCategoryCount = function (category) {
-  return new Promise((resolve, reject) => {
-    matryxPlatformContract.getCategoryCount(category, (err, res) => {
-      if (err) reject(err)
-      else {
-        resolve(res)
-      }
-    })
-  })
+matryxPlatformCalls.getCategoryCount = async function (category) {
+  try {
+    let categoryCount = await matryxPlatformContract.getCategoryCount(category)
+    if (categoryCount) {
+      return categoryCount
+    }
+  } catch (err) {
+    throw new Error(err)
+  }
 }
 
-matryxPlatformCalls.getTopCategory = function (category) {
-  return new Promise((resolve, reject) => {
-    matryxPlatformContract.getCategoryCount(category, (err, res) => {
-      if (err) reject(err)
-      else {
-        resolve(res)
-      }
-    })
-  })
+matryxPlatformCalls.isPeer = async function (address) {
+  try {
+    let peerBool = await matryxPlatformContract.isPeer(address)
+    if (peerBool) {
+      return peerBool
+    }
+  } catch (err) {
+    throw new Error(err)
+  }
 }
 
-matryxPlatformCalls.isPeer = function (address) {
-  return new Promise((resolve, reject) => {
-    matryxPlatformContract.isPeer(address, (err, res) => {
-      if (err) reject(err)
-      else {
-        resolve(res)
-      }
-    })
-  })
+matryxPlatformCalls.peerExistsAndOwnsSubmission = async function (peerAddress, submissionAddress) {
+  try {
+    let peerBool = await matryxPlatformContract.peerExistsAndOwnsSubmission(peerAddress, submissionAddress)
+    if (peerBool) {
+      return peerBool
+    }
+  } catch (err) {
+    throw new Error(err)
+  }
 }
 
-matryxPlatformCalls.peerExistsAndOwnsSubmission = function (peerAddress, submissionAddress) {
-  return new Promise((resolve, reject) => {
-    matryxPlatformContract.peerExistsAndOwnsSubmission(peerAddress, submissionAddress, (err, res) => {
-      if (err) reject(err)
-      else {
-        resolve(res)
-      }
-    })
-  })
+matryxPlatformCalls.isSubmission = async function (submissionAddress) {
+  try {
+    let submissionBool = await matryxPlatformContract.isSubmission(peerAddress, submissionAddress)
+    if (submissionBool) {
+      return submissionBool
+    }
+  } catch (err) {
+    throw new Error(err)
+  }
 }
 
-matryxPlatformCalls.isSubmission = function (submissionAddress) {
-  return new Promise((resolve, reject) => {
-    matryxPlatformContract.isSubmission(submissionAddress, (err, res) => {
-      if (err) reject(err)
-      else {
-        resolve(res)
-      }
-    })
-  })
+matryxPlatformCalls.getTokenAddress = async function () {
+  try {
+    let res = await matryxPlatformContract.getTokenAddress()
+    if (res) {
+      return res
+    }
+  } catch (err) {
+    throw new Error(err)
+  }
 }
 
-matryxPlatformCalls.getTokenAddress = function () {
-  return new Promise((resolve, reject) => {
-    matryxPlatformContract.getTokenAddress((err, res) => {
-      if (err) reject(err)
-      else {
-        resolve(res)
-      }
-    })
-  })
+// TODO: Async + error handling
+matryxPlatformCalls.getTournamentAtIndex = async function (index) {
+  try {
+    let res = await matryxPlatformContract.getTournamentAtIndex(index)
+    if (res) {
+      return res
+    }
+  } catch (err) {
+    throw new Error(err)
+  }
 }
 
-matryxPlatformCalls.getTournamentAtIndex = function (index) {
-  return new Promise((resolve, reject) => {
-    matryxPlatformContract.getTournamentAtIndex(index, (err, res) => {
-      if (err) reject(err)
-      else {
-        resolve(res)
-      }
-    })
-  })
-}
 //
 // // TODO: redo this to put them in the same order everytime using a Dictionary
 // matryxPlatformCalls.getAllTournamentAddresses = function () {
@@ -214,6 +208,7 @@ matryxPlatformCalls.getTournamentAtIndex = function (index) {
 //   })
 // }
 
+// TODO: Async + error handling
 // TODO: redo this to put them in the same order everytime using a Dictionary
 matryxPlatformCalls.getAllTournamentAddresses = function () {
   return new Promise((resolve, reject) => {
@@ -248,30 +243,31 @@ matryxPlatformCalls.getAllTournamentAddresses = function () {
 * TOURNAMENT
 */
 
-matryxPlatformCalls.getTournamentTitle = function (tournamentAddress) {
-  return new Promise((resolve, reject) => {
+matryxPlatformCalls.getTournamentTitle = async function (tournamentAddress) {
+  try {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-    tournamentContract.title((err, res) => {
-      if (err) reject(err)
-      else {
-        resolve(res)
-      }
-    })
-  })
+    let res = await tournamentContract.title()
+    if (res) {
+      return res
+    }
+  } catch (err) {
+    throw new Error(err)
+  }
 }
 
-matryxPlatformCalls.getTournamentOwner = function (tournamentAddress) {
-  return new Promise((resolve, reject) => {
+matryxPlatformCalls.getTournamentOwner = async function (tournamentAddress) {
+  try {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-    tournamentContract.owner((err, res) => {
-      if (err) reject(err)
-      else {
-        resolve(res)
-      }
-    })
-  })
+    let res = await tournamentContract.owner()
+    if (res) {
+      return res
+    }
+  } catch (err) {
+    throw new Error(err)
+  }
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getTournamentBounty = function (tournamentAddress) {
   return new Promise((resolve, reject) => {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
@@ -285,13 +281,15 @@ matryxPlatformCalls.getTournamentBounty = function (tournamentAddress) {
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getTournamentDescription = function (tournamentAddress) {
   console.log('>MatryxPlatformCalls: Retrieving Tournament Description at: ' + tournamentAddress)
   return new Promise((resolve, reject) => {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
     tournamentContract.getExternalAddress((err, res) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        throw new Error(err)
+      } else {
         _externalAddress = web3.toAscii(res)
         console.log('The external address of the tournament is: ' + _externalAddress)
         ipfsCalls.getIpfsDescriptionOnly(_externalAddress).then(function (_descriptionResponse) {
@@ -308,84 +306,98 @@ matryxPlatformCalls.getTournamentDescription = function (tournamentAddress) {
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getTournamentCategory = function (tournamentAddress) {
   return new Promise((resolve, reject) => {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
     tournamentContract.category((err, res) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        throw new Error(err)
+      } else {
         resolve(res)
       }
     })
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getTournamentMaxRounds = function (tournamentAddress) {
   return new Promise((resolve, reject) => {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
     tournamentContract.maxRounds((err, res) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        throw new Error(err)
+      } else {
         resolve(parseInt(res.toString()))
       }
     })
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.isEntrantToTournament = function (tournamentAddress, userAddress) {
   return new Promise((resolve, reject) => {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
     tournamentContract.isEntrant(userAddress, (err, res) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        throw new Error(err)
+      } else {
         resolve(res)
       }
     })
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.isOpenTournament = function (tournamentAddress) {
   return new Promise((resolve, reject) => {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
     tournamentContract.isEntrant((err, res) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        throw new Error(err)
+      } else {
         resolve(res)
       }
     })
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.isInReviewTournament = function (tournamentAddress) {
   return new Promise((resolve, reject) => {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
     tournamentContract.isInReview((err, res) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        throw new Error(err)
+      } else {
         resolve(res)
       }
     })
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.roundIsOpenTournament = function (tournamentAddress) {
   return new Promise((resolve, reject) => {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
     tournamentContract.roundIsOpen((err, res) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        throw new Error(err)
+      } else {
         resolve(res)
       }
     })
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getExternalAddressTournament = function (tournamentAddress) {
   return new Promise((resolve, reject) => {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
     tournamentContract.getExternalAddress((err, res) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        throw new Error(err)
+      } else {
         _externalAddress = web3.toAscii(res)
         resolve(_externalAddress)
       }
@@ -393,77 +405,91 @@ matryxPlatformCalls.getExternalAddressTournament = function (tournamentAddress) 
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.currentRoundOfTournament = function (tournamentAddress) {
   return new Promise((resolve, reject) => {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
     tournamentContract.currentRound((err, res) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        throw new Error(err)
+      } else {
         resolve(parseInt(res.toString()))
       }
     })
   })
 }
+
+// TODO: Async + error handling
 matryxPlatformCalls.currentRoundAddressOfTournament = function (tournamentAddress) {
   return new Promise((resolve, reject) => {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
     tournamentContract.currentRound((err, res) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        throw new Error(err)
+      } else {
         resolve(res[1])
       }
     })
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.submissionsCountOfTournament = function (tournamentAddress) {
   return new Promise((resolve, reject) => {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
     tournamentContract.submissionCount((err, res) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        throw new Error(err)
+      } else {
         resolve(res)
       }
     })
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.entrantCountOfTournament = function (tournamentAddress) {
   return new Promise((resolve, reject) => {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
     tournamentContract.entrantCount((err, res) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        throw new Error(err)
+      } else {
         resolve(parseInt(res.toString()))
       }
     })
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getEntryFeeOfTournament = function (tournamentAddress) {
   return new Promise((resolve, reject) => {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
     tournamentContract.getEntryFee((err, res) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        throw new Error(err)
+      } else {
         resolve(web3.fromWei(res.toString()))
       }
     })
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getCurrentRoundEndTimeFromTournament = function (tournamentAddress) {
   return new Promise((resolve, reject) => {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
     // get the current round address
     tournamentContract.currentRound((err, res) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        throw new Error(err)
+      } else {
         roundAddress = res[1]
         roundContract = web3.eth.contract(roundAbi).at(roundAddress)
         roundContract.endTime((err, res) => {
-          if (err) reject(err)
-          else {
+          if (err) {
+            throw new Error(err)
+          } else {
             resolve(res)
           }
         })
@@ -472,17 +498,20 @@ matryxPlatformCalls.getCurrentRoundEndTimeFromTournament = function (tournamentA
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getAllRoundAddresses = function (tournamentAddress) {
   return new Promise((resolve, reject) => {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
     let roundAddressList = []
     tournamentContract.maxRounds((err, totalRounds) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        throw new Error(err)
+      } else {
         tournamentContract.currentRound((err, currentRoundResult) => {
           console.log(currentRoundResult[0].c[0])
-          if (err) reject(err)
-          else {
+          if (err) {
+            throw new Error(err)
+          } else {
             for (i = 0; i < totalRounds; i++) {
               tournamentContract.rounds(i, (err, roundAddress) => {
                 console.log('Round address = ' + roundAddress)
@@ -503,77 +532,92 @@ matryxPlatformCalls.getAllRoundAddresses = function (tournamentAddress) {
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getRoundAddressByIndex = function (tournamentAddress, roundIndex) {
   return new Promise((resolve, reject) => {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
     tournamentContract.rounds(roundIndex, (err, roundAddress) => {
-      console.log('Round address = ' + roundAddress)
-            // console.log(roundAddress == '0x')
-      if (roundAddress != '0x') {
+      if (err) {
+        throw new Error(err)
+      } else if (roundAddress != '0x') {
+        console.log('Round address = ' + roundAddress)
+
         resolve(roundAddress)
+      } else {
+        throw new Error('round address is 0x')
       }
-        // TODO: Throw error
     })
   })
 }
+
 /*
 * ROUND
 */
+// TODO: Async + error handling
 matryxPlatformCalls.isOpenRound = function (roundAddress) {
   return new Promise((resolve, reject) => {
     roundContract = web3.eth.contract(roundAbi).at(roundAddress)
     roundContract.isOpen((err, res) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        throw new Error(err)
+      } else {
         resolve(res)
       }
     })
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.isInRoundReviewPeriod = function (roundAddress) {
   return new Promise((resolve, reject) => {
     roundContract = web3.eth.contract(roundAbi).at(roundAddress)
     roundContract.isInReview((err, res) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        throw new Error(err)
+      } else {
         resolve(res)
       }
     })
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getParentTournamentFromRound = function (roundAddress) {
   return new Promise((resolve, reject) => {
     roundContract = web3.eth.contract(roundAbi).at(roundAddress)
     roundContract.getTournament((err, res) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        throw new Error(err)
+      } else {
         resolve(res)
       }
     })
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getRoundBounty = function (roundAddress) {
   return new Promise((resolve, reject) => {
     roundContract = web3.eth.contract(roundAbi).at(roundAddress)
     roundContract.getBounty((err, res) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        throw new Error(err)
+      } else {
         resolve(web3.fromWei(res.toString()))
       }
     })
   })
 }
 
+// TODO: Async + error handling
 // TODO: does not work
 matryxPlatformCalls.getRoundSubmissions = function (roundAddress) {
   return new Promise((resolve, reject) => {
     roundContract = web3.eth.contract(roundAbi).at(roundAddress)
     roundContract.getSubmissions((err, res) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        throw new Error(err)
+      } else {
         console.log(res)
         resolve(res)
       }
@@ -581,54 +625,63 @@ matryxPlatformCalls.getRoundSubmissions = function (roundAddress) {
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getSubmissionAddressFromRound = function (roundAddress, submissionIndex) {
   return new Promise((resolve, reject) => {
     roundContract = web3.eth.contract(roundAbi).at(roundAddress)
     roundContract.getSubmissionAddress(submissionIndex, (err, res) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        throw new Error(err)
+      } else {
         resolve(res)
       }
     })
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getSubmissionAuthorFromRound = function (roundAddress, submissionAddress) {
   return new Promise((resolve, reject) => {
     roundContract = web3.eth.contract(roundAbi).at(roundAddress)
     roundContract.getSubmissionAuthor(submissionAddress, (err, res) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        throw new Error(err)
+      } else {
         resolve(res)
       }
     })
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getBalanceOfRound = function (roundAddress) {
   return new Promise((resolve, reject) => {
     roundContract = web3.eth.contract(roundAbi).at(roundAddress)
     roundContract.getBalance((err, res) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        throw new Error(err)
+      } else {
         resolve(res)
       }
     })
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.isSubmissionChosen = function (roundAddress) {
   return new Promise((resolve, reject) => {
     roundContract = web3.eth.contract(roundAbi).at(roundAddress)
     roundContract.submissionChosen((err, res) => {
-      if (err) reject(err)
-      else {
+      if (err) {
+        throw new Error(err)
+      } else {
         resolve(res)
       }
     })
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getWinningSubmissionAddress = function (roundAddress) {
   return new Promise((resolve, reject) => {
     roundContract = web3.eth.contract(roundAbi).at(roundAddress)
@@ -641,6 +694,7 @@ matryxPlatformCalls.getWinningSubmissionAddress = function (roundAddress) {
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.numberOfSubmissions = function (roundAddress) {
   return new Promise((resolve, reject) => {
     roundContract = web3.eth.contract(roundAbi).at(roundAddress)
@@ -653,6 +707,7 @@ matryxPlatformCalls.numberOfSubmissions = function (roundAddress) {
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.roundStatus = function (roundAddress) {
   return new Promise((resolve, reject) => {
       // Logic for roundStatus
@@ -671,6 +726,7 @@ matryxPlatformCalls.roundStatus = function (roundAddress) {
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getSubmissionsFromRound = function (roundAddress) {
   return new Promise((resolve, reject) => {
     let fullResponse = {
@@ -732,6 +788,7 @@ matryxPlatformCalls.getSubmissionsFromRound = function (roundAddress) {
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getSubmissionsFromRound2 = function (roundAddress) {
   return new Promise((resolve, reject) => {
     let submissionResults = []
@@ -759,6 +816,7 @@ matryxPlatformCalls.getSubmissionsFromRound2 = function (roundAddress) {
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getTournamentInfoFromRoundAddress = function (_roundAddress) {
   console.log('>MatryxPlatformCalls: getTournamentInfoFromRoundAddress(' + _roundAddress + ')')
   return new Promise((resolve, reject) => {
@@ -789,6 +847,7 @@ matryxPlatformCalls.getTournamentInfoFromRoundAddress = function (_roundAddress)
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getTournamentInfoFromRoundAddressNoIPFS = function (_roundAddress) {
   console.log('>MatryxPlatformCalls: getTournamentInfoFromRoundAddress(' + _roundAddress + ')')
   return new Promise((resolve, reject) => {
@@ -823,6 +882,7 @@ matryxPlatformCalls.getTournamentInfoFromRoundAddressNoIPFS = function (_roundAd
 * SUBMISSION
 */
 
+// TODO: Async + error handling
 matryxPlatformCalls.getSubmissionTitle = function (submissionAddress) {
   console.log('>MatryxPlatformCalls: Retrieving submission title from: ' + submissionAddress)
 
@@ -837,6 +897,7 @@ matryxPlatformCalls.getSubmissionTitle = function (submissionAddress) {
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getSubmissionAuthor = function (submissionAddress) {
   console.log('>MatryxPlatformCalls: Retrieving submission author from: ' + submissionAddress)
 
@@ -851,6 +912,7 @@ matryxPlatformCalls.getSubmissionAuthor = function (submissionAddress) {
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getSubmissionExternalAddress = function (submissionAddress) {
   console.log('>MatryxPlatformCalls: Retrieving submission external address from: ' + submissionAddress)
 
@@ -867,6 +929,7 @@ matryxPlatformCalls.getSubmissionExternalAddress = function (submissionAddress) 
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getSubmissionReferences = function (submissionAddress) {
   console.log('>MatryxPlatformCalls: Retrieving submission references from: ' + submissionAddress)
 
@@ -881,6 +944,7 @@ matryxPlatformCalls.getSubmissionReferences = function (submissionAddress) {
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getSubmissionContributors = function (submissionAddress) {
   console.log('>MatryxPlatformCalls: Retrieving submission contributors from: ' + submissionAddress)
 
@@ -895,6 +959,7 @@ matryxPlatformCalls.getSubmissionContributors = function (submissionAddress) {
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getSubmissionTimeSubmitted = function (submissionAddress) {
   console.log('>MatryxPlatformCalls: Retrieving submission time submitted from: ' + submissionAddress)
 
@@ -909,6 +974,7 @@ matryxPlatformCalls.getSubmissionTimeSubmitted = function (submissionAddress) {
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getSubmissionTimeUpdated = function (submissionAddress) {
   console.log('>MatryxPlatformCalls: Retrieving submission time updated from: ' + submissionAddress)
   return new Promise((resolve, reject) => {
@@ -922,6 +988,7 @@ matryxPlatformCalls.getSubmissionTimeUpdated = function (submissionAddress) {
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getSubmissionBalance = function (submissionAddress) {
   console.log('>MatryxPlatformCalls: Retrieving submission balance from: ' + submissionAddress)
 
@@ -937,6 +1004,7 @@ matryxPlatformCalls.getSubmissionBalance = function (submissionAddress) {
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getRoundAddressFromSubmission = function (submissionAddress) {
   console.log('>MatryxPlatformCalls: Retrieving round address from submission: ' + submissionAddress)
   return new Promise((resolve, reject) => {
@@ -949,6 +1017,8 @@ matryxPlatformCalls.getRoundAddressFromSubmission = function (submissionAddress)
     })
   })
 }
+
+// TODO: Async + error handling
 matryxPlatformCalls.getTournamentAddressFromSubmission = function (submissionAddress) {
   console.log('>MatryxPlatformCalls: Retrieving tournament address from submission: ' + submissionAddress)
 
@@ -963,6 +1033,7 @@ matryxPlatformCalls.getTournamentAddressFromSubmission = function (submissionAdd
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getSubmissionDescription = function (submissionAddress) {
   console.log('>MatryxPlatformCalls: Retrieving submission description from: ' + submissionAddress)
 
@@ -980,6 +1051,7 @@ matryxPlatformCalls.getSubmissionDescription = function (submissionAddress) {
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getSubmissionContents = function (submissionAddress) {
   console.log('>MatryxPlatformCalls: Retrieving submission contents from: ' + submissionAddress)
 
@@ -999,6 +1071,7 @@ matryxPlatformCalls.getSubmissionContents = function (submissionAddress) {
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getRoundInfoFromSubmission = function (submissionAddress) {
   console.log('>MatryxPlatformCalls: Retrieving Round info from submission: ' + submissionAddress)
   return new Promise((resolve, reject) => {
@@ -1010,6 +1083,7 @@ matryxPlatformCalls.getRoundInfoFromSubmission = function (submissionAddress) {
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getTournamentInfoFromSubmission = function (submissionAddress) {
   console.log('>MatryxPlatformCalls: Retrieving tournament info from submission: ' + submissionAddress)
 
@@ -1024,6 +1098,7 @@ matryxPlatformCalls.getTournamentInfoFromSubmission = function (submissionAddres
   })
 }
 
+// TODO: Async + error handling
 matryxPlatformCalls.getSubmissionParentInfo = function (submissionAddress) {
   console.log('>MatryxPlatformCalls: Retrieving parent info for submission: ' + submissionAddress)
   return new Promise((resolve, reject) => {
