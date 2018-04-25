@@ -19,6 +19,8 @@ submissionController.getSubmissionOwnerByAddress = function (_submissionAddress)
     matryxPlatformCalls.getSubmissionAuthor(_submissionAddress).then(function (result) {
       resolve(result)
     }).catch((err) => {
+
+
       console.log('Not able to retrieve submission owner. ' + err)
     })
   })
