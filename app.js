@@ -17,7 +17,6 @@ const submissionRoutes = require('./api/routes/submissions')
 const activityRoutes = require('./api/routes/activity')
 const tokenRoutes = require('./api/routes/token')
 const ipfsRoutes = require('./api/routes/ipfs')
-const testingRoutes = require('./api/routes/testing/testing')
 
 // tempAPI routes active
 const tempPlatformRoutes = require('./tempApi/platform')
@@ -40,7 +39,6 @@ app.use('/submissions', submissionRoutes)
 app.use('/activity', activityRoutes)
 app.use('/token', tokenRoutes)
 app.use('/ipfs', ipfsRoutes)
-app.use('/testing', testingRoutes)
 
 // tempAPI routes active
 app.use('/tempAPI/platform', tempPlatformRoutes)

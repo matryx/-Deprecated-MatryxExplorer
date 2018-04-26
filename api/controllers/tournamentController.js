@@ -25,8 +25,6 @@ tournamentController.count = async function () {
   }
 }
 
-// ///////
-
 tournamentController.getAllTournaments = function () {
   return new Promise((resolve, reject) => {
     let responses = []
@@ -82,10 +80,11 @@ tournamentController.getAllTournaments = function () {
             resolve(responses)
           }
           console.log(values)
+        }).catch(function (err) {
+          reject(err)
         })
       }
     }).catch(function (err) {
-      console.log(err.message)
       reject(err)
     })
   })
@@ -161,6 +160,8 @@ tournamentController.getTournamentByAddress = function (_tournamentAddress) {
 
       resolve(tournamentData)
       responses.push(tournamentData)
+    }).catch(function (err) {
+      reject(err)
     })
   })
 }
@@ -170,7 +171,7 @@ tournamentController.getTournamentOwnerByAddress = function (_tournamentAddress)
     matryxPlatformCalls.getTournamentOwner(_tournamentAddress).then(function (result) {
       resolve(result)
     }).catch((err) => {
-      console.log('Not able to retrieve tournament owner. ' + err)
+      reject(err)
     })
   })
 }
@@ -180,7 +181,7 @@ tournamentController.getSubmissionCount = function (_tournamentAddress) {
     matryxPlatformCalls.submissionsCountOfTournament(_tournamentAddress).then(function (result) {
       resolve(result)
     }).catch((err) => {
-      console.log('Not able to retrieve submission count. ' + err)
+      reject(err)
     })
   })
 }
@@ -190,7 +191,7 @@ tournamentController.getCurrentRound = function (_tournamentAddress) {
     matryxPlatformCalls.currentRoundOfTournament(_tournamentAddress).then(function (result) {
       resolve(result)
     }).catch((err) => {
-      console.log('Not able to retrieve submission count. ' + err)
+      reject(err)
     })
   })
 }
@@ -200,7 +201,7 @@ tournamentController.isEntrant = function (_tournamentAddress, _potentialEntrant
     matryxPlatformCalls.isEntrantToTournament(_tournamentAddress, _potentialEntrantAddress).then(function (result) {
       resolve(result)
     }).catch((err) => {
-      console.log('Not able to retrieve latest round. ' + err)
+      reject(err)
     })
   })
 }
@@ -210,7 +211,7 @@ tournamentController.getAllRoundAddresses = function (_tournamentAddress) {
     matryxPlatformCalls.getAllRoundAddresses(_tournamentAddress).then(function (result) {
       resolve(result)
     }).catch((err) => {
-      console.log('Not able to retrieve latest round. ' + err)
+      reject(err)
     })
   })
 }
@@ -220,9 +221,20 @@ tournamentController.getRoundAddress = function (_tournamentAddress, _roundId) {
     matryxPlatformCalls.getRoundAddressByIndex(_tournamentAddress, _roundId).then(function (result) {
       resolve(result)
     }).catch((err) => {
-      console.log('Not able to retrieve latest round. ' + err)
+      reject(err)
     })
   })
+}
+
+tournamentController.getTournamentsByCategory = async function (category) {
+  try {
+    let addressess = await matryxPlatformCalls.getTournamentsByCategory(category)
+    if (addressess) {
+      return addressess
+    }
+  } catch (err) {
+    throw new Error(err)
+  }
 }
 
 /*

@@ -11,7 +11,6 @@ const fetch = require('node-fetch')
 
 let externalApiCalls = {}
 
-// TODO: Add error handling for non valid versions.
 externalApiCalls.getMatryxPlatformInfo = function (branch) {
   return new Promise((resolve, reject) => {
     if (branch == 'v1') {
@@ -29,12 +28,13 @@ externalApiCalls.getMatryxPlatformInfo = function (branch) {
         let jsonResult = result.json()
         // You need to get the address by adding results['networks']['777']['address'] to the promise call who uses this function
         resolve(jsonResult)
+      }).catch(function (err) {
+        reject(err)
       })
     }
   })
 }
 
-// TODO: Add error handling for non valid versions.
 externalApiCalls.getMatryxPlatformAddress = function (branch) {
   return new Promise((resolve, reject) => {
     if (branch == 'v1') {
@@ -53,11 +53,12 @@ externalApiCalls.getMatryxPlatformAddress = function (branch) {
       jsonResult = jsonResult
       // You need to get the address by adding results['networks']['777']['address'] to the promise call who uses this function
       resolve(jsonResult)
+    }).catch(function (err) {
+      reject(err)
     })
   })
 }
 
-// TODO: Add error handling for non valid versions.
 externalApiCalls.getMatryxPlatformAbi = function (branch) {
   return new Promise((resolve, reject) => {
     if (branch == 'v1') {
@@ -74,11 +75,12 @@ externalApiCalls.getMatryxPlatformAbi = function (branch) {
       console.log('Getting Platform Abi from Matryx Platform Github for: ' + branch)
       let jsonResult = result.json()
       resolve(jsonResult)
+    }).catch(function (err) {
+      reject(err)
     })
   })
 }
 
-// TODO: Add error handling for non valid versions.
 externalApiCalls.getMatryxTournamentAbi = function (branch) {
   return new Promise((resolve, reject) => {
     if (branch == 'v1') {
@@ -94,12 +96,13 @@ externalApiCalls.getMatryxTournamentAbi = function (branch) {
         console.log('Getting Tournament Abi from Matryx Platform Github for: ' + branch)
         let jsonResult = result.json()
         resolve(jsonResult)
+      }).catch(function (err) {
+        reject(err)
       })
     }
   })
 }
 
-// TODO: Add error handling for non valid versions.
 externalApiCalls.getMatryxSubmissionAbi = function (branch) {
   return new Promise((resolve, reject) => {
     if (branch == 'v1') {
@@ -115,12 +118,13 @@ externalApiCalls.getMatryxSubmissionAbi = function (branch) {
         console.log('Getting Submission Abi from Matryx Platform Github for: ' + branch)
         let jsonResult = result.json()
         resolve(jsonResult)
+      }).catch(function (err) {
+        reject(err)
       })
     }
   })
 }
 
-// TODO: Add error handling for non valid versions.
 externalApiCalls.getMatryxRoundAbi = function (branch) {
   return new Promise((resolve, reject) => {
     if (branch == 'v1') {
@@ -136,12 +140,13 @@ externalApiCalls.getMatryxRoundAbi = function (branch) {
         console.log('Getting Rounds Abi from Matryx Platform Github for: ' + branch)
         let jsonResult = result.json()
         resolve(jsonResult)
+      }).catch(function (err) {
+        reject(err)
       })
     }
   })
 }
 
-// TODO: Add error handling for non valid versions.
 externalApiCalls.curlIpfsIo = function (_hash) {
   console.log('externalApiCalls about to fetch for : ', _hash)
   return new Promise((resolve, reject) => {

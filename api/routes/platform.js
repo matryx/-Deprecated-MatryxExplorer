@@ -26,21 +26,23 @@ router.get('/', (req, res, next) => {
 router.get('/getLatestInfo', (req, res, next) => {
   try {
     externalApiCalls.getMatryxPlatformInfo(latestVersion).then(function (resultingInfo) {
-      console.log(resultingInfo)
       let addressReturned = resultingInfo['networks']['777']['address']
       let abiReturned = JSON.stringify(resultingInfo.abi)
       abiReturned = JSON.parse(abiReturned)
-
       res.status(200).json({
         address: addressReturned,
         abi: abiReturned
       })
+    }).catch((err) => {
+      res.status(500).json({
+        error: err.message
+      })
     })
   } catch (err) {
     console.log('Error loading the ABI')
-    res.status(200).json({
+    res.status(500).json({
       errorMessage: 'Sorry, that version does not exist.',
-      error: err
+      error: err.message
     })
   }
 })
@@ -51,12 +53,16 @@ router.get('/getLatestAddress', (req, res, next) => {
       res.status(200).json({
         address: resultingInfo.address
       })
+    }).catch((err) => {
+      res.status(500).json({
+        error: err.message
+      })
     })
   } catch (err) {
     console.log('Error loading the ABI')
-    res.status(200).json({
+    res.status(500).json({
       errorMessage: 'Sorry, that version does not exist.',
-      error: err
+      error: err.message
     })
   }
 })
@@ -67,12 +73,16 @@ router.get('/getLatestAbi', (req, res, next) => {
       res.status(200).json({
         abi: resultingInfo.abi
       })
+    }).catch((err) => {
+      res.status(500).json({
+        error: err.message
+      })
     })
   } catch (err) {
     console.log('Error loading the ABI')
-    res.status(200).json({
+    res.status(500).json({
       errorMessage: 'Sorry, that version does not exist.',
-      error: err
+      error: err.message
     })
   }
 })
@@ -86,12 +96,16 @@ router.get('/getInfo/:version', (req, res, next) => {
         address: resultingInfo.address,
         abi: resultingInfo.abi
       })
+    }).catch((err) => {
+      res.status(500).json({
+        error: err.message
+      })
     })
   } catch (err) {
     console.log('Error loading the ABI')
-    res.status(200).json({
+    res.status(500).json({
       errorMessage: 'Sorry, that version does not exist.',
-      error: err
+      error: err.message
     })
   }
 })
@@ -104,12 +118,16 @@ router.get('/getAddress/:version', (req, res, next) => {
       res.status(200).json({
         address: resultingAddress
       })
+    }).catch((err) => {
+      res.status(500).json({
+        error: err.message
+      })
     })
   } catch (err) {
     console.log('Error loading the ABI')
-    res.status(200).json({
+    res.status(500).json({
       errorMessage: 'Sorry, that version does not exist.',
-      error: err
+      error: err.message
     })
   }
 })
@@ -122,12 +140,16 @@ router.get('/getAbi/:version', (req, res, next) => {
       res.status(200).json({
         abi: resultingAbi.abi
       })
+    }).catch((err) => {
+      res.status(500).json({
+        error: err.message
+      })
     })
   } catch (err) {
     console.log('Error loading the ABI')
-    res.status(200).json({
+    res.status(500).json({
       errorMessage: 'Sorry, that version does not exist.',
-      error: err
+      error: err.message
     })
   }
 })
