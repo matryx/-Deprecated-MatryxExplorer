@@ -50,6 +50,8 @@ roundController.getRoundDetails = function (_roundAddress) {
       console.log(values[2])
 
       resolve(roundResponse)
+    }).catch(function (err) {
+      reject(err)
     })
   })
 }

@@ -87,7 +87,6 @@ It puts them in a temp folder and then uploads them to IPFS and returns a hash
 
 @returns IPFS Hash (string)
 
-// TODO: Save the uploaded files with their own name
 */
 router.post('/upload', (req, res, next) => {
   var form = new formidable.IncomingForm(),

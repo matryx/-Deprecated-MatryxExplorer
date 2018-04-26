@@ -45,23 +45,8 @@ ipfsNode.on('ready', () => {
     console.log('connecting to peers: ', result)
     ipfsNode.swarm.peers((err, peerCount) => {
       console.log('There are this many peers: ', peerCount)
-      // ipfsNode.dht.findprovs('QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ', (err, findProvsResult) => {
-      //   console.log('findProvsResult: ', findProvsResult)
-      // })
     })
   })
-
-  // ipfsCalls.connectToPeer(ipfsPeer, (err, result) => {
-  //   console.log('peerConnectedResult: ', )
-  //   console.log(result)
-  // })
-  // check my peer list
-  // ipfsNode.swarm.peers()
-  // // stopping a node
-  // ipfsNode.stop(() => {
-  //   // node is now 'offline'
-  //   console.log('Online status ', ipfsNode.isOnline())
-  // })
 })
 
 ipfsCalls.connectToPeer = function (_presetPeer) {
@@ -70,14 +55,14 @@ ipfsCalls.connectToPeer = function (_presetPeer) {
   })
 }
 
+// TODO: This doesnt have a solution yet, IPFS team suggested checking multihash is valid
 ipfsCalls.validateIpfsHashExists = function (_ipfsHash) {
   return new Promise((resolve, reject) => {
-        // ipfs dht findprovs QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ | wc -l
     ipfsNode.dht.findprovs(_ipfsHash, (err, result) => {
+      if (err) { reject(err) }
       console.log('The IPFS hash: ', _ipfsHash, ' is connected by ', result, 'peers')
       resolve(result)
     })
-        // either curl or use ipfs js to validate
   })
 }
 
@@ -100,9 +85,8 @@ ipfsCalls.storeDescriptionToTmp = function (_description, _path) {
   return new Promise((resolve, reject) => {
     fs.writeFile(_path, _description, function (err) {
       if (err) {
-        return console.log(err)
+        reject(err)
       }
-
       console.log('The file was saved!' + '   path = ' + _path + '  description: ' + _description)
       resolve(_path, _description)
     })
@@ -114,6 +98,7 @@ ipfsCalls.pushTmpFolderToIPFS = function (tempDirectory) {
     let ipfsFilesToUpload = []
       // parse the tmp folder to grab all of the files in there
     fs.readdir(tempDirectory, (err, files) => {
+      if (err) { reject(err) }
       console.log('These are the files in the directory')
       // Store them in the format that IPFS loves
       files.forEach(file => {
@@ -129,7 +114,7 @@ ipfsCalls.pushTmpFolderToIPFS = function (tempDirectory) {
       })
       // Now make the IPFS calls
       ipfsNode.files.add(ipfsFilesToUpload, (err, filesAdded) => {
-        if (err) { return cb(err) }
+        if (err) { reject(err) }
         console.log('\nAdded file:', filesAdded[0].path, filesAdded[0].hash)
         // Resolve all the hashes
         resolve(filesAdded[0].hash)
@@ -167,7 +152,6 @@ ipfsCalls.getIpfsDataFiles = function (_ipfsHash) {
           }
           // Check to see if one is the jsonContent.json file
           if (fileName == 'jsonContent.json') {
-              // I want to buffer that into a string and convert to a json
             jsonContent = JSON.parse(file.content.toString('utf8'))
             console.log('The JSON content is the following: ' + JSON.stringify(jsonContent))
             ipfsResults.jsonContent = jsonContent
@@ -175,11 +159,8 @@ ipfsCalls.getIpfsDataFiles = function (_ipfsHash) {
 
           if (fileName != 'description.txt' && fileName != 'jsonContent.json') {
               // TODO:  Check the type of fileContent to see what it is
-            console.log('This is a file: ' + fileName)
 
-              // Create a link to download the file
             downloadLinkToFile = process.env.IPFS_URL + file.path.toString('utf8')
-            // console.log(downloadLinkToFile)
             ipfsFiles.push(downloadLinkToFile)
           }
         }
@@ -189,6 +170,8 @@ ipfsCalls.getIpfsDataFiles = function (_ipfsHash) {
 
       ipfsResults.ipfsFiles = ipfsFiles
       resolve(ipfsResults)
+    }).catch(function (err) {
+      reject(err)
     })
   })
 }
@@ -205,9 +188,8 @@ ipfsCalls.uploadDescriptionOnlyToIPFS = function (descriptionContent, descriptio
       path: descriptionPath,
       content: descriptionContent
 
-      // TODO pin the files so they dont disappear after 24 hours
     }, (err, filesAdded) => {
-      if (err) { return cb(err) }
+      if (err) { reject(err) }
       console.log('\nAdded file:', filesAdded[0].path, filesAdded[0].hash)
       resolve(filesAdded[0].hash)
     })
@@ -237,8 +219,8 @@ ipfsCalls.getIpfsDescriptionOnly = function (_ipfsHash) {
 
       console.log(response)
       resolve(response)
-    }).catch(function (error) {
-      console.log('Please throw an error: ' + error.message)
+    }).catch(function (err) {
+      reject(err)
     })
   })
 }
