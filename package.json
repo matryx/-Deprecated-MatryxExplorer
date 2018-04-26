@@ -4,7 +4,7 @@
   "description": "A Node.js RESTful API for reading the Matryx Platform smart contracts",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Running mocha tests\" && mocha spec",
+    "test": "echo \"Running mocha tests\" && mocha",
     "dev": "echo \"Starting MatryxExplorer in development\" && nodemon server.js ",
     "start": "echo \"Starting MatryxExplorer in development with forever\" && forever server.js "
   },
@@ -48,8 +48,10 @@
   },
   "devDependencies": {
     "babel-plugin-captains-log": "^1.0.1",
+    "chai": "^4.1.2",
     "eslint-config-standard": "^11.0.0",
     "mocha": "^5.0.4",
+    "mongoose": "^5.0.16",
     "standard": "^11.0.1"
   }
 }
