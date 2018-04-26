@@ -45,9 +45,9 @@ externalApiCalls.getMatryxPlatformInfo(version).then(function (results) {
   matryxPlatformAbi = JSON.parse(matryxPlatformAbi)
 
   console.log('Current Matryx Platform Address in use: \'' + matryxPlatformAddress + '\'')
-  // matryxPlatformContract = web3.eth.contract(matryxPlatformAbi).at(matryxPlatformAddress)
+  matryxPlatformContract = web3.eth.contract(matryxPlatformAbi).at(matryxPlatformAddress)
 
-  // console.log('There are ' + matryxPlatformContract.tournamentCount().c[0] + ' tournaments on the Platform.')
+  console.log('There are ' + matryxPlatformContract.tournamentCount().c[0] + ' tournaments on the Platform.')
 })
 
 /*

@@ -16,6 +16,7 @@ const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 const submissionController = require('../controllers/submissionController')
 const ipfsCalls = require('../controllers/gateway/ipfsCalls')
 const fileHandler = require('../controllers/gateway/fileHandler')
+const ethHelper = require('../helpers/ethHelper')
 
 const router = express.Router()
 
@@ -43,14 +44,13 @@ router.get('/getLatestAbi', (req, res, next) => {
     })
   } catch (err) {
     console.log('Error loading the ABI')
-    res.status(200).json({
+    res.status(500).json({
       errorMessage: 'Sorry, that version does not exist.',
-      error: err
+      errorMsg: err.message
     })
   }
 })
 
-// TODO: add error response for invalid responses
 router.get('/getAbi/:version', (req, res, next) => {
   let version = req.params.version
   try {
@@ -62,9 +62,9 @@ router.get('/getAbi/:version', (req, res, next) => {
     })// implement catch logic later for v1
   } catch (err) {
     console.log('Error loading the ABI')
-    res.status(200).json({
+    res.status(500).json({
       errorMessage: 'Sorry, that version does not exist.',
-      error: err
+      errorMsg: err.message
     })
   }
 })
@@ -72,32 +72,41 @@ router.get('/getAbi/:version', (req, res, next) => {
 // Return the submission details for a specific submission address
 router.get('/address/:submissionAddress', (req, res, next) => {
   const address = req.params.submissionAddress
-  details = submissionController.getSubmissionByAddress(address).then(function (result) {
-    res.status(200).json({
-      submissionDetails: result
+  if (!ethHelper.isAddress(address)) {
+    res.status(500).json({
+      errorMsg: 'This is not a valid ethereum address'
     })
-  })
+  } else {
+    details = submissionController.getSubmissionByAddress(address).then(function (result) {
+      res.status(200).json({
+        submissionDetails: result
+      })
+    }).catch((err) => {
+      res.status(500).json({
+        errorMsg: err.message
+      })
+    })
+  }
 })
-
-// // TEMP NO IPFS
-// // Return the submission details for a specific submission address
-// router.get('/address/:submissionAddress', (req, res, next) => {
-//   const address = req.params.submissionAddress
-//   details = submissionController.getSubmissionByAddressNoIPFS(address).then(function (result) {
-//     res.status(200).json({
-//       submissionDetails: result
-//     })
-//   })
-// })
 
 // Return the submission owner/author for a specific submission address
 router.get('/address/:submissionAddress/getOwner', (req, res, next) => {
   const address = req.params.submissionAddress
-  submissionController.getSubmissionOwnerByAddress(address).then(function (result) {
-    res.status(200).json({
-      submissionOwner: result
+  if (!ethHelper.isAddress(address)) {
+    res.status(500).json({
+      errorMsg: 'This is not a valid ethereum address'
     })
-  })
+  } else {
+    submissionController.getSubmissionOwnerByAddress(address).then(function (result) {
+      res.status(200).json({
+        submissionOwner: result
+      })
+    }).catch(function (err) {
+      res.status(500).json({
+        errorMsg: err.message
+      })
+    })
+  }
 })
 
 /*

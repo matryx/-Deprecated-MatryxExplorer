@@ -30,14 +30,10 @@ let options = {
   }
 }
 
-let ipfsNode
-try{
 const ipfsNode = new IPFS(options)
 // console.log(ipfsNode)
 // console.log(ipfsNode.dht.findprovs('QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ'))
 // TODO: Create the IPFS cluster in the localhost and make the calls to hold all the data from various nodes
-
-
 
 ipfsNode.on('ready', () => {
   // Your node is now ready to use \o/
@@ -67,10 +63,7 @@ ipfsNode.on('ready', () => {
   //   console.log('Online status ', ipfsNode.isOnline())
   // })
 })
-}
- catch(err) {
-  throw new Error("this shit sucks")
-}
+
 ipfsCalls.connectToPeer = function (_presetPeer) {
   ipfsNode.swarm.connect(_presetPeer, (err, result) => {
     if (err) { return onError(err) }
