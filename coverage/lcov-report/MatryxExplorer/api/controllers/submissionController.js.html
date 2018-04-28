@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for MatryxExplorer/api/controllers/submissionController.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../index.html">all files</a> / <a href="index.html">MatryxExplorer/api/controllers/</a> submissionController.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">16.13% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>10/62</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/11</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">16.13% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>10/62</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/*
+The Matryx submission controller
+&nbsp;
+authors - sam@nanome.ai
+Nanome 2018
+*/
+&nbsp;
+/*
+Imports
+*/
+const externalApiCalls = require('./gateway/externalApiCalls')
+const ipfsCalls = require('./gateway/ipfsCalls')
+const matryxPlatformCalls = require('./gateway/matryxPlatformCalls')
+&nbsp;
+let submissionController = {}
+&nbsp;
+submissionController.getSubmissionOwnerByAddress = <span class="fstat-no" title="function not covered" >function (_submissionAddress) {</span>
+<span class="cstat-no" title="statement not covered" >  return new Promise((resolve, reject) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    matryxPlatformCalls.getSubmissionAuthor(_submissionAddress).then(<span class="fstat-no" title="function not covered" >function (result) {</span></span>
+<span class="cstat-no" title="statement not covered" >      resolve(result)</span>
+    }).catch((err) =&gt; {
+<span class="cstat-no" title="statement not covered" >      reject(err)</span>
+    })
+  })
+}
+&nbsp;
+submissionController.getIpfsDataForSubmission = <span class="fstat-no" title="function not covered" >function (_submissionAddress, _ipfsHash) {</span>
+<span class="cstat-no" title="statement not covered" >  return new Promise((resolve, reject) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    console.log('Making gateway call...')</span>
+<span class="cstat-no" title="statement not covered" >    ipfsCalls.getIpfsData(_ipfsHash).then(<span class="fstat-no" title="function not covered" >function (result) {</span></span>
+<span class="cstat-no" title="statement not covered" >      console.log(result)</span>
+<span class="cstat-no" title="statement not covered" >      resolve(result)</span>
+    }).catch((err) =&gt; {
+<span class="cstat-no" title="statement not covered" >      reject(err)</span>
+    })
+  })
+}
+&nbsp;
+submissionController.uploadToIpfs = <span class="fstat-no" title="function not covered" >function (_files) {</span>
+<span class="cstat-no" title="statement not covered" >  return new Promise((resolve, reject) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    console.log('Making gateway call...')</span>
+<span class="cstat-no" title="statement not covered" >    ipfsCalls.uploadToIpfs(_files).then(<span class="fstat-no" title="function not covered" >function (result) {</span></span>
+<span class="cstat-no" title="statement not covered" >      console.log(result)</span>
+<span class="cstat-no" title="statement not covered" >      resolve(result)</span>
+    }).catch((err) =&gt; {
+<span class="cstat-no" title="statement not covered" >      reject(err)</span>
+    })
+  })
+}
+&nbsp;
+submissionController.getSubmissionByAddress = <span class="fstat-no" title="function not covered" >function (_submissionAddress) {</span>
+<span class="cstat-no" title="statement not covered" >  console.log('Executing submissionController for getting submission details at: ' + '\'' + _submissionAddress + '\'')</span>
+<span class="cstat-no" title="statement not covered" >  return new Promise((resolve, reject) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    let submissionDataCalls = []</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    let submissionData = {</span>
+      submissionTitle: '',
+      submissionAddress: '',
+      submissionAuthor: '',
+      submissionId: '',
+      submissionDescription: '',
+      submissionCollaborators: [],
+      submissionReferences: [],
+      submissionContents: [],
+      submissionExternalAddress: '',
+      submissionRewardTotal: 0,
+      submissionSelectedRound: 0,
+      submissionDate: '',
+      parentInfo: []
+    }
+<span class="cstat-no" title="statement not covered" >    let parentInfoItem = {</span>
+      currentRound: 0,
+      roundAddress: '',
+      roundMtx: 0,
+      tournamentName: '',
+      tournamentAddress: ''
+    }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    submissionDataCalls.push(matryxPlatformCalls.getSubmissionTitle(_submissionAddress))</span>
+<span class="cstat-no" title="statement not covered" >    submissionDataCalls.push(matryxPlatformCalls.getSubmissionAuthor(_submissionAddress))</span>
+<span class="cstat-no" title="statement not covered" >    submissionDataCalls.push(matryxPlatformCalls.getSubmissionDescription(_submissionAddress))</span>
+<span class="cstat-no" title="statement not covered" >    submissionDataCalls.push(matryxPlatformCalls.getSubmissionContributors(_submissionAddress))</span>
+<span class="cstat-no" title="statement not covered" >    submissionDataCalls.push(matryxPlatformCalls.getSubmissionReferences(_submissionAddress))</span>
+<span class="cstat-no" title="statement not covered" >    submissionDataCalls.push(matryxPlatformCalls.getSubmissionContents(_submissionAddress))</span>
+<span class="cstat-no" title="statement not covered" >    submissionDataCalls.push(matryxPlatformCalls.getSubmissionExternalAddress(_submissionAddress))</span>
+    // submissionDataCalls.push(matryxPlatformCalls.getSubmissionBalance(_submissionAddress))
+    // submissionDataCalls.push(matryxPlatformCalls.getSubmissionSelectedRound(_submissionAddress))
+<span class="cstat-no" title="statement not covered" >    submissionDataCalls.push(matryxPlatformCalls.getSubmissionTimeSubmitted(_submissionAddress))</span>
+<span class="cstat-no" title="statement not covered" >    submissionDataCalls.push(matryxPlatformCalls.getSubmissionParentInfo(_submissionAddress))</span>
+          // Promise all for the data inside the submissions
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    Promise.all(submissionDataCalls).then(<span class="fstat-no" title="function not covered" >function (values) {</span></span>
+              // Attach to the submissions Data
+<span class="cstat-no" title="statement not covered" >      console.log('Values of submission details after promise all: ' + values)</span>
+<span class="cstat-no" title="statement not covered" >      submissionData.submissionTitle = values[0]</span>
+<span class="cstat-no" title="statement not covered" >      submissionData.submissionAddress = _submissionAddress</span>
+<span class="cstat-no" title="statement not covered" >      submissionData.submissionAuthor = values[1]</span>
+<span class="cstat-no" title="statement not covered" >      submissionData.submissionId = ''</span>
+<span class="cstat-no" title="statement not covered" >      submissionData.submissionDescription = values[2]</span>
+<span class="cstat-no" title="statement not covered" >      submissionData.submissionCollaborators = values[3]</span>
+<span class="cstat-no" title="statement not covered" >      submissionData.submissionReferences = values[4]</span>
+<span class="cstat-no" title="statement not covered" >      submissionData.submissionContents = values[5] </span>// turn this into a []
+<span class="cstat-no" title="statement not covered" >      submissionData.submissionExternalAddress = values[6]</span>
+      // submissionData.submissionRewardTotal = values[5]
+<span class="cstat-no" title="statement not covered" >      submissionData.submissionSelectedRound = 0</span>
+<span class="cstat-no" title="statement not covered" >      submissionData.submissionDate = values[7]</span>
+<span class="cstat-no" title="statement not covered" >      submissionData.parentInfo = values[8]</span>
+            // submissions.submissions = values[10]
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      resolve(submissionData)</span>
+    }).catch(<span class="fstat-no" title="function not covered" >function (err) {</span>
+<span class="cstat-no" title="statement not covered" >      reject(err)</span>
+    })
+  })
+}
+&nbsp;
+submissionController.uploadJsonAndDescriptionToIPFS = <span class="fstat-no" title="function not covered" >function (jsonContent, description) {</span>
+<span class="cstat-no" title="statement not covered" >  return new Promise((resolve, reject) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    console.log('Making gateway call...')</span>
+<span class="cstat-no" title="statement not covered" >    ipfsCalls.uploadJsonAndDescriptionToIPFS(jsonContent, description).then(<span class="fstat-no" title="function not covered" >function (result) {</span></span>
+<span class="cstat-no" title="statement not covered" >      console.log(result)</span>
+<span class="cstat-no" title="statement not covered" >      resolve(result)</span>
+    }).catch((err) =&gt; {
+<span class="cstat-no" title="statement not covered" >      reject(err)</span>
+    })
+  })
+}
+&nbsp;
+/*
+EXPERIMENTAL
+*/
+//
+// submissionController.getSubmissionByAddressNoIPFS = function (_submissionAddress) {
+//   console.log('Executing submissionController for getting submission details at: ' + '\'' + _submissionAddress + '\'')
+//   return new Promise((resolve, reject) =&gt; {
+//     let submissionDataCalls = []
+//
+//     let submissionData = {
+//       submissionTitle: '',
+//       submissionAddress: '',
+//       submissionAuthor: '',
+//       submissionId: '',
+//       submissionDescription: '',
+//       submissionCollaborators: [],
+//       submissionReferences: [],
+//       submissionContents: [],
+//       submissionExternalAddress: '',
+//       submissionRewardTotal: 0,
+//       submissionSelectedRound: 0,
+//       submissionDate: '',
+//       parentInfo: []
+//     }
+//     let parentInfoItem = {
+//       currentRound: 0,
+//       roundAddress: '',
+//       roundMtx: 0,
+//       tournamentName: '',
+//       tournamentAddress: ''
+//     }
+//
+//     submissionDataCalls.push(matryxPlatformCalls.getSubmissionTitle(_submissionAddress))
+//     submissionDataCalls.push(matryxPlatformCalls.getSubmissionAuthor(_submissionAddress))
+//     // submissionDataCalls.push(matryxPlatformCalls.getSubmissionDescription(_submissionAddress))
+//     submissionDataCalls.push(matryxPlatformCalls.getSubmissionContributors(_submissionAddress))
+//     submissionDataCalls.push(matryxPlatformCalls.getSubmissionReferences(_submissionAddress))
+//     submissionDataCalls.push(matryxPlatformCalls.getSubmissionContents(_submissionAddress))
+//     submissionDataCalls.push(matryxPlatformCalls.getSubmissionExternalAddress(_submissionAddress))
+//     // submissionDataCalls.push(matryxPlatformCalls.getSubmissionBalance(_submissionAddress))
+//     // submissionDataCalls.push(matryxPlatformCalls.getSubmissionSelectedRound(_submissionAddress))
+//     submissionDataCalls.push(matryxPlatformCalls.getSubmissionTimeSubmitted(_submissionAddress))
+//     submissionDataCalls.push(matryxPlatformCalls.getSubmissionParentInfo(_submissionAddress))
+//           // Promise all for the data inside the submissions
+//
+//     Promise.all(submissionDataCalls).then(function (values) {
+//               // Attach to the submissions Data
+//       console.log('Values of submission details after promise all: ' + values)
+//       submissionData.submissionTitle = values[0]
+//       submissionData.submissionAddress = _submissionAddress
+//       submissionData.submissionAuthor = values[1]
+//       submissionData.submissionId = ''
+//       submissionData.submissionDescription = 'submission description filler instance'
+//       submissionData.submissionCollaborators = values[2]
+//       submissionData.submissionReferences = values[3]
+//       submissionData.submissionContents = values[4] // turn this into a []
+//       submissionData.submissionExternalAddress = values[5]
+//       // submissionData.submissionRewardTotal = values[5]
+//       submissionData.submissionSelectedRound = 0
+//       submissionData.submissionDate = values[6]
+//       submissionData.parentInfo = values[7]
+//             // submissions.submissions = values[10]
+//
+//       resolve(submissionData)
+//     }).catch((err) =&gt; {
+//       reject(err)
+//     })
+//   })
+// }
+&nbsp;
+module.exports = submissionController
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Apr 26 2018 17:28:06 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>

@@ -1,0 +1,881 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for MatryxExplorer/api/controllers/gateway/ipfsCalls.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../../prettify.css" />
+    <link rel="stylesheet" href="../../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../../index.html">all files</a> / <a href="index.html">MatryxExplorer/api/controllers/gateway/</a> ipfsCalls.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">18.75% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>21/112</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/24</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/13</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">19.81% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>21/106</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/*
+The MatryxExplorer IPFS calls file
+&nbsp;
+authors - sam@nanome.ai
+Nanome 2018
+&nbsp;
+https://github.com/ipfs/js-ipfs#use-in-nodejs
+*/
+&nbsp;
+const http = require('http')
+const fetch = require('node-fetch')
+const IPFS = require('ipfs')
+const series = require('async/series')
+const tmp = require('tmp')
+var fs = require('fs')
+&nbsp;
+let ipfsURL = process.env.IPFS_URL
+let ipfsPeer = process.env.IPFS_DAEMON_PEER_ID
+&nbsp;
+let ipfsCalls = {}
+&nbsp;
+let options = {
+  config: {
+    Addresses: {
+      Swarm: [
+        // '/dns4/wrtc-star.discovery.libp2p.io/tcp/443/wss/p2p-webrtc-star'
+        '/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star'
+      ]
+    }
+  }
+}
+&nbsp;
+const ipfsNode = new IPFS(options)
+// console.log(ipfsNode)
+// console.log(ipfsNode.dht.findprovs('QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ'))
+// TODO: Create the IPFS cluster in the localhost and make the calls to hold all the data from various nodes
+&nbsp;
+ipfsNode.on('ready', () =&gt; {
+  // Your node is now ready to use \o/
+<span class="cstat-no" title="statement not covered" >  console.log('IPFS Online Status: ', ipfsNode.isOnline())</span>
+&nbsp;
+  // console.log(ipfsNode.config.get())
+  // console.log(ipfsNode.swarm)
+<span class="cstat-no" title="statement not covered" >  ipfsNode.swarm.connect(ipfsPeer, (err, result) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    console.log('connecting to peers: ', result)</span>
+<span class="cstat-no" title="statement not covered" >    ipfsNode.swarm.peers((err, peerCount) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      console.log('There are this many peers: ', peerCount)</span>
+    })
+  })
+})
+&nbsp;
+ipfsCalls.connectToPeer = <span class="fstat-no" title="function not covered" >function (_presetPeer) {</span>
+<span class="cstat-no" title="statement not covered" >  ipfsNode.swarm.connect(_presetPeer, (err, result) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    if (err) { <span class="cstat-no" title="statement not covered" >return onError(err) }</span></span>
+  })
+}
+&nbsp;
+// TODO: This doesnt have a solution yet, IPFS team suggested checking multihash is valid
+ipfsCalls.validateIpfsHashExists = <span class="fstat-no" title="function not covered" >function (_ipfsHash) {</span>
+<span class="cstat-no" title="statement not covered" >  return new Promise((resolve, reject) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    ipfsNode.dht.findprovs(_ipfsHash, (err, result) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      if (err) { <span class="cstat-no" title="statement not covered" >reject(err) }</span></span>
+<span class="cstat-no" title="statement not covered" >      console.log('The IPFS hash: ', _ipfsHash, ' is connected by ', result, 'peers')</span>
+<span class="cstat-no" title="statement not covered" >      resolve(result)</span>
+    })
+  })
+}
+&nbsp;
+ipfsCalls.getIpfsData = <span class="fstat-no" title="function not covered" >function (_ipfsHash) {</span>
+<span class="cstat-no" title="statement not covered" >  console.log('Gateway call recieved. Hitting IPFS Node for data at hash: ' + _ipfsHash)</span>
+<span class="cstat-no" title="statement not covered" >  return new Promise((resolve, reject) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    ipfsNode.files.cat(_ipfsHash, (err, data) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      if (err) { <span class="cstat-no" title="statement not covered" >reject(err) }</span></span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      console.log('\nIPFS Node Call Completed. File content:')</span>
+<span class="cstat-no" title="statement not covered" >      console.log(data.toString('utf8')) </span>// This returns a URL
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      resolve(data.toString('utf8'))</span>
+    })
+  })
+}
+&nbsp;
+// Take in the description and the path and store it as description.txt in the path
+ipfsCalls.storeDescriptionToTmp = <span class="fstat-no" title="function not covered" >function (_description, _path) {</span>
+<span class="cstat-no" title="statement not covered" >  return new Promise((resolve, reject) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    fs.writeFile(_path, _description, <span class="fstat-no" title="function not covered" >function (err) {</span></span>
+<span class="cstat-no" title="statement not covered" >      if (err) {</span>
+<span class="cstat-no" title="statement not covered" >        reject(err)</span>
+      }
+<span class="cstat-no" title="statement not covered" >      console.log('The file was saved!' + '   path = ' + _path + '  description: ' + _description)</span>
+<span class="cstat-no" title="statement not covered" >      resolve(_path, _description)</span>
+    })
+  })
+}
+&nbsp;
+ipfsCalls.pushTmpFolderToIPFS = <span class="fstat-no" title="function not covered" >function (tempDirectory) {</span>
+<span class="cstat-no" title="statement not covered" >  return new Promise((resolve, reject) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    let ipfsFilesToUpload = []</span>
+      // parse the tmp folder to grab all of the files in there
+<span class="cstat-no" title="statement not covered" >    fs.readdir(tempDirectory, (err, files) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      if (err) { <span class="cstat-no" title="statement not covered" >reject(err) }</span></span>
+<span class="cstat-no" title="statement not covered" >      console.log('These are the files in the directory')</span>
+      // Store them in the format that IPFS loves
+<span class="cstat-no" title="statement not covered" >      files.forEach(file =&gt; {</span>
+    // Get the content of the file with the path and file name and then buffer into content
+<span class="cstat-no" title="statement not covered" >        let fileContents = fs.readFileSync(tempDirectory + '/' + file)</span>
+<span class="cstat-no" title="statement not covered" >        let ipfsFile = {</span>
+          path: tempDirectory + '/' + file,
+          content: Buffer.from(fileContents)
+        }
+        // Add them to the array
+<span class="cstat-no" title="statement not covered" >        ipfsFilesToUpload.push(ipfsFile)</span>
+<span class="cstat-no" title="statement not covered" >        console.log(file)</span>
+      })
+      // Now make the IPFS calls
+<span class="cstat-no" title="statement not covered" >      ipfsNode.files.add(ipfsFilesToUpload, (err, filesAdded) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        if (err) { <span class="cstat-no" title="statement not covered" >reject(err) }</span></span>
+<span class="cstat-no" title="statement not covered" >        console.log('\nAdded file:', filesAdded[0].path, filesAdded[0].hash)</span>
+        // Resolve all the hashes
+<span class="cstat-no" title="statement not covered" >        resolve(filesAdded[0].hash)</span>
+      })
+    })
+  })
+}
+&nbsp;
+ipfsCalls.getIpfsDataFiles = <span class="fstat-no" title="function not covered" >function (_ipfsHash) {</span>
+<span class="cstat-no" title="statement not covered" >  console.log('Gateway call recieved. Hitting IPFS Node for data at hash: ' + _ipfsHash)</span>
+<span class="cstat-no" title="statement not covered" >  return new Promise((resolve, reject) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    ipfsNode.files.get(_ipfsHash).then(<span class="fstat-no" title="function not covered" >function (results) {</span></span>
+        // Create a temp storage space
+&nbsp;
+        // Store all the file names into an array
+<span class="cstat-no" title="statement not covered" >      let ipfsFiles = []</span>
+<span class="cstat-no" title="statement not covered" >      let ipfsFileContents = []</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      let ipfsResults = {}</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      results.forEach((file) =&gt; {</span>
+          // Only grab the files that we want
+<span class="cstat-no" title="statement not covered" >        if (file.content) {</span>
+<span class="cstat-no" title="statement not covered" >          let fileName = file.path.toString('utf8').replace(_ipfsHash, '').replace('/', '')</span>
+<span class="cstat-no" title="statement not covered" >          console.log(fileName)</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >          ipfsFileContents.push(fileName)</span>
+&nbsp;
+          // Check to see if one is the description.txt file
+<span class="cstat-no" title="statement not covered" >          if (fileName == 'description.txt') {</span>
+              // I want to buffer that into a string
+<span class="cstat-no" title="statement not covered" >            console.log('The description content is the following: ' + file.content.toString('utf8'))</span>
+<span class="cstat-no" title="statement not covered" >            description = file.content.toString('utf8')</span>
+<span class="cstat-no" title="statement not covered" >            ipfsResults.description = description</span>
+          }
+          // Check to see if one is the jsonContent.json file
+<span class="cstat-no" title="statement not covered" >          if (fileName == 'jsonContent.json') {</span>
+<span class="cstat-no" title="statement not covered" >            jsonContent = JSON.parse(file.content.toString('utf8'))</span>
+<span class="cstat-no" title="statement not covered" >            console.log('The JSON content is the following: ' + JSON.stringify(jsonContent))</span>
+<span class="cstat-no" title="statement not covered" >            ipfsResults.jsonContent = jsonContent</span>
+          }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >          if (fileName != 'description.txt' &amp;&amp; fileName != 'jsonContent.json') {</span>
+              // TODO:  Check the type of fileContent to see what it is
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            downloadLinkToFile = process.env.IPFS_URL + file.path.toString('utf8')</span>
+<span class="cstat-no" title="statement not covered" >            ipfsFiles.push(downloadLinkToFile)</span>
+          }
+        }
+      })
+<span class="cstat-no" title="statement not covered" >      console.log('The following files are in the IPFS folder: ')</span>
+<span class="cstat-no" title="statement not covered" >      console.log(ipfsFileContents)</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      ipfsResults.ipfsFiles = ipfsFiles</span>
+<span class="cstat-no" title="statement not covered" >      resolve(ipfsResults)</span>
+    }).catch(<span class="fstat-no" title="function not covered" >function (err) {</span>
+<span class="cstat-no" title="statement not covered" >      reject(err)</span>
+    })
+  })
+}
+&nbsp;
+/*
+HELPER FUNCTIONS AND NOTES
+*/
+&nbsp;
+// This is what is working for the file submission
+ipfsCalls.uploadDescriptionOnlyToIPFS = <span class="fstat-no" title="function not covered" >function (descriptionContent, descriptionPath) {</span>
+<span class="cstat-no" title="statement not covered" >  console.log('Gateway call recieved. Hitting IPFS Node for data hash')</span>
+<span class="cstat-no" title="statement not covered" >  return new Promise((resolve, reject) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    ipfsNode.files.add({</span>
+      path: descriptionPath,
+      content: descriptionContent
+&nbsp;
+    }, (err, filesAdded) =&gt; {
+<span class="cstat-no" title="statement not covered" >      if (err) { <span class="cstat-no" title="statement not covered" >reject(err) }</span></span>
+<span class="cstat-no" title="statement not covered" >      console.log('\nAdded file:', filesAdded[0].path, filesAdded[0].hash)</span>
+<span class="cstat-no" title="statement not covered" >      resolve(filesAdded[0].hash)</span>
+    })
+  })
+}
+&nbsp;
+/*
+EXPERIMENTAL FUNCTIONS
+*/
+&nbsp;
+ipfsCalls.getIpfsDescriptionOnly = <span class="fstat-no" title="function not covered" >function (_ipfsHash) {</span>
+<span class="cstat-no" title="statement not covered" >  console.log('&gt;IpfsCalls: getDescriptionOnly gateway call recieved. Hitting IPFS Node for data at hash: ' + _ipfsHash)</span>
+<span class="cstat-no" title="statement not covered" >  return new Promise((resolve, reject) =&gt; {</span>
+      // Check first to see that the hash is even available before making the call
+    // console.log('# of hash peers: ', result)
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    _ipfsHash = _ipfsHash + '/description.txt'</span>
+<span class="cstat-no" title="statement not covered" >    let response = ''</span>
+<span class="cstat-no" title="statement not covered" >    console.log('About to call IPFS node to get data')</span>
+<span class="cstat-no" title="statement not covered" >    console.log('Online status ', ipfsNode.isOnline())</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    ipfsNode.files.get(_ipfsHash).then(<span class="fstat-no" title="function not covered" >function (results) {</span></span>
+<span class="cstat-no" title="statement not covered" >      response = results[0].content.toString('utf8')</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      console.log('&gt;IpfsNode: getFiles results', results)</span>
+<span class="cstat-no" title="statement not covered" >      console.log('&gt;IpfsNode: getResponseResolved response', response)</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      console.log(response)</span>
+<span class="cstat-no" title="statement not covered" >      resolve(response)</span>
+    }).catch(<span class="fstat-no" title="function not covered" >function (err) {</span>
+<span class="cstat-no" title="statement not covered" >      reject(err)</span>
+    })
+  })
+}
+&nbsp;
+/*
+&nbsp;
+//TODO: This is working but need to put it in the controller to handle the files right when they are received and pass the path as a input to ipfsCalls
+tmp.dir(function _tempDirCreated (err, path, cleanupCallback) {
+  if (err) throw err
+&nbsp;
+  console.log('Dir: ', path)
+&nbsp;
+  // Manual cleanup
+  cleanupCallback()
+})
+&nbsp;
+//https://github.com/danwrong/restler
+fs.stat("image.jpg", function(err, stats) {
+    restler.post("http://posttestserver.com/post.php", {
+        multipart: true,
+        data: {
+            "folder_id": "0",
+            "filename": restler.file("image.jpg", null, stats.size, null, "image/jpg")
+        }
+    }).on("complete", function(data) {
+        console.log(data);
+    });
+});
+&nbsp;
+// multipart request sending a 321567 byte long file using https
+rest.post('https://twaud.io/api/v1/upload.json', {
+  multipart: true,
+  username: 'danwrong',
+  password: 'wouldntyouliketoknow',
+  data: {
+    'sound[message]': 'hello from restler!',
+    'sound[file]': rest.file('doug-e-fresh_the-show.mp3', null, 321567, null, 'audio/mpeg')
+  }
+}).on('complete', function(data) {
+  console.log(data.audio_url);
+});
+&nbsp;
+*/
+&nbsp;
+/*
+HELPER FUNCTIONS
+*/
+&nbsp;
+module.exports = ipfsCalls
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Apr 26 2018 17:28:06 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../../sorter.js"></script>
+</body>
+</html>

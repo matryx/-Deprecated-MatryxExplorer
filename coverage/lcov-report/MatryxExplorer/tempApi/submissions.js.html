@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for MatryxExplorer/tempApi/submissions.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">MatryxExplorer/tempApi/</a> submissions.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">46.15% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>6/13</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">46.15% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>6/13</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/*
+MatryxExplorer API routing for all tournament based REST calls
+&nbsp;
+author - sam@nanome.ai
+Copyright Nanome Inc 2018
+*/
+&nbsp;
+const express = require('express')
+const router = express.Router()
+&nbsp;
+// Welcome to rounds
+router.get('/', (req, res, next) =&gt; {
+<span class="cstat-no" title="statement not covered" >  res.status(200).json({</span>
+    message: 'handling GET requests to /submission'
+  })
+})
+&nbsp;
+// Return the tournament details for a specific tournament
+router.get('/id/:submissionID/', (req, res, next) =&gt; {
+<span class="cstat-no" title="statement not covered" >  const id = req.params.submissionID</span>
+<span class="cstat-no" title="statement not covered" >  let submissionDetails = {</span>
+    'submissionTitle': "Sam's Submission",
+    'submissionAddress': '0x15528Fc3CFf56b4667f988C699ec5983030Ce841',
+    'submissionAuthor': '0x15528Fc3CFf56b4667f988C699ec5983030Ce842',
+    'submissionId': '44',
+    'submissionDescription': 'NanoPro is the future',
+    'submissionCollaborators': [
+      '0x11f2915576Dc51dFFB246959258E8fe5a1913161',
+      '0x0327FF417aa111b61bED5F39e77946b38d6592B3'
+    ],
+    'submissionReferences': [
+      '0x0327FF417aa111b61bED5F39e77946b38d6592B3',
+      '0x58bA5d062E2c2B14DC8B8458872AFef70A9b25EB'
+    ],
+    'submissionJson': [
+      {
+        'Items': [
+          '{"rangeKeys":["t","u","v","w"],"rangePairs":[{"min":{"exclusive":false,"rawText":"0"},"max":{"exclusive":false,"rawText":"8*pi"}},{"min":{"exclusive":false,"rawText":"0"},"max":{"exclusive":false,"rawText":"0"}},{"min":{"exclusive":false,"rawText":"0"},"max":{"exclusive":false,"rawText":"0"}},{"min":{"exclusive":false,"rawText":"0"},"max":{"exclusive":false,"rawText":"0"}}],"ExpressionKeys":[0,1,2],"ExpressionValues":["cos(t)*(2-cos(t))","(sin(t))*(2-cos(t))","-sin(2*t)+(cos(t)-.5)"]}'
+        ]
+      }
+    ],
+    'submissionIpfsHash': 'QmT9qk3CRYbFDWpDFYeAv8T8H1gnongwKhh5J68NLkLir6',
+    'submissionRewardTotal': 1,
+    'submissionSelectedRound': 1,
+    'submissionDate': '',
+    'parentInfo': [
+      {
+        'currentRound': '1',
+        'totalRounds': '3',
+        'roundAddress': '0x11f2915576Dc51dFFB246959258E8fe5a1913161',
+        'roundMtx': 30,
+        'tournamentName': "Sam's Tournament",
+        'tournamentAddress': '0x11f2915576Dc51dFFB246959258E8fe5a1913161'
+      }
+    ]
+  }
+<span class="cstat-no" title="statement not covered" >  res.status(200).json({</span>
+    message: 'This is a temp API for submission details by passing in submissionID' + id,
+    data: submissionDetails
+  })
+})
+&nbsp;
+// Return the tournament details for a specific tournament
+router.get('/address/:submissionAddress', (req, res, next) =&gt; {
+<span class="cstat-no" title="statement not covered" >  const address = req.params.submissionAddress</span>
+<span class="cstat-no" title="statement not covered" >  let submissionAddress = {</span>
+    'submissionTitle': "Sam's Submission",
+    'submissionAddress': '0x15528Fc3CFf56b4667f988C699ec5983030Ce841',
+    'submissionAuthor': '0x15528Fc3CFf56b4667f988C699ec5983030Ce842',
+    'submissionId': '44',
+    'submissionDescription': 'NanoPro is the future',
+    'submissionCollaborators': [
+      '0x11f2915576Dc51dFFB246959258E8fe5a1913161',
+      '0x0327FF417aa111b61bED5F39e77946b38d6592B3'
+    ],
+    'submissionReferences': [
+      '0x0327FF417aa111b61bED5F39e77946b38d6592B3',
+      '0x58bA5d062E2c2B14DC8B8458872AFef70A9b25EB'
+    ],
+    'submissionJson': [
+      {
+        'Items': [
+          '{"rangeKeys":["t","u","v","w"],"rangePairs":[{"min":{"exclusive":false,"rawText":"0"},"max":{"exclusive":false,"rawText":"8*pi"}},{"min":{"exclusive":false,"rawText":"0"},"max":{"exclusive":false,"rawText":"0"}},{"min":{"exclusive":false,"rawText":"0"},"max":{"exclusive":false,"rawText":"0"}},{"min":{"exclusive":false,"rawText":"0"},"max":{"exclusive":false,"rawText":"0"}}],"ExpressionKeys":[0,1,2],"ExpressionValues":["cos(t)*(2-cos(t))","(sin(t))*(2-cos(t))","-sin(2*t)+(cos(t)-.5)"]}'
+        ]
+      }
+    ],
+    'submissionIpfsHash': 'QmT9qk3CRYbFDWpDFYeAv8T8H1gnongwKhh5J68NLkLir6',
+    'submissionRewardTotal': 1,
+    'submissionSelectedRound': 1,
+    'submissionDate': '',
+    'parentInfo': [
+      {
+        'currentRound': '1',
+        'totalRounds': '3',
+        'roundAddress': '0x11f2915576Dc51dFFB246959258E8fe5a1913161',
+        'roundMtx': 30,
+        'tournamentName': "Sam's Tournament",
+        'tournamentAddress': '0x11f2915576Dc51dFFB246959258E8fe5a1913161'
+      }
+    ]
+  }
+<span class="cstat-no" title="statement not covered" >  res.status(200).json({</span>
+    message: 'This is a temp API for submission details with Submission Address' + address,
+    data: submissionAddress
+  })
+})
+&nbsp;
+// router.post('/', (req, res, next) =&gt; {
+//     res.status(200).json({
+//         message: 'handling POST requests to /products'
+//     });
+// });
+&nbsp;
+module.exports = router
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Apr 26 2018 17:28:06 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

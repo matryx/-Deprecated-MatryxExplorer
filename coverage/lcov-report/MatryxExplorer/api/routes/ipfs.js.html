@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for MatryxExplorer/api/routes/ipfs.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../index.html">all files</a> / <a href="index.html">MatryxExplorer/api/routes/</a> ipfs.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">24.64% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>17/69</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/8</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/15</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">25% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>17/68</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/*
+MatryxExplorer API routing for all round based REST calls
+&nbsp;
+author - sam@nanome.ai
+Copyright Nanome Inc 2018
+*/
+&nbsp;
+const express = require('express')
+const bodyParser = require('body-parser')
+const formidable = require('formidable')
+const tmp = require('tmp')
+const fs = require('fs')
+const util = require('util')
+const router = express.Router()
+&nbsp;
+const externalApiCalls = require('../controllers/gateway/externalApiCalls')
+const matryxPlatformCalls = require('../controllers/gateway/matryxPlatformCalls')
+const ipfsCalls = require('../controllers/gateway/ipfsCalls')
+const ethHelper = require('../helpers/ethHelper')
+&nbsp;
+// Return a message that this route handles activity calls
+// TODO return the landing page events to the UI
+// Finish Backend
+router.get('/', (req, res, next) =&gt; {
+<span class="cstat-no" title="statement not covered" >  res.status(200).json({</span>
+    message: 'handles all requests to /ipfs'
+  })
+})
+&nbsp;
+router.get('/download/hash/:hash', (req, res, next) =&gt; {
+<span class="cstat-no" title="statement not covered" >  let hash = req.params.hash</span>
+  // TODO: check IPFS hash
+<span class="cstat-no" title="statement not covered" >  console.log('&gt;IPFS Router: /download/hash/', hash, 'hit')</span>
+<span class="cstat-no" title="statement not covered" >  ipfsCalls.getIpfsDataFiles(hash).then(<span class="fstat-no" title="function not covered" >function (result) {</span></span>
+<span class="cstat-no" title="statement not covered" >    res.status(200).json({</span>
+      message: result
+    }).catch((err) =&gt; {
+<span class="cstat-no" title="statement not covered" >      res.status(500).json({</span>
+        error: err.message
+      })
+    })
+  })
+})
+&nbsp;
+router.get('/getDescription/hash/:hash', (req, res, next) =&gt; {
+<span class="cstat-no" title="statement not covered" >  let hash = req.params.hash</span>
+  // TODO: check IPFS hash
+<span class="cstat-no" title="statement not covered" >  ipfsCalls.getIpfsDescriptionOnly(hash).then(<span class="fstat-no" title="function not covered" >function (result) {</span></span>
+<span class="cstat-no" title="statement not covered" >    console.log('The returned result is: ', result)</span>
+<span class="cstat-no" title="statement not covered" >    res.status(200).json({</span>
+      message: result
+    })
+  }).catch(<span class="fstat-no" title="function not covered" >function (err) {</span>
+<span class="cstat-no" title="statement not covered" >    res.status(500).json({</span>
+      message: err.message
+    })
+  })
+})
+&nbsp;
+router.get('/getTournamentDescription/address/:address', (req, res, next) =&gt; {
+<span class="cstat-no" title="statement not covered" >  let address = req.params.address</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  if (!ethHelper.isAddress(tournamentAddress)) {</span>
+<span class="cstat-no" title="statement not covered" >    res.status(500).json({</span>
+      errorMsg: 'This is not a valid ethereum address'
+    })
+  } else {
+<span class="cstat-no" title="statement not covered" >    matryxPlatformCalls.getTournamentDescription(address).then(<span class="fstat-no" title="function not covered" >function (result) {</span></span>
+<span class="cstat-no" title="statement not covered" >      res.status(200).json({</span>
+        message: result
+      })
+    }).catch(<span class="fstat-no" title="function not covered" >function (err) {</span>
+<span class="cstat-no" title="statement not covered" >      res.status(500).json({</span>
+        message: err.message
+      })
+    })
+  }
+})
+&nbsp;
+/*
+Takes in a multipart/form-data post call with the following inputs
+@input description (string)
+@input jsonContent (stringify(json))
+@input files (files)
+&nbsp;
+It puts them in a temp folder and then uploads them to IPFS and returns a hash
+&nbsp;
+@returns IPFS Hash (string)
+&nbsp;
+*/
+router.post('/upload', (req, res, next) =&gt; {
+<span class="cstat-no" title="statement not covered" >  var form = new formidable.IncomingForm(),</span>
+    files = [],
+    fields = []
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  var tmpobj = tmp.dirSync()</span>
+<span class="cstat-no" title="statement not covered" >  console.log('Dir: ', tmpobj.name)</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  form.uploadDir = tmpobj.name</span>
+&nbsp;
+// TODO: Throw this all in a try/catch block
+<span class="cstat-no" title="statement not covered" >  form</span>
+      .on('field', <span class="fstat-no" title="function not covered" >function (field, value) {</span>
+        // console.log(field, value)
+<span class="cstat-no" title="statement not covered" >        fields.push([field, value])</span>
+      })
+      .on('file', <span class="fstat-no" title="function not covered" >function (field, file) {</span>
+        // console.log(field, file)
+<span class="cstat-no" title="statement not covered" >        files.push([field, file])</span>
+      })
+      .on('progress', <span class="fstat-no" title="function not covered" >function (bytesReceived, bytesExpected) {</span>
+<span class="cstat-no" title="statement not covered" >        var percent = (bytesReceived / bytesExpected * 100) | 0</span>
+<span class="cstat-no" title="statement not covered" >        console.log('Uploading: %' + percent + '\r')</span>
+      })
+      .on('end', <span class="fstat-no" title="function not covered" >function () {</span>
+          // Logic for handling the files + IPFS
+<span class="cstat-no" title="statement not covered" >        console.log('-&gt; Upload Complete')</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        let tempDirectory = tmpobj.name</span>
+&nbsp;
+        // console.log(util.inspect(files[0][1].path)) // This is where the first file was stored
+        // console.log(fields[0][0]) // This is if the first field is 'description', it returns 'description' and fields[0][1] is the description content
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        files.forEach(<span class="fstat-no" title="function not covered" >function (file) {</span></span>
+<span class="cstat-no" title="statement not covered" >          fs.rename(file[1].path, form.uploadDir + '/' + file[1].name, <span class="fstat-no" title="function not covered" >function (err) {</span></span>
+<span class="cstat-no" title="statement not covered" >            if (err) <span class="cstat-no" title="statement not covered" >console.log('ERROR: ' + err)</span></span>
+          })
+        })
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        fields.forEach(<span class="fstat-no" title="function not covered" >function (field) {</span></span>
+            // Check to see if there is a description key in the fields
+<span class="cstat-no" title="statement not covered" >          if (field[0] == 'description') {</span>
+<span class="cstat-no" title="statement not covered" >            console.log(field[1]) </span>// This is the description content
+<span class="cstat-no" title="statement not covered" >            descriptionContent = Buffer.from(field[1])</span>
+<span class="cstat-no" title="statement not covered" >            descriptionPath = tempDirectory + '/description.txt'</span>
+            // Store the descriptionContent into the tempFolder
+<span class="cstat-no" title="statement not covered" >            ipfsCalls.storeDescriptionToTmp(descriptionContent, descriptionPath).then(<span class="fstat-no" title="function not covered" >function (result) {</span></span>
+<span class="cstat-no" title="statement not covered" >              console.log(result)</span>
+            })
+          }
+          // Check to see if there is a jsonContent key in the fields
+<span class="cstat-no" title="statement not covered" >          if (field[0] == 'jsonContent') {</span>
+<span class="cstat-no" title="statement not covered" >            console.log(field[1]) </span>// This is the json content
+<span class="cstat-no" title="statement not covered" >            jsonContent = Buffer.from(field[1])</span>
+<span class="cstat-no" title="statement not covered" >            jsonPath = tempDirectory + '/jsonContent.json'</span>
+<span class="cstat-no" title="statement not covered" >            ipfsCalls.storeDescriptionToTmp(jsonContent, jsonPath).then(<span class="fstat-no" title="function not covered" >function (result) {</span></span>
+<span class="cstat-no" title="statement not covered" >              console.log(result)</span>
+            })
+          }
+        })
+&nbsp;
+        // Add the tmp folder to IPFS and get back a hash
+<span class="cstat-no" title="statement not covered" >        ipfsCalls.pushTmpFolderToIPFS(tempDirectory).then(<span class="fstat-no" title="function not covered" >function (ipfsHashResult) {</span></span>
+          // externalApiCalls.curlIpfsIo(ipfsHashResult).then(function (tmp) {
+<span class="cstat-no" title="statement not covered" >          res.status(200).json({</span>
+            folderHash: ipfsHashResult
+          })
+          // })
+        })
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        fs.readdir(tempDirectory, (err, files) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >          console.log('These are the files in the directory')</span>
+<span class="cstat-no" title="statement not covered" >          files.forEach(file =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >            console.log(file)</span>
+          })
+        })
+      })
+<span class="cstat-no" title="statement not covered" >  form.parse(req)</span>
+})
+&nbsp;
+module.exports = router
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Apr 26 2018 17:28:06 GMT-0700 (PDT)
+</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>

@@ -4,4 +4,3 @@ var config = {
   rpcPort: 8545
 }
 
-// TODO .processes.env
