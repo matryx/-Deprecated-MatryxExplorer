@@ -19,30 +19,42 @@ router.get('/', (req, res, next) => {
 
 // Return a confirmation the API is live
 router.get('/getAbi', (req, res, next) => {
-  let tokenData = token
-  res.status(200).json({
-    abi: tokenData.abi
-  })
+  try {
+    res.status(200).json({
+      abi: token.abi
+    })
+  } catch (err) {
+    res.status(500).json({
+      errMsg: err.message
+    })
+  }
 })
 
 // Return number of tournaments
 router.get('/getAddress', (req, res, next) => {
-  let tokenData = token
-  res.status(200).json({
-    address: tokenData.address
-  })
+  try {
+    res.status(200).json({
+      address: token.address
+    })
+  } catch (err) {
+    res.status(500).json({
+      errMsg: err.message
+    })
+  }
 })
 
 // Return number of tournaments
 router.get('/getLatestInfo', (req, res, next) => {
-  let tokenData = token
-
-  res.status(200).json({
-    address: tokenData.address,
-    abi: tokenData.abi
-  })
+  try {
+    res.status(200).json({
+      address: token.address,
+      abi: token.abi
+    })
+  } catch (err) {
+    res.status(500).json({
+      errMsg: err.message
+    })
+  }
 })
 
 module.exports = router
-
-// TODO Swagger integration

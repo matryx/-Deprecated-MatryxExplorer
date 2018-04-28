@@ -16,6 +16,7 @@ const router = express.Router()
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 const matryxPlatformCalls = require('../controllers/gateway/matryxPlatformCalls')
 const ipfsCalls = require('../controllers/gateway/ipfsCalls')
+const ethHelper = require('../helpers/ethHelper')
 
 // Return a message that this route handles activity calls
 // TODO return the landing page events to the UI
@@ -28,17 +29,22 @@ router.get('/', (req, res, next) => {
 
 router.get('/download/hash/:hash', (req, res, next) => {
   let hash = req.params.hash
+  // TODO: check IPFS hash
   console.log('>IPFS Router: /download/hash/', hash, 'hit')
   ipfsCalls.getIpfsDataFiles(hash).then(function (result) {
     res.status(200).json({
       message: result
+    }).catch((err) => {
+      res.status(500).json({
+        error: err.message
+      })
     })
   })
 })
 
 router.get('/getDescription/hash/:hash', (req, res, next) => {
   let hash = req.params.hash
-  console.log(hash)
+  // TODO: check IPFS hash
   ipfsCalls.getIpfsDescriptionOnly(hash).then(function (result) {
     console.log('The returned result is: ', result)
     res.status(200).json({
@@ -53,12 +59,22 @@ router.get('/getDescription/hash/:hash', (req, res, next) => {
 
 router.get('/getTournamentDescription/address/:address', (req, res, next) => {
   let address = req.params.address
-  console.log(address)
-  matryxPlatformCalls.getTournamentDescription(address).then(function (result) {
-    res.status(200).json({
-      message: result
+
+  if (!ethHelper.isAddress(tournamentAddress)) {
+    res.status(500).json({
+      errorMsg: 'This is not a valid ethereum address'
     })
-  })
+  } else {
+    matryxPlatformCalls.getTournamentDescription(address).then(function (result) {
+      res.status(200).json({
+        message: result
+      })
+    }).catch(function (err) {
+      res.status(500).json({
+        message: err.message
+      })
+    })
+  }
 })
 
 /*
@@ -71,7 +87,6 @@ It puts them in a temp folder and then uploads them to IPFS and returns a hash
 
 @returns IPFS Hash (string)
 
-// TODO: Save the uploaded files with their own name
 */
 router.post('/upload', (req, res, next) => {
   var form = new formidable.IncomingForm(),
@@ -105,6 +120,12 @@ router.post('/upload', (req, res, next) => {
 
         // console.log(util.inspect(files[0][1].path)) // This is where the first file was stored
         // console.log(fields[0][0]) // This is if the first field is 'description', it returns 'description' and fields[0][1] is the description content
+
+        files.forEach(function (file) {
+          fs.rename(file[1].path, form.uploadDir + '/' + file[1].name, function (err) {
+            if (err) console.log('ERROR: ' + err)
+          })
+        })
 
         fields.forEach(function (field) {
             // Check to see if there is a description key in the fields
