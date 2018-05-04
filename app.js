@@ -10,6 +10,11 @@ require('dotenv').config()
 const externalApiCalls = require('./api/controllers/gateway/externalApiCalls')
 const ipfsCalls = require('./api/controllers/gateway/ipfsCalls')
 // Routes
+app.get('/', (req, res) => {
+  res.send(
+    'Somewhere, something incredible is waiting to be known. <br> - Carl Sagan'
+  )
+})
 const platformRoutes = require('./api/routes/platform')
 const tournamentRoutes = require('./api/routes/tournaments')
 const roundRoutes = require('./api/routes/rounds')
