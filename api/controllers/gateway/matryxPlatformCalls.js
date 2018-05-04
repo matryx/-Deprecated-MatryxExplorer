@@ -465,21 +465,34 @@ matryxPlatformCalls.getCurrentRoundEndTimeFromTournament = function (tournamentA
   return new Promise((resolve, reject) => {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
     // get the current round address
-    tournamentContract.currentRound((err, res) => {
-      if (err) {
-        reject(err)
-      } else {
-        roundAddress = res[1]
-        roundContract = web3.eth.contract(roundAbi).at(roundAddress)
-        roundContract.endTime((err, res) => {
-          if (err) {
-            reject(err)
+    try {
+      tournamentContract.currentRound((err, res) => {
+        if (err) {
+          reject(err)
+        } else {
+          console.log('Results from current round call', res)
+          roundAddress = res[1]
+          if (roundAddress == '0x') {
+            reject(new Error("The round address is invalid - '0x'"))
+            // throw new Error("The round address is invalid - '0x'")
           } else {
-            resolve(res)
+            roundContract = web3.eth.contract(roundAbi).at(roundAddress)
+            roundContract.endTime((err, res) => {
+              if (err) {
+            // reject(err)
+                console.log('Does the error get thrown')
+
+                throw new Error(err.message)
+              } else {
+                resolve(res)
+              }
+            })
           }
-        })
-      }
-    })
+        }
+      })
+    } catch (err) {
+      reject(err.message)
+    }
   })
 }
 

@@ -161,6 +161,7 @@ tournamentController.getTournamentByAddress = function (_tournamentAddress) {
       resolve(tournamentData)
       responses.push(tournamentData)
     }).catch(function (err) {
+      console.log('we should see the error here: ', err)
       reject(err)
     })
   })
