@@ -102,7 +102,7 @@ tournamentController.getTournamentByAddress = function (_tournamentAddress) {
 
     let tournamentData = {
       tournamentTitle: '',
-      tournamentAdddress: '',
+      tournamentAddress: '',
       mtx: 0,
       authorName: '',
       tournamentDescription: '',
@@ -143,7 +143,7 @@ tournamentController.getTournamentByAddress = function (_tournamentAddress) {
             // Attach to the tournament Data
       console.log(values)
       tournamentData.tournamentTitle = values[0]
-      tournamentData.tournamentAdddress = _tournamentAddress
+      tournamentData.tournamentAddress = _tournamentAddress
       tournamentData.mtx = values[1]
       tournamentData.authorName = values[2]
       tournamentData.tournamentDescription = values[3]
@@ -161,6 +161,7 @@ tournamentController.getTournamentByAddress = function (_tournamentAddress) {
       resolve(tournamentData)
       responses.push(tournamentData)
     }).catch(function (err) {
+      console.log('we should see the error here: ', err)
       reject(err)
     })
   })
@@ -317,7 +318,7 @@ Experiemental or testing methods
 //
 //     let tournamentData = {
 //       tournamentTitle: '',
-//       tournamentAdddress: '',
+//       tournamentAddress: '',
 //       mtx: 0,
 //       authorName: '',
 //       tournamentDescription: '',
@@ -358,7 +359,7 @@ Experiemental or testing methods
 //             // Attach to the tournament Data
 //       console.log(values)
 //       tournamentData.tournamentTitle = values[0]
-//       tournamentData.tournamentAdddress = _tournamentAddress
+//       tournamentData.tournamentAddress = _tournamentAddress
 //       tournamentData.mtx = values[1]
 //       tournamentData.authorName = values[2]
 //       // tournamentData.tournamentDescription = values[3]

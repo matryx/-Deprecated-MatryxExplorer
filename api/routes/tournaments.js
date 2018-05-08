@@ -22,16 +22,14 @@ router.get('/', (req, res, next) => {
       })
     })
   } catch (err) {
-    console.log('Error loading the ABI')
-    res.status(200).json({
-      errorMessage: 'Sorry, that version does not exist.',
+    console.log('Error loading the tournaments')
+    res.status(500).json({
       errorMsg: err.message
     })
   }
 })
 
 router.get('/getLatestAbi', (req, res, next) => {
-  console.log('/getLatestAbi hit')
   try {
     externalApiCalls.getMatryxTournamentAbi(latestVersion).then(function (resultingAbi) {
       console.log(resultingAbi)
@@ -41,8 +39,7 @@ router.get('/getLatestAbi', (req, res, next) => {
     })
   } catch (err) {
     console.log('Error loading the ABI')
-    res.status(200).json({
-      errorMessage: 'Sorry, that version does not exist.',
+    res.status(500).json({
       errorMsg: err.message
     })
   }
@@ -60,8 +57,7 @@ router.get('/getAbi/:version', (req, res, next) => {
     })
   } catch (err) {
     console.log('Error loading the ABI')
-    res.status(200).json({
-      errorMessage: 'Sorry, that version does not exist.',
+    res.status(500).json({
       errorMsg: err.message
     })
   }
@@ -119,6 +115,10 @@ router.get('/address/:tournamentAddress', (req, res, next) => {
       tournamentController.getTournamentByAddress(address).then(function (result) {
         res.status(200).json({
           tournamentDetails: result
+        })
+      }).catch(function (err) {
+        res.status(500).json({
+          errorMsg: err.message
         })
       })
     } catch (err) {
