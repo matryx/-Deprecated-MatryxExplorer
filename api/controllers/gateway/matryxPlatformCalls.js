@@ -1155,6 +1155,20 @@ matryxPlatformCalls.getSubmissionParentInfo = function (submissionAddress) {
   })
 }
 
+matryxPlatformCalls.isSubmissionCreator = function (submissionAddress, userAddress) {
+  return new Promise((resolve, reject) => {
+    submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
+    submissionContract.owner((err, ownerAddress) => {
+      if (err) reject(err)
+      else if (ownerAddress == userAddress) {
+        resolve(true)
+      } else {
+        resolve(false)
+      }
+    })
+  })
+}
+
 /*
 Activity
 */

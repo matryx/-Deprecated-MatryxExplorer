@@ -109,6 +109,27 @@ router.get('/address/:submissionAddress/getOwner', (req, res, next) => {
   }
 })
 
+// Return the submission owner/author for a specific submission address
+router.get('/address/:submissionAddress/isCreator/:userAddress', (req, res, next) => {
+  const submissionAddress = req.params.submissionAddress
+  const userAddress = req.params.userAddress
+  if (!ethHelper.isAddress(submissionAddress) && !ethHelper.isAddress(userAddress)) {
+    res.status(500).json({
+      errorMsg: 'This is not a valid ethereum address'
+    })
+  } else {
+    submissionController.isCreator(submissionAddress, userAddress).then(function (isCreatorBool) {
+      res.status(200).json({
+        result: isCreatorBool
+      })
+    }).catch(function (err) {
+      res.status(500).json({
+        errorMsg: err.message
+      })
+    })
+  }
+})
+
 /*
 These are are experiemental or old
 */

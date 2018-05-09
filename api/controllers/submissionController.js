@@ -126,6 +126,17 @@ submissionController.uploadJsonAndDescriptionToIPFS = function (jsonContent, des
   })
 }
 
+submissionController.isCreator = function (_submissionAddress, _userAddress) {
+  return new Promise((resolve, reject) => {
+    matryxPlatformCalls.isSubmissionCreator(_submissionAddress, _userAddress).then(function (result) {
+      console.log(result)
+      resolve(result)
+    }).catch((err) => {
+      reject(err)
+    })
+  })
+}
+
 /*
 EXPERIMENTAL
 */
