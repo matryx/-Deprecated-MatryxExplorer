@@ -11,13 +11,13 @@ let server = require('../app')
 chai.use(chaiHttp)
 
 // Mock Web 3
-describe('General Application Testing/', function () {
+describe('General Application Testing', function () {
   it('should give back that carl sagan quote', function (done) {
     chai.request(server)
     .get('/')
     .end(function (err, res) {
       res.should.have.status(200)
-      console.log(res)
+      // console.log(res)
       // TODO: Compare against the quote
       done()
     })

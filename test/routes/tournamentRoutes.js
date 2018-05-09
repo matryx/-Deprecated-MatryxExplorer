@@ -5,7 +5,7 @@ let should = chai.should()
 let assert = require('assert')
 
 // Internal Imports
-let server = require('../app')
+let server = require('../../app')
 
 // Setup
 chai.use(chaiHttp)
@@ -18,7 +18,7 @@ describe('General Application Testing/', function () {
     .get('/')
     .end(function (err, res) {
       res.should.have.status(200)
-      console.log(res)
+      // console.log(res)
       // TODO: Compare against the quote
       done()
     })

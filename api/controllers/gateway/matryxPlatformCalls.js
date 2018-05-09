@@ -21,6 +21,15 @@ let web3 = new Web3()
 web3.setProvider(new web3.providers.HttpProvider(web3Provider)) // Elastic IP Address -> http://52.8.65.20:8545
 console.log('Connected to: ' + web3Provider)
 
+// TODO: Make a constructor that takes in a web3 object and fake contracts that I can spoof
+// function matryxPlatformCalls (_web3, _matryxPlatformContract, _tournamentContract, _roundContract, _submissionContract) {
+//   this.web3 = _web3
+//   this.matryxPlatformContract = _matryxPlatformContract
+//   this.tournamentContract = _tournamentContract
+//   this.submissionContract = _submissionContract
+//   this.roundContract = _roundContract
+// }
+
 let matryxPlatformCalls = {}
 
 let matryxPlatformAbi
@@ -69,11 +78,10 @@ matryxPlatformCalls.getTournamentCount = async function () {
       return tournamentCount
     }
   } catch (err) {
-    throw new Error(err)
+    new Error(err)
   }
 }
 
-// TODO: Async + error handling
 matryxPlatformCalls.allTournaments = function (index) {
   return new Promise((resolve, reject) => {
     matryxPlatformContract.allTournaments(index, (err, res) => {
@@ -86,7 +94,6 @@ matryxPlatformCalls.allTournaments = function (index) {
   })
 }
 
-// TODO: Async + error handling
 matryxPlatformCalls.allEvents = function (fromBlock, toBlock, param) {
   return new Promise((resolve, reject) => {
     matryxPlatformContract.allEvents({fromBlock: 0x0, toBlock: 'latest'}, (err, res) => {
