@@ -549,6 +549,21 @@ matryxPlatformCalls.getRoundAddressByIndex = function (tournamentAddress, roundI
   })
 }
 
+matryxPlatformCalls.isTournamentCreator = function (_tournamentAddress, _userAddress) {
+  return new Promise((resolve, reject) => {
+    tournamentContract = web3.eth.contract(tournamentAbi).at(_tournamentAddress)
+    tournamentContract.owner((err, tournamentOwnerAddress) => {
+      if (err) {
+        reject(err)
+      } else if (tournamentOwnerAddress == _userAddress) {
+        resolve(true)
+      } else {
+        resolve(false)
+      }
+    })
+  })
+}
+
 /*
 * ROUND
 */
