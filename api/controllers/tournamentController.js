@@ -238,6 +238,14 @@ tournamentController.getTournamentsByCategory = async function (category) {
   }
 }
 
+tournamentController.isCreator = async function (_tournamentAddress, _userAddress) {
+  try {
+    return isCreatorBool = await matryxPlatformCalls.isTournamentCreator(_tournamentAddress, _userAddress)
+  } catch (err) {
+    throw new Error(err)
+  }
+}
+
 /*
 Experiemental or testing methods
 */

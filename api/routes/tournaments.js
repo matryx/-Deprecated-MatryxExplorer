@@ -288,6 +288,23 @@ router.get('/category/:category', (req, res, next) => {
   })
 })
 
+// Return if the potentantial address given is an entrant for a specific tournament
+router.get('/address/:tournamentAddress/isCreator/:userAddress', (req, res, next) => {
+  const tournamentAddress = req.params.tournamentAddress
+  const userAddress = req.params.userAddress
+
+  tournamentController.isCreator(tournamentAddress, userAddress).then(function (creatorBool) {
+    res.status(200).json({
+      result: creatorBool
+    })
+  }).catch((err) => {
+    console.log(err)
+    res.status(500).json({
+      errorMessage: err.message
+    })
+  })
+})
+
 /*
 #################################
 These are all TEST or HELPER functions

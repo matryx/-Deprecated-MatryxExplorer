@@ -549,6 +549,21 @@ matryxPlatformCalls.getRoundAddressByIndex = function (tournamentAddress, roundI
   })
 }
 
+matryxPlatformCalls.isTournamentCreator = function (_tournamentAddress, _userAddress) {
+  return new Promise((resolve, reject) => {
+    tournamentContract = web3.eth.contract(tournamentAbi).at(_tournamentAddress)
+    tournamentContract.owner((err, tournamentOwnerAddress) => {
+      if (err) {
+        reject(err)
+      } else if (tournamentOwnerAddress == _userAddress) {
+        resolve(true)
+      } else {
+        resolve(false)
+      }
+    })
+  })
+}
+
 /*
 * ROUND
 */
@@ -1137,6 +1152,20 @@ matryxPlatformCalls.getSubmissionParentInfo = function (submissionAddress) {
     })
 
           // Call IPFS with external address and return the description
+  })
+}
+
+matryxPlatformCalls.isSubmissionCreator = function (submissionAddress, userAddress) {
+  return new Promise((resolve, reject) => {
+    submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
+    submissionContract.owner((err, ownerAddress) => {
+      if (err) reject(err)
+      else if (ownerAddress == userAddress) {
+        resolve(true)
+      } else {
+        resolve(false)
+      }
+    })
   })
 }
 
