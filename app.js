@@ -53,8 +53,12 @@ app.use('/tempAPI/activity', tempActivityRoutes)
 app.use('/tempAPI/submissions', tempSubmissionRoutes)
 
 console.log('стремиться к победе')
-// TODO add more error handling and timeout settings
 
+app.get('/', (req, res) => {
+  res.send(
+    'Somewhere, something incredible is waiting to be known. <br> - Carl Sagan'
+  )
+})
 // Error handling
 app.use((req, res, next) => {
   const error = new Error('Not Found')
