@@ -205,6 +205,32 @@ matryxPlatformCalls.getTournamentAtIndex = async function (index) {
 //   })
 // }
 
+matryxPlatformCalls.getTopCategories = function () {
+  return new Promise((resolve, reject) => {
+
+    console.log(matryxPlatformContract)
+  let top10 = 10
+  let categories = []
+  for(i =0; i< top10; i++){
+    matryxPlatformContract.getTopCategory(i, (err,results) => {
+      if(err){
+        throw new Error(err.message)
+      } else{
+      console.log(results)
+      categories.push(results)
+      console.log(categories.length)
+      if(categories.length == 10){
+        resolve(categories)
+      }
+    }
+  })
+
+  }
+})
+}
+
+
+
 // TODO: Async + error handling
 // TODO: redo this to put them in the same order everytime using a Dictionary
 matryxPlatformCalls.getAllTournamentAddresses = function () {

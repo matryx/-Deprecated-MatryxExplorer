@@ -11,6 +11,7 @@ const express = require('express')
 const router = express.Router()
 
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
+const matryxPlatformCalls = require('../controllers/gateway/matryxPlatformCalls')
 
 let latestVersion = process.env.PLATFORM_VERSION
 
@@ -159,6 +160,28 @@ router.get('/getAbi/:version', (req, res, next) => {
     console.log('Error loading the ABI')
     res.status(500).json({
       errorMessage: 'Sorry, that version does not exist.',
+      error: err.message
+    })
+  }
+})
+
+
+// Return a confirmation the API is live
+router.get('/getTopCategories', (req, res, next) => {
+  try {
+    matryxPlatformCalls.getTopCategories().then(function (results) {
+      res.status(200).json({
+        categories: results
+      })
+    }).catch((err) => {
+      res.status(500).json({
+        error: err.message
+      })
+    })
+  } catch (err) {
+    console.log('Error loading the top categories')
+    res.status(500).json({
+      errorMessage: 'Sorry, something failed.',
       error: err.message
     })
   }
