@@ -237,6 +237,10 @@ tournamentController.getTournamentsByCategory = async function (category) {
   }
 }
 
+//TODO Archive endpoint 
+//TODO: active endpoint
+//TODO both
+
 /*
 Experiemental or testing methods
 */
