@@ -9,6 +9,8 @@ Nanome 2018
 Imports
 */
 
+// TODO: Fix the API to reflect new struct changes for max
+
 const version = process.env.PLATFORM_VERSION
 
 const Web3 = require('web3')
