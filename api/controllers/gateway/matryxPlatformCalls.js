@@ -250,7 +250,7 @@ matryxPlatformCalls.getAllTournamentAddresses = function () {
           if (err) {
             throw new Error(err)
           }
-          console.log('Tournament #: ' + j + ' is at address: ' + tournamentAddress)
+          // console.log('Tournament #: ' + j + ' is at address: ' + tournamentAddress)
           addressList.push(tournamentAddress)
 
           if (addressList.length == tournamentCount) {
@@ -316,7 +316,7 @@ matryxPlatformCalls.getTournamentDescription = function (tournamentAddress) {
         _externalAddress = web3.toAscii(res)
         // console.log('The external address of the tournament is: ' + _externalAddress)
         ipfsCalls.getIpfsDescriptionOnly(_externalAddress).then(function (_descriptionResponse) {
-          console.log(_descriptionResponse)
+          // console.log(_descriptionResponse)
           if (_descriptionResponse) {
             // console.log('This should be the description itself: ' + res)
             resolve(_descriptionResponse)
@@ -498,7 +498,7 @@ matryxPlatformCalls.getCurrentRoundEndTimeFromTournament = function (tournamentA
         if (err) {
           reject(err)
         } else {
-          console.log('Results from current round call', res)
+          // console.log('Results from current round call', res)
           roundAddress = res[1]
           if (roundAddress == '0x') {
             reject(new Error("The round address is invalid - '0x'"))
@@ -654,7 +654,7 @@ matryxPlatformCalls.getRoundSubmissions = function (roundAddress) {
       if (err) {
         reject(err)
       } else {
-        console.log(res)
+        // console.log(res)
         resolve(res)
       }
     })
@@ -786,7 +786,7 @@ matryxPlatformCalls.getSubmissionsFromRound = function (roundAddress) {
         console.log('Retrieving all all submissionAddresses..')
 
         matryxPlatformCalls.getRoundSubmissions(roundAddress).then(function (submissionAddresses) {
-          console.log(submissionAddresses)
+          // console.log(submissionAddresses)
 
     // Check number of submission
           submissionAddresses.forEach(function (submissionAddress) {
@@ -1041,7 +1041,7 @@ matryxPlatformCalls.getSubmissionBalance = function (submissionAddress) {
 
   return new Promise((resolve, reject) => {
     submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
-    console.log(submissionContract)
+    // console.log(submissionContract)
     submissionContract.getBalance((err, res) => {
       if (err) reject(err)
       else {
@@ -1107,7 +1107,7 @@ matryxPlatformCalls.getSubmissionContents = function (submissionAddress) {
       else {
         _externalAddress = web3.toAscii(res)
         ipfsCalls.getIpfsDataFiles(_externalAddress).then(function (ipfsResults) {
-          console.log(res)
+          // console.log(res)
           resolve(ipfsResults)
         }).catch(function (err) {
           reject(err)
@@ -1226,7 +1226,7 @@ matryxPlatformCalls.getPlatformActivity = function () {
           news: ''
         }
 
-        console.log(eventDict[event_i.event])
+        // console.log(eventDict[event_i.event])
         switch (eventDict[event_i.event]) {
           case 0:
             {
