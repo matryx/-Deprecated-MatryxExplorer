@@ -139,7 +139,7 @@ ipfsCalls.getIpfsDataFiles = function (_ipfsHash) {
           // Only grab the files that we want
         if (file.content) {
           let fileName = file.path.toString('utf8').replace(_ipfsHash, '').replace('/', '')
-          console.log(fileName)
+          // console.log(fileName)
 
           ipfsFileContents.push(fileName)
 
@@ -153,7 +153,7 @@ ipfsCalls.getIpfsDataFiles = function (_ipfsHash) {
           // Check to see if one is the jsonContent.json file
           if (fileName == 'jsonContent.json') {
             jsonContent = JSON.parse(file.content.toString('utf8'))
-            console.log('The JSON content is the following: ' + JSON.stringify(jsonContent))
+            // console.log('The JSON content is the following: ' + JSON.stringify(jsonContent))
             ipfsResults.jsonContent = jsonContent
           }
 
@@ -201,23 +201,23 @@ EXPERIMENTAL FUNCTIONS
 */
 
 ipfsCalls.getIpfsDescriptionOnly = function (_ipfsHash) {
-  console.log('>IpfsCalls: getDescriptionOnly gateway call recieved. Hitting IPFS Node for data at hash: ' + _ipfsHash)
+  // console.log('>IpfsCalls: getDescriptionOnly gateway call recieved. Hitting IPFS Node for data at hash: ' + _ipfsHash)
   return new Promise((resolve, reject) => {
       // Check first to see that the hash is even available before making the call
     // console.log('# of hash peers: ', result)
 
     _ipfsHash = _ipfsHash + '/description.txt'
     let response = ''
-    console.log('About to call IPFS node to get data')
+    console.log('Calling IPFS node to get data')
     console.log('Online status ', ipfsNode.isOnline())
 
     ipfsNode.files.get(_ipfsHash).then(function (results) {
       response = results[0].content.toString('utf8')
 
-      console.log('>IpfsNode: getFiles results', results)
-      console.log('>IpfsNode: getResponseResolved response', response)
+      // console.log('>IpfsNode: getFiles results', results)
+      // console.log('>IpfsNode: getResponseResolved response', response)
 
-      console.log(response)
+      // console.log(response)
       resolve(response)
     }).catch(function (err) {
       reject(err)

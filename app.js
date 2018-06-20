@@ -15,6 +15,11 @@ app.get('/', (req, res) => {
     'Somewhere, something incredible is waiting to be known. <br> - Carl Sagan'
   )
 })
+
+
+
+
+
 const platformRoutes = require('./api/routes/platform')
 const tournamentRoutes = require('./api/routes/tournaments')
 const roundRoutes = require('./api/routes/rounds')

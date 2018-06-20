@@ -31,10 +31,10 @@ tournamentController.getAllTournaments = function () {
 
     // Get all the tournament addresses
     matryxPlatformCalls.getAllTournamentAddresses().then(function (tournamentAddresses) {
-      console.log(tournamentAddresses)
+      // console.log(tournamentAddresses)
       for (i = 0; i < tournamentAddresses.length; i++) {
         let tournamentAddress = tournamentAddresses[i]
-        console.log(tournamentAddress)
+        // console.log(tournamentAddress)
 
         let tournamentDataCalls = []
         let tournamentData = {
@@ -79,7 +79,7 @@ tournamentController.getAllTournaments = function () {
           if (responses.length == tournamentAddresses.length) {
             resolve(responses)
           }
-          console.log(values)
+          // console.log(values)
         }).catch(function (err) {
           reject(err)
         })
