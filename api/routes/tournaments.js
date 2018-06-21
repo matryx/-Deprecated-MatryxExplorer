@@ -9,28 +9,9 @@ const express = require('express')
 const tournamentController = require('../controllers/tournamentController')
 const roundController = require('../controllers/roundController')
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
-const ethHelper = require('../helpers/ethHelper')
 const router = express.Router()
+const { errorHelper, validateAddress } = require('../helpers/responseHelpers')
 let latestVersion = process.env.PLATFORM_VERSION
-
-// inputs: response object and optional error log message
-// output: error method that takes in error and sends over response
-const errorHelper = (res, log) => err => {
-  if (log) console.log(log)
-  res.status(500).json({ errorMsg: err.message })
-}
-
-// inputs: response object and address to validate
-// output: true if address valid
-const validateAddress = (res, address) => {
-  if (!ethHelper.isAddress(address)) {
-    res.status(500).json({
-      errorMsg: 'This is not a valid ethereum address'
-    })
-    return false
-  }
-  return true
-}
 
 // Return a confirmation the API is live
 router.get('/', (req, res, next) => {
