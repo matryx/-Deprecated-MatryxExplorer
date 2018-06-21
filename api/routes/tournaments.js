@@ -32,7 +32,7 @@ router.get('/', (req, res, next) => {
 router.get('/getLatestAbi', (req, res, next) => {
   try {
     externalApiCalls.getMatryxTournamentAbi(latestVersion).then(function (resultingAbi) {
-      console.log(resultingAbi)
+      // console.log(resultingAbi)
       res.status(200).json({
         abi: resultingAbi.abi
       })
@@ -50,7 +50,7 @@ router.get('/getAbi/:version', (req, res, next) => {
   let version = req.params.version
   try {
     externalApiCalls.getMatryxTournamentAbi(version).then(function (resultingAbi) {
-      console.log(resultingAbi)
+      // console.log(resultingAbi)
       res.status(200).json({
         abi: resultingAbi.abi
       })

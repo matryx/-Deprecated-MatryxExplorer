@@ -27,7 +27,7 @@ router.get('/getLatestAbi', (req, res, next) => {
   let version = req.params.version
   try {
     externalApiCalls.getMatryxRoundAbi(latestVersion).then(function (resultingAbi) {
-      console.log(resultingAbi)
+      // console.log(resultingAbi)
       res.status(200).json({
         abi: resultingAbi.abi
       })
@@ -46,7 +46,7 @@ router.get('/getAbi/:version', (req, res, next) => {
   let version = req.params.version
   try {
     externalApiCalls.getMatryxRoundAbi(version).then(function (resultingAbi) {
-      console.log(resultingAbi)
+      // console.log(resultingAbi)
       res.status(200).json({
         abi: resultingAbi.abi
       })
