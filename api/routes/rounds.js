@@ -13,7 +13,7 @@ const roundController = require('../controllers/roundController')
 const matryxPlatformCalls = require('../controllers/gateway/matryxPlatformCalls')
 const { errorHelper, validateAddress } = require('../helpers/responseHelpers')
 
-let latestVersion = process.env.PLATFORM_VERSION
+const latestVersion = process.env.PLATFORM_VERSION
 
 // Return a list of all rounds
 router.get('/', (req, res, next) => {

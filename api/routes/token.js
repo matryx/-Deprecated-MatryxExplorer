@@ -6,9 +6,9 @@ Copyright Nanome Inc 2018
 */
 
 const express = require('express')
-const token = require('../../data/matryxToken')
-
 const router = express.Router()
+
+const token = require('../../data/matryxToken')
 
 // Return a confirmation the API is live
 router.get('/', (req, res, next) => {

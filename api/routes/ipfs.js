@@ -6,14 +6,12 @@ Copyright Nanome Inc 2018
 */
 
 const express = require('express')
-const bodyParser = require('body-parser')
+const router = express.Router()
+
 const formidable = require('formidable')
 const tmp = require('tmp')
 const fs = require('fs')
-const util = require('util')
-const router = express.Router()
 
-const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 const matryxPlatformCalls = require('../controllers/gateway/matryxPlatformCalls')
 const ipfsCalls = require('../controllers/gateway/ipfsCalls')
 const { errorHelper, validateAddress } = require('../helpers/responseHelpers')

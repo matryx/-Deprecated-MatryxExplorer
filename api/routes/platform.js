@@ -14,7 +14,7 @@ const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 const matryxPlatformCalls = require('../controllers/gateway/matryxPlatformCalls')
 const { errorHelper } = require('../helpers/responseHelpers')
 
-let latestVersion = process.env.PLATFORM_VERSION
+const latestVersion = process.env.PLATFORM_VERSION
 
 // Return a message that this route handles all platform specific requests
 router.get('/', (req, res, next) => {
