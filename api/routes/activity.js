@@ -17,7 +17,7 @@ router.get('/', (req, res, next) => {
   matryxPlatformCalls
     .getPlatformActivity()
     .then(activity => res.status(200).json({ activity }))
-    .catch(errorHelper(res))
+    .catch(errorHelper(res, 'Error getting activity'))
 })
 
 module.exports = router

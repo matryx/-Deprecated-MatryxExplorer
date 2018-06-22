@@ -18,14 +18,14 @@ router.get('/', (req, res, next) => {
   tournamentController
     .getAllTournaments()
     .then(data => res.status(200).json({ data }))
-    .catch(errorHelper(res, 'Error loading the tournaments'))
+    .catch(errorHelper(res, 'Error getting tournaments'))
 })
 
 router.get('/getLatestAbi', (req, res, next) => {
   externalApiCalls
     .getMatryxTournamentAbi(latestVersion)
     .then(({ abi }) => res.status(200).json({ abi }))
-    .catch(errorHelper(res, 'Error loading the ABI'))
+    .catch(errorHelper(res, 'Error getting latest ABI'))
 })
 
 // TODO: add error response for invalid responses
@@ -34,7 +34,7 @@ router.get('/getAbi/:version', (req, res, next) => {
   externalApiCalls
     .getMatryxTournamentAbi(version)
     .then(({ abi }) => res.status(200).json({ abi }))
-    .catch(errorHelper(res, 'Error loading the ABI'))
+    .catch(errorHelper(res, 'Error getting ABI for ' + version))
 })
 
 // Return number of tournaments
@@ -50,7 +50,7 @@ router.get('/allTournaments', (req, res, next) => {
   tournamentController
     .getAllTournaments()
     .then(data => res.status(200).json({ data }))
-    .catch(errorHelper(res, 'Error loading the tournaments'))
+    .catch(errorHelper(res, 'Error getting tournaments'))
 })
 
 // Return the tournament details for a specific tournament
@@ -62,7 +62,7 @@ router.get('/address/:tournamentAddress', (req, res, next) => {
   tournamentController
     .getTournamentByAddress(tournamentAddress)
     .then(tournamentDetails => res.status(200).json({ tournamentDetails }))
-    .catch(errorHelper(res))
+    .catch(errorHelper(res, 'Error getting tournament ' + tournamentAddress))
 })
 
 // Return the tournament owner for a specific tournament
@@ -78,7 +78,7 @@ router.get('/address/:tournamentAddress/getOwner', async (req, res, next) => {
         tournamentAddress
       })
     })
-    .catch(errorHelper(res))
+    .catch(errorHelper(res, 'Error getting owner of ' + tournamentAddress))
 })
 
 // Return the submission count for a specific tournament
@@ -89,7 +89,7 @@ router.get('/address/:tournamentAddress/submissionCount', (req, res, next) => {
   tournamentController
     .getSubmissionCount(tournamentAddress)
     .then(results => res.status(200).json({ results }))
-    .catch(errorHelper(res))
+    .catch(errorHelper(res, 'Error getting submission count for ' + tournamentAddress))
 })
 
 // TODO: Waiting on Max, need to implement the Round is open in order to access this
@@ -101,7 +101,7 @@ router.get('/address/:tournamentAddress/currentRound', (req, res, next) => {
   tournamentController
     .getCurrentRound(tournamentAddress)
     .then(currentRound => res.status(200).json({ currentRound }))
-    .catch(errorHelper(res))
+    .catch(errorHelper(res, 'Error getting current round for ' + tournamentAddress))
 })
 
 router.get('/address/:tournamentAddress/round/:roundId', async (req, res, next) => {
@@ -123,7 +123,7 @@ router.get('/address/:tournamentAddress/round/:roundId', async (req, res, next) 
     let data = await roundController.getRoundDetails(roundAddress)
     res.status(200).json({ data })
   } catch (err) {
-    errorHelper(res)(err)
+    errorHelper(res, 'Error getting round ' + roundId + ' of ' + tournamentAddress)(err)
   }
 })
 
@@ -140,7 +140,7 @@ router.get('/address/:tournamentAddress/isEntrant/:address', (req, res, next) =>
         tournamentAddress
       })
     })
-    .catch(errorHelper(res))
+    .catch(errorHelper(res, 'Error checking if ' + address + ' is entrant of ' + tournamentAddress))
 })
 
 // Return if the potentantial address given is an entrant for a specific tournament
@@ -156,7 +156,7 @@ router.get('/address/:tournamentAddress/allRoundAddresses', (req, res, next) => 
         tournamentAddress
       })
     })
-    .catch(errorHelper(res))
+    .catch(errorHelper(res, 'Error getting all round addresses for ' + tournamentAddress))
 })
 
 // Return if the potentantial address given is an entrant for a specific tournament
@@ -165,7 +165,7 @@ router.get('/category/:category', (req, res, next) => {
   tournamentController
     .getTournamentsByCategory(category)
     .then(addresses => res.status(200).json({ addresses }))
-    .catch(errorHelper(res, 'Error getting ' + category + ' tournaments'))
+    .catch(errorHelper(res, 'Error getting tournaments for ' + category))
 })
 
 // Return if the potentantial address given is an entrant for a specific tournament
@@ -176,7 +176,7 @@ router.get('/address/:tournamentAddress/isCreator/:address', (req, res, next) =>
   tournamentController
     .isCreator(tournamentAddress, address)
     .then(result => res.status(200).json({ result }))
-    .catch(errorHelper(res, 'Error checking isCreator'))
+    .catch(errorHelper(res, 'Error checking if ' + address + ' is creator of ' + tournamentAddress))
 })
 
 /*

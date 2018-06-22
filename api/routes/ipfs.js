@@ -34,7 +34,7 @@ router.get('/download/hash/:hash', (req, res, next) => {
   ipfsCalls
     .getIpfsDataFiles(hash)
     .then(message => res.status(200).json({ message }))
-    .catch(errorHelper(res))
+    .catch(errorHelper(res, 'Error getting download link'))
 })
 
 router.get('/getDescription/hash/:hash', (req, res, next) => {
@@ -43,7 +43,7 @@ router.get('/getDescription/hash/:hash', (req, res, next) => {
   ipfsCalls
     .getIpfsDescriptionOnly(hash)
     .then(message => res.status(200).json({ message }))
-    .catch(errorHelper(res))
+    .catch(errorHelper(res, 'Error getting description'))
 })
 
 router.get('/getTournamentDescription/address/:address', (req, res, next) => {
@@ -53,7 +53,7 @@ router.get('/getTournamentDescription/address/:address', (req, res, next) => {
   matryxPlatformCalls
     .getTournamentDescription(address)
     .then(message => res.status(200).json({ message }))
-    .catch(errorHelper(res))
+    .catch(errorHelper(res, 'Error getting description for ' + address))
 })
 
 /*

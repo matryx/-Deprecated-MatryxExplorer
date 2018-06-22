@@ -67,7 +67,7 @@ router.get('/getInfo/:version', (req, res, next) => {
       let { abi } = result
       res.status(200).json({ address, abi })
     })
-    .catch(errorHelper(res, 'Error getting info for: ' + version))
+    .catch(errorHelper(res, 'Error getting info for ' + version))
 })
 
 // Return a confirmation the API is live
@@ -80,7 +80,7 @@ router.get('/getAddress/:version', (req, res, next) => {
       let { address } = result['networks']['777']
       res.status(200).json({ address })
     })
-    .catch(errorHelper(res, 'Error getting address for: ' + version))
+    .catch(errorHelper(res, 'Error getting address for ' + version))
 })
 
 // Return a confirmation the API is live
@@ -93,7 +93,7 @@ router.get('/getAbi/:version', (req, res, next) => {
       let { abi } = result
       res.status(200).json({ abi })
     })
-    .catch(errorHelper(res, 'Error getting ABI for: ' + version))
+    .catch(errorHelper(res, 'Error getting ABI for ' + version))
 })
 
 // Return a confirmation the API is live
