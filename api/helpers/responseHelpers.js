@@ -13,7 +13,7 @@ const errorHelper = (res, message) => err => {
 const validateAddress = (res, address) => {
   if (!ethHelper.isAddress(address)) {
     res.status(500).json({
-      errorMsg: 'This is not a valid ethereum address'
+      message: address + ' is not a valid ethereum address'
     })
     return false
   }
