@@ -12,6 +12,7 @@ const router = express.Router()
 
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 const matryxPlatformCalls = require('../controllers/gateway/matryxPlatformCalls')
+const { errorHelper } = require('../helpers/responseHelpers')
 
 let latestVersion = process.env.PLATFORM_VERSION
 
@@ -25,166 +26,82 @@ router.get('/', (req, res, next) => {
 // TODO fix this one...showing up as undefined due to scope
 // Return a message that this route handles all platform specific requests
 router.get('/getLatestInfo', (req, res, next) => {
-  try {
-    externalApiCalls.getMatryxPlatformInfo(latestVersion).then(function (resultingInfo) {
-      let addressReturned = resultingInfo['networks']['777']['address']
-      let abiReturned = JSON.stringify(resultingInfo.abi)
-      abiReturned = JSON.parse(abiReturned)
-      res.status(200).json({
-        address: addressReturned,
-        abi: abiReturned
-      })
-    }).catch((err) => {
-      res.status(500).json({
-        error: err.message
-      })
+  externalApiCalls
+    .getMatryxPlatformInfo(latestVersion)
+    .then(result => {
+      let { address } = result['networks'][networkId]
+      let { abi } = result
+      res.status(200).json({ address, abi })
     })
-  } catch (err) {
-    console.log('Error loading the ABI')
-    res.status(500).json({
-      errorMessage: 'Sorry, that version does not exist.',
-      error: err.message
-    })
-  }
+    .catch(errorHelper(res, 'Error getting latest info'))
 })
 
 router.get('/getLatestAddress', (req, res, next) => {
-  try {
-    externalApiCalls.getMatryxPlatformInfo(latestVersion).then(function (resultingInfo) {
-      let addressReturned = resultingInfo['networks']['777']['address']
-      res.status(200).json({
-        address: addressReturned
-      })
-    }).catch((err) => {
-      res.status(500).json({
-        error: err.message
-      })
+  externalApiCalls
+    .getMatryxPlatformInfo(latestVersion)
+    .then(result => {
+      let { address } = result['networks'][networkId]
+      res.status(200).json({ address })
     })
-  } catch (err) {
-    console.log('Error loading the ABI')
-    res.status(500).json({
-      errorMessage: 'Sorry, that version does not exist.',
-      error: err.message
-    })
-  }
+    .catch(errorHelper(res, 'Error getting latest address'))
 })
 
 router.get('/getLatestAbi', (req, res, next) => {
-  try {
-    externalApiCalls.getMatryxPlatformInfo(latestVersion).then(function (resultingInfo) {
-      let abiReturned = JSON.stringify(resultingInfo.abi)
-      abiReturned = JSON.parse(abiReturned)
-
-      res.status(200).json({
-        abi: abiReturned
-      })
-    }).catch((err) => {
-      res.status(500).json({
-        error: err.message
-      })
+  externalApiCalls
+    .getMatryxPlatformInfo(latestVersion)
+    .then(result => {
+      let { abi } = result
+      res.status(200).json({ abi })
     })
-  } catch (err) {
-    console.log('Error loading the ABI')
-    res.status(500).json({
-      errorMessage: 'Sorry, that version does not exist.',
-      error: err.message
-    })
-  }
+    .catch(errorHelper(res, 'Error getting latest ABI'))
 })
 
 // Return a confirmation the API is live
 router.get('/getInfo/:version', (req, res, next) => {
-  let version = req.params.version
-  try {
-    externalApiCalls.getMatryxPlatformInfo(version).then(function (resultingInfo) {
-      let addressReturned = resultingInfo['networks']['777']['address']
-      let abiReturned = JSON.stringify(resultingInfo.abi)
-      abiReturned = JSON.parse(abiReturned)
-      res.status(200).json({
-        address: addressReturned,
-        abi: abiReturned
-      })
-    }).catch((err) => {
-      res.status(500).json({
-        error: err.message
-      })
+  let { version } = req.params
+
+  externalApiCalls
+    .getMatryxPlatformInfo(version)
+    .then(result => {
+      let { address } = result['networks'][networkId]
+      let { abi } = result
+      res.status(200).json({ address, abi })
     })
-  } catch (err) {
-    console.log('Error loading the ABI')
-    res.status(500).json({
-      errorMessage: 'Sorry, that version does not exist.',
-      error: err.message
-    })
-  }
+    .catch(errorHelper(res, 'Error getting info for ' + version))
 })
 
 // Return a confirmation the API is live
 router.get('/getAddress/:version', (req, res, next) => {
-  let version = req.params.version
-  try {
-    externalApiCalls.getMatryxPlatformAddress(version).then(function (resultingInfo) {
-      let addressReturned = resultingInfo['networks']['777']['address']
-      res.status(200).json({
-        address: addressReturned
-      })
-    }).catch((err) => {
-      res.status(500).json({
-        error: err.message
-      })
+  let { version } = req.params
+
+  externalApiCalls
+    .getMatryxPlatformAddress(version)
+    .then(result => {
+      let { address } = result['networks'][networkId]
+      res.status(200).json({ address })
     })
-  } catch (err) {
-    console.log('Error loading the ABI')
-    res.status(500).json({
-      errorMessage: 'Sorry, that version does not exist.',
-      error: err.message
-    })
-  }
+    .catch(errorHelper(res, 'Error getting address for ' + version))
 })
 
 // Return a confirmation the API is live
 router.get('/getAbi/:version', (req, res, next) => {
-  let version = req.params.version
-  try {
-    externalApiCalls.getMatryxPlatformAbi(version).then(function (resultingAbi) {
-      let abiReturned = JSON.stringify(resultingAbi.abi)
-      abiReturned = JSON.parse(abiReturned)
-      res.status(200).json({
-        abi: abiReturned
-      })
-    }).catch((err) => {
-      res.status(500).json({
-        error: err.message
-      })
-    })
-  } catch (err) {
-    console.log('Error loading the ABI')
-    res.status(500).json({
-      errorMessage: 'Sorry, that version does not exist.',
-      error: err.message
-    })
-  }
-})
+  let { version } = req.params
 
+  externalApiCalls
+    .getMatryxPlatformAbi(version)
+    .then(result => {
+      let { abi } = result
+      res.status(200).json({ abi })
+    })
+    .catch(errorHelper(res, 'Error getting ABI for ' + version))
+})
 
 // Return a confirmation the API is live
 router.get('/getTopCategories', (req, res, next) => {
-  try {
-    matryxPlatformCalls.getTopCategories().then(function (results) {
-      res.status(200).json({
-        categories: results
-      })
-    }).catch((err) => {
-      res.status(500).json({
-        error: err.message
-      })
-    })
-  } catch (err) {
-    console.log('Error loading the top categories')
-    res.status(500).json({
-      errorMessage: 'Sorry, something failed.',
-      error: err.message
-    })
-  }
+  matryxPlatformCalls
+    .getTopCategories()
+    .then(categories => res.status(200).json({ categories }))
+    .catch(errorHelper(res, 'Error getting top categories'))
 })
 
 module.exports = router

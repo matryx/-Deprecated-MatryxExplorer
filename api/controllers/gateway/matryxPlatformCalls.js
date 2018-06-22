@@ -14,11 +14,12 @@ Imports
 const version = process.env.PLATFORM_VERSION
 
 const Web3 = require('web3')
-const config = require('../../../config')
 const externalApiCalls = require('./externalApiCalls')
 const ipfsCalls = require('./ipfsCalls')
 
 let web3Provider = process.env.CUSTOMRPC
+let networkId = process.env.NETWORK_ID
+
 let web3 = new Web3()
 web3.setProvider(new web3.providers.HttpProvider(web3Provider)) // Elastic IP Address -> http://52.8.65.20:8545
 console.log('Connected to: ' + web3Provider)
@@ -30,6 +31,10 @@ let matryxPlatformAddress
 let tournamentAbi
 let submissionAbi
 let roundAbi
+
+function bytesToAscii(bytes) {
+  return web3.toAscii('0x' + bytes.map(b => b.substr(2)).join('').replace(/(00)+$/, ''))
+}
 
 externalApiCalls.getMatryxTournamentAbi(version).then(function (results) {
   tournamentAbi = results.abi
@@ -48,7 +53,7 @@ externalApiCalls.getMatryxSubmissionAbi(version).then(function (results) {
 })
 
 externalApiCalls.getMatryxPlatformInfo(version).then(function (results) {
-  matryxPlatformAddress = results['networks']['777']['address']
+  matryxPlatformAddress = results['networks'][networkId]['address']
   matryxPlatformAbi = JSON.stringify(results.abi)
   matryxPlatformAbi = JSON.parse(matryxPlatformAbi)
 
@@ -57,7 +62,7 @@ externalApiCalls.getMatryxPlatformInfo(version).then(function (results) {
 
   console.log('There are ' + matryxPlatformContract.tournamentCount().c[0] + ' tournaments on the Platform.')
 }).catch(function (err) {
-  console.log('Unable to retrieve tournament Abi', err)
+  console.log('Unable to retrieve platform Abi', err)
 })
 
 /*
@@ -268,10 +273,7 @@ matryxPlatformCalls.getAllTournamentAddresses = function () {
 matryxPlatformCalls.getTournamentTitle = async function (tournamentAddress) {
   try {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-    let res = await tournamentContract.title()
-    if (res) {
-      return res
-    }
+    return bytesToAscii(await tournamentContract.getTitle())
   } catch (err) {
     throw new Error(err)
   }
@@ -306,11 +308,11 @@ matryxPlatformCalls.getTournamentDescription = function (tournamentAddress) {
   console.log('>MatryxPlatformCalls: Retrieving Tournament Description at: ' + tournamentAddress)
   return new Promise((resolve, reject) => {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-    tournamentContract.getExternalAddress((err, res) => {
+    tournamentContract.getDescriptionHash((err, res) => {
       if (err) {
-        throw new Error(err)
+        reject(err)
       } else {
-        _externalAddress = web3.toAscii(res)
+        _externalAddress = bytesToAscii(res)
         // console.log('The external address of the tournament is: ' + _externalAddress)
         ipfsCalls.getIpfsDescriptionOnly(_externalAddress).then(function (_descriptionResponse) {
           // console.log(_descriptionResponse)
@@ -331,7 +333,7 @@ matryxPlatformCalls.getTournamentDescription = function (tournamentAddress) {
 matryxPlatformCalls.getTournamentCategory = function (tournamentAddress) {
   return new Promise((resolve, reject) => {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-    tournamentContract.category((err, res) => {
+    tournamentContract.getCategory((err, res) => {
       if (err) {
         reject(err)
       } else {
@@ -410,11 +412,11 @@ matryxPlatformCalls.roundIsOpenTournament = function (tournamentAddress) {
 matryxPlatformCalls.getExternalAddressTournament = function (tournamentAddress) {
   return new Promise((resolve, reject) => {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-    tournamentContract.getExternalAddress((err, res) => {
+    tournamentContract.getDescriptionHash((err, res) => {
       if (err) {
         reject(err)
       } else {
-        _externalAddress = web3.toAscii(res)
+        _externalAddress = bytesToAscii(res)
         resolve(_externalAddress)
       }
     })
@@ -595,11 +597,11 @@ matryxPlatformCalls.isTournamentCreator = function (_tournamentAddress, _userAdd
 matryxPlatformCalls.isOpenRound = function (roundAddress) {
   return new Promise((resolve, reject) => {
     roundContract = web3.eth.contract(roundAbi).at(roundAddress)
-    roundContract.isOpen((err, res) => {
+    roundContract.getState((err, res) => {
       if (err) {
         reject(err)
       } else {
-        resolve(res)
+        resolve(res === 1)
       }
     })
   })
@@ -738,20 +740,16 @@ matryxPlatformCalls.roundStatus = function (roundAddress) {
   return new Promise((resolve, reject) => {
       // Logic for roundStatus
     roundContract = web3.eth.contract(roundAbi).at(roundAddress)
-    roundContract.isOpen((err, isOpenResult) => {
+    roundContract.getState((err, res) => {
       if (err) {
-        reject(err)
+        return reject(err)
       }
-      if (isOpenResult == true) {
-        resolve('isOpen')
-      } else {
-        roundContract.isInReview((err, isInReviewResult) => {
-          if (err) { reject(err) }
-          if (isInReviewResult == true) { resolve('inReview') } else {
-            resolve('isClosed')
-          }
-        })
-      }
+      res = res.toNumber()
+      if (res === 0) resolve('isWaiting')
+      else if (res === 1) resolve('isOpen')
+      else if (res === 2) resolve('inReview')
+      else if (res === 3) resolve('isClosed')
+      else if (res === 4) resolve('isAbandoned')
     })
   })
 }
@@ -767,23 +765,27 @@ matryxPlatformCalls.getSubmissionsFromRound = function (roundAddress) {
     let submissionResults = []
     // Check to see if the round is closed or unavailable
     matryxPlatformCalls.roundStatus(roundAddress).then(function (roundStatusValue) {
+      fullResponse.roundStatusValue = roundStatusValue
       if (roundStatusValue == 'inReview') {
         console.log('>MatryxPlatformCalls: Round Status = ' + roundStatusValue)
-        fullResponse.roundStatusValue = roundStatusValue
         resolve(fullResponse)
       }
       if (roundStatusValue == 'isOpen') {
         console.log('>MatryxPlatformCalls: Round Status = ' + roundStatusValue)
         console.log('Submission results are: ' + submissionResults)
-        fullResponse.roundStatusValue = roundStatusValue
         resolve(fullResponse)
-      } else if (roundStatusValue == 'isClosed') {
+      } else if (roundStatusValue == 'isClosed' || roundStatusValue == "isAbandoned") {
         console.log('>MatryxPlatformCalls: Round Status = ' + roundStatusValue)
-
         console.log('Retrieving all all submissionAddresses..')
+        fullResponse.roundStatusValue = roundStatusValue
 
         matryxPlatformCalls.getRoundSubmissions(roundAddress).then(function (submissionAddresses) {
           // console.log(submissionAddresses)
+
+          if (submissionAddresses.length === 0) {
+            fullResponse.submissionResults = []
+            resolve(fullResponse)
+          }
 
     // Check number of submission
           submissionAddresses.forEach(function (submissionAddress) {

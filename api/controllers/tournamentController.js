@@ -55,7 +55,6 @@ tournamentController.getAllTournaments = function () {
         tournamentDataCalls.push(matryxPlatformCalls.getTournamentBounty(tournamentAddress))
         tournamentDataCalls.push(matryxPlatformCalls.getTournamentDescription(tournamentAddress))
         tournamentDataCalls.push(matryxPlatformCalls.getTournamentCategory(tournamentAddress))
-        tournamentDataCalls.push(matryxPlatformCalls.getTournamentMaxRounds(tournamentAddress))
         tournamentDataCalls.push(matryxPlatformCalls.currentRoundOfTournament(tournamentAddress))
         tournamentDataCalls.push(matryxPlatformCalls.entrantCountOfTournament(tournamentAddress))
         tournamentDataCalls.push(matryxPlatformCalls.getExternalAddressTournament(tournamentAddress))
@@ -67,13 +66,12 @@ tournamentController.getAllTournaments = function () {
           tournamentData.mtx = values[1]
           tournamentData.tournamentDescription = values[2]
           tournamentData.category = values[3]
-          tournamentData.totalRounds = values[4]
-          tournamentData.currentRound = values[5]
-          tournamentData.numberOfParticipants = values[6]
+          tournamentData.currentRound = values[4]
+          tournamentData.numberOfParticipants = values[5]
           tournamentData.address = tournamentAddress
           tournamentData.ipType = ''
           tournamentData.tournamentId = ''
-          tournamentData.externalAddress = values[7]
+          tournamentData.externalAddress = values[6]
 
           responses.push(tournamentData)
           if (responses.length == tournamentAddresses.length) {
@@ -129,7 +127,6 @@ tournamentController.getTournamentByAddress = function (_tournamentAddress) {
     tournamentDataCalls.push(matryxPlatformCalls.getTournamentOwner(_tournamentAddress))
     tournamentDataCalls.push(matryxPlatformCalls.getTournamentDescription(_tournamentAddress))
     tournamentDataCalls.push(matryxPlatformCalls.getTournamentCategory(_tournamentAddress))
-    tournamentDataCalls.push(matryxPlatformCalls.getTournamentMaxRounds(_tournamentAddress))
     tournamentDataCalls.push(matryxPlatformCalls.currentRoundOfTournament(_tournamentAddress))
     tournamentDataCalls.push(matryxPlatformCalls.currentRoundAddressOfTournament(_tournamentAddress))
     tournamentDataCalls.push(matryxPlatformCalls.entrantCountOfTournament(_tournamentAddress))
@@ -148,14 +145,13 @@ tournamentController.getTournamentByAddress = function (_tournamentAddress) {
       tournamentData.authorName = values[2]
       tournamentData.tournamentDescription = values[3]
       tournamentData.category = values[4]
-      tournamentData.totalRounds = values[5]
-      tournamentData.currentRound = values[6]
-      tournamentData.currentRoundAddress = values[7]
-      tournamentData.numberOfParticipants = values[8]
+      tournamentData.currentRound = values[5]
+      tournamentData.currentRoundAddress = values[6]
+      tournamentData.numberOfParticipants = values[7]
       tournamentData.ipType = ''
-      tournamentData.roundEndTime = values[9]
-      tournamentData.participationMTX = values[10]
-      tournamentData.externalAddress = values[11]
+      tournamentData.roundEndTime = values[8]
+      tournamentData.participationMTX = values[9]
+      tournamentData.externalAddress = values[10]
           // tournamentData.submissions = values[10]
 
       resolve(tournamentData)

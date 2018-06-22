@@ -43,8 +43,8 @@ ipfsNode.on('ready', () => {
   // console.log(ipfsNode.swarm)
   ipfsNode.swarm.connect(ipfsPeer, (err, result) => {
     console.log('connecting to peers: ', result)
-    ipfsNode.swarm.peers((err, peerCount) => {
-      console.log('There are this many peers: ', peerCount)
+    ipfsNode.swarm.peers((err, peers) => {
+      console.log('There are this many peers: ', peers.length)
     })
   })
 })
