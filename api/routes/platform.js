@@ -29,7 +29,7 @@ router.get('/getLatestInfo', (req, res, next) => {
   externalApiCalls
     .getMatryxPlatformInfo(latestVersion)
     .then(result => {
-      let { address } = result['networks']['777']
+      let { address } = result['networks'][networkId]
       let { abi } = result
       res.status(200).json({ address, abi })
     })
@@ -40,7 +40,7 @@ router.get('/getLatestAddress', (req, res, next) => {
   externalApiCalls
     .getMatryxPlatformInfo(latestVersion)
     .then(result => {
-      let { address } = result['networks']['777']
+      let { address } = result['networks'][networkId]
       res.status(200).json({ address })
     })
     .catch(errorHelper(res, 'Error getting latest address'))
@@ -63,7 +63,7 @@ router.get('/getInfo/:version', (req, res, next) => {
   externalApiCalls
     .getMatryxPlatformInfo(version)
     .then(result => {
-      let { address } = result['networks']['777']
+      let { address } = result['networks'][networkId]
       let { abi } = result
       res.status(200).json({ address, abi })
     })
@@ -77,7 +77,7 @@ router.get('/getAddress/:version', (req, res, next) => {
   externalApiCalls
     .getMatryxPlatformAddress(version)
     .then(result => {
-      let { address } = result['networks']['777']
+      let { address } = result['networks'][networkId]
       res.status(200).json({ address })
     })
     .catch(errorHelper(res, 'Error getting address for ' + version))

@@ -14,11 +14,12 @@ Imports
 const version = process.env.PLATFORM_VERSION
 
 const Web3 = require('web3')
-const config = require('../../../config')
 const externalApiCalls = require('./externalApiCalls')
 const ipfsCalls = require('./ipfsCalls')
 
 let web3Provider = process.env.CUSTOMRPC
+let networkId = process.env.NETWORK_ID
+
 let web3 = new Web3()
 web3.setProvider(new web3.providers.HttpProvider(web3Provider)) // Elastic IP Address -> http://52.8.65.20:8545
 console.log('Connected to: ' + web3Provider)
@@ -52,7 +53,7 @@ externalApiCalls.getMatryxSubmissionAbi(version).then(function (results) {
 })
 
 externalApiCalls.getMatryxPlatformInfo(version).then(function (results) {
-  matryxPlatformAddress = results['networks']['777']['address']
+  matryxPlatformAddress = results['networks'][networkId]['address']
   matryxPlatformAbi = JSON.stringify(results.abi)
   matryxPlatformAbi = JSON.parse(matryxPlatformAbi)
 
@@ -741,10 +742,10 @@ matryxPlatformCalls.roundStatus = function (roundAddress) {
     roundContract = web3.eth.contract(roundAbi).at(roundAddress)
     roundContract.getState((err, res) => {
       if (err) {
-        reject(err)
+        return reject(err)
       }
       res = res.toNumber()
-      if (res === 0) resolve('notOpen')
+      if (res === 0) resolve('isWaiting')
       else if (res === 1) resolve('isOpen')
       else if (res === 2) resolve('inReview')
       else if (res === 3) resolve('isClosed')

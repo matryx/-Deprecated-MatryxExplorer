@@ -8,7 +8,8 @@ Nanome 2018
 
 const http = require('http')
 const fetch = require('node-fetch')
-const config = require('../../../config')
+// let platformAddress = process.env.PLATFORM_ADDRESS
+// let networkId = process.env.NETWORK_ID
 
 let externalApiCalls = {}
 
@@ -26,11 +27,11 @@ externalApiCalls.getMatryxPlatformInfo = function (branch) {
       fetch(matryxPlatformAbiUrl).then(function (result) {
         console.log('Getting Platform Abi from Matryx Platform Github for: ' + branch)
 
-        let jsonResult = result.json().then(json => {
-          json.networks['777'] = { address: config.platformAddress }
-          return json
-        })
-        // You need to get the address by adding results['networks']['777']['address'] to the promise call who uses this function
+        // let jsonResult = result.json().then(json => {
+        //   json.networks[networkId] = { address: plaformAddress }
+        //   return json
+        // })
+        // You need to get the address by adding results['networks'][networkId]['address'] to the promise call who uses this function
         resolve(jsonResult)
       }).catch(function (err) {
         reject(err)
@@ -53,11 +54,11 @@ externalApiCalls.getMatryxPlatformAddress = function (branch) {
       fetch(matryxPlatformAbiUrl).then(function (result) {
         console.log('Getting Platform Abi from Matryx Platform Github for: ' + branch)
 
-        let jsonResult = result.json().then(json => {
-          json.networks['777'] = { address: config.platformAddress }
-          return json
-        })
-        // You need to get the address by adding results['networks']['777']['address'] to the promise call who uses this function
+        // let jsonResult = result.json().then(json => {
+        //   json.networks[networkId] = { address: platformAddress }
+        //   return json
+        // })
+        // You need to get the address by adding results['networks'][networkId]['address'] to the promise call who uses this function
         resolve(jsonResult)
       }).catch(function (err) {
         reject(err)
