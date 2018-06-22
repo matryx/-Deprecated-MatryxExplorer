@@ -15,6 +15,7 @@ const matryxPlatformCalls = require('../controllers/gateway/matryxPlatformCalls'
 const { errorHelper } = require('../helpers/responseHelpers')
 
 const latestVersion = process.env.PLATFORM_VERSION
+const networkId = process.env.NETWORK_ID
 
 // Return a message that this route handles all platform specific requests
 router.get('/', (req, res, next) => {
