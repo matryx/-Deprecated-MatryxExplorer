@@ -62,7 +62,7 @@ externalApiCalls.getMatryxPlatformInfo(version).then(function (results) {
 
   console.log('There are ' + matryxPlatformContract.tournamentCount().c[0] + ' tournaments on the Platform.')
 }).catch(function (err) {
-  console.log('Unable to retrieve tournament Abi', err)
+  console.log('Unable to retrieve platform Abi', err)
 })
 
 /*

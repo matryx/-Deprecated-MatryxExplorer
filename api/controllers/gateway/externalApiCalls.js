@@ -27,7 +27,8 @@ externalApiCalls.getMatryxPlatformInfo = function (branch) {
       fetch(matryxPlatformAbiUrl).then(function (result) {
         console.log('Getting Platform Abi from Matryx Platform Github for: ' + branch)
 
-        // let jsonResult = result.json().then(json => {
+        let jsonResult = result.json()
+        //.then(json => {
         //   json.networks[networkId] = { address: plaformAddress }
         //   return json
         // })
@@ -54,7 +55,8 @@ externalApiCalls.getMatryxPlatformAddress = function (branch) {
       fetch(matryxPlatformAbiUrl).then(function (result) {
         console.log('Getting Platform Abi from Matryx Platform Github for: ' + branch)
 
-        // let jsonResult = result.json().then(json => {
+        let jsonResult = result.json()
+        // .then(json => {
         //   json.networks[networkId] = { address: platformAddress }
         //   return json
         // })
