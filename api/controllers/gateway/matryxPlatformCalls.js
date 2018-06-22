@@ -309,7 +309,7 @@ matryxPlatformCalls.getTournamentDescription = function (tournamentAddress) {
     tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
     tournamentContract.getDescriptionHash((err, res) => {
       if (err) {
-        throw new Error(err)
+        reject(err)
       } else {
         _externalAddress = bytesToAscii(res)
         // console.log('The external address of the tournament is: ' + _externalAddress)

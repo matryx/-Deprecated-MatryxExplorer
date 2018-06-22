@@ -17,8 +17,7 @@ externalApiCalls.getMatryxPlatformInfo = function (branch) {
     if (branch == 'v1') {
       let responsev1 = require('../../../data/abi/v1/platform')
       resolve(responsev1)
-    }
-    if (branch == 'v2') {
+    } else if (branch == 'v2') {
       let responsev2 = require('../../../data/abi/v2/platform')
       resolve(responsev2)
     } else {
@@ -45,25 +44,25 @@ externalApiCalls.getMatryxPlatformAddress = function (branch) {
     if (branch == 'v1') {
       let responsev1 = require('../../../data/abi/v1/platform')
       resolve(responsev1.address)
-    }
-    if (branch == 'v2') {
+    } else if (branch == 'v2') {
       let responsev2 = require('../../../data/abi/v2/platform')
       resolve(responsev2.address)
-    }
-    let matryxPlatformAbiUrl = 'https://raw.githubusercontent.com/matryx/matryx-alpha-source/' + branch + '/build/contracts/MatryxPlatform.json'
+    } else {
+      let matryxPlatformAbiUrl = 'https://raw.githubusercontent.com/matryx/matryx-alpha-source/' + branch + '/build/contracts/MatryxPlatform.json'
 
-    fetch(matryxPlatformAbiUrl).then(function (result) {
-      console.log('Getting Platform Abi from Matryx Platform Github for: ' + branch)
+      fetch(matryxPlatformAbiUrl).then(function (result) {
+        console.log('Getting Platform Abi from Matryx Platform Github for: ' + branch)
 
-      let jsonResult = result.json().then(json => {
-        json.networks['777'] = { address: config.platformAddress }
-        return json
+        let jsonResult = result.json().then(json => {
+          json.networks['777'] = { address: config.platformAddress }
+          return json
+        })
+        // You need to get the address by adding results['networks']['777']['address'] to the promise call who uses this function
+        resolve(jsonResult)
+      }).catch(function (err) {
+        reject(err)
       })
-      // You need to get the address by adding results['networks']['777']['address'] to the promise call who uses this function
-      resolve(jsonResult)
-    }).catch(function (err) {
-      reject(err)
-    })
+    }
   })
 }
 
@@ -72,29 +71,28 @@ externalApiCalls.getMatryxPlatformAbi = function (branch) {
     if (branch == 'v1') {
       let responsev1 = require('../../../data/abi/v1/platform')
       resolve(responsev1.abi)
-    }
-    if (branch == 'v2') {
+    } else if (branch == 'v2') {
       let responsev2 = require('../../../data/abi/v2/platform')
       resolve(responsev2.abi)
-    }
-    let matryxPlatformAbiUrl = 'https://raw.githubusercontent.com/matryx/matryx-alpha-source/' + branch + '/build/contracts/MatryxPlatform.json'
+    } else {
+      let matryxPlatformAbiUrl = 'https://raw.githubusercontent.com/matryx/matryx-alpha-source/' + branch + '/build/contracts/MatryxPlatform.json'
 
-    fetch(matryxPlatformAbiUrl).then(function (result) {
-      console.log('Getting Platform Abi from Matryx Platform Github for: ' + branch)
-      let jsonResult = result.json()
-      resolve(jsonResult)
-    }).catch(function (err) {
-      reject(err)
-    })
+      fetch(matryxPlatformAbiUrl).then(function (result) {
+        console.log('Getting Platform Abi from Matryx Platform Github for: ' + branch)
+        let jsonResult = result.json()
+        resolve(jsonResult)
+      }).catch(function (err) {
+        reject(err)
+      })
+    }
   })
 }
 
 externalApiCalls.getMatryxTournamentAbi = function (branch) {
   return new Promise((resolve, reject) => {
     if (branch == 'v1') {
-      reject('Abi does not exist')
-    }
-    if (branch == 'v2') {
+      reject({ message: 'Abi does not exist' })
+    } else if (branch == 'v2') {
       let responsev2 = require('../../../data/abi/v2/tournament')
       resolve(responsev2)
     } else {
@@ -115,8 +113,7 @@ externalApiCalls.getMatryxSubmissionAbi = function (branch) {
   return new Promise((resolve, reject) => {
     if (branch == 'v1') {
       reject('Abi does not exist')
-    }
-    if (branch == 'v2') {
+    } else if (branch == 'v2') {
       let responsev2 = require('../../../data/abi/v2/submission')
       resolve(responsev2)
     } else {
@@ -137,8 +134,7 @@ externalApiCalls.getMatryxRoundAbi = function (branch) {
   return new Promise((resolve, reject) => {
     if (branch == 'v1') {
       reject('Abi does not exist')
-    }
-    if (branch == 'v2') {
+    } else if (branch == 'v2') {
       let responsev2 = require('../../../data/abi/v2/round')
       resolve(responsev2)
     } else {
