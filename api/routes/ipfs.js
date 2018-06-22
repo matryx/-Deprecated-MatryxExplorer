@@ -16,7 +16,7 @@ const router = express.Router()
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 const matryxPlatformCalls = require('../controllers/gateway/matryxPlatformCalls')
 const ipfsCalls = require('../controllers/gateway/ipfsCalls')
-const ethHelper = require('../helpers/ethHelper')
+const { errorHelper, validateAddress } = require('../helpers/responseHelpers')
 
 // Return a message that this route handles activity calls
 // TODO return the landing page events to the UI
@@ -28,53 +28,32 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/download/hash/:hash', (req, res, next) => {
-  let hash = req.params.hash
+  let { hash } = req.params
   // TODO: check IPFS hash
   console.log('>IPFS Router: /download/hash/', hash, 'hit')
-  ipfsCalls.getIpfsDataFiles(hash).then(function (result) {
-    res.status(200).json({
-      message: result
-    }).catch((err) => {
-      res.status(500).json({
-        error: err.message
-      })
-    })
-  })
+  ipfsCalls
+    .getIpfsDataFiles(hash)
+    .then(message => res.status(200).json({ message }))
+    .catch(errorHelper(res))
 })
 
 router.get('/getDescription/hash/:hash', (req, res, next) => {
-  let hash = req.params.hash
+  let { hash } = req.params
   // TODO: check IPFS hash
-  ipfsCalls.getIpfsDescriptionOnly(hash).then(function (result) {
-    console.log('The returned result is: ', result)
-    res.status(200).json({
-      message: result
-    })
-  }).catch(function (err) {
-    res.status(500).json({
-      message: err.message
-    })
-  })
+  ipfsCalls
+    .getIpfsDescriptionOnly(hash)
+    .then(message => res.status(200).json({ message }))
+    .catch(errorHelper(res))
 })
 
 router.get('/getTournamentDescription/address/:address', (req, res, next) => {
-  let address = req.params.address
+  let { address } = req.params
+  if(!validateAddress(res, address)) return
 
-  if (!ethHelper.isAddress(tournamentAddress)) {
-    res.status(500).json({
-      errorMsg: 'This is not a valid ethereum address'
-    })
-  } else {
-    matryxPlatformCalls.getTournamentDescription(address).then(function (result) {
-      res.status(200).json({
-        message: result
-      })
-    }).catch(function (err) {
-      res.status(500).json({
-        message: err.message
-      })
-    })
-  }
+  matryxPlatformCalls
+    .getTournamentDescription(address)
+    .then(message => res.status(200).json({ message }))
+    .catch(errorHelper(res))
 })
 
 /*
