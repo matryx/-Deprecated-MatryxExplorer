@@ -48,7 +48,7 @@ router.get('/getDescription/hash/:hash', (req, res, next) => {
 
 router.get('/getTournamentDescription/address/:address', (req, res, next) => {
   let { address } = req.params
-  if(!validateAddress(res, address)) return
+  if (!validateAddress(res, address)) return
 
   matryxPlatformCalls
     .getTournamentDescription(address)
@@ -77,73 +77,73 @@ router.post('/upload', (req, res, next) => {
 
   form.uploadDir = tmpobj.name
 
-// TODO: Throw this all in a try/catch block
+  // TODO: Throw this all in a try/catch block
   form
-      .on('field', function (field, value) {
-        // console.log(field, value)
-        fields.push([field, value])
-      })
-      .on('file', function (field, file) {
-        // console.log(field, file)
-        files.push([field, file])
-      })
-      .on('progress', function (bytesReceived, bytesExpected) {
-        var percent = (bytesReceived / bytesExpected * 100) | 0
-        console.log('Uploading: %' + percent + '\r')
-      })
-      .on('end', function () {
-          // Logic for handling the files + IPFS
-        console.log('-> Upload Complete')
+    .on('field', function (field, value) {
+      // console.log(field, value)
+      fields.push([field, value])
+    })
+    .on('file', function (field, file) {
+      // console.log(field, file)
+      files.push([field, file])
+    })
+    .on('progress', function (bytesReceived, bytesExpected) {
+      var percent = (bytesReceived / bytesExpected * 100) | 0
+      console.log('Uploading: %' + percent + '\r')
+    })
+    .on('end', function () {
+      // Logic for handling the files + IPFS
+      console.log('-> Upload Complete')
 
-        let tempDirectory = tmpobj.name
+      let tempDirectory = tmpobj.name
 
-        // console.log(util.inspect(files[0][1].path)) // This is where the first file was stored
-        // console.log(fields[0][0]) // This is if the first field is 'description', it returns 'description' and fields[0][1] is the description content
+      // console.log(util.inspect(files[0][1].path)) // This is where the first file was stored
+      // console.log(fields[0][0]) // This is if the first field is 'description', it returns 'description' and fields[0][1] is the description content
 
-        files.forEach(function (file) {
-          fs.rename(file[1].path, form.uploadDir + '/' + file[1].name, function (err) {
-            if (err) console.log('ERROR: ' + err)
+      files.forEach(function (file) {
+        fs.rename(file[1].path, form.uploadDir + '/' + file[1].name, function (err) {
+          if (err) console.log('ERROR: ' + err)
+        })
+      })
+
+      fields.forEach(function (field) {
+        // Check to see if there is a description key in the fields
+        if (field[0] == 'description') {
+          console.log(field[1]) // This is the description content
+          descriptionContent = Buffer.from(field[1])
+          descriptionPath = tempDirectory + '/description.txt'
+          // Store the descriptionContent into the tempFolder
+          ipfsCalls.storeDescriptionToTmp(descriptionContent, descriptionPath).then(function (result) {
+            console.log(result)
           })
-        })
-
-        fields.forEach(function (field) {
-            // Check to see if there is a description key in the fields
-          if (field[0] == 'description') {
-            console.log(field[1]) // This is the description content
-            descriptionContent = Buffer.from(field[1])
-            descriptionPath = tempDirectory + '/description.txt'
-            // Store the descriptionContent into the tempFolder
-            ipfsCalls.storeDescriptionToTmp(descriptionContent, descriptionPath).then(function (result) {
-              console.log(result)
-            })
-          }
-          // Check to see if there is a jsonContent key in the fields
-          if (field[0] == 'jsonContent') {
-            console.log(field[1]) // This is the json content
-            jsonContent = Buffer.from(field[1])
-            jsonPath = tempDirectory + '/jsonContent.json'
-            ipfsCalls.storeDescriptionToTmp(jsonContent, jsonPath).then(function (result) {
-              console.log(result)
-            })
-          }
-        })
-
-        // Add the tmp folder to IPFS and get back a hash
-        ipfsCalls.pushTmpFolderToIPFS(tempDirectory).then(function (ipfsHashResult) {
-          // externalApiCalls.curlIpfsIo(ipfsHashResult).then(function (tmp) {
-          res.status(200).json({
-            folderHash: ipfsHashResult
+        }
+        // Check to see if there is a jsonContent key in the fields
+        if (field[0] == 'jsonContent') {
+          console.log(field[1]) // This is the json content
+          jsonContent = Buffer.from(field[1])
+          jsonPath = tempDirectory + '/jsonContent.json'
+          ipfsCalls.storeDescriptionToTmp(jsonContent, jsonPath).then(function (result) {
+            console.log(result)
           })
-          // })
-        })
+        }
+      })
 
-        fs.readdir(tempDirectory, (err, files) => {
-          console.log('These are the files in the directory')
-          files.forEach(file => {
-            console.log(file)
-          })
+      // Add the tmp folder to IPFS and get back a hash
+      ipfsCalls.pushTmpFolderToIPFS(tempDirectory).then(function (ipfsHashResult) {
+        // externalApiCalls.curlIpfsIo(ipfsHashResult).then(function (tmp) {
+        res.status(200).json({
+          folderHash: ipfsHashResult
+        })
+        // })
+      })
+
+      fs.readdir(tempDirectory, (err, files) => {
+        console.log('These are the files in the directory')
+        files.forEach(file => {
+          console.log(file)
         })
       })
+    })
   form.parse(req)
 })
 
