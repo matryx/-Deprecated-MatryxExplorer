@@ -121,9 +121,9 @@ router.post('/upload', (req, res, next) => {
           // })
         })
 
-        let files = fs.readdirSync(tempDir)
+        let dir = fs.readdirSync(tempDir)
         console.log('These are the files in the directory:')
-        files.forEach(file => console.log('  ' + file))
+        dir.forEach(file => console.log('  ' + file))
       })
     form.parse(req)
   } catch (err) {
