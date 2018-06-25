@@ -208,8 +208,8 @@ ipfsCalls.getIpfsDescriptionOnly = function (_ipfsHash) {
 
     _ipfsHash = _ipfsHash + '/description.txt'
     let response = ''
-    console.log('Calling IPFS node to get data')
-    console.log('Online status ', ipfsNode.isOnline())
+    // console.log('Calling IPFS node to get data')
+    // console.log('Online status ', ipfsNode.isOnline())
 
     ipfsNode.files.get(_ipfsHash).then(function (results) {
       response = results[0].content.toString('utf8')

@@ -21,7 +21,19 @@ const validateAddress = (res, address) => {
   return true
 }
 
+// input:  function that follows node's error first callback standard
+// output: function that returns a Promise instead
+const promisify = fn => function () {
+  return new Promise((resolve, reject) => {
+    fn(...arguments, (err, res) => {
+      if (err) reject(err)
+      else resolve(res)
+    })
+  })
+}
+
 module.exports = {
   errorHelper,
-  validateAddress
+  validateAddress,
+  promisify
 }

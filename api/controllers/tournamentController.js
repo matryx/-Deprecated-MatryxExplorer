@@ -25,69 +25,51 @@ tournamentController.count = async function () {
   }
 }
 
-tournamentController.getAllTournaments = function () {
-  return new Promise((resolve, reject) => {
-    let responses = []
+tournamentController.getAllTournaments = async function () {
+  // Get all the tournament addresses
+  let addresses = await matryxPlatformCalls.getAllTournamentAddresses()
+  let promises = addresses.map(address => (async () => {
+    // TODO: remove either totalRounds or currentRound; they are the same
+    // let ts = Date.now()
+    let data = await Promise.all([
+      matryxPlatformCalls.getTournamentTitle(address),
+      matryxPlatformCalls.getTournamentBounty(address),
+      matryxPlatformCalls.getTournamentDescription(address),
+      matryxPlatformCalls.getTournamentCategory(address),
+      matryxPlatformCalls.currentRoundOfTournament(address),
+      matryxPlatformCalls.entrantCountOfTournament(address),
+      matryxPlatformCalls.getExternalAddressTournament(address)
+    ])
+    // console.log(address, 'took', Date.now() - ts, 'ms')
 
-    // Get all the tournament addresses
-    matryxPlatformCalls.getAllTournamentAddresses().then(function (tournamentAddresses) {
-      // console.log(tournamentAddresses)
-      for (i = 0; i < tournamentAddresses.length; i++) {
-        let tournamentAddress = tournamentAddresses[i]
-        // console.log(tournamentAddress)
+    let [
+      tournmentTitle,
+      mtx,
+      tournamentDescription,
+      category,
+      currentRound,
+      numberOfParticipants,
+      externalAddress
+    ] = data
 
-        // TODO: remove either totalRounds or currentRound; they are the same
-        let tournamentDataCalls = []
-        let tournamentData = {
-          tournamentTitle: '',
-          mtx: 0,
-          tournamentDescription: '',
-          category: '',
-          totalRounds: 0,
-          currentRound: 0,
-          numberOfParticipants: 0,
-          address: '',
-          ipType: '',
-          tournamentId: '',
-          externalAddress: ''
-        }
+    let details = {
+      tournmentTitle,
+      mtx,
+      tournamentDescription,
+      category,
+      currentRound,
+      numberOfParticipants,
+      externalAddress,
+      address,
+      ipType: '',
+      tournamentId: '',
+      totalRounds: currentRound
+    }
 
-        tournamentDataCalls.push(matryxPlatformCalls.getTournamentTitle(tournamentAddress))
-        tournamentDataCalls.push(matryxPlatformCalls.getTournamentBounty(tournamentAddress))
-        tournamentDataCalls.push(matryxPlatformCalls.getTournamentDescription(tournamentAddress))
-        tournamentDataCalls.push(matryxPlatformCalls.getTournamentCategory(tournamentAddress))
-        tournamentDataCalls.push(matryxPlatformCalls.currentRoundOfTournament(tournamentAddress))
-        tournamentDataCalls.push(matryxPlatformCalls.entrantCountOfTournament(tournamentAddress))
-        tournamentDataCalls.push(matryxPlatformCalls.getExternalAddressTournament(tournamentAddress))
+    return details
+  })())
 
-            // Promise all for the data inside the tournaments
-        Promise.all(tournamentDataCalls).then(function (values) {
-            // Attach to the tournament Data
-          tournamentData.tournamentTitle = values[0]
-          tournamentData.mtx = values[1]
-          tournamentData.tournamentDescription = values[2]
-          tournamentData.category = values[3]
-          tournamentData.currentRound = values[4]
-          tournamentData.totalRounds = values[4]
-          tournamentData.numberOfParticipants = values[5]
-          tournamentData.address = tournamentAddress
-          tournamentData.ipType = ''
-          tournamentData.tournamentId = ''
-          tournamentData.externalAddress = values[6]
-
-          responses.push(tournamentData)
-          if (responses.length == tournamentAddresses.length) {
-            resolve(responses)
-          }
-          // console.log(values)
-        }).catch(function (err) {
-          reject(err)
-        })
-      }
-    }).catch(function (err) {
-      reject(err)
-    })
-  })
+  return await Promise.all(promises)
 }
 
 // TODO: submissions call

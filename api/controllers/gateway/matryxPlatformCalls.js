@@ -14,6 +14,7 @@ Imports
 const Web3 = require('web3')
 const externalApiCalls = require('./externalApiCalls')
 const ipfsCalls = require('./ipfsCalls')
+const { promisify } = require('../../helpers/responseHelpers')
 
 const version = process.env.PLATFORM_VERSION
 const web3Provider = process.env.CUSTOMRPC
@@ -67,57 +68,56 @@ externalApiCalls
 */
 
 matryxPlatformCalls.getTournamentCount = () => {
-  return matryxPlatformContract.tournamentCount()
+  return promisify(matryxPlatformContract.tournamentCount)()
 }
 
 // TODO: Async + error handling
 matryxPlatformCalls.allTournaments = index => {
-  return matryxPlatformContract.allTournaments(index)
+  return promisify(matryxPlatformContract.allTournaments)(index)
 }
 
 matryxPlatformCalls.getTournamentsByCategory = category => {
-  return matryxPlatformContract.getTournamentsByCategory(category)
+  return promisify(matryxPlatformContract.getTournamentsByCategory)(category)
 }
 
 matryxPlatformCalls.getCategoryCount = category => {
-  return matryxPlatformContract.getCategoryCount(category)
+  return promisify(matryxPlatformContract.getCategoryCount)(category)
 }
 
 matryxPlatformCalls.isPeer = address => {
-  return matryxPlatformContract.isPeer(address)
+  return promisify(matryxPlatformContract.isPeer)(address)
 }
 
 matryxPlatformCalls.peerExistsAndOwnsSubmission = (peerAddress, submissionAddress) => {
-  return matryxPlatformContract.peerExistsAndOwnsSubmission(peerAddress, submissionAddress)
+  return promisify(matryxPlatformContract.peerExistsAndOwnsSubmission)(peerAddress, submissionAddress)
 }
 
 matryxPlatformCalls.getTokenAddress = () => {
-  return matryxPlatformContract.getTokenAddress()
+  return promisify(matryxPlatformContract.getTokenAddress)()
 }
 
 // TODO: Async + error handling
 matryxPlatformCalls.getTournamentAtIndex = index => {
-  return matryxPlatformContract.getTournamentAtIndex(index)
+  return promisify(matryxPlatformContract.getTournamentAtIndex)(index)
 }
 
 matryxPlatformCalls.getTopCategories = async () => {
   let categories = []
   for (i = 0; i < 10; i++) {
-    let category = await matryxPlatformContract.getTopCategory(i)
+    let category = await promisify(matryxPlatformContract.getTopCategory)(i)
     categories.push(category)
   }
   return categories
 }
 
-// TODO: redo this to put them in the same order everytime using a Dictionary
 matryxPlatformCalls.getAllTournamentAddresses = async () => {
-  let addresses = []
-  let tournamentCount = await matryxPlatformContract.tournamentCount()
-  for (i = 0; i < tournamentCount; i++) {
-    let address = await matryxPlatformContract.getTournamentAtIndex(i)
-    addresses.push(address)
+  let tournamentCount = await promisify(matryxPlatformContract.tournamentCount)()
+  let promises = []
+  for (let i = 0; i < tournamentCount; i++) {
+    let promise = promisify(matryxPlatformContract.getTournamentAtIndex)(i)
+    promises.push(promise)
   }
-  return addresses
+  return await Promise.all(promises)
 }
 
 /*
@@ -126,17 +126,17 @@ matryxPlatformCalls.getAllTournamentAddresses = async () => {
 
 matryxPlatformCalls.getTournamentTitle = async tournamentAddress => {
   tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  return bytesToAscii(await tournamentContract.getTitle())
+  return bytesToAscii(await promisify(tournamentContract.getTitle)())
 }
 
 matryxPlatformCalls.getTournamentOwner = async tournamentAddress => {
   tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  return await tournamentContract.owner()
+  return await promisify(tournamentContract.owner)()
 }
 
 matryxPlatformCalls.getTournamentBounty = async (tournamentAddress) => {
   tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  let bounty = await tournamentContract.Bounty()
+  let bounty = await promisify(tournamentContract.Bounty)()
   return web3.fromWei(bounty.toString())
 }
 
@@ -144,7 +144,7 @@ matryxPlatformCalls.getTournamentDescription = async (tournamentAddress) => {
   console.log('>MatryxPlatformCalls: Retrieving Tournament Description at: ' + tournamentAddress)
 
   tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  let hash = await tournamentContract.getDescriptionHash()
+  let hash = await promisify(tournamentContract.getDescriptionHash)()
   let externalAddress = bytesToAscii(hash)
 
   let description = await ipfsCalls.getIpfsDescriptionOnly(externalAddress)
@@ -157,86 +157,86 @@ matryxPlatformCalls.getTournamentDescription = async (tournamentAddress) => {
 
 matryxPlatformCalls.getTournamentCategory = async (tournamentAddress) => {
   tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  return await tournamentContract.getCategory()
+  return await promisify(tournamentContract.getCategory)()
 }
 
 matryxPlatformCalls.getTournamentMaxRounds = async (tournamentAddress) => {
   tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  let maxRounds = await tournamentContract.maxRounds()
+  let maxRounds = await promisify(tournamentContract.maxRounds)()
   return parseInt(maxRounds.toString())
 }
 
 matryxPlatformCalls.isEntrantToTournament = async (tournamentAddress, userAddress) => {
   tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  return await tournamentContract.isEntrant(userAddress)
+  return await promisify(tournamentContract.isEntrant)(userAddress)
 }
 
 // TODO not used
 matryxPlatformCalls.isInReviewTournament = async (tournamentAddress) => {
   tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  return await tournamentContract.isInReview()
+  return await promisify(tournamentContract.isInReview)()
 }
 
 // TODO not used
 matryxPlatformCalls.roundIsOpenTournament = async (tournamentAddress) => {
   tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  return await tournamentContract.roundIsOpen()
+  return await promisify(tournamentContract.roundIsOpen)()
 }
 
 matryxPlatformCalls.getExternalAddressTournament = async (tournamentAddress) => {
   tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  let hash = await tournamentContract.getDescriptionHash()
+  let hash = await promisify(tournamentContract.getDescriptionHash)()
   return bytesToAscii(hash)
 }
 
 matryxPlatformCalls.currentRoundOfTournament = async (tournamentAddress) => {
   tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  let currentRound = await tournamentContract.currentRound()
+  let currentRound = await promisify(tournamentContract.currentRound)()
   return +currentRound[0]
 }
 
 matryxPlatformCalls.currentRoundAddressOfTournament = async (tournamentAddress) => {
   tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  let currentRound = await tournamentContract.currentRound()
+  let currentRound = await promisify(tournamentContract.currentRound)()
   return currentRound[1]
 }
 
 matryxPlatformCalls.submissionsCountOfTournament = async (tournamentAddress) => {
   tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  return await tournamentContract.submissionCount()
+  return await promisify(tournamentContract.submissionCount)()
 }
 
 matryxPlatformCalls.entrantCountOfTournament = async (tournamentAddress) => {
   tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  let count = await tournamentContract.entrantCount()
+  let count = await promisify(tournamentContract.entrantCount)()
   return +count
 }
 
 matryxPlatformCalls.getEntryFeeOfTournament = async (tournamentAddress) => {
   tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  let fee = await tournamentContract.getEntryFee()
+  let fee = await promisify(tournamentContract.getEntryFee)()
   return web3.fromWei(fee.toString())
 }
 
 matryxPlatformCalls.getCurrentRoundEndTimeFromTournament = async (tournamentAddress) => {
   tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  let currentRound = await tournamentContract.currentRound()
+  let currentRound = await promisify(tournamentContract.currentRound)()
   let roundAddress = currentRound[1]
   if (roundAddress == '0x') {
     throw new Error("The round address is invalid - '0x'")
   }
   let roundContract = web3.eth.contract(roundAbi).at(roundAddress)
-  return await roundContract.endTime()
+  return await promisify(roundContract.endTime)()
 }
 
 matryxPlatformCalls.getAllRoundAddresses = async (tournamentAddress) => {
   tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
   let addresses = []
-  let currentRound = await tournamentContract.currentRound()
+  let currentRound = await promisify(tournamentContract.currentRound)()
   let count = +currentRound[0]
 
   for (i = 0; i < count; i++) {
-    let roundAddress = tournamentContract.rounds(i)
+    let roundAddress = await promisify(tournamentContract.rounds)(i)
     if (roundAddress != '0x') {
       addresses.push(roundAddress)
     }
@@ -246,7 +246,7 @@ matryxPlatformCalls.getAllRoundAddresses = async (tournamentAddress) => {
 
 matryxPlatformCalls.getRoundAddressByIndex = async (tournamentAddress, roundIndex) => {
   tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  let roundAddress = await tournamentContract.rounds(roundIndex)
+  let roundAddress = await promisify(tournamentContract.rounds)(roundIndex)
   if (roundAddress != '0x') {
     return roundAddress
   } else {
@@ -256,7 +256,7 @@ matryxPlatformCalls.getRoundAddressByIndex = async (tournamentAddress, roundInde
 
 matryxPlatformCalls.isTournamentCreator = async (tournamentAddress, userAddress) => {
   tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  let ownerAddress = await tournamentContract.owner()
+  let ownerAddress = await promisify(tournamentContract.owner)()
   return ownerAddress == userAddress
 }
 
@@ -265,64 +265,64 @@ matryxPlatformCalls.isTournamentCreator = async (tournamentAddress, userAddress)
 */
 matryxPlatformCalls.isOpenRound = async (roundAddress) => {
   roundContract = web3.eth.contract(roundAbi).at(roundAddress)
-  let state = await roundContract.getState()
+  let state = await promisify(roundContract.getState)()
   return state === 1
 }
 
 matryxPlatformCalls.isInRoundReviewPeriod = async (roundAddress) => {
   roundContract = web3.eth.contract(roundAbi).at(roundAddress)
-  return await roundContract.isInReview()
+  return await promisify(roundContract.isInReview)()
 }
 
 matryxPlatformCalls.getParentTournamentFromRound = async (roundAddress) => {
   roundContract = web3.eth.contract(roundAbi).at(roundAddress)
-  return await roundContract.getTournament()
+  return await promisify(roundContract.getTournament)()
 }
 
 matryxPlatformCalls.getRoundBounty = async (roundAddress) => {
   roundContract = web3.eth.contract(roundAbi).at(roundAddress)
-  let bounty = await roundContract.getBounty()
+  let bounty = await promisify(roundContract.getBounty)()
   return web3.fromWei(bounty.toString())
 }
 
 matryxPlatformCalls.getRoundSubmissions = async (roundAddress) => {
   roundContract = web3.eth.contract(roundAbi).at(roundAddress)
-  return await roundContract.getSubmissions()
+  return await promisify(roundContract.getSubmissions)()
 }
 
 matryxPlatformCalls.getSubmissionAddressFromRound = async (roundAddress, submissionIndex) => {
   roundContract = web3.eth.contract(roundAbi).at(roundAddress)
-  return await roundContract.getSubmissionAddress(submissionIndex)
+  return await promisify(roundContract.getSubmissionAddress)(submissionIndex)
 }
 
 matryxPlatformCalls.getSubmissionAuthorFromRound = async (roundAddress, submissionAddress) => {
   roundContract = web3.eth.contract(roundAbi).at(roundAddress)
-  return await roundContract.getSubmissionAuthor(submissionAddress)
+  return await promisify(roundContract.getSubmissionAuthor)(submissionAddress)
 }
 
 matryxPlatformCalls.getBalanceOfRound = async (roundAddress) => {
   roundContract = web3.eth.contract(roundAbi).at(roundAddress)
-  return await roundContract.getBalance()
+  return await promisify(roundContract.getBalance)()
 }
 
 matryxPlatformCalls.isSubmissionChosen = async (roundAddress) => {
   roundContract = web3.eth.contract(roundAbi).at(roundAddress)
-  return await roundContract.submissionChosen()
+  return await promisify(roundContract.submissionChosen)()
 }
 
 matryxPlatformCalls.getWinningSubmissionAddress = async (roundAddress) => {
   roundContract = web3.eth.contract(roundAbi).at(roundAddress)
-  return await roundContract.getWinningSubmissionAddress()
+  return await promisify(roundContract.getWinningSubmissionAddress)()
 }
 
 matryxPlatformCalls.numberOfSubmissions = async (roundAddress) => {
   roundContract = web3.eth.contract(roundAbi).at(roundAddress)
-  return await roundContract.numberOfSubmissions()
+  return await promisify(roundContract.numberOfSubmissions)()
 }
 
 matryxPlatformCalls.roundStatus = async (roundAddress) => {
   roundContract = web3.eth.contract(roundAbi).at(roundAddress)
-  let state = await roundContract.getState()
+  let state = await promisify(roundContract.getState)()
   if (state == 0) return 'isWaiting'
   else if (state == 1) return 'isOpen'
   else if (state == 2) return 'inReview'
@@ -469,21 +469,21 @@ matryxPlatformCalls.getSubmissionTitle = async (submissionAddress) => {
   console.log('>MatryxPlatformCalls: Retrieving submission title from: ' + submissionAddress)
 
   submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
-  return await submissionContract.getTitle()
+  return await promisify(submissionContract.getTitle)()
 }
 
 matryxPlatformCalls.getSubmissionAuthor = async (submissionAddress) => {
   console.log('>MatryxPlatformCalls: Retrieving submission author from: ' + submissionAddress)
 
   submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
-  return await submissionContract.getAuthor()
+  return await promisify(submissionContract.getAuthor)()
 }
 
 matryxPlatformCalls.getSubmissionExternalAddress = async (submissionAddress) => {
   console.log('>MatryxPlatformCalls: Retrieving submission external address from: ' + submissionAddress)
 
   submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
-  let externalAddress = await submissionContract.getExternalAddress()
+  let externalAddress = await promisify(submissionContract.getExternalAddress)()
   return web3.toAscii(externalAddress)
 }
 
@@ -491,56 +491,56 @@ matryxPlatformCalls.getSubmissionReferences = async (submissionAddress) => {
   console.log('>MatryxPlatformCalls: Retrieving submission references from: ' + submissionAddress)
 
   submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
-  return await submissionContract.getReferences()
+  return await promisify(submissionContract.getReferences)()
 }
 
 matryxPlatformCalls.getSubmissionContributors = async (submissionAddress) => {
   console.log('>MatryxPlatformCalls: Retrieving submission contributors from: ' + submissionAddress)
 
   submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
-  return await submissionContract.getContributors()
+  return await promisify(submissionContract.getContributors)()
 }
 
 matryxPlatformCalls.getSubmissionTimeSubmitted = async (submissionAddress) => {
   console.log('>MatryxPlatformCalls: Retrieving submission time submitted from: ' + submissionAddress)
 
   submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
-  return await submissionContract.getTimeSubmitted()
+  return await promisify(submissionContract.getTimeSubmitted)()
 }
 
 matryxPlatformCalls.getSubmissionTimeUpdated = async (submissionAddress) => {
   console.log('>MatryxPlatformCalls: Retrieving submission time updated from: ' + submissionAddress)
 
   submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
-  return await submissionContract.getTimeUpdated()
+  return await promisify(submissionContract.getTimeUpdated)()
 }
 
 matryxPlatformCalls.getSubmissionBalance = async (submissionAddress) => {
   console.log('>MatryxPlatformCalls: Retrieving submission balance from: ' + submissionAddress)
 
   submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
-  return await submissionContract.getBalance()
+  return await promisify(submissionContract.getBalance)()
 }
 
 matryxPlatformCalls.getRoundAddressFromSubmission = async (submissionAddress) => {
   console.log('>MatryxPlatformCalls: Retrieving round address from submission: ' + submissionAddress)
 
   submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
-  return await submissionContract.getRound()
+  return await promisify(submissionContract.getRound)()
 }
 
 matryxPlatformCalls.getTournamentAddressFromSubmission = async (submissionAddress) => {
   console.log('>MatryxPlatformCalls: Retrieving tournament address from submission: ' + submissionAddress)
 
   submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
-  return await submissionContract.getTournament()
+  return await promisify(submissionContract.getTournament)()
 }
 
 matryxPlatformCalls.getSubmissionDescription = async (submissionAddress) => {
   console.log('>MatryxPlatformCalls: Retrieving submission description from: ' + submissionAddress)
 
   submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
-  let externalAddress = await submissionContract.getExternalAddress()
+  let externalAddress = await promisify(submissionContract.getExternalAddress)()
   externalAddress = web3.toAscii(externalAddress)
   return await ipfsCalls.getIpfsDescriptionOnly(externalAddress)
 }
@@ -549,7 +549,7 @@ matryxPlatformCalls.getSubmissionContents = async (submissionAddress) => {
   console.log('>MatryxPlatformCalls: Retrieving submission contents from: ' + submissionAddress)
 
   submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
-  let externalAddress = await submissionContract.getExternalAddress()
+  let externalAddress = await promisify(submissionContract.getExternalAddress)()
   web3.toAscii(externalAddress)
   return await ipfsCalls.getIpfsDataFiles(externalAddress)
 }
@@ -596,7 +596,7 @@ matryxPlatformCalls.getSubmissionParentInfo = async (submissionAddress) => {
 
 matryxPlatformCalls.isSubmissionCreator = async (submissionAddress, userAddress) => {
   submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
-  let ownerAddress = await submissionContract.owner()
+  let ownerAddress = await promisify(submissionContract.owner)()
   return ownerAddress == userAddress
 }
 
