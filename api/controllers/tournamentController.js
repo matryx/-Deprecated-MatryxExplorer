@@ -36,6 +36,7 @@ tournamentController.getAllTournaments = function () {
         let tournamentAddress = tournamentAddresses[i]
         // console.log(tournamentAddress)
 
+        // TODO: remove either totalRounds or currentRound; they are the same
         let tournamentDataCalls = []
         let tournamentData = {
           tournamentTitle: '',
@@ -67,6 +68,7 @@ tournamentController.getAllTournaments = function () {
           tournamentData.tournamentDescription = values[2]
           tournamentData.category = values[3]
           tournamentData.currentRound = values[4]
+          tournamentData.totalRounds = values[4]
           tournamentData.numberOfParticipants = values[5]
           tournamentData.address = tournamentAddress
           tournamentData.ipType = ''
@@ -98,6 +100,7 @@ tournamentController.getTournamentByAddress = function (_tournamentAddress) {
     let tournamentDataCalls = []
     let submissions = []
 
+    // TODO: remove either totalRounds or currentRound; they are the same
     let tournamentData = {
       tournamentTitle: '',
       tournamentAddress: '',
@@ -135,9 +138,9 @@ tournamentController.getTournamentByAddress = function (_tournamentAddress) {
     tournamentDataCalls.push(matryxPlatformCalls.getExternalAddressTournament(_tournamentAddress))
     // tournamentDataCalls.push(matryxPlatformCalls.getSubmissionsFromTournament(_tournamentAddress)) // TODO:
 
-            // Promise all for the data inside the tournaments
+    // Promise all for the data inside the tournaments
     Promise.all(tournamentDataCalls).then(function (values) {
-            // Attach to the tournament Data
+      // Attach to the tournament Data
       console.log(values)
       tournamentData.tournamentTitle = values[0]
       tournamentData.tournamentAddress = _tournamentAddress
@@ -146,6 +149,7 @@ tournamentController.getTournamentByAddress = function (_tournamentAddress) {
       tournamentData.tournamentDescription = values[3]
       tournamentData.category = values[4]
       tournamentData.currentRound = values[5]
+      tournamentData.totalRounds = values[5]
       tournamentData.currentRoundAddress = values[6]
       tournamentData.numberOfParticipants = values[7]
       tournamentData.ipType = ''
