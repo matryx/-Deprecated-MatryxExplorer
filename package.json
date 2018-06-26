@@ -54,5 +54,8 @@
     "mocha": "^5.0.4",
     "mongoose": "^5.0.16",
     "standard": "^11.0.1"
+  },
+  "resolutions": {
+    "libp2p-switch": "~0.40.4"
   }
 }
