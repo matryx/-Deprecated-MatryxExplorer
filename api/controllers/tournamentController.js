@@ -43,7 +43,7 @@ tournamentController.getAllTournaments = async function () {
     // console.log(address, 'took', Date.now() - ts, 'ms')
 
     let [
-      tournmentTitle,
+      tournamentTitle,
       mtx,
       tournamentDescription,
       category,
@@ -53,7 +53,7 @@ tournamentController.getAllTournaments = async function () {
     ] = data
 
     let details = {
-      tournmentTitle,
+      tournamentTitle,
       mtx,
       tournamentDescription,
       category,
