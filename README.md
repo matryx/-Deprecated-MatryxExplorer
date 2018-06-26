@@ -22,7 +22,7 @@ An open-source node.js api to read the MatryxPlatform and interact with IPFS to 
 ## To run the API, downloaded the dependencies
 
 ```
-npm install
+yarn install
 ```
 ## DEV: Serve the API with hot reload at localhost:3000
 
