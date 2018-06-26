@@ -38,8 +38,11 @@
     "ipfs": "^0.28.2",
     "morgan": "^1.9.0",
     "node-fetch": "^2.1.1",
-    "nodemon": "^1.17.2",
-    "npm": "^5.8.0",
+    "fs": "0.0.1-security",
+    "ipfs": "^0.29.3",
+    "morgan": "^1.9.0",
+    "node-fetch": "^2.1.1",
+    "nodemon": "^1.17.5",
     "request": "^2.85.0",
     "tmp": "0.0.33",
     "util": "^0.10.3",
@@ -52,6 +55,10 @@
     "eslint-config-standard": "^11.0.0",
     "mocha": "^5.0.4",
     "mongoose": "^5.0.16",
+    "nodemon": "^1.17.5",
     "standard": "^11.0.1"
+  },
+  "resolutions": {
+    "libp2p-switch": "~0.40.4"
   }
 }
