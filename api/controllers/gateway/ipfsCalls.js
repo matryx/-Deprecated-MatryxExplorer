@@ -16,7 +16,6 @@ var fs = require('fs')
 
 let ipfsURL = process.env.IPFS_URL
 let ipfsPeer = process.env.IPFS_DAEMON_PEER_ID
-
 let ipfsCalls = {}
 
 let options = {
@@ -31,7 +30,7 @@ let options = {
 }
 
 const ipfsNode = new IPFS(options)
-// console.log(ipfsNode)
+
 // console.log(ipfsNode.dht.findprovs('QmW2WQi7j6c7UgJTarActp7tDNikE4B2qXtFCfLPdsgaTQ'))
 // TODO: Create the IPFS cluster in the localhost and make the calls to hold all the data from various nodes
 
