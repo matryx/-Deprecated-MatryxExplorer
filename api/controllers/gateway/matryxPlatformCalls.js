@@ -28,6 +28,12 @@ let matryxPlatformCalls = {}
 
 let matryxPlatformAbi
 let matryxPlatformAddress
+let matryxPlatformContract
+
+let matryxTokenAbi
+let matryxTokenAddress
+let matryxTokenContract
+
 let tournamentAbi
 let submissionAbi
 let roundAbi
@@ -39,17 +45,17 @@ function bytesToAscii(bytes) {
 externalApiCalls
   .getMatryxTournamentAbi(version)
   .then(({ abi }) => tournamentAbi = abi)
-  .catch(err => console.log('Unable to retrieve tournament Abi', err))
+  .catch(err => console.log('Unable to retrieve Tournament ABI', err))
 
 externalApiCalls
   .getMatryxRoundAbi(version)
   .then(({ abi }) => roundAbi = abi)
-  .catch(err => console.log('Unable to retrieve tournament Abi', err))
+  .catch(err => console.log('Unable to retrieve Round ABI', err))
 
 externalApiCalls
   .getMatryxSubmissionAbi(version)
   .then(({ abi }) => submissionAbi = abi)
-  .catch(err => console.log('Unable to retrieve tournament Abi', err))
+  .catch(err => console.log('Unable to retrieve Submission ABI', err))
 
 externalApiCalls
   .getMatryxPlatformInfo(version)
@@ -61,7 +67,16 @@ externalApiCalls
     console.log('Current Matryx Platform Address in use: \'' + matryxPlatformAddress + '\'')
     console.log('There are ' + matryxPlatformContract.tournamentCount().c[0] + ' tournaments on the Platform.')
   })
-  .catch(err => console.log('Unable to retrieve platform Abi', err))
+  .catch(err => console.log('Unable to retrieve Platform ABI', err))
+
+externalApiCalls
+  .getMatryxTokenInfo(version)
+  .then(result => {
+    matryxTokenAddress = result['networks'][networkId]['address']
+    matryxTokenAbi = result.abi
+    matryxTokenContract = web3.eth.contract(matryxTokenAbi).at(matryxTokenAddress)
+  })
+  .catch(err => console.log('Unable to retrieve Token ABI'))
 
 /*
 * PLATFORM
@@ -138,6 +153,11 @@ matryxPlatformCalls.getTournamentBounty = async (tournamentAddress) => {
   tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
   let bounty = await promisify(tournamentContract.Bounty)()
   return web3.fromWei(bounty.toString())
+}
+
+matryxPlatformCalls.getTournamentRemainingMtx = async (tournamentAddress) => {
+  let mtx = await matryxTokenContract.balanceOf(tournamentAddress)
+  return web3.fromWei(mtx)
 }
 
 matryxPlatformCalls.getTournamentDescription = async (tournamentAddress) => {
