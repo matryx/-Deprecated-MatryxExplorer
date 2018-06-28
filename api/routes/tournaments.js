@@ -6,12 +6,14 @@ Copyright Nanome Inc 2018
 */
 
 const express = require('express')
+const router = express.Router()
+
 const tournamentController = require('../controllers/tournamentController')
 const roundController = require('../controllers/roundController')
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
-const router = express.Router()
 const { errorHelper, validateAddress } = require('../helpers/responseHelpers')
-let latestVersion = process.env.PLATFORM_VERSION
+
+const latestVersion = process.env.PLATFORM_VERSION
 
 // Return a confirmation the API is live
 router.get('/', (req, res, next) => {

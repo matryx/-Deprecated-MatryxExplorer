@@ -25,142 +25,109 @@ tournamentController.count = async function () {
   }
 }
 
-tournamentController.getAllTournaments = function () {
-  return new Promise((resolve, reject) => {
-    let responses = []
+tournamentController.getAllTournaments = async function () {
+  // Get all the tournament addresses
+  let addresses = await matryxPlatformCalls.getAllTournamentAddresses()
+  let promises = addresses.map(address => (async () => {
+    // TODO: remove either totalRounds or currentRound; they are the same
+    // let ts = Date.now()
+    let data = await Promise.all([
+      matryxPlatformCalls.getTournamentTitle(address),
+      matryxPlatformCalls.getTournamentBounty(address),
+      matryxPlatformCalls.getTournamentDescription(address),
+      matryxPlatformCalls.getTournamentCategory(address),
+      matryxPlatformCalls.currentRoundOfTournament(address),
+      matryxPlatformCalls.entrantCountOfTournament(address),
+      matryxPlatformCalls.getExternalAddressTournament(address)
+    ])
+    // console.log(address, 'took', Date.now() - ts, 'ms')
 
-    // Get all the tournament addresses
-    matryxPlatformCalls.getAllTournamentAddresses().then(function (tournamentAddresses) {
-      // console.log(tournamentAddresses)
-      for (i = 0; i < tournamentAddresses.length; i++) {
-        let tournamentAddress = tournamentAddresses[i]
-        // console.log(tournamentAddress)
+    let [
+      tournamentTitle,
+      mtx,
+      tournamentDescription,
+      category,
+      currentRound,
+      numberOfParticipants,
+      externalAddress
+    ] = data
 
-        let tournamentDataCalls = []
-        let tournamentData = {
-          tournamentTitle: '',
-          mtx: 0,
-          tournamentDescription: '',
-          category: '',
-          totalRounds: 0,
-          currentRound: 0,
-          numberOfParticipants: 0,
-          address: '',
-          ipType: '',
-          tournamentId: '',
-          externalAddress: ''
-        }
+    let details = {
+      tournamentTitle,
+      mtx,
+      tournamentDescription,
+      category,
+      currentRound,
+      numberOfParticipants,
+      externalAddress,
+      address,
+      ipType: '',
+      tournamentId: '',
+      totalRounds: currentRound
+    }
 
-        tournamentDataCalls.push(matryxPlatformCalls.getTournamentTitle(tournamentAddress))
-        tournamentDataCalls.push(matryxPlatformCalls.getTournamentBounty(tournamentAddress))
-        tournamentDataCalls.push(matryxPlatformCalls.getTournamentDescription(tournamentAddress))
-        tournamentDataCalls.push(matryxPlatformCalls.getTournamentCategory(tournamentAddress))
-        tournamentDataCalls.push(matryxPlatformCalls.currentRoundOfTournament(tournamentAddress))
-        tournamentDataCalls.push(matryxPlatformCalls.entrantCountOfTournament(tournamentAddress))
-        tournamentDataCalls.push(matryxPlatformCalls.getExternalAddressTournament(tournamentAddress))
+    return details
+  })())
 
-            // Promise all for the data inside the tournaments
-        Promise.all(tournamentDataCalls).then(function (values) {
-            // Attach to the tournament Data
-          tournamentData.tournamentTitle = values[0]
-          tournamentData.mtx = values[1]
-          tournamentData.tournamentDescription = values[2]
-          tournamentData.category = values[3]
-          tournamentData.currentRound = values[4]
-          tournamentData.numberOfParticipants = values[5]
-          tournamentData.address = tournamentAddress
-          tournamentData.ipType = ''
-          tournamentData.tournamentId = ''
-          tournamentData.externalAddress = values[6]
-
-          responses.push(tournamentData)
-          if (responses.length == tournamentAddresses.length) {
-            resolve(responses)
-          }
-          // console.log(values)
-        }).catch(function (err) {
-          reject(err)
-        })
-      }
-    }).catch(function (err) {
-      reject(err)
-    })
-  })
+  return await Promise.all(promises)
 }
 
 // TODO: submissions call
 // TODO: getDescription only when max gives back a correct hash-> also error handle for this.
 
-tournamentController.getTournamentByAddress = function (_tournamentAddress) {
-  console.log('Executing TournamentController for getting Tournament details at: ' + _tournamentAddress)
-  return new Promise((resolve, reject) => {
-    let responses = []
-    let tournamentDataCalls = []
-    let submissions = []
+tournamentController.getTournamentByAddress = async (tournamentAddress) => {
+  console.log('Executing TournamentController for getting Tournament details at: ' + tournamentAddress)
 
-    let tournamentData = {
-      tournamentTitle: '',
-      tournamentAddress: '',
-      mtx: 0,
-      authorName: '',
-      tournamentDescription: '',
-      category: '',
-      totalRounds: 0,
-      currentRound: 0,
-      currentRoundAddress: '',
-      numberOfParticipants: 0,
-      ipType: '',
-      roundEndTime: '',
-      participationMTX: 0,
-      roundReward: 0,
-      externalAddress: '',
-      submissions: []
-    }
-    let submission = {
-      submissionTitle: '',
-      submissionAuthor: '',
-      submissionDate: ''
-    }
+  const data = await Promise.all([
+    matryxPlatformCalls.getTournamentTitle(tournamentAddress),
+    matryxPlatformCalls.getTournamentRemainingMtx(tournamentAddress),
+    matryxPlatformCalls.getTournamentBounty(tournamentAddress),
+    matryxPlatformCalls.getTournamentOwner(tournamentAddress),
+    matryxPlatformCalls.getTournamentDescription(tournamentAddress),
+    matryxPlatformCalls.getTournamentCategory(tournamentAddress),
+    matryxPlatformCalls.currentRoundOfTournament(tournamentAddress),
+    matryxPlatformCalls.currentRoundAddressOfTournament(tournamentAddress),
+    matryxPlatformCalls.entrantCountOfTournament(tournamentAddress),
+    matryxPlatformCalls.getCurrentRoundEndTimeFromTournament(tournamentAddress),
+    matryxPlatformCalls.getEntryFeeOfTournament(tournamentAddress),
+    matryxPlatformCalls.getExternalAddressTournament(tournamentAddress)
+    // matryxPlatformCalls.getSubmissionsFromTournament(tournamentAddress)) // TODO:
+  ])
 
-    tournamentDataCalls.push(matryxPlatformCalls.getTournamentTitle(_tournamentAddress))
-    tournamentDataCalls.push(matryxPlatformCalls.getTournamentBounty(_tournamentAddress))
-    tournamentDataCalls.push(matryxPlatformCalls.getTournamentOwner(_tournamentAddress))
-    tournamentDataCalls.push(matryxPlatformCalls.getTournamentDescription(_tournamentAddress))
-    tournamentDataCalls.push(matryxPlatformCalls.getTournamentCategory(_tournamentAddress))
-    tournamentDataCalls.push(matryxPlatformCalls.currentRoundOfTournament(_tournamentAddress))
-    tournamentDataCalls.push(matryxPlatformCalls.currentRoundAddressOfTournament(_tournamentAddress))
-    tournamentDataCalls.push(matryxPlatformCalls.entrantCountOfTournament(_tournamentAddress))
-    tournamentDataCalls.push(matryxPlatformCalls.getCurrentRoundEndTimeFromTournament(_tournamentAddress))
-    tournamentDataCalls.push(matryxPlatformCalls.getEntryFeeOfTournament(_tournamentAddress))
-    tournamentDataCalls.push(matryxPlatformCalls.getExternalAddressTournament(_tournamentAddress))
-    // tournamentDataCalls.push(matryxPlatformCalls.getSubmissionsFromTournament(_tournamentAddress)) // TODO:
+  let [
+    tournamentTitle,
+    remainingMtx,
+    mtx,
+    authorName,
+    tournamentDescription,
+    category,
+    currentRound,
+    currentRoundAddress,
+    numberOfParticipants,
+    roundEndTime,
+    participationMTX,
+    externalAddress
+    // submissions
+  ] = data
 
-            // Promise all for the data inside the tournaments
-    Promise.all(tournamentDataCalls).then(function (values) {
-            // Attach to the tournament Data
-      console.log(values)
-      tournamentData.tournamentTitle = values[0]
-      tournamentData.tournamentAddress = _tournamentAddress
-      tournamentData.mtx = values[1]
-      tournamentData.authorName = values[2]
-      tournamentData.tournamentDescription = values[3]
-      tournamentData.category = values[4]
-      tournamentData.currentRound = values[5]
-      tournamentData.currentRoundAddress = values[6]
-      tournamentData.numberOfParticipants = values[7]
-      tournamentData.ipType = ''
-      tournamentData.roundEndTime = values[8]
-      tournamentData.participationMTX = values[9]
-      tournamentData.externalAddress = values[10]
-          // tournamentData.submissions = values[10]
-
-      resolve(tournamentData)
-      responses.push(tournamentData)
-    }).catch(function (err) {
-      console.log('we should see the error here: ', err)
-      reject(err)
-    })
-  })
+  return {
+    tournamentTitle,
+    tournamentAddress,
+    remainingMtx,
+    mtx,
+    authorName,
+    tournamentDescription,
+    category,
+    currentRound,
+    currentRoundAddress,
+    numberOfParticipants,
+    roundEndTime,
+    participationMTX,
+    externalAddress,
+    ipType: '',
+    totalRounds: currentRound
+    // submissions
+  }
 }
 
 tournamentController.getTournamentOwnerByAddress = function (_tournamentAddress) {

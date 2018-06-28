@@ -8,7 +8,6 @@ Copyright Nanome Inc 2018
 const express = require('express')
 const router = express.Router()
 
-// const ethPlatform = require('../controllers/gateway/platformCalls')
 const matryxPlatformCalls = require('../controllers/gateway/matryxPlatformCalls')
 const { errorHelper } = require('../helpers/responseHelpers')
 

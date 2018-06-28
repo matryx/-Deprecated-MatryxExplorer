@@ -12,7 +12,7 @@ COPY package*.json ./
 
 # RUN yarn install
 # If you are building your code for production
-RUN yarn install --only=production
+RUN yarn install production
 
 RUN npm install -g forever
 # Bundle app source
