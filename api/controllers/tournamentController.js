@@ -26,6 +26,7 @@ tournamentController.count = async function () {
 }
 
 tournamentController.getAllTournaments = async function () {
+tournamentController.getAllTournaments = async () => {
   // Get all the tournament addresses
   let addresses = await matryxPlatformCalls.getAllTournamentAddresses()
   let promises = addresses.map(address => (async () => {
@@ -34,6 +35,7 @@ tournamentController.getAllTournaments = async function () {
     let data = await Promise.all([
       matryxPlatformCalls.getTournamentTitle(address),
       matryxPlatformCalls.getTournamentBounty(address),
+      matryxPlatformCalls.getTournamentOwner(tournamentAddress),
       matryxPlatformCalls.getTournamentDescription(address),
       matryxPlatformCalls.getTournamentCategory(address),
       matryxPlatformCalls.currentRoundOfTournament(address),
@@ -45,6 +47,7 @@ tournamentController.getAllTournaments = async function () {
     let [
       tournamentTitle,
       mtx,
+      tournamentOwner,
       tournamentDescription,
       category,
       currentRound,
@@ -55,6 +58,7 @@ tournamentController.getAllTournaments = async function () {
     let details = {
       tournamentTitle,
       mtx,
+      tournamentOwner,
       tournamentDescription,
       category,
       currentRound,
@@ -62,7 +66,6 @@ tournamentController.getAllTournaments = async function () {
       externalAddress,
       address,
       ipType: '',
-      tournamentId: '',
       totalRounds: currentRound
     }
 
