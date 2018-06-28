@@ -91,6 +91,21 @@ externalApiCalls.getMatryxPlatformAbi = function (branch) {
   })
 }
 
+externalApiCalls.getMatryxTokenInfo = function (branch) {
+  return new Promise((resolve, reject) => {
+    let matryxTokenAbiUrl = 'https://raw.githubusercontent.com/matryx/matryx-alpha-source/' + branch + '/build/contracts/MatryxToken.json'
+
+    fetch(matryxTokenAbiUrl).then(function (result) {
+      console.log('Getting Token Abi from Matryx Platform Github for: ' + branch)
+
+      let jsonResult = result.json()
+      resolve(jsonResult)
+    }).catch(function (err) {
+      reject(err)
+    })
+  })
+}
+
 externalApiCalls.getMatryxTournamentAbi = function (branch) {
   return new Promise((resolve, reject) => {
     if (branch == 'v1') {
