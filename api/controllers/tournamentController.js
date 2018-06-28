@@ -35,7 +35,7 @@ tournamentController.getAllTournaments = async () => {
     let data = await Promise.all([
       matryxPlatformCalls.getTournamentTitle(address),
       matryxPlatformCalls.getTournamentBounty(address),
-      matryxPlatformCalls.getTournamentOwner(tournamentAddress),
+      matryxPlatformCalls.getTournamentOwner(address),
       matryxPlatformCalls.getTournamentDescription(address),
       matryxPlatformCalls.getTournamentCategory(address),
       matryxPlatformCalls.currentRoundOfTournament(address),
