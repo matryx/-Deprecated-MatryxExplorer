@@ -350,115 +350,31 @@ matryxPlatformCalls.roundStatus = async (roundAddress) => {
   else if (state == 4) return 'isAbandoned'
 }
 
-// matryxPlatformCalls.getSubmissionsFromRound = async (roundAddress) => {
-//   let fullResponse = {
-//     roundStatusValue: '',
-//     submissionResults: []
-//   }
+matryxPlatformCalls.getSubmissionsFromRound = async (roundAddress) => {
+  let response = {
+    roundStatus: '',
+    submissions: []
+  }
 
-//   let submissionResults = []
+  let status = await matryxPlatformCalls.roundStatus(roundAddress)
+  response.roundStatus = status
 
-//   let status = await matryxPlatformCalls.roundStatus(roundAddress)
-//   fullResponse.roundStatusValue = status
-//   console.log('>MatryxPlatformCalls: Round Status = ' + status)
+  if (status == 'isWaiting' || status == 'inReview' || status == 'isOpen') return response
 
-//   if (status == 'isWaiting' || status == 'inReview' || status == 'isOpen') return fullResponse
+  if (status == 'isClosed' || status == 'isAbandoned') {
+    let addresses = await matryxPlatformCalls.getRoundSubmissions(roundAddress)
+    let submissionPromises = addresses.map(address => (async () => {
+      let submissionContract = web3.eth.contract(submissionAbi).at(address)
+      let [title, submissionDate] = await Promise.all([
+        submissionContract.getTitle(),
+        submissionContract.getTimeSubmitted()
+      ])
+      return { title, address, submissionDate }
+    })())
 
-//   if (status == 'isClosed' || status == "isAbandoned") {
-//     console.log('Retrieving all all submissionAddresses..')
-
-//     let addresses = await matryxPlatformCalls.getRoundSubmissions(roundAddress)
-//     let submissionPromises = addresses.map(address => {
-//       let promise = (async () => {
-//         submissionContract = web3.eth.contract(submissionAbi).at(address)
-//         let [title, submissionDate] = await Promise.all([
-//           submissionContract.getTitle(),
-//           submissionContract.getTimeSubmitted()
-//         ])
-//         return { title, address, submissionDate }
-//       })()
-//       return promise
-//     })
-
-//     fullResponse.submissionResults = await Promise.all(submissionPromises)
-//     return fullResponse
-//   }
-// }
-
-// TODO: Async + error handling
-matryxPlatformCalls.getSubmissionsFromRound = (roundAddress) => {
-  return new Promise((resolve, reject) => {
-    let fullResponse = {
-      roundStatusValue: '',
-      submissionResults: []
-    }
-
-    let submissionResults = []
-    // Check to see if the round is closed or unavailable
-    matryxPlatformCalls.roundStatus(roundAddress).then((roundStatusValue) => {
-      fullResponse.roundStatusValue = roundStatusValue
-      if (roundStatusValue == 'inReview') {
-        console.log('>MatryxPlatformCalls: Round Status = ' + roundStatusValue)
-        resolve(fullResponse)
-      }
-      if (roundStatusValue == 'isOpen') {
-        console.log('>MatryxPlatformCalls: Round Status = ' + roundStatusValue)
-        console.log('Submission results are: ' + submissionResults)
-        resolve(fullResponse)
-      } else if (roundStatusValue == 'isClosed' || roundStatusValue == "isAbandoned") {
-        console.log('>MatryxPlatformCalls: Round Status = ' + roundStatusValue)
-        console.log('Retrieving all all submissionAddresses..')
-        fullResponse.roundStatusValue = roundStatusValue
-
-        matryxPlatformCalls.getRoundSubmissions(roundAddress).then((submissionAddresses) => {
-          // console.log(submissionAddresses)
-
-          if (submissionAddresses.length === 0) {
-            fullResponse.submissionResults = []
-            resolve(fullResponse)
-          }
-
-    // Check number of submission
-          submissionAddresses.forEach((submissionAddress) => {
-            let submission = {
-              address: '',
-              title: '',
-              submissionDate: ''
-            }
-
-            submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
-            submissionContract.getTitle((err, _title) => {
-              if (err) {
-                reject(err)
-              }
-              submission.address = submissionAddress
-              submission.title = _title
-              console.log('The following is the submission values: ')
-              submissionContract.getTimeSubmitted((err, _timeSubmitted) => {
-                if (err) {
-                  reject(err)
-                }
-                submission.submissionDate = _timeSubmitted
-                console.log(submission)
-
-                submissionResults.push(submission)
-
-                if (submissionResults.length == submissionAddresses.length) {
-                  fullResponse.submissionResults = submissionResults
-                  fullResponse.roundStatusValue = roundStatusValue
-                  resolve(fullResponse)
-                }
-              })
-            })
-          })
-        }).catch((err) => {
-          reject(err)
-        })
-      }
-    }).catch((err) => {
-      reject(err)
-    })
-  })
+    response.submissions = await Promise.all(submissionPromises)
+    return response
+  }
 }
 
 matryxPlatformCalls.getTournamentInfoFromRoundAddress = async (roundAddress) => {
