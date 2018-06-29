@@ -13,16 +13,8 @@ const matryxPlatformCalls = require('./gateway/matryxPlatformCalls')
 
 let tournamentController = {}
 
-tournamentController.count = async function () {
-  try {
-    let count = await matryxPlatformCalls.getTournamentCount()
-    if (count) {
-      return count
-    }
-  } catch (err) {
-    throw new Error(err)
-    console.log('message received from platform calls: ', err)
-  }
+tournamentController.count = () => {
+  return matryxPlatformCalls.getTournamentCount()
 }
 
 tournamentController.getAllTournaments = async (query) => {
@@ -146,83 +138,36 @@ tournamentController.getTournamentByAddress = async (tournamentAddress) => {
   }
 }
 
-tournamentController.getTournamentOwnerByAddress = function (_tournamentAddress) {
-  return new Promise((resolve, reject) => {
-    matryxPlatformCalls.getTournamentOwner(_tournamentAddress).then(function (result) {
-      resolve(result)
-    }).catch((err) => {
-      reject(err)
-    })
-  })
+tournamentController.getTournamentOwnerByAddress = (tournamentAddress) => {
+  return matryxPlatformCalls.getTournamentOwner(tournamentAddress)
 }
 
-tournamentController.getSubmissionCount = function (_tournamentAddress) {
-  return new Promise((resolve, reject) => {
-    matryxPlatformCalls.submissionsCountOfTournament(_tournamentAddress).then(function (result) {
-      resolve(result)
-    }).catch((err) => {
-      reject(err)
-    })
-  })
+tournamentController.getSubmissionCount = (tournamentAddress) => {
+  return matryxPlatformCalls.submissionsCountOfTournament(tournamentAddress)
 }
 
-tournamentController.getCurrentRound = function (_tournamentAddress) {
-  return new Promise((resolve, reject) => {
-    matryxPlatformCalls.currentRoundOfTournament(_tournamentAddress).then(function (result) {
-      resolve(result)
-    }).catch((err) => {
-      reject(err)
-    })
-  })
+tournamentController.getCurrentRound = (tournamentAddress) => {
+  return matryxPlatformCalls.currentRoundOfTournament(tournamentAddress)
 }
 
-tournamentController.isEntrant = function (_tournamentAddress, _potentialEntrantAddress) {
-  return new Promise((resolve, reject) => {
-    matryxPlatformCalls.isEntrantToTournament(_tournamentAddress, _potentialEntrantAddress).then(function (result) {
-      resolve(result)
-    }).catch((err) => {
-      reject(err)
-    })
-  })
+tournamentController.isEntrant = (tournamentAddress, potentialEntrantAddress) => {
+  return matryxPlatformCalls.isEntrantToTournament(tournamentAddress, potentialEntrantAddress)
 }
 
-tournamentController.getAllRoundAddresses = function (_tournamentAddress) {
-  return new Promise((resolve, reject) => {
-    matryxPlatformCalls.getAllRoundAddresses(_tournamentAddress).then(function (result) {
-      resolve(result)
-    }).catch((err) => {
-      reject(err)
-    })
-  })
+tournamentController.getAllRoundAddresses = (tournamentAddress) => {
+  return matryxPlatformCalls.getAllRoundAddresses(tournamentAddress)
 }
 
-tournamentController.getRoundAddress = function (_tournamentAddress, _roundId) {
-  return new Promise((resolve, reject) => {
-    matryxPlatformCalls.getRoundAddressByIndex(_tournamentAddress, _roundId).then(function (result) {
-      resolve(result)
-    }).catch((err) => {
-      reject(err)
-    })
-  })
+tournamentController.getRoundAddress = (tournamentAddress, roundId) => {
+  return matryxPlatformCalls.getRoundAddressByIndex(tournamentAddress, roundId)
 }
 
-tournamentController.getTournamentsByCategory = async function (category) {
-  try {
-    let addressess = await matryxPlatformCalls.getTournamentsByCategory(category)
-    if (addressess) {
-      return addressess
-    }
-  } catch (err) {
-    throw new Error(err)
-  }
+tournamentController.getTournamentsByCategory = (category) => {
+  return matryxPlatformCalls.getTournamentsByCategory(category)
 }
 
-tournamentController.isCreator = async function (_tournamentAddress, _userAddress) {
-  try {
-    return isCreatorBool = await matryxPlatformCalls.isTournamentCreator(_tournamentAddress, _userAddress)
-  } catch (err) {
-    throw new Error(err)
-  }
+tournamentController.isCreator = (tournamentAddress, userAddress) => {
+  return matryxPlatformCalls.isTournamentCreator(tournamentAddress, userAddress)
 }
 
 /*

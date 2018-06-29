@@ -13,14 +13,8 @@ const ipfsCalls = require('./gateway/ipfsCalls')
 
 let filesController = {}
 
-filesController.basicDescriptionUploadToIPFS = function (descriptionContent) {
-  return new Promise((resolve, reject) => {
-    ipfsCalls.uploadToIpfs(descriptionContent).then(function (result) {
-      resolve(result)
-    }).catch((err) => {
-      reject(err)
-    })
-  })
+filesController.basicDescriptionUploadToIPFS = (descriptionContent) => {
+  return ipfsCalls.uploadToIpfs(descriptionContent)
 }
 
 module.exports = filesController
