@@ -47,14 +47,6 @@ router.get('/count', (req, res, next) => {
     .catch(errorHelper(res, 'Error getting tournament count'))
 })
 
-// TODO: is this route needed? identical to /
-router.get('/allTournaments', (req, res, next) => {
-  tournamentController
-    .getAllTournaments()
-    .then(data => res.status(200).json({ data }))
-    .catch(errorHelper(res, 'Error getting tournaments'))
-})
-
 // Return the tournament details for a specific tournament
 // TODO pass back the tournament details
 router.get('/address/:tournamentAddress', (req, res, next) => {
