@@ -25,10 +25,23 @@ tournamentController.count = async function () {
   }
 }
 
-tournamentController.getAllTournaments = async function () {
-tournamentController.getAllTournaments = async () => {
+tournamentController.getAllTournaments = async (query) => {
   // Get all the tournament addresses
   let addresses = await matryxPlatformCalls.getAllTournamentAddresses()
+
+  if (query && query.owner) {
+    // get all tournament owners, then filter addresses by owner
+    let promises = addresses.map(address => (async () => {
+      let owner = await matryxPlatformCalls.getTournamentOwner(address)
+      return { owner, address }
+    })())
+
+    let addressesWithOwner = await Promise.all(promises)
+    addresses = addressesWithOwner
+      .filter(t => t.owner === query.owner)
+      .map(t => t.address)
+  }
+
   let promises = addresses.map(address => (async () => {
     // TODO: remove either totalRounds or currentRound; they are the same
     // let ts = Date.now()

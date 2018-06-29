@@ -18,7 +18,7 @@ const latestVersion = process.env.PLATFORM_VERSION
 // Return a confirmation the API is live
 router.get('/', (req, res, next) => {
   tournamentController
-    .getAllTournaments()
+    .getAllTournaments(req.query)
     .then(data => res.status(200).json({ data }))
     .catch(errorHelper(res, 'Error getting tournaments'))
 })
