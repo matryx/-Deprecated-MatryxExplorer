@@ -158,6 +158,7 @@ tournamentController.getAllRoundAddresses = (tournamentAddress) => {
   return matryxPlatformCalls.getAllRoundAddresses(tournamentAddress)
 }
 
+// TODO roundId-1 here because ID is 1-based, index is 0-based
 tournamentController.getRoundAddress = (tournamentAddress, roundId) => {
   return matryxPlatformCalls.getRoundAddressByIndex(tournamentAddress, roundId)
 }

@@ -7,12 +7,10 @@ Nanome 2018
 https://github.com/ipfs/js-ipfs#use-in-nodejs
 */
 
-const http = require('http')
-const fetch = require('node-fetch')
 const IPFS = require('ipfs')
-const series = require('async/series')
-const tmp = require('tmp')
-var fs = require('fs')
+const fs = require('fs')
+
+const externalApiCalls = require('../gateway/externalApiCalls')
 
 let ipfsURL = process.env.IPFS_URL
 let ipfsPeer = process.env.IPFS_DAEMON_PEER_ID
@@ -81,46 +79,67 @@ ipfsCalls.getIpfsData = function (_ipfsHash) {
 
 // Take in the description and the path and store it as description.txt in the path
 ipfsCalls.storeDescriptionToTmp = function (_description, _path) {
-  return new Promise((resolve, reject) => {
-    fs.writeFile(_path, _description, function (err) {
-      if (err) {
-        reject(err)
-      }
-      console.log('The file was saved!' + '   path = ' + _path + '  description: ' + _description)
-      resolve(_path, _description)
-    })
-  })
+  fs.writeFileSync(_path, _description)
+
+  console.log('The file was saved!' + '   path = ' + _path + '  description: ' + _description)
+  return [_path, _description]
 }
 
-ipfsCalls.pushTmpFolderToIPFS = function (tempDirectory) {
-  return new Promise((resolve, reject) => {
-    let ipfsFilesToUpload = []
-      // parse the tmp folder to grab all of the files in there
-    fs.readdir(tempDirectory, (err, files) => {
-      if (err) { reject(err) }
-      console.log('These are the files in the directory')
-      // Store them in the format that IPFS loves
-      files.forEach(file => {
-    // Get the content of the file with the path and file name and then buffer into content
-        let fileContents = fs.readFileSync(tempDirectory + '/' + file)
-        let ipfsFile = {
-          path: tempDirectory + '/' + file,
-          content: Buffer.from(fileContents)
-        }
-        // Add them to the array
-        ipfsFilesToUpload.push(ipfsFile)
-        console.log(file)
-      })
-      // Now make the IPFS calls
-      ipfsNode.files.add(ipfsFilesToUpload, (err, filesAdded) => {
-        if (err) { reject(err) }
-        console.log('\nAdded file:', filesAdded[0].path, filesAdded[0].hash)
-        // Resolve all the hashes
-        resolve(filesAdded[0].hash)
-      })
-    })
+ipfsCalls.pushTmpFolderToIPFS = async (tempDirectory) => {
+  let filePaths = []
+  let descriptionPath
+
+  // parse the tmp folder to grab all of the files in there
+  let files = fs.readdirSync(tempDirectory)
+
+  // Store them in the format that IPFS loves
+  files.forEach(file => {
+    let path = tempDirectory + '/' + file
+
+    if (file === "description.txt") {
+      descriptionPath = path
+    } else {
+      filePaths.push(path)
+    }
   })
+
+  let [descriptionHash, filesHash] = await Promise.all([
+    externalApiCalls.uploadFiles([descriptionPath], false),
+    externalApiCalls.uploadFiles(filePaths, true)
+  ])
+
+  return [descriptionHash, filesHash]
 }
+
+// ipfsCalls.pushTmpFolderToIPFS = function (tempDirectory) {
+//   return new Promise((resolve, reject) => {
+//     let ipfsFilesToUpload = []
+//       // parse the tmp folder to grab all of the files in there
+//     fs.readdir(tempDirectory, (err, files) => {
+//       if (err) { reject(err) }
+//       console.log('These are the files in the directory')
+//       // Store them in the format that IPFS loves
+//       files.forEach(file => {
+//     // Get the content of the file with the path and file name and then buffer into content
+//         let fileContents = fs.readFileSync(tempDirectory + '/' + file)
+//         let ipfsFile = {
+//           path: tempDirectory + '/' + file,
+//           content: Buffer.from(fileContents)
+//         }
+//         // Add them to the array
+//         ipfsFilesToUpload.push(ipfsFile)
+//         console.log(file)
+//       })
+//       // Now make the IPFS calls
+//       ipfsNode.files.add(ipfsFilesToUpload, (err, filesAdded) => {
+//         if (err) { reject(err) }
+//         console.log('\nAdded file:', filesAdded[0].path, filesAdded[0].hash)
+//         // Resolve all the hashes
+//         resolve(filesAdded[0].hash)
+//       })
+//     })
+//   })
+// }
 
 ipfsCalls.getIpfsDataFiles = function (_ipfsHash) {
   console.log('Gateway call recieved. Hitting IPFS Node for data at hash: ' + _ipfsHash)

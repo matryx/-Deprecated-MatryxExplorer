@@ -99,25 +99,21 @@ router.post('/upload', (req, res, next) => {
             descriptionContent = Buffer.from(field[1])
             descriptionPath = tempDir + '/description.txt'
             // Store the descriptionContent into the tempFolder
-            ipfsCalls
-              .storeDescriptionToTmp(descriptionContent, descriptionPath)
-              .then(result => console.log(result))
+            ipfsCalls.storeDescriptionToTmp(descriptionContent, descriptionPath)
           }
           // Check to see if there is a jsonContent key in the fields
           if (field[0] == 'jsonContent') {
             console.log(field[1]) // This is the json content
             jsonContent = Buffer.from(field[1])
             jsonPath = tempDir + '/jsonContent.json'
-            ipfsCalls
-              .storeDescriptionToTmp(jsonContent, jsonPath)
-              .then(result => console.log(result))
+            ipfsCalls.storeDescriptionToTmp(jsonContent, jsonPath)
           }
         })
 
         // Add the tmp folder to IPFS and get back a hash
-        ipfsCalls.pushTmpFolderToIPFS(tempDir).then(folderHash => {
+        ipfsCalls.pushTmpFolderToIPFS(tempDir).then(([descriptionHash, filesHash]) => {
           // externalApiCalls.curlIpfsIo(ipfsHashResult).then(function (tmp) {
-          res.status(200).json({ folderHash })
+          res.status(200).json({ descriptionHash, filesHash })
           // })
         })
 

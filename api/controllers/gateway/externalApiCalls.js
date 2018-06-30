@@ -7,7 +7,9 @@ Nanome 2018
 'use strict'
 
 const http = require('http')
+const fs = require('fs')
 const fetch = require('node-fetch')
+const FormData = require('form-data')
 // let platformAddress = process.env.PLATFORM_ADDRESS
 // let networkId = process.env.NETWORK_ID
 
@@ -22,14 +24,14 @@ externalApiCalls.getMatryxPlatformInfo = function (branch) {
       let responsev2 = require('../../../data/abi/v2/platform')
       resolve(responsev2)
     } else {
-      let matryxPlatformAbiUrl = 'https://raw.githubusercontent.com/matryx/matryx-alpha-source/' + branch + '/build/contracts/MatryxPlatform.json'
+      let matryxPlatformAbiUrl = 'https://raw.githubusercontent.com/matryx/MatryxPlatform/' + branch + '/build/contracts/MatryxPlatform.json'
 
       fetch(matryxPlatformAbiUrl).then(function (result) {
         console.log('Getting Platform Abi from Matryx Platform Github for: ' + branch)
 
         let jsonResult = result.json()
-        //.then(json => {
-        //   json.networks[networkId] = { address: plaformAddress }
+        // .then(json => {
+        //   json.networks[networkId] = { address: platformAddress }
         //   return json
         // })
         // You need to get the address by adding results['networks'][networkId]['address'] to the promise call who uses this function
@@ -181,6 +183,24 @@ externalApiCalls.curlIpfsIo = function (_hash) {
       console.log('externalApiCalls could not fetch results')
     }
   })
+}
+
+externalApiCalls.uploadFiles = async (paths, folder) => {
+  let wrap = folder ? '?wrap-with-directory=true' : ''
+
+  const data = new FormData()
+  paths.forEach(path => data.append('path', fs.createReadStream(path)))
+
+  let response = await fetch('https://ipfs.infura.io:5001/api/v0/add' + wrap, {
+    method: 'POST',
+    body: data
+  })
+
+  let body = response.body.readableBuffer.head.data.toString()
+  let obj = JSON.parse('[' + body.trim().split('\n').join(',') + ']')
+  let hash = obj.pop().Hash
+  // let hash = JSON.parse(body.split('\n').pop()).Hash
+  return hash
 }
 
 module.exports = externalApiCalls

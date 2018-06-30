@@ -128,12 +128,7 @@ router.get('/address/:tournamentAddress/isEntrant/:address', (req, res, next) =>
 
   tournamentController
     .isEntrant(tournamentAddress, address)
-    .then(isEntrant => {
-      res.status(200).json({
-        isEntrant,
-        tournamentAddress
-      })
-    })
+    .then(isEntrant => res.status(200).json({ isEntrant }))
     .catch(errorHelper(res, 'Error checking if ' + address + ' is entrant of ' + tournamentAddress))
 })
 
@@ -144,12 +139,7 @@ router.get('/address/:tournamentAddress/allRoundAddresses', (req, res, next) => 
 
   tournamentController
     .getAllRoundAddresses(tournamentAddress)
-    .then(addresses => {
-      res.status(200).json({
-        addresses,
-        tournamentAddress
-      })
-    })
+    .then(addresses => res.status(200).json({ addresses }))
     .catch(errorHelper(res, 'Error getting all round addresses for ' + tournamentAddress))
 })
 
