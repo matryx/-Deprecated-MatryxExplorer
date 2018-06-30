@@ -87,34 +87,26 @@ router.post('/upload', (req, res, next) => {
         let tempDir = tmpobj.name
 
         files.forEach(file => {
-          fs.rename(file[1].path, form.uploadDir + '/' + file[1].name, err => {
-            if (err) console.log('ERROR: ' + err)
-          })
+          // made this sync in the slight chance it doesn't execute before next stuff
+          fs.renameSync(file[1].path, form.uploadDir + '/' + file[1].name)
         })
 
-        fields.forEach(field => {
+        fields.forEach(([name, content]) => {
           // Check to see if there is a description key in the fields
-          if (field[0] == 'description') {
-            console.log(field[1]) // This is the description content
-            descriptionContent = Buffer.from(field[1])
-            descriptionPath = tempDir + '/description.txt'
-            // Store the descriptionContent into the tempFolder
-            ipfsCalls.storeDescriptionToTmp(descriptionContent, descriptionPath)
+          if (name == 'description') {
+            path = tempDir + '/description.txt'
+            ipfsCalls.storeFileToTmp(content, path)
           }
           // Check to see if there is a jsonContent key in the fields
-          if (field[0] == 'jsonContent') {
-            console.log(field[1]) // This is the json content
-            jsonContent = Buffer.from(field[1])
-            jsonPath = tempDir + '/jsonContent.json'
-            ipfsCalls.storeDescriptionToTmp(jsonContent, jsonPath)
+          if (name == 'jsonContent') {
+            path = tempDir + '/jsonContent.json'
+            ipfsCalls.storeFileToTmp(content, path)
           }
         })
 
         // Add the tmp folder to IPFS and get back a hash
         ipfsCalls.pushTmpFolderToIPFS(tempDir).then(([descriptionHash, filesHash]) => {
-          // externalApiCalls.curlIpfsIo(ipfsHashResult).then(function (tmp) {
           res.status(200).json({ descriptionHash, filesHash })
-          // })
         })
 
         let dir = fs.readdirSync(tempDir)
@@ -123,7 +115,7 @@ router.post('/upload', (req, res, next) => {
       })
     form.parse(req)
   } catch (err) {
-    errorHelper(res, 'Error uploading file')
+    errorHelper(res, 'Error uploading file')(err)
   }
 })
 
