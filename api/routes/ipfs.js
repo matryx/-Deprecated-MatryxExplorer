@@ -30,7 +30,7 @@ router.get('/download/hash/:hash', (req, res, next) => {
   // TODO: check IPFS hash
   console.log('>IPFS Router: /download/hash/', hash, 'hit')
   ipfsCalls
-    .getIpfsDataFiles(hash)
+    .getIpfsFile(hash)
     .then(message => res.status(200).json({ message }))
     .catch(errorHelper(res, 'Error getting download link'))
 })
@@ -39,7 +39,7 @@ router.get('/getDescription/hash/:hash', (req, res, next) => {
   let { hash } = req.params
   // TODO: check IPFS hash
   ipfsCalls
-    .getIpfsDescriptionOnly(hash)
+    .getIpfsFile(hash)
     .then(message => res.status(200).json({ message }))
     .catch(errorHelper(res, 'Error getting description'))
 })
@@ -95,18 +95,18 @@ router.post('/upload', (req, res, next) => {
           // Check to see if there is a description key in the fields
           if (name == 'description') {
             path = tempDir + '/description.txt'
-            ipfsCalls.storeFileToTmp(content, path)
+            fs.writeFileSync(path, content)
           }
           // Check to see if there is a jsonContent key in the fields
           if (name == 'jsonContent') {
             path = tempDir + '/jsonContent.json'
-            ipfsCalls.storeFileToTmp(content, path)
+            fs.writeFileSync(path, content)
           }
         })
 
         // Add the tmp folder to IPFS and get back a hash
-        ipfsCalls.pushTmpFolderToIPFS(tempDir).then(([descriptionHash, filesHash]) => {
-          res.status(200).json({ descriptionHash, filesHash })
+        ipfsCalls.pushTmpFolderToIPFS(tempDir).then(([descriptionHash, fileHash]) => {
+          res.status(200).json({ descriptionHash, fileHash })
         })
 
         let dir = fs.readdirSync(tempDir)

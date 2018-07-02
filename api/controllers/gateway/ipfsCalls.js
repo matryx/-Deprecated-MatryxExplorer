@@ -8,18 +8,12 @@ https://github.com/ipfs/js-ipfs#use-in-nodejs
 */
 
 const fs = require('fs')
+const fetch = require('node-fetch')
+const FormData = require('form-data')
 
-const externalApiCalls = require('../gateway/externalApiCalls')
+const ipfsURL = process.env.IPFS_URL
 
 let ipfsCalls = {}
-
-// Take in the description and the path and store it as description.txt in the path
-ipfsCalls.storeFileToTmp = function (content, path) {
-  fs.writeFileSync(path, content)
-
-  console.log('The file was saved!\n  path: ' + path + '\n  content: ' + content)
-  return [path, content]
-}
 
 ipfsCalls.pushTmpFolderToIPFS = async (tempDirectory) => {
   let filePaths = []
@@ -40,11 +34,34 @@ ipfsCalls.pushTmpFolderToIPFS = async (tempDirectory) => {
   })
 
   let [descriptionHash, filesHash] = await Promise.all([
-    externalApiCalls.uploadFiles([descriptionPath], false),
-    externalApiCalls.uploadFiles(filePaths, true)
+    ipfsCalls.uploadFiles([descriptionPath], false),
+    ipfsCalls.uploadFiles(filePaths, true)
   ])
 
   return [descriptionHash, filesHash]
+}
+
+ipfsCalls.uploadFiles = async (paths, folder) => {
+  let wrap = folder ? '?wrap-with-directory=true' : ''
+
+  const data = new FormData()
+  paths.forEach(path => data.append('path', fs.createReadStream(path)))
+
+  let response = await fetch('https://ipfs.infura.io:5001/api/v0/add' + wrap, {
+    method: 'POST',
+    body: data
+  })
+
+  let body = await response.text()
+  let obj = JSON.parse('[' + body.trim().split('\n').join(',') + ']')
+  let hash = obj.pop().Hash
+
+  return hash
+}
+
+ipfsCalls.getIpfsFile = async (hash) => {
+  let response = await fetch(ipfsURL + hash)
+  return await response.text()
 }
 
 module.exports = ipfsCalls

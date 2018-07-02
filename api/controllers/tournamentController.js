@@ -45,7 +45,7 @@ tournamentController.getAllTournaments = async (query) => {
       matryxPlatformCalls.getTournamentCategory(address),
       matryxPlatformCalls.currentRoundOfTournament(address),
       matryxPlatformCalls.entrantCountOfTournament(address),
-      matryxPlatformCalls.getExternalAddressTournament(address)
+      matryxPlatformCalls.getFileHashTournament(address)
     ])
     // console.log(address, 'took', Date.now() - ts, 'ms')
 
@@ -57,7 +57,7 @@ tournamentController.getAllTournaments = async (query) => {
       category,
       currentRound,
       numberOfParticipants,
-      externalAddress
+      fileHash
     ] = data
 
     let details = {
@@ -68,7 +68,7 @@ tournamentController.getAllTournaments = async (query) => {
       category,
       currentRound,
       numberOfParticipants,
-      externalAddress,
+      fileHash,
       address,
       ipType: '',
       totalRounds: currentRound
@@ -98,7 +98,7 @@ tournamentController.getTournamentByAddress = async (tournamentAddress) => {
     matryxPlatformCalls.entrantCountOfTournament(tournamentAddress),
     matryxPlatformCalls.getCurrentRoundEndTimeFromTournament(tournamentAddress),
     matryxPlatformCalls.getEntryFeeOfTournament(tournamentAddress),
-    matryxPlatformCalls.getExternalAddressTournament(tournamentAddress)
+    matryxPlatformCalls.getFileHashTournament(tournamentAddress)
     // matryxPlatformCalls.getSubmissionsFromTournament(tournamentAddress)) // TODO:
   ])
 
@@ -114,7 +114,7 @@ tournamentController.getTournamentByAddress = async (tournamentAddress) => {
     numberOfParticipants,
     roundEndTime,
     participationMTX,
-    externalAddress
+    fileHash
     // submissions
   ] = data
 
@@ -131,7 +131,7 @@ tournamentController.getTournamentByAddress = async (tournamentAddress) => {
     numberOfParticipants,
     roundEndTime,
     participationMTX,
-    externalAddress,
+    fileHash,
     ipType: '',
     totalRounds: currentRound
     // submissions

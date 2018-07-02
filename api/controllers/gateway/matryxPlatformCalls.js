@@ -163,11 +163,8 @@ matryxPlatformCalls.getTournamentRemainingMtx = async (tournamentAddress) => {
 }
 
 matryxPlatformCalls.getTournamentDescription = async (tournamentAddress) => {
-  let tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  let hash = await promisify(tournamentContract.getDescriptionHash)()
-  let externalAddress = bytesToAscii(hash)
-
-  let description = await ipfsCalls.getIpfsDescriptionOnly(externalAddress)
+  let hash = await matryxPlatformCalls.getDescriptionHashTournament(tournamentAddress)
+  let description = await ipfsCalls.getIpfsFile(hash)
   if (description) {
     return description
   } else {
@@ -204,9 +201,15 @@ matryxPlatformCalls.roundIsOpenTournament = (tournamentAddress) => {
   return promisify(tournamentContract.roundIsOpen)()
 }
 
-matryxPlatformCalls.getExternalAddressTournament = async (tournamentAddress) => {
+matryxPlatformCalls.getDescriptionHashTournament = async (tournamentAddress) => {
   let tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
   let hash = await promisify(tournamentContract.getDescriptionHash)()
+  return bytesToAscii(hash)
+}
+
+matryxPlatformCalls.getFileHashTournament = async (tournamentAddress) => {
+  let tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
+  let hash = await promisify(tournamentContract.getFileHash)()
   return bytesToAscii(hash)
 }
 
@@ -248,7 +251,7 @@ matryxPlatformCalls.getCurrentRoundEndTimeFromTournament = async (tournamentAddr
     throw new Error("The round address is invalid - '0x'")
   }
   let roundContract = web3.eth.contract(roundAbi).at(roundAddress)
-  let endTime = await promisify(roundContract.endTime)()
+  let endTime = await promisify(roundContract.getEndTime)()
   return +endTime
 }
 
@@ -582,6 +585,7 @@ matryxPlatformCalls.getPlatformActivity = function () {
 // }
 
 const methodsToLog = [
+  '*',
   'getTournamentDescription',
   'getTournamentInfoFromRoundAddress',
   'getTournamentInfoFromRoundAddressNoIPFS',
@@ -606,7 +610,7 @@ const logger = new Proxy(matryxPlatformCalls, {
   get(obj, prop) {
     if (typeof obj[prop] !== 'function') return obj[prop]
     return function () {
-      if (methodsToLog.includes(prop)) {
+      if (methodsToLog[0] === '*' || methodsToLog.includes(prop)) {
         const args = Array.from(arguments).join(',')
         console.log('>MatryxPlatformCalls: ' + prop + '(' + args + ')')
       }
