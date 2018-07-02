@@ -585,7 +585,7 @@ matryxPlatformCalls.getPlatformActivity = function () {
 // }
 
 const methodsToLog = [
-  '*',
+  // '*',
   'getTournamentDescription',
   'getTournamentInfoFromRoundAddress',
   'getTournamentInfoFromRoundAddressNoIPFS',

@@ -6,20 +6,6 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 require('dotenv').config()
 
-// process.env.DB_HOST
-const externalApiCalls = require('./api/controllers/gateway/externalApiCalls')
-const ipfsCalls = require('./api/controllers/gateway/ipfsCalls')
-// Routes
-app.get('/', (req, res) => {
-  res.send(
-    'Somewhere, something incredible is waiting to be known. <br> - Carl Sagan'
-  )
-})
-
-
-
-
-
 const platformRoutes = require('./api/routes/platform')
 const tournamentRoutes = require('./api/routes/tournaments')
 const roundRoutes = require('./api/routes/rounds')
@@ -60,10 +46,9 @@ app.use('/tempAPI/submissions', tempSubmissionRoutes)
 console.log('стремиться к победе')
 
 app.get('/', (req, res) => {
-  res.send(
-    'Somewhere, something incredible is waiting to be known. <br> - Carl Sagan'
-  )
+  res.send('Somewhere, something incredible is waiting to be known. <br> - Carl Sagan')
 })
+
 // Error handling
 app.use((req, res, next) => {
   const error = new Error('Not Found')
