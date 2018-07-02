@@ -542,13 +542,19 @@ matryxPlatformCalls.getPlatformActivity = function () {
           news: ''
         }
 
+        let title = bytesToAscii([
+          event_i.args._tournamentName_1,
+          event_i.args._tournamentName_2,
+          event_i.args._tournamentName_3
+        ])
+
         // console.log(eventDict[event_i.event])
         switch (eventDict[event_i.event]) {
           case 0:
-            activityResponse.news = event_i.args._owner + ' created a new Tournament named ' + '\'' + event_i.args._tournamentName + '\''
+            activityResponse.news = event_i.args._owner + ' created a new Tournament named ' + '\'' + title + '\''
             break
           case 1:
-            activityResponse.news = event_i.args._owner + ' opened their Tournament named ' + '\'' + event_i.args._tournamentName + '\''
+            activityResponse.news = event_i.args._owner + ' opened their Tournament named ' + '\'' + title + '\''
             break
           case 2:
             activityResponse.news = event_i.args._entrant + ' entered the Tournament: ' + '\'' + event_i.args._tournamentAddress + '\''
