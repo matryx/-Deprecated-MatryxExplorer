@@ -7,15 +7,9 @@ Activity
 **/activity/**
 ~~~~~~~~~~~~~~
 
-Curl:
+``curl -X GET http://explorer.matryx.ai/activity``
 
-::
-
-    curl -X GET http://explorer.matryx.ai:3000/activity
-
-Response:
-
-::
+Response::
 
     {
         "activity": [
@@ -37,36 +31,24 @@ Platform
 **/getLatestInfo**
 ~~~~~~~~~~~~~~~~~~
 
-Curl:
+``curl -X GET http://explorer.matryx.ai/platform/getLatestInfo``
 
-::
-
-    curl -X GET http://explorer.matryx.ai:3000/platform/getLatestInfo
-
-Response:
-
-::
+Response::
 
     {
         "address": "<addressOfLatestPlatform>",
         "abi": []
     }
 
-Where the abi value is a large ABI response in JSON parsed format.
+``abi`` is a large ABI response in JSON parsed format.
 
 
 **/getLatestAddress**
 ~~~~~~~~~~~~~~~~~~~~~
 
-Curl:
+``curl -X GET http://explorer.matryx.ai/platform/getLatestAddress``
 
-::
-
-    curl -X GET http://explorer.matryx.ai:3000/platform/getLatestAddress
-
-Response:
-
-::
+Response::
 
     {
         "address": "<addressOfLatestPlatform>"
@@ -76,92 +58,65 @@ Response:
 **/getLatestAbi**
 ~~~~~~~~~~~~~~~~~
 
-Curl:
+``curl -X GET http://explorer.matryx.ai/platform/getLatestAbi``
 
-::
-
-    curl -X GET http://explorer.matryx.ai:3000/platform/getLatestAbi
-
-Response:
-
-::
+Response::
 
     {
         "abi": []
     }
 
-Where the abi value is a large ABI response in JSON parsed format.
+``abi`` is a large ABI response in JSON parsed format.
 
 
 **/getInfo/:version**
 ~~~~~~~~~~~~~~~~~~~~~
 
-Where the :version param is the branch of the Matryx Platform you want to use
-ie: master, QA, develop
-It grabs it directly from the /build folder of http://github.com/matryx/MatryxPlatform
+``curl -X GET http://explorer.matryx.ai/platform/getInfo/master``
 
-Curl:
-
-::
-
-    curl -X GET http://explorer.matryx.ai:3000/platform/getInfo/master
-
-Response:
-
-::
+Response::
 
     {
         "abi": []
     }
 
-Where the abi value is a large ABI response in JSON parsed format for that version of the Matryx Platform.
+Where ``:version`` is the branch of the Matryx Platform you want to use
+ie: master, QA, develop.
+It grabs it directly from the /build folder of http://github.com/matryx/MatryxPlatform
+
+``abi`` is a large ABI response in JSON parsed format for that version of the Matryx Platform.
 
 
 **/getAddress/:version**
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Where the :version param is the branch of the Matryx Platform you want to use
-ie: master, QA, develop
-It grabs it directly from the /build folder of http://github.com/matryx/MatryxPlatform
+``curl -X GET http://explorer.matryx.ai/platform/getAddress/master``
 
-Curl:
-
-::
-
-    curl -X GET http://explorer.matryx.ai:3000/platform/getAddress/master
-
-Response:
-
-::
+Response::
 
     {
         "address": "<EthereumAddressOfPlatform>"
     }
 
+Where ``:version`` is the branch of the Matryx Platform you want to use
+ie: master, QA, develop.
+It grabs it directly from the /build folder of http://github.com/matryx/MatryxPlatform
+
 
 **/getAbi/:version**
 ~~~~~~~~~~~~~~~~~~~~
 
-.. _curl-1:
+``curl -X GET http://explorer.matryx.ai/platform/getAbi/master``
 
-Where the :version param is the branch of the Matryx Platform you want to use
-ie: master, QA, develop
-It grabs it directly from the /build folder of http://github.com/matryx/MatryxPlatform
-
-
-Curl:
-
-::
-
-    curl -X GET http://explorer.matryx.ai:3000/platform/getAbi/master
-
-Response:
-
-::
+Response::
 
     {
         "abi": []
     }
+
+Where ``:version`` is the branch of the Matryx Platform you want to use
+ie: master, QA, develop.
+It grabs it directly from the /build folder of http://github.com/matryx/MatryxPlatform
 
 
 Tournament
@@ -170,17 +125,9 @@ Tournament
 **/tournaments/**
 ~~~~~~~~~~~~~~~~~
 
-.. _curl-1:
+``curl -X GET http://explorer.matryx.ai/tournaments/``
 
-Curl:
-
-::
-
-    curl -X GET http://explorer.matryx.ai:3000/tournaments/
-
-Response:
-
-::
+Response::
 
     {
       "data": [
@@ -194,42 +141,35 @@ Response:
           "numberOfParticipants": 1,
           "address": "0x8792123855cca07fcf57d623985e9f96ca34495d",
           "ipType": "",
-          "externalAddress": "QmewXg6HCJ8kVcCKSrBXk8fawLru5Po3XaNgd4aGRrNa1N"
+          "fileHash": "QmewXg6HCJ8kVcCKSrBXk8fawLru5Po3XaNgd4aGRrNa1N"
         }
       ]
     }
+
+Returns the list of tournaments currently on the platform.
+Can optionally be filtered by owner address by adding ``?owner=<address>`` to the end.
 
 
 **/tournaments/count**
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Curl:
+``curl -X GET http://explorer.matryx.ai/tournaments/count``
 
-::
-
-    curl -X GET http://explorer.matryx.ai:3000/tournaments/count
-
-Response:
-
-::
+Response::
 
     {
         "tournamentCount": 3
     }
 
+Returns the count of all tournaments on the platform.
+
 
 **/tournaments/address/:tournamentAddress**
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Curl:
+``curl -X GET http://explorer.matryx.ai/tournaments/address/0x8792123855cca07fcf57d623985e9f96ca34495d``
 
-::
-
-    curl -X GET http://explorer.matryx.ai:3000/tournaments/address/0x8792123855cca07fcf57d623985e9f96ca34495d
-
-Response:
-
-::
+Response::
 
     {
         "tournamentDetails": {
@@ -245,79 +185,63 @@ Response:
             "numberOfParticipants": 1,
             "roundEndTime": 1529703263,
             "participationMTX": 2,
-            "externalAddress": "QmewXg6HCJ8kVcCKSrBXk8fawLru5Po3XaNgd4aGRrNa1N",
+            "fileHash": "QmewXg6HCJ8kVcCKSrBXk8fawLru5Po3XaNgd4aGRrNa1N",
             "ipType": ""
         }
     }
+
+Returns more details for the specified tournament.
 
 
 **/tournaments/address/:tournamentAddress/getOwner**
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Curl:
+``curl -X GET http://explorer.matryx.ai/tournaments/address/0x8792123855cca07fcf57d623985e9f96ca34495d/getOwner``
 
-::
-
-    curl -X GET http://explorer.matryx.ai:3000/tournaments/address/0x8792123855cca07fcf57d623985e9f96ca34495d/getOwner
-
-Response:
-
-::
+Response::
 
     {
         "tournamentOwner": "0x41b6f2fad14b9f2a67f2b9783bd74d2c258e033d",
         "tournamentAddress": "0x8792123855cca07fcf57d623985e9f96ca34495d"
     }
 
+Returns the owner address of the specified tournament.
+
 
 **/tournaments/address/:tournamentAddress/submissionCount**
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Curl:
+``curl -X GET http://explorer.matryx.ai/tournaments/address/0x8792123855cca07fcf57d623985e9f96ca34495d/submissionCount``
 
-::
-
-    curl -X GET http://explorer.matryx.ai:3000/tournaments/address/0x8792123855cca07fcf57d623985e9f96ca34495d/submissionCount
-
-Response:
-
-::
+Response::
 
     {
         "results": 10
     }
 
+Returns the number of submissions to the specified tournament.
+
 
 **/tournaments/address/:tournamentAddress/currentRound**
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Curl:
+``curl -X GET http://explorer.matryx.ai/tournaments/address/0x8792123855cca07fcf57d623985e9f96ca34495d/currentRound``
 
-::
-
-    curl -X GET http://explorer.matryx.ai:3000/tournaments/address/0x8792123855cca07fcf57d623985e9f96ca34495d/currentRound
-
-Response:
-
-::
+Response::
 
     {
         "currentRound": 1
     }
 
+Returns the current round number of the specified tournament.
+
 
 **/tournaments/address/:tournamentAddress/round/:roundId**
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Curl:
+``curl -X GET http://explorer.matryx.ai/tournaments/address/0x8792123855cca07fcf57d623985e9f96ca34495d/round/0``
 
-::
-
-    curl -X GET http://explorer.matryx.ai:3000/tournaments/address/0x8792123855cca07fcf57d623985e9f96ca34495d/round/0
-
-Response:
-
-::
+Response::
 
     {
         "data": {
@@ -330,37 +254,31 @@ Response:
         }
     }
 
+Returns round details for the specified round index of the tournament.
+If the tournament status is either ``isClosed`` or ``isAbandoned``,
+all submissions to the round are returned under the ``submissions`` property.
+
 
 **/tournaments/address/:tournamentAddress/isEntrant/:address**
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Curl:
+``curl -X GET http://explorer.matryx.ai/tournaments/address/0x8792123855cca07fcf57d623985e9f96ca34495d/isEntrant/0x051d2a36630625eeb496b6b25ace6229401dd11f``
 
-::
-
-    curl -X GET http://explorer.matryx.ai:3000/tournaments/address/0x8792123855cca07fcf57d623985e9f96ca34495d/isEntrant/0x051d2a36630625eeb496b6b25ace6229401dd11f
-
-Response:
-
-::
+Response::
 
     {
         "isEntrant": false
     }
 
+Returns if ``:address`` is an entrant of the specified tournament.
+
 
 **/tournaments/address/:tournamentAddress/allRoundAddresses**
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Curl:
+``curl -X GET http://explorer.matryx.ai/tournaments/address/0x8792123855cca07fcf57d623985e9f96ca34495d/allRoundAddresses``
 
-::
-
-    curl -X GET http://explorer.matryx.ai:3000/tournaments/address/0x8792123855cca07fcf57d623985e9f96ca34495d/allRoundAddresses
-
-Response:
-
-::
+Response::
 
     {
         "addresses": [
@@ -368,16 +286,51 @@ Response:
         ]
     }
 
+Returns all round addresses of the specified tournament.
+
+
+**/tournaments/address/:tournamentAddress/isCreator/:address**
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``curl -X GET http://explorer.matryx.ai/tournaments/address/0x8792123855cca07fcf57d623985e9f96ca34495d/isCreator/0x41b6f2fad14b9f2a67f2b9783bd74d2c258e033d``
+
+Response::
+
+    {
+        "result": true
+    }
+
+Returns if ``:address`` is the creator of the specified tournament.
+
+
+**/tournaments/category/:category**
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``curl -X GET http://explorer.matryx.ai/tournaments/category/math``
+
+Response::
+
+    {
+        "addresses": [
+            "0x8792123855cca07fcf57d623985e9f96ca34495d"
+        ]
+    }
+
+Returns all tournament addresses that belong to the category ``:category``.
+
 
 Round
 -----
 
+
 Submission
 ----------
+
 
 Interplanetary File System (IPFS)
 ---------------------------------
 IPFS
+
 
 Token
 -----
