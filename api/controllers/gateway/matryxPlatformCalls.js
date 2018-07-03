@@ -148,12 +148,12 @@ matryxPlatformCalls.getTournamentTitle = async tournamentAddress => {
 
 matryxPlatformCalls.getTournamentOwner = tournamentAddress => {
   let tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  return promisify(tournamentContract.owner)()
+  return promisify(tournamentContract.getOwner)()
 }
 
 matryxPlatformCalls.getTournamentBounty = async (tournamentAddress) => {
   let tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  let bounty = await promisify(tournamentContract.bounty)()
+  let bounty = await promisify(tournamentContract.getBounty)()
   return +web3.fromWei(bounty.toString())
 }
 
@@ -177,28 +177,9 @@ matryxPlatformCalls.getTournamentCategory = (tournamentAddress) => {
   return promisify(tournamentContract.getCategory)()
 }
 
-// TODO not used
-matryxPlatformCalls.getTournamentMaxRounds = async (tournamentAddress) => {
-  let tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  let maxRounds = await promisify(tournamentContract.maxRounds)()
-  return parseInt(maxRounds.toString())
-}
-
 matryxPlatformCalls.isEntrantToTournament = (tournamentAddress, userAddress) => {
   let tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
   return promisify(tournamentContract.isEntrant)(userAddress)
-}
-
-// TODO not used
-matryxPlatformCalls.isInReviewTournament = (tournamentAddress) => {
-  let tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  return promisify(tournamentContract.isInReview)()
-}
-
-// TODO not used
-matryxPlatformCalls.roundIsOpenTournament = (tournamentAddress) => {
-  let tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  return promisify(tournamentContract.roundIsOpen)()
 }
 
 matryxPlatformCalls.getDescriptionHashTournament = async (tournamentAddress) => {
@@ -257,33 +238,24 @@ matryxPlatformCalls.getCurrentRoundEndTimeFromTournament = async (tournamentAddr
 
 matryxPlatformCalls.getAllRoundAddresses = async (tournamentAddress) => {
   let tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  let addresses = []
-  let currentRound = await promisify(tournamentContract.currentRound)()
-  let count = +currentRound[0]
-
-  for (i = 0; i < count; i++) {
-    let roundAddress = await promisify(tournamentContract.rounds)(i)
-    if (roundAddress != '0x') {
-      addresses.push(roundAddress)
-    }
-  }
+  let addresses = await promisify(tournamentContract.getRounds)()
   return addresses
 }
 
 matryxPlatformCalls.getRoundAddressByIndex = async (tournamentAddress, roundIndex) => {
   let tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  let roundAddress = await promisify(tournamentContract.rounds)(roundIndex)
-  if (roundAddress != '0x') {
+  let addresses = await promisify(tournamentContract.getRounds)()
+  let roundAddress = addresses[roundIndex]
+  if (roundAddress && roundAddress !== '0x') {
     return roundAddress
   } else {
-    throw new Error('round address is 0x')
+    throw new Error('No round at index ' + roundIndex)
   }
 }
 
 matryxPlatformCalls.isTournamentCreator = async (tournamentAddress, userAddress) => {
   let tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
-  let ownerAddress = await promisify(tournamentContract.owner)()
-  return ownerAddress == userAddress
+  return await promisify(tournamentContract.isOwner)(userAddress)
 }
 
 /*
