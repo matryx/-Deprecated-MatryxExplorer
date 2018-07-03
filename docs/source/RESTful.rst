@@ -132,16 +132,16 @@ Response::
     {
       "data": [
         {
-          "tournamentTitle": "title of the tournament",
-          "mtx": 50,
-          "tournamentOwner": "0x41b6f2fad14b9f2a67f2b9783bd74d2c258e033d"
-          "tournamentDescription": "description of the tournament",
-          "category": "math",
-          "currentRound": 1,
-          "numberOfParticipants": 1,
           "address": "0x8792123855cca07fcf57d623985e9f96ca34495d",
+          "tournamentOwner": "0x41b6f2fad14b9f2a67f2b9783bd74d2c258e033d"
+          "tournamentTitle": "title of the tournament",
+          "tournamentDescription": "description of the tournament",
+          "fileHash": "QmewXg6HCJ8kVcCKSrBXk8fawLru5Po3XaNgd4aGRrNa1N",
+          "category": "math",
           "ipType": "",
-          "fileHash": "QmewXg6HCJ8kVcCKSrBXk8fawLru5Po3XaNgd4aGRrNa1N"
+          "mtx": 50,
+          "currentRound": 1,
+          "numberOfParticipants": 1
         }
       ]
     }
@@ -173,20 +173,20 @@ Response::
 
     {
         "tournamentDetails": {
-            "tournamentTitle": "title of the tournament",
             "tournamentAddress": "0x8792123855cca07fcf57d623985e9f96ca34495d",
-            "remainingMtx": 40,
-            "mtx": 50,
             "authorName": "0x41b6f2fad14b9f2a67f2b9783bd74d2c258e033d",
+            "tournamentTitle": "title of the tournament",
             "tournamentDescription": "description of the tournament",
+            "fileHash": "QmewXg6HCJ8kVcCKSrBXk8fawLru5Po3XaNgd4aGRrNa1N",
             "category": "math",
+            "ipType": "",
+            "mtx": 50,
+            "remainingMtx": 40,
             "currentRound": 1,
             "currentRoundAddress": "0x7228373cb138d45cd7f12be3fe0a65928aad20c0",
-            "numberOfParticipants": 1,
             "roundEndTime": 1529703263,
-            "participationMTX": 2,
-            "fileHash": "QmewXg6HCJ8kVcCKSrBXk8fawLru5Po3XaNgd4aGRrNa1N",
-            "ipType": ""
+            "numberOfParticipants": 1,
+            "participationMTX": 2
         }
     }
 
@@ -201,8 +201,8 @@ Returns more details for the specified tournament.
 Response::
 
     {
-        "tournamentOwner": "0x41b6f2fad14b9f2a67f2b9783bd74d2c258e033d",
-        "tournamentAddress": "0x8792123855cca07fcf57d623985e9f96ca34495d"
+        "tournamentAddress": "0x8792123855cca07fcf57d623985e9f96ca34495d",
+        "tournamentOwner": "0x41b6f2fad14b9f2a67f2b9783bd74d2c258e033d"
     }
 
 Returns the owner address of the specified tournament.
@@ -245,9 +245,9 @@ Response::
 
     {
         "data": {
+            "tournamentAddress": "0x8792123855cca07fcf57d623985e9f96ca34495d",
             "tournamentTitle": "title of the tournament",
             "tournamentDescription": "description of the tournament",
-            "tournamentAddress": "0x8792123855cca07fcf57d623985e9f96ca34495d",
             "roundMtx": 10,
             "roundStatus": "isOpen",
             "submissions": []
