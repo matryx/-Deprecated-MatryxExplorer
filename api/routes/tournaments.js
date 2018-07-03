@@ -68,8 +68,8 @@ router.get('/address/:tournamentAddress/getOwner', async (req, res, next) => {
     .getTournamentOwnerByAddress(tournamentAddress)
     .then(tournamentOwner => {
       res.status(200).json({
-        tournamentOwner,
-        tournamentAddress
+        tournamentAddress,
+        tournamentOwner
       })
     })
     .catch(errorHelper(res, 'Error getting owner of ' + tournamentAddress))

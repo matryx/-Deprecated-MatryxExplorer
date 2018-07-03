@@ -8,7 +8,7 @@ Nanome 2018
 /*
 Imports
 */
-const externalApiCalls = require('./gateway/externalApiCalls')
+
 const matryxPlatformCalls = require('./gateway/matryxPlatformCalls')
 
 let tournamentController = {}
@@ -60,21 +60,18 @@ tournamentController.getAllTournaments = async (query) => {
       fileHash
     ] = data
 
-    let details = {
-      tournamentTitle,
-      mtx,
-      tournamentOwner,
-      tournamentDescription,
-      category,
-      currentRound,
-      numberOfParticipants,
-      fileHash,
+    return {
       address,
+      tournamentOwner,
+      tournamentTitle,
+      tournamentDescription,
+      fileHash,
+      category,
+      mtx,
       ipType: '',
-      totalRounds: currentRound
+      currentRound,
+      numberOfParticipants
     }
-
-    return details
   })())
 
   return await Promise.all(promises)
@@ -119,21 +116,20 @@ tournamentController.getTournamentByAddress = async (tournamentAddress) => {
   ] = data
 
   return {
-    tournamentTitle,
     tournamentAddress,
-    remainingMtx,
-    mtx,
     authorName,
+    tournamentTitle,
     tournamentDescription,
+    fileHash,
     category,
+    ipType: '',
+    mtx,
+    remainingMtx,
     currentRound,
     currentRoundAddress,
-    numberOfParticipants,
     roundEndTime,
-    participationMTX,
-    fileHash,
-    ipType: '',
-    totalRounds: currentRound
+    numberOfParticipants,
+    participationMTX
     // submissions
   }
 }
