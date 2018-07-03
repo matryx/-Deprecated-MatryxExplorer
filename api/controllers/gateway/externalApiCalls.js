@@ -8,120 +8,52 @@ Nanome 2018
 
 const fetch = require('node-fetch')
 
-// let platformAddress = '0xb966c4b201bba7f6ca583ef3acdf7ea4f0bda93f'
-// let tokenAddress = '0x34c7bbb286a87485de537807f7bf8af9045661f0'
-// let networkId = process.env.NETWORK_ID
+let contractUrl = branch => `https://raw.githubusercontent.com/matryx/MatryxPlatform/${branch}/build/contracts/`
+// let contractUrl = branch => `http://localhost:8081/`
 
 let externalApiCalls = {}
 
-externalApiCalls.getMatryxPlatformInfo = function (branch) {
-  return new Promise((resolve, reject) => {
-    if (branch == 'v1') {
-      let responsev1 = require('../../../data/abi/v1/platform')
-      resolve(responsev1)
-    } else if (branch == 'v2') {
-      let responsev2 = require('../../../data/abi/v2/platform')
-      resolve(responsev2)
+const ABIs = {
+  'platform': {
+    v1: '../../../data/abi/v1/platform',
+    v2: '../../../data/abi/v2/platform',
+    json: 'MatryxPlatform.json'
+  },
+  'token': { json: 'MatryxToken.json' },
+  'tournament': {
+    v2: '../../../data/abi/v2/tournament',
+    json: 'MatryxTournament.json'
+  },
+  'submission': {
+    v2: '../../../data/abi/v2/submission',
+    json: 'MatryxSubmission.json'
+  },
+  'round': {
+    v2: '../../../data/abi/v2/round',
+    json: 'MatryxRound.json'
+  }
+}
+
+const getInfo = async (contract, branch) => {
+  if (branch === 'v1' || branch === 'v2') {
+    let path = ABIs[contract][branch]
+    if (path !== undefined) {
+      return require(path)
     } else {
-      let matryxPlatformAbiUrl = 'https://raw.githubusercontent.com/matryx/MatryxPlatform/' + branch + '/build/contracts/MatryxPlatform.json'
-
-      fetch(matryxPlatformAbiUrl).then(function (result) {
-        console.log('Getting Platform Abi from Matryx Platform Github for: ' + branch)
-
-        let jsonResult = result.json()
-        // .then(json => {
-        //   json.networks[networkId] = { address: platformAddress }
-        //   return json
-        // })
-        // You need to get the address by adding results['networks'][networkId]['address'] to the promise call who uses this function
-        resolve(jsonResult)
-      }).catch(function (err) {
-        reject(err)
-      })
+      throw Error(branch + ' ABI does not exist for ' + contract)
     }
-  })
+  } else {
+    let url = contractUrl(branch) + ABIs[contract].json
+    let res = await fetch(url)
+    console.log('Got ' + contract + ' ABI from MatryxPlatform GitHub for ' + branch)
+    return res.json()
+  }
 }
 
-externalApiCalls.getMatryxTokenInfo = function (branch) {
-  return new Promise((resolve, reject) => {
-    let matryxTokenAbiUrl = 'https://raw.githubusercontent.com/matryx/matryx-alpha-source/' + branch + '/build/contracts/MatryxToken.json'
-
-    fetch(matryxTokenAbiUrl).then(function (result) {
-      console.log('Getting Token Abi from Matryx Platform Github for: ' + branch)
-
-      let jsonResult = result.json()
-      // .then(json => {
-      //   json.networks[networkId] = { address: tokenAddress }
-      //   return json
-      // })
-      resolve(jsonResult)
-    }).catch(function (err) {
-      reject(err)
-    })
-  })
-}
-
-externalApiCalls.getMatryxTournamentAbi = function (branch) {
-  return new Promise((resolve, reject) => {
-    if (branch == 'v1') {
-      reject({ message: 'Abi does not exist' })
-    } else if (branch == 'v2') {
-      let responsev2 = require('../../../data/abi/v2/tournament')
-      resolve(responsev2)
-    } else {
-      let matryxTournamentAbiUrl = 'https://raw.githubusercontent.com/matryx/matryx-alpha-source/' + branch + '/build/contracts/MatryxTournament.json'
-
-      fetch(matryxTournamentAbiUrl).then(function (result) {
-        console.log('Getting Tournament Abi from Matryx Platform Github for: ' + branch)
-        let jsonResult = result.json()
-        resolve(jsonResult)
-      }).catch(function (err) {
-        reject(err)
-      })
-    }
-  })
-}
-
-externalApiCalls.getMatryxSubmissionAbi = function (branch) {
-  return new Promise((resolve, reject) => {
-    if (branch == 'v1') {
-      reject('Abi does not exist')
-    } else if (branch == 'v2') {
-      let responsev2 = require('../../../data/abi/v2/submission')
-      resolve(responsev2)
-    } else {
-      let matryxSubmissionAbiUrl = 'https://raw.githubusercontent.com/matryx/matryx-alpha-source/' + branch + '/build/contracts/MatryxSubmission.json'
-
-      fetch(matryxSubmissionAbiUrl).then(function (result) {
-        console.log('Getting Submission Abi from Matryx Platform Github for: ' + branch)
-        let jsonResult = result.json()
-        resolve(jsonResult)
-      }).catch(function (err) {
-        reject(err)
-      })
-    }
-  })
-}
-
-externalApiCalls.getMatryxRoundAbi = function (branch) {
-  return new Promise((resolve, reject) => {
-    if (branch == 'v1') {
-      reject('Abi does not exist')
-    } else if (branch == 'v2') {
-      let responsev2 = require('../../../data/abi/v2/round')
-      resolve(responsev2)
-    } else {
-      let matryxRoundAbiUrl = 'https://raw.githubusercontent.com/matryx/matryx-alpha-source/' + branch + '/build/contracts/MatryxRound.json'
-
-      fetch(matryxRoundAbiUrl).then(function (result) {
-        console.log('Getting Rounds Abi from Matryx Platform Github for: ' + branch)
-        let jsonResult = result.json()
-        resolve(jsonResult)
-      }).catch(function (err) {
-        reject(err)
-      })
-    }
-  })
-}
+externalApiCalls.getMatryxPlatformInfo  = branch => getInfo('platform', branch)
+externalApiCalls.getMatryxTokenInfo     = branch => getInfo('token', branch)
+externalApiCalls.getMatryxTournamentAbi = branch => getInfo('tournament', branch)
+externalApiCalls.getMatryxSubmissionAbi = branch => getInfo('submission', branch)
+externalApiCalls.getMatryxRoundAbi      = branch => getInfo('round', branch)
 
 module.exports = externalApiCalls
