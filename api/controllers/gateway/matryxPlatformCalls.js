@@ -323,11 +323,14 @@ matryxPlatformCalls.numberOfSubmissions = async (roundAddress) => {
 matryxPlatformCalls.roundStatus = async (roundAddress) => {
   let roundContract = web3.eth.contract(roundAbi).at(roundAddress)
   let state = await promisify(roundContract.getState)()
-  if (state == 0) return 'isWaiting'
-  else if (state == 1) return 'isOpen'
-  else if (state == 2) return 'inReview'
-  else if (state == 3) return 'isClosed'
-  else if (state == 4) return 'isAbandoned'
+  if (state == 0) return 'notYetOpen'
+  else if (state == 1) return 'notFunded'
+  else if (state == 2) return 'isOpen'
+  else if (state == 3) return 'inReview'
+  else if (state == 4) return 'hasWinners'
+  else if (state == 5) return 'isClosed'
+  else if (state == 6) return 'isAbandoned'
+  return 'isBroken' // should never be this
 }
 
 matryxPlatformCalls.getSubmissionsFromRound = async (roundAddress) => {
