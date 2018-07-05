@@ -26,7 +26,7 @@ router.get('/', (req, res, next) => {
 router.get('/getLatestAbi', (req, res, next) => {
   externalApiCalls
     .getMatryxRoundAbi(latestVersion)
-    .then(abi => res.status(200).json({ abi }))
+    .then(({ abi }) => res.status(200).json({ abi }))
     .catch(errorHelper(res, 'Error getting latest ABI'))
 })
 
@@ -35,7 +35,7 @@ router.get('/getAbi/:version', (req, res, next) => {
   let { version } = req.params
   externalApiCalls
     .getMatryxRoundAbi(version)
-    .then(abi => res.status(200).json({ abi }))
+    .then(({ abi }) => res.status(200).json({ abi }))
     .catch(errorHelper(res, 'Error getting ABI for ' + version))
 })
 
