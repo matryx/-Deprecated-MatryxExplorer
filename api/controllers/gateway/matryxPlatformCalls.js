@@ -158,7 +158,8 @@ matryxPlatformCalls.getTournamentBounty = async (tournamentAddress) => {
 }
 
 matryxPlatformCalls.getTournamentRemainingMtx = async (tournamentAddress) => {
-  let mtx = await promisify(matryxTokenContract.balanceOf)(tournamentAddress)
+  let tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
+  let mtx = await promisify(tournamentContract.getBalance)()
   return +web3.fromWei(mtx.toString())
 }
 
