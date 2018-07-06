@@ -310,9 +310,9 @@ matryxPlatformCalls.isSubmissionChosen = (roundAddress) => {
   return promisify(roundContract.submissionChosen)()
 }
 
-matryxPlatformCalls.getWinningSubmissionAddress = (roundAddress) => {
+matryxPlatformCalls.getWinningSubmissionAddresses = (roundAddress) => {
   let roundContract = web3.eth.contract(roundAbi).at(roundAddress)
-  return promisify(roundContract.getWinningSubmissionAddress)()
+  return promisify(roundContract.getWinningSubmissionAddresses)()
 }
 
 matryxPlatformCalls.numberOfSubmissions = async (roundAddress) => {
@@ -343,17 +343,26 @@ matryxPlatformCalls.getSubmissionsFromRound = async (roundAddress) => {
   let status = await matryxPlatformCalls.roundStatus(roundAddress)
   response.roundStatus = status
 
-  if (status == 'isWaiting' || status == 'inReview' || status == 'isOpen') return response
+  if (['isWaiting', 'inReview', 'isOpen', 'hasWinners'].includes(status)) return response
 
-  if (status == 'isClosed' || status == 'isAbandoned') {
+  if ([/* 'hasWinners', */'isClosed', 'isAbandoned'].includes(status)) {
+    let winners = await matryxPlatformCalls.getWinningSubmissionAddresses(roundAddress)
     let addresses = await matryxPlatformCalls.getRoundSubmissions(roundAddress)
+
     let submissionPromises = addresses.map(address => (async () => {
       let submissionContract = web3.eth.contract(submissionAbi).at(address)
-      let [title, submissionDate] = await Promise.all([
+      let winner = winners.includes(address)
+
+      let [title, submissionDate, reward] = await Promise.all([
         submissionContract.getTitle(),
-        submissionContract.getTimeSubmitted()
+        submissionContract.getTimeSubmitted(),
+        submissionContract.getTransferAmount()
       ])
-      return { title, address, submissionDate }
+
+      submissionDate = +submissionDate
+      reward = +web3.fromWei(reward)
+
+      return { title, address, submissionDate, winner, reward }
     })())
 
     response.submissions = await Promise.all(submissionPromises)
