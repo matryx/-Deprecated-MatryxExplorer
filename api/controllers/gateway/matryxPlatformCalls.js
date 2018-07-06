@@ -343,7 +343,7 @@ matryxPlatformCalls.getSubmissionsFromRound = async (roundAddress) => {
   let status = await matryxPlatformCalls.roundStatus(roundAddress)
   response.roundStatus = status
 
-  if (['isWaiting', 'inReview', 'isOpen', 'hasWinners'].includes(status)) return response
+  if (['notYetOpen', 'notFunded', 'isOpen', 'inReview', 'hasWinners'].includes(status)) return response
 
   if ([/* 'hasWinners', */'isClosed', 'isAbandoned'].includes(status)) {
     let winners = await matryxPlatformCalls.getWinningSubmissionAddresses(roundAddress)
