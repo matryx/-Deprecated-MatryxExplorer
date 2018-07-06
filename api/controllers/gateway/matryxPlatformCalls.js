@@ -189,7 +189,7 @@ matryxPlatformCalls.getDescriptionHashTournament = async (tournamentAddress) => 
   return bytesToAscii(hash)
 }
 
-matryxPlatformCalls.getFileHashTournament = async (tournamentAddress) => {
+matryxPlatformCalls.getFolderHashTournament = async (tournamentAddress) => {
   let tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
   let hash = await promisify(tournamentContract.getFileHash)()
   return bytesToAscii(hash)
@@ -403,7 +403,7 @@ matryxPlatformCalls.getSubmissionAuthor = (submissionAddress) => {
 matryxPlatformCalls.getSubmissionExternalAddress = async (submissionAddress) => {
   let submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
   let externalAddress = await promisify(submissionContract.getExternalAddress)()
-  return web3.toAscii(externalAddress)
+  return bytesToAscii([externalAddress])
 }
 
 matryxPlatformCalls.getSubmissionReferences = (submissionAddress) => {
@@ -437,7 +437,7 @@ matryxPlatformCalls.getSubmissionBalance = async (submissionAddress) => {
 matryxPlatformCalls.getRoundAddressFromSubmission = async (submissionAddress) => {
   let submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
   let round = await promisify(submissionContract.getRound)()
-  return +round
+  return round
 }
 
 matryxPlatformCalls.getTournamentAddressFromSubmission = (submissionAddress) => {
@@ -446,23 +446,19 @@ matryxPlatformCalls.getTournamentAddressFromSubmission = (submissionAddress) => 
 }
 
 matryxPlatformCalls.getSubmissionDescription = async (submissionAddress) => {
-  let submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
-  let externalAddress = await promisify(submissionContract.getExternalAddress)()
-  externalAddress = web3.toAscii(externalAddress)
-  return await ipfsCalls.getIpfsDescriptionOnly(externalAddress)
+  let hash = await matryxPlatformCalls.getSubmissionExternalAddress(submissionAddress)
+  return await ipfsCalls.getIpfsFile(hash)
 }
 
 matryxPlatformCalls.getSubmissionContents = async (submissionAddress) => {
-  let submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
-  let externalAddress = await promisify(submissionContract.getExternalAddress)()
-  web3.toAscii(externalAddress)
-  return await ipfsCalls.getIpfsDataFiles(externalAddress)
+  let hash = await matryxPlatformCalls.getSubmissionExternalAddress(submissionAddress)
+  return await ipfsCalls.getIpfsFile(hash)
 }
 
 matryxPlatformCalls.getRoundInfoFromSubmission = async (submissionAddress) => {
   let roundAddress = await matryxPlatformCalls.getRoundAddressFromSubmission(submissionAddress)
   let bounty = await matryxPlatformCalls.getRoundBounty(roundAddress)
-  return [roundAddress, +web3.fromWei(bounty.toString())]
+  return [roundAddress, bounty]
 }
 
 matryxPlatformCalls.getTournamentInfoFromSubmission = async (submissionAddress) => {
@@ -483,8 +479,8 @@ matryxPlatformCalls.getSubmissionParentInfo = async (submissionAddress) => {
   let [roundAddress, roundMtx] = roundInfo
 
   return {
-    tournamentName,
     tournamentAddress,
+    tournamentName,
     currentRound,
     roundAddress,
     roundMtx

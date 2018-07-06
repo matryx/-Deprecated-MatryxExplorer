@@ -105,8 +105,8 @@ router.post('/upload', (req, res, next) => {
         })
 
         // Add the tmp folder to IPFS and get back a hash
-        ipfsCalls.pushTmpFolderToIPFS(tempDir).then(([descriptionHash, fileHash]) => {
-          res.status(200).json({ descriptionHash, fileHash })
+        ipfsCalls.pushTmpFolderToIPFS(tempDir).then(([descriptionHash, folderHash]) => {
+          res.status(200).json({ descriptionHash, folderHash })
         })
 
         let dir = fs.readdirSync(tempDir)
