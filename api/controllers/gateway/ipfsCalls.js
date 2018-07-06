@@ -33,10 +33,15 @@ ipfsCalls.pushTmpFolderToIPFS = async (tempDirectory) => {
     }
   })
 
-  let [descriptionHash, filesHash] = await Promise.all([
-    ipfsCalls.uploadFiles([descriptionPath], false),
-    ipfsCalls.uploadFiles(filePaths, true)
-  ])
+  let descriptionHash, filesHash
+
+  if (descriptionPath) {
+    descriptionHash = await ipfsCalls.uploadFiles([descriptionPath], false)
+  }
+
+  if (filePaths.length) {
+    filesHash = await ipfsCalls.uploadFiles(filePaths, true)
+  }
 
   return [descriptionHash, filesHash]
 }
