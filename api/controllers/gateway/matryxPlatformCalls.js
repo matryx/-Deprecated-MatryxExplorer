@@ -232,9 +232,7 @@ matryxPlatformCalls.getCurrentRoundEndTimeFromTournament = async (tournamentAddr
   if (roundAddress == '0x') {
     throw new Error("The round address is invalid - '0x'")
   }
-  let roundContract = web3.eth.contract(roundAbi).at(roundAddress)
-  let endTime = await promisify(roundContract.getEndTime)()
-  return +endTime
+  return matryxPlatformCalls.getRoundEndTime(roundAddress)
 }
 
 matryxPlatformCalls.getAllRoundAddresses = async (tournamentAddress) => {
@@ -282,6 +280,34 @@ matryxPlatformCalls.getRoundBounty = async (roundAddress) => {
   let roundContract = web3.eth.contract(roundAbi).at(roundAddress)
   let bounty = await promisify(roundContract.getBounty)()
   return +web3.fromWei(bounty.toString())
+}
+
+matryxPlatformCalls.getRoundStartTime = async (roundAddress) => {
+  let roundContract = web3.eth.contract(roundAbi).at(roundAddress)
+  let startTime = await promisify(roundContract.getStartTime)()
+  return +startTime
+}
+
+matryxPlatformCalls.getRoundEndTime = async (roundAddress) => {
+  let roundContract = web3.eth.contract(roundAbi).at(roundAddress)
+  let endTime = await promisify(roundContract.getEndTime)()
+  return +endTime
+}
+
+matryxPlatformCalls.getRoundReviewPeriodDuration = async (roundAddress) => {
+  let roundContract = web3.eth.contract(roundAbi).at(roundAddress)
+  let reviewDuration = await promisify(roundContract.reviewPeriodDuration)()
+  return +reviewDuration
+}
+
+matryxPlatformCalls.getRoundDetails = async (roundAddress) => {
+  let [roundMtx, startTime, endTime, reviewPeriodDuration] = await Promise.all([
+    matryxPlatformCalls.getRoundBounty(roundAddress),
+    matryxPlatformCalls.getRoundStartTime(roundAddress),
+    matryxPlatformCalls.getRoundEndTime(roundAddress),
+    matryxPlatformCalls.getRoundReviewPeriodDuration(roundAddress)
+  ])
+  return { roundMtx, startTime, endTime, reviewPeriodDuration }
 }
 
 matryxPlatformCalls.getRoundSubmissions = (roundAddress) => {
@@ -350,17 +376,13 @@ matryxPlatformCalls.getSubmissionsFromRound = async (roundAddress) => {
     let addresses = await matryxPlatformCalls.getRoundSubmissions(roundAddress)
 
     let submissionPromises = addresses.map(address => (async () => {
-      let submissionContract = web3.eth.contract(submissionAbi).at(address)
       let winner = winners.includes(address)
 
       let [title, submissionDate, reward] = await Promise.all([
-        submissionContract.getTitle(),
-        submissionContract.getTimeSubmitted(),
-        submissionContract.getTransferAmount()
+        matryxPlatformCalls.getSubmissionTitle(address),
+        matryxPlatformCalls.getSubmissionTimeSubmitted(address),
+        matryxPlatformCalls.getSubmissionReward(address)
       ])
-
-      submissionDate = +submissionDate
-      reward = +web3.fromWei(reward)
 
       return { title, address, submissionDate, winner, reward }
     })())
@@ -398,6 +420,17 @@ matryxPlatformCalls.getSubmissionTitle = (submissionAddress) => {
 matryxPlatformCalls.getSubmissionAuthor = (submissionAddress) => {
   let submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
   return promisify(submissionContract.getAuthor)()
+}
+
+matryxPlatformCalls.getSubmissionOwner = (submissionAddress) => {
+  let submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
+  return promisify(submissionContract.getOwner)()
+}
+
+matryxPlatformCalls.getSubmissionReward = async (submissionAddress) => {
+  let submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
+  let reward = await promisify(submissionContract.getTransferAmount)()
+  return +web3.fromWei(reward.toString())
 }
 
 matryxPlatformCalls.getSubmissionExternalAddress = async (submissionAddress) => {

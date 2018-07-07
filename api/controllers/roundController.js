@@ -19,11 +19,11 @@ roundController.getRoundDetails = async function (roundAddress) {
   // TODO: Check to see if the round is the current round of the tournament and return status Only
   let data = await Promise.all([
     matryxPlatformCalls.getTournamentInfoFromRoundAddress(roundAddress),
-    matryxPlatformCalls.getRoundBounty(roundAddress),
+    matryxPlatformCalls.getRoundDetails(roundAddress),
     matryxPlatformCalls.getSubmissionsFromRound(roundAddress)
   ])
 
-  let [tournamentInfo, roundMtx, submissionsFromRound] = data
+  let [tournamentInfo, roundDetails, submissionsFromRound] = data
   let { tournamentTitle, tournamentDescription, tournamentAddress } = tournamentInfo
   let { roundStatus, submissions } = submissionsFromRound
 
@@ -31,7 +31,7 @@ roundController.getRoundDetails = async function (roundAddress) {
     tournamentTitle,
     tournamentDescription,
     tournamentAddress,
-    roundMtx,
+    ...roundDetails,
     roundStatus,
     submissions
   }

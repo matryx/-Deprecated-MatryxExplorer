@@ -15,7 +15,7 @@ const matryxPlatformCalls = require('./gateway/matryxPlatformCalls')
 let submissionController = {}
 
 submissionController.getSubmissionOwnerByAddress = (submissionAddress) => {
-  return matryxPlatformCalls.getSubmissionAuthor(submissionAddress)
+  return matryxPlatformCalls.getSubmissionOwner(submissionAddress)
 }
 
 submissionController.getIpfsDataForSubmission = (ipfsHash) => {
@@ -33,7 +33,8 @@ submissionController.getSubmissionByAddress = async (submissionAddress) => {
 
   let data = await Promise.all([
     matryxPlatformCalls.getSubmissionTitle(submissionAddress),
-    matryxPlatformCalls.getSubmissionAuthor(submissionAddress),
+    matryxPlatformCalls.getSubmissionOwner(submissionAddress),
+    matryxPlatformCalls.getSubmissionReward(submissionAddress),
     matryxPlatformCalls.getSubmissionDescription(submissionAddress),
     matryxPlatformCalls.getSubmissionContributors(submissionAddress),
     matryxPlatformCalls.getSubmissionReferences(submissionAddress),
@@ -45,7 +46,8 @@ submissionController.getSubmissionByAddress = async (submissionAddress) => {
 
   let [
     submissionTitle,
-    submissionAuthor,
+    submissionOwner,
+    submissionReward,
     submissionDescription,
     submissionCollaborators,
     submissionReferences,
@@ -56,9 +58,10 @@ submissionController.getSubmissionByAddress = async (submissionAddress) => {
   ] = data
 
   return {
-    submissionTitle,
     submissionAddress,
-    submissionAuthor,
+    submissionTitle,
+    submissionOwner,
+    submissionReward,
     submissionDescription,
     submissionCollaborators,
     submissionReferences,
@@ -67,11 +70,6 @@ submissionController.getSubmissionByAddress = async (submissionAddress) => {
     submissionDate,
     parentInfo
   }
-}
-
-submissionController.uploadJsonAndDescriptionToIPFS = (jsonContent, description) => {
-  console.log('Making gateway call...')
-  return ipfsCalls.uploadJsonAndDescriptionToIPFS(jsonContent, description)
 }
 
 submissionController.isCreator = (submissionAddress, userAddress) => {
