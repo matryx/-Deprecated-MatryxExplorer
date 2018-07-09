@@ -378,13 +378,14 @@ matryxPlatformCalls.getSubmissionsFromRound = async (roundAddress) => {
     let submissionPromises = addresses.map(address => (async () => {
       let winner = winners.includes(address)
 
-      let [title, submissionDate, reward] = await Promise.all([
+      let [title, owner, submissionDate, reward] = await Promise.all([
         matryxPlatformCalls.getSubmissionTitle(address),
+        matryxPlatformCalls.getSubmissionOwner(address),
         matryxPlatformCalls.getSubmissionTimeSubmitted(address),
         matryxPlatformCalls.getSubmissionReward(address)
       ])
 
-      return { title, address, submissionDate, winner, reward }
+      return { address, title, owner, submissionDate, winner, reward }
     })())
 
     response.submissions = await Promise.all(submissionPromises)
