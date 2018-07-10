@@ -151,6 +151,17 @@ matryxPlatformCalls.getTournamentOwner = tournamentAddress => {
   return promisify(tournamentContract.getOwner)()
 }
 
+matryxPlatformCalls.getTournamentState = async (tournamentAddress) => {
+  let tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
+  let state = await promisify(tournamentContract.getState)()
+  if (state == 0) return 'notYetOpen'
+  else if (state == 1) return 'isOnHold'
+  else if (state == 2) return 'isOpen'
+  else if (state == 3) return 'isClosed'
+  else if (state == 4) return 'isAbandoned'
+  else return 'isBroken' // should never be this
+}
+
 matryxPlatformCalls.getTournamentBounty = async (tournamentAddress) => {
   let tournamentContract = web3.eth.contract(tournamentAbi).at(tournamentAddress)
   let bounty = await promisify(tournamentContract.getBounty)()
