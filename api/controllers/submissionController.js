@@ -38,8 +38,7 @@ submissionController.getSubmissionByAddress = async (submissionAddress) => {
     matryxPlatformCalls.getSubmissionDescription(submissionAddress),
     matryxPlatformCalls.getSubmissionContributors(submissionAddress),
     matryxPlatformCalls.getSubmissionReferences(submissionAddress),
-    matryxPlatformCalls.getSubmissionContents(submissionAddress),
-    matryxPlatformCalls.getSubmissionExternalAddress(submissionAddress),
+    matryxPlatformCalls.getSubmissionFileHash(submissionAddress),
     matryxPlatformCalls.getSubmissionTimeSubmitted(submissionAddress),
     matryxPlatformCalls.getSubmissionParentInfo(submissionAddress)
   ])
@@ -51,8 +50,7 @@ submissionController.getSubmissionByAddress = async (submissionAddress) => {
     submissionDescription,
     submissionCollaborators,
     submissionReferences,
-    submissionContents,
-    submissionExternalAddress,
+    submissionFileHash,
     submissionDate,
     parentInfo
   ] = data
@@ -65,8 +63,7 @@ submissionController.getSubmissionByAddress = async (submissionAddress) => {
     submissionDescription,
     submissionCollaborators,
     submissionReferences,
-    submissionContents, // turn this into a [] ?
-    submissionExternalAddress,
+    submissionFileHash,
     submissionDate,
     parentInfo
   }
