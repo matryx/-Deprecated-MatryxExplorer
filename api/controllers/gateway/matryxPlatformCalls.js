@@ -441,7 +441,7 @@ matryxPlatformCalls.getSubmissionOwner = (submissionAddress) => {
 
 matryxPlatformCalls.getSubmissionReward = async (submissionAddress) => {
   let submissionContract = web3.eth.contract(submissionAbi).at(submissionAddress)
-  let reward = await promisify(submissionContract.getTransferAmount)()
+  let reward = await promisify(submissionContract.getTotalWinnings)()
   return +web3.fromWei(reward.toString())
 }
 
