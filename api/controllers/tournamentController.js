@@ -120,6 +120,8 @@ tournamentController.getTournamentByAddress = async (tournamentAddress) => {
     // submissions
   ] = data
 
+  let currentRoundState = await matryxPlatformCalls.roundStatus(currentRoundAddress)
+
   return {
     tournamentAddress,
     authorName,
@@ -133,6 +135,7 @@ tournamentController.getTournamentByAddress = async (tournamentAddress) => {
     remainingMtx,
     currentRound,
     currentRoundAddress,
+    currentRoundState,
     roundEndTime,
     numberOfParticipants,
     participationMTX
