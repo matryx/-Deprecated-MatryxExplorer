@@ -331,11 +331,6 @@ matryxPlatformCalls.getSubmissionAddressFromRound = (roundAddress, submissionInd
   return promisify(roundContract.getSubmissionAddress)(submissionIndex)
 }
 
-matryxPlatformCalls.getSubmissionAuthorFromRound = (roundAddress, submissionAddress) => {
-  let roundContract = web3.eth.contract(roundAbi).at(roundAddress)
-  return promisify(roundContract.getSubmissionAuthor)(submissionAddress)
-}
-
 matryxPlatformCalls.getBalanceOfRound = async (roundAddress) => {
   let roundContract = web3.eth.contract(roundAbi).at(roundAddress)
   let balance = await promisify(roundContract.getBalance)()
