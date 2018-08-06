@@ -9,23 +9,79 @@ Nanome 2018
 /*
 Imports
 */
-const matryxPlatformCalls = require('./gateway/matryxPlatformCalls')
+const ipfsCalls = require('./gateway/ipfsCalls')
+
+const MatryxTournament = require('../contracts/MatryxTournament')
+const MatryxRound = require('../contracts/MatryxRound')
+const MatryxSubmission = require('../contracts/MatryxSubmission')
+
+let abis
+require('../helpers/getAbis').then(a => abis = a)
 
 let roundController = {}
+
+roundController.getSubmissionsFromRound = async (roundAddress) => {
+  const Round = new MatryxRound(roundAddress, abis.round.abi)
+
+  let response = {
+    roundStatus: '',
+    submissions: []
+  }
+
+  let status = await Round.getState()
+  response.roundStatus = status
+
+  if (['notYetOpen', 'notFunded', 'isOpen', 'inReview', 'hasWinners'].includes(status)) return response
+
+  if ([/* 'hasWinners', */'isClosed', 'isAbandoned'].includes(status)) {
+    let [winners, addresses] = await Promise.all([
+      Round.getWinningSubmissionAddresses(),
+      Round.getSubmissions()
+    ])
+
+    let submissionPromises = addresses.map(address => (async () => {
+      const Submission = new MatryxSubmission(address, abis.submission.abi)
+
+      let winner = winners.includes(address)
+
+      let [title, owner, submissionDate, reward] = await Promise.all([
+        Submission.getTitle(),
+        Submission.getOwner(),
+        Submission.getTimeSubmitted(),
+        Submission.getBalance()
+      ])
+
+      return { address, title, owner, submissionDate, winner, reward }
+    })())
+
+    response.submissions = await Promise.all(submissionPromises)
+    return response
+  }
+}
 
 roundController.getRoundDetails = async function (roundAddress) {
   console.log('>RoundController: Retrieving Round Details for: ' + '\'' + roundAddress + '\'')
 
-  // TODO: Check to see if the round is the current round of the tournament and return status Only
+  const Round = new MatryxRound(roundAddress, abis.round.abi)
+
   let data = await Promise.all([
-    matryxPlatformCalls.getTournamentInfoFromRoundAddress(roundAddress),
-    matryxPlatformCalls.getRoundDetails(roundAddress),
-    matryxPlatformCalls.getSubmissionsFromRound(roundAddress)
+    Round.getTournament(),
+    Round.getData(),
+    roundController.getSubmissionsFromRound(roundAddress)
   ])
 
-  let [tournamentInfo, roundDetails, submissionsFromRound] = data
-  let { tournamentTitle, tournamentDescription, tournamentAddress } = tournamentInfo
-  let { roundStatus, submissions } = submissionsFromRound
+  const [tournamentAddress, roundDetails, submissionsFromRound] = data
+  const { roundStatus, submissions } = submissionsFromRound
+
+  const Tournament = new MatryxTournament(tournamentAddress, abis.tournament.abi)
+
+  data = await Promise.all([
+    Tournament.getTitle(),
+    Tournament.getDescriptionHash()
+  ])
+  const [tournamentTitle, descriptionHash] = data
+
+  const tournamentDescription = await ipfsCalls.getIpfsFile(descriptionHash)
 
   return {
     tournamentTitle,

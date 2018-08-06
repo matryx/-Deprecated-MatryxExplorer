@@ -44,7 +44,7 @@ router.get('/address/:submissionAddress', (req, res, next) => {
 
   submissionController
     .getSubmissionByAddress(submissionAddress)
-    .then(submissionDetails => res.status(200).json({ submissionDetails }))
+    .then(submission => res.status(200).json({ submission }))
     .catch(errorHelper(res, 'Error getting submission ' + submissionAddress))
 })
 
@@ -54,8 +54,8 @@ router.get('/address/:submissionAddress/getOwner', (req, res, next) => {
   if (!validateAddress(res, submissionAddress)) return
 
   submissionController
-    .getSubmissionOwnerByAddress(address)
-    .then(submissionOwner => res.status(200).json({ submissionOwner }))
+    .getSubmissionOwnerByAddress(submissionAddress)
+    .then(owner => res.status(200).json({ owner }))
     .catch(errorHelper(res, 'Error getting owner of ' + submissionAddress))
 })
 
@@ -66,12 +66,12 @@ router.get('/address/:submissionAddress/isCreator/:address', (req, res, next) =>
 
   submissionController
     .isCreator(submissionAddress, address)
-    .then(result => res.status(200).json({ result }))
+    .then(isCreator => res.status(200).json({ isCreator }))
     .catch(errorHelper(res, 'Error checking if ' + address + ' is creator of ' + submissionAddress))
 })
 
 /*
-These are are experiemental or old
+These are experiemental or old
 */
 
 // // Return the submission details for a specific submission address

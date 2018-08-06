@@ -11,8 +11,15 @@ const express = require('express')
 const router = express.Router()
 
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
-const matryxPlatformCalls = require('../controllers/gateway/matryxPlatformCalls')
 const { errorHelper } = require('../helpers/responseHelpers')
+
+const MatryxPlatform = require('../contracts/MatryxPlatform')
+
+let Platform
+require('../helpers/getAbis').then(abis => {
+  Platform = new MatryxPlatform(abis.platform.address, abis.platform.abi)
+})
+
 
 const latestVersion = process.env.PLATFORM_VERSION
 const networkId = process.env.NETWORK_ID
@@ -97,10 +104,9 @@ router.get('/getAbi/:version', (req, res, next) => {
     .catch(errorHelper(res, 'Error getting ABI for ' + version))
 })
 
-// Return a confirmation the API is live
-router.get('/getTopCategories', (req, res, next) => {
-  matryxPlatformCalls
-    .getTopCategories()
+router.get('/getAllCategories', (req, res, next) => {
+  Platform
+    .getAllCategories()
     .then(categories => res.status(200).json({ categories }))
     .catch(errorHelper(res, 'Error getting top categories'))
 })
