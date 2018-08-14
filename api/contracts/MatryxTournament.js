@@ -1,14 +1,7 @@
-const ethers = require('ethers')
+const Contract = require('./Contract')
 const utils = require('../helpers/utils')
 
-const providerURL = process.env.CUSTOMRPC
-const provider = new ethers.providers.JsonRpcProvider(providerURL)
-
-module.exports = class MatryxTournament {
-  constructor(address, abi) {
-    this.contract = new ethers.Contract(address, abi, provider)
-  }
-
+module.exports = class MatryxTournament extends Contract {
   async getPlatform() {
     return await this.contract.getPlatform()
   }

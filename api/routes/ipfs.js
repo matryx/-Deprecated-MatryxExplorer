@@ -12,7 +12,6 @@ const formidable = require('formidable')
 const tmp = require('tmp')
 const fs = require('fs')
 
-const matryxPlatformCalls = require('../controllers/gateway/matryxPlatformCalls')
 const ipfsCalls = require('../controllers/gateway/ipfsCalls')
 const { errorHelper, validateAddress } = require('../helpers/responseHelpers')
 
@@ -25,6 +24,7 @@ router.get('/', (req, res, next) => {
   })
 })
 
+// TODO: is this needed?
 router.get('/download/hash/:hash', (req, res, next) => {
   let { hash } = req.params
   // TODO: check IPFS hash
@@ -33,25 +33,6 @@ router.get('/download/hash/:hash', (req, res, next) => {
     .getIpfsFile(hash)
     .then(message => res.status(200).json({ message }))
     .catch(errorHelper(res, 'Error getting download link'))
-})
-
-router.get('/getDescription/hash/:hash', (req, res, next) => {
-  let { hash } = req.params
-  // TODO: check IPFS hash
-  ipfsCalls
-    .getIpfsFile(hash)
-    .then(message => res.status(200).json({ message }))
-    .catch(errorHelper(res, 'Error getting description'))
-})
-
-router.get('/getTournamentDescription/address/:address', (req, res, next) => {
-  let { address } = req.params
-  if (!validateAddress(res, address)) return
-
-  matryxPlatformCalls
-    .getTournamentDescription(address)
-    .then(message => res.status(200).json({ message }))
-    .catch(errorHelper(res, 'Error getting description for ' + address))
 })
 
 /*
