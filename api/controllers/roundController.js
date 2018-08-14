@@ -48,7 +48,7 @@ roundController.getSubmissionsFromRound = async (roundAddress) => {
         Submission.getTitle(),
         Submission.getOwner(),
         Submission.getTimeSubmitted(),
-        Submission.getBalance()
+        Submission.getTotalWinnings()
       ])
 
       return { address, title, owner, timeSubmitted, winner, reward }
