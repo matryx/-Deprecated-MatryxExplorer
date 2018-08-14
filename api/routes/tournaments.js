@@ -18,8 +18,8 @@ const latestVersion = process.env.PLATFORM_VERSION
 // Return a confirmation the API is live
 router.get('/', (req, res, next) => {
   tournamentController
-    .getAllTournaments()
-    .then(data => res.status(200).json({ data }))
+    .getAllTournaments(req.query)
+    .then(tournaments => res.status(200).json({ tournaments }))
     .catch(errorHelper(res, 'Error getting tournaments'))
 })
 
@@ -43,16 +43,8 @@ router.get('/getAbi/:version', (req, res, next) => {
 router.get('/count', (req, res, next) => {
   tournamentController
     .count()
-    .then(tournamentCount => res.status(200).json({ tournamentCount }))
+    .then(count => res.status(200).json({ count }))
     .catch(errorHelper(res, 'Error getting tournament count'))
-})
-
-// TODO: is this route needed? identical to /
-router.get('/allTournaments', (req, res, next) => {
-  tournamentController
-    .getAllTournaments()
-    .then(data => res.status(200).json({ data }))
-    .catch(errorHelper(res, 'Error getting tournaments'))
 })
 
 // Return the tournament details for a specific tournament
@@ -63,7 +55,7 @@ router.get('/address/:tournamentAddress', (req, res, next) => {
 
   tournamentController
     .getTournamentByAddress(tournamentAddress)
-    .then(tournamentDetails => res.status(200).json({ tournamentDetails }))
+    .then(tournament => res.status(200).json({ tournament }))
     .catch(errorHelper(res, 'Error getting tournament ' + tournamentAddress))
 })
 
@@ -74,12 +66,7 @@ router.get('/address/:tournamentAddress/getOwner', async (req, res, next) => {
 
   tournamentController
     .getTournamentOwnerByAddress(tournamentAddress)
-    .then(tournamentOwner => {
-      res.status(200).json({
-        tournamentOwner,
-        tournamentAddress
-      })
-    })
+    .then(owner => res.status(200).json({ owner }))
     .catch(errorHelper(res, 'Error getting owner of ' + tournamentAddress))
 })
 
@@ -90,7 +77,7 @@ router.get('/address/:tournamentAddress/submissionCount', (req, res, next) => {
 
   tournamentController
     .getSubmissionCount(tournamentAddress)
-    .then(results => res.status(200).json({ results }))
+    .then(submissionCount => res.status(200).json({ submissionCount }))
     .catch(errorHelper(res, 'Error getting submission count for ' + tournamentAddress))
 })
 
@@ -122,8 +109,8 @@ router.get('/address/:tournamentAddress/round/:roundId', async (req, res, next) 
 
   try {
     let roundAddress = await tournamentController.getRoundAddress(tournamentAddress, roundId)
-    let data = await roundController.getRoundDetails(roundAddress)
-    res.status(200).json({ data })
+    let round = await roundController.getRoundDetails(roundAddress)
+    res.status(200).json({ round })
   } catch (err) {
     errorHelper(res, 'Error getting round ' + roundId + ' of ' + tournamentAddress)(err)
   }
@@ -136,12 +123,7 @@ router.get('/address/:tournamentAddress/isEntrant/:address', (req, res, next) =>
 
   tournamentController
     .isEntrant(tournamentAddress, address)
-    .then(isEntrant => {
-      res.status(200).json({
-        isEntrant,
-        tournamentAddress
-      })
-    })
+    .then(isEntrant => res.status(200).json({ isEntrant }))
     .catch(errorHelper(res, 'Error checking if ' + address + ' is entrant of ' + tournamentAddress))
 })
 
@@ -152,12 +134,7 @@ router.get('/address/:tournamentAddress/allRoundAddresses', (req, res, next) => 
 
   tournamentController
     .getAllRoundAddresses(tournamentAddress)
-    .then(addresses => {
-      res.status(200).json({
-        addresses,
-        tournamentAddress
-      })
-    })
+    .then(rounds => res.status(200).json({ rounds }))
     .catch(errorHelper(res, 'Error getting all round addresses for ' + tournamentAddress))
 })
 
@@ -166,7 +143,7 @@ router.get('/category/:category', (req, res, next) => {
   const { category } = req.params
   tournamentController
     .getTournamentsByCategory(category)
-    .then(addresses => res.status(200).json({ addresses }))
+    .then(tournaments => res.status(200).json({ tournaments }))
     .catch(errorHelper(res, 'Error getting tournaments for ' + category))
 })
 
@@ -177,55 +154,9 @@ router.get('/address/:tournamentAddress/isCreator/:address', (req, res, next) =>
 
   tournamentController
     .isCreator(tournamentAddress, address)
-    .then(result => res.status(200).json({ result }))
+    .then(isCreator => res.status(200).json({ isCreator }))
     .catch(errorHelper(res, 'Error checking if ' + address + ' is creator of ' + tournamentAddress))
 })
-
-/*
-#################################
-These are all TEST or HELPER functions
-#################################
-*/
-
-// // Temp NO IPFS
-// // Return a confirmation the API is live
-// router.get('/', (req, res, next) => {
-//   tournamentController.getAllTournamentsNoIpfs().then(function (tournaments) {
-//     res.status(200).json({
-//       data: tournaments
-//     })
-//   })
-// })
-//
-
-// // TEMP IPFS DOWN
-// // Return the tournament details for a specific tournament
-// // TODO pass back the tournament details
-// router.get('/address/:tournamentAddress', (req, res, next) => {
-//   const address = req.params.tournamentAddress
-//   tournamentController.getTournamentByAddressNoIPFS(address).then(function (result) {
-//     res.status(200).json({
-//       tournamentDetails: result
-//     })
-//   }).catch((err) => {
-//     res.status(300).json({
-//       error: 'Unable to find tournament',
-//       errorMsg: err.name
-//     })
-//   })
-// })
-
-// router.post('/', (req, res, next) => {
-//     res.status(200).json({
-//         message: 'handling POST requests to /products'
-//     });
-// });
-
-/*
-#################################
-These are all EXPERIMENTAL functions
-#################################
-*/
 
 module.exports = router
 
