@@ -72,7 +72,7 @@ tournamentController.getAllTournaments = async (query) => {
       title,
       descriptionHash,
       fileHash,
-      bounty
+      initialBounty
     } = tdata
 
     const description = await ipfsCalls.getIpfsFile(descriptionHash)
@@ -85,9 +85,9 @@ tournamentController.getAllTournaments = async (query) => {
       folderHash: fileHash,
       category,
       state,
-      mtx: bounty,
+      bounty: initialBounty,
       ipType: '',
-      currentRound: currentRound.address,
+      currentRound: currentRound.id,
       numberOfParticipants
     }
   })())
@@ -126,7 +126,7 @@ tournamentController.getTournamentByAddress = async (address) => {
     title,
     descriptionHash,
     fileHash,
-    bounty,
+    initialBounty,
     entryFee
   } = tdata
 
@@ -154,7 +154,7 @@ tournamentController.getTournamentByAddress = async (address) => {
     category,
     ipType: '',
     state,
-    mtx: bounty,
+    bounty: initialBounty,
     remainingMtx,
     currentRound,
     currentRoundAddress,
