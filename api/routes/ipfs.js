@@ -12,7 +12,6 @@ const formidable = require('formidable')
 const tmp = require('tmp')
 const fs = require('fs')
 
-const matryxPlatformCalls = require('../controllers/gateway/matryxPlatformCalls')
 const ipfsCalls = require('../controllers/gateway/ipfsCalls')
 const { errorHelper, validateAddress } = require('../helpers/responseHelpers')
 
@@ -25,33 +24,15 @@ router.get('/', (req, res, next) => {
   })
 })
 
+// TODO: is this needed?
 router.get('/download/hash/:hash', (req, res, next) => {
   let { hash } = req.params
   // TODO: check IPFS hash
   console.log('>IPFS Router: /download/hash/', hash, 'hit')
   ipfsCalls
-    .getIpfsDataFiles(hash)
+    .getIpfsFile(hash)
     .then(message => res.status(200).json({ message }))
     .catch(errorHelper(res, 'Error getting download link'))
-})
-
-router.get('/getDescription/hash/:hash', (req, res, next) => {
-  let { hash } = req.params
-  // TODO: check IPFS hash
-  ipfsCalls
-    .getIpfsDescriptionOnly(hash)
-    .then(message => res.status(200).json({ message }))
-    .catch(errorHelper(res, 'Error getting description'))
-})
-
-router.get('/getTournamentDescription/address/:address', (req, res, next) => {
-  let { address } = req.params
-  if (!validateAddress(res, address)) return
-
-  matryxPlatformCalls
-    .getTournamentDescription(address)
-    .then(message => res.status(200).json({ message }))
-    .catch(errorHelper(res, 'Error getting description for ' + address))
 })
 
 /*
@@ -87,38 +68,26 @@ router.post('/upload', (req, res, next) => {
         let tempDir = tmpobj.name
 
         files.forEach(file => {
-          fs.rename(file[1].path, form.uploadDir + '/' + file[1].name, err => {
-            if (err) console.log('ERROR: ' + err)
-          })
+          // made this sync in the slight chance it doesn't execute before next stuff
+          fs.renameSync(file[1].path, form.uploadDir + '/' + file[1].name)
         })
 
-        fields.forEach(field => {
+        fields.forEach(([name, content]) => {
           // Check to see if there is a description key in the fields
-          if (field[0] == 'description') {
-            console.log(field[1]) // This is the description content
-            descriptionContent = Buffer.from(field[1])
-            descriptionPath = tempDir + '/description.txt'
-            // Store the descriptionContent into the tempFolder
-            ipfsCalls
-              .storeDescriptionToTmp(descriptionContent, descriptionPath)
-              .then(result => console.log(result))
+          if (name == 'description') {
+            path = tempDir + '/description.txt'
+            fs.writeFileSync(path, content)
           }
           // Check to see if there is a jsonContent key in the fields
-          if (field[0] == 'jsonContent') {
-            console.log(field[1]) // This is the json content
-            jsonContent = Buffer.from(field[1])
-            jsonPath = tempDir + '/jsonContent.json'
-            ipfsCalls
-              .storeDescriptionToTmp(jsonContent, jsonPath)
-              .then(result => console.log(result))
+          if (name == 'jsonContent') {
+            path = tempDir + '/jsonContent.json'
+            fs.writeFileSync(path, content)
           }
         })
 
         // Add the tmp folder to IPFS and get back a hash
-        ipfsCalls.pushTmpFolderToIPFS(tempDir).then(folderHash => {
-          // externalApiCalls.curlIpfsIo(ipfsHashResult).then(function (tmp) {
-          res.status(200).json({ folderHash })
-          // })
+        ipfsCalls.pushTmpFolderToIPFS(tempDir).then(([descriptionHash, folderHash]) => {
+          res.status(200).json({ descriptionHash, folderHash })
         })
 
         let dir = fs.readdirSync(tempDir)
@@ -127,7 +96,7 @@ router.post('/upload', (req, res, next) => {
       })
     form.parse(req)
   } catch (err) {
-    errorHelper(res, 'Error uploading file')
+    errorHelper(res, 'Error uploading file')(err)
   }
 })
 
