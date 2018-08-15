@@ -44,14 +44,14 @@ roundController.getSubmissionsFromRound = async (roundAddress) => {
 
       let winner = winners.includes(address)
 
-      let [title, owner, submissionDate, reward] = await Promise.all([
+      let [title, owner, timeSubmitted, reward] = await Promise.all([
         Submission.getTitle(),
         Submission.getOwner(),
         Submission.getTimeSubmitted(),
-        Submission.getBalance()
+        Submission.getTotalWinnings()
       ])
 
-      return { address, title, owner, submissionDate, winner, reward }
+      return { address, title, owner, timeSubmitted, winner, reward }
     })())
 
     response.submissions = await Promise.all(submissionPromises)

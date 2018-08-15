@@ -81,6 +81,11 @@ module.exports = class MatryxSubmission extends Contract {
     return utils.fromWei(balance)
   }
 
+  async getTotalWinnings() {
+    const totalWinnings = await this.contract.getTotalWinnings()
+    return utils.fromWei(totalWinnings)
+  }
+
   async getOwner() {
     return await this.contract.getOwner()
   }
