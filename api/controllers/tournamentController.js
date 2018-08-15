@@ -53,6 +53,7 @@ tournamentController.getAllTournaments = async (query) => {
     const data = await Promise.all([
       Tournament.getData(),
       Tournament.getOwner(),
+      Tournament.getBounty(),
       Tournament.getState(),
       Tournament.currentRound(),
       Tournament.entrantCount()
@@ -62,6 +63,7 @@ tournamentController.getAllTournaments = async (query) => {
     const [
       tdata,
       owner,
+      bounty,
       state,
       currentRound,
       numberOfParticipants
@@ -71,8 +73,7 @@ tournamentController.getAllTournaments = async (query) => {
       category,
       title,
       descriptionHash,
-      fileHash,
-      initialBounty
+      fileHash
     } = tdata
 
     const description = await ipfsCalls.getIpfsFile(descriptionHash)
@@ -85,7 +86,7 @@ tournamentController.getAllTournaments = async (query) => {
       fileHash,
       category,
       state,
-      bounty: initialBounty,
+      bounty,
       ipType: '',
       currentRound: currentRound.id,
       numberOfParticipants
@@ -106,6 +107,7 @@ tournamentController.getTournamentByAddress = async (address) => {
   const data = await Promise.all([
     Tournament.getData(),
     Tournament.getOwner(),
+    Tournament.getBounty(),
     Tournament.getBalance(),
     Tournament.getState(),
     Tournament.currentRound(),
@@ -115,6 +117,7 @@ tournamentController.getTournamentByAddress = async (address) => {
   const [
     tdata,
     owner,
+    bounty,
     remainingMtx,
     state,
     currentRoundData,
@@ -126,7 +129,6 @@ tournamentController.getTournamentByAddress = async (address) => {
     title,
     descriptionHash,
     fileHash,
-    initialBounty,
     entryFee
   } = tdata
 
@@ -154,7 +156,7 @@ tournamentController.getTournamentByAddress = async (address) => {
     category,
     ipType: '',
     state,
-    bounty: initialBounty,
+    bounty,
     remainingMtx,
     currentRound,
     currentRoundAddress,
