@@ -54,7 +54,7 @@ router.get('/address/:tournamentAddress', (req, res, next) => {
 })
 
 // Return the tournament owner for a specific tournament
-router.get('/address/:tournamentAddress/getOwner', async (req, res, next) => {
+router.get('/address/:tournamentAddress/owner', async (req, res, next) => {
   const { tournamentAddress } = req.params
   if (!validateAddress(res, tournamentAddress)) return
 
@@ -122,7 +122,7 @@ router.get('/address/:tournamentAddress/isEntrant/:address', (req, res, next) =>
 })
 
 // Return if the potentantial address given is an entrant for a specific tournament
-router.get('/address/:tournamentAddress/allRoundAddresses', (req, res, next) => {
+router.get('/address/:tournamentAddress/rounds', (req, res, next) => {
   const { tournamentAddress } = req.params
   if (!validateAddress(res, tournamentAddress)) return
 
@@ -139,17 +139,6 @@ router.get('/category/:category', (req, res, next) => {
     .getTournamentsByCategory(category)
     .then(tournaments => res.status(200).json({ tournaments }))
     .catch(errorHelper(res, 'Error getting tournaments for ' + category))
-})
-
-// Return if the potentantial address given is an entrant for a specific tournament
-router.get('/address/:tournamentAddress/isCreator/:address', (req, res, next) => {
-  const { tournamentAddress, address } = req.params
-  if (!validateAddress(res, tournamentAddress) || !validateAddress(res, address)) return
-
-  tournamentController
-    .isCreator(tournamentAddress, address)
-    .then(isCreator => res.status(200).json({ isCreator }))
-    .catch(errorHelper(res, 'Error checking if ' + address + ' is creator of ' + tournamentAddress))
 })
 
 module.exports = router
