@@ -23,16 +23,9 @@ router.get('/', (req, res, next) => {
 })
 
 // TODO: add error response for invalid responses
-router.get('/getLatestAbi', (req, res, next) => {
-  externalApiCalls
-    .getMatryxRoundAbi(latestVersion)
-    .then(({ abi }) => res.status(200).json({ abi }))
-    .catch(errorHelper(res, 'Error getting latest ABI'))
-})
+router.get('/getAbi/:version?', (req, res, next) => {
+  let version = req.params.version || latestVersion
 
-// TODO: add error response for invalid responses
-router.get('/getAbi/:version', (req, res, next) => {
-  let { version } = req.params
   externalApiCalls
     .getMatryxRoundAbi(version)
     .then(({ abi }) => res.status(200).json({ abi }))
@@ -48,7 +41,7 @@ router.get('/address/:roundAddress', (req, res, next) => {
 
   roundController
     .getRoundDetails(roundAddress)
-    .then(data => res.status(200).json({ data }))
+    .then(round => res.status(200).json({ round }))
     .catch(errorHelper(res, 'Error getting round ' + roundAddress))
 })
 

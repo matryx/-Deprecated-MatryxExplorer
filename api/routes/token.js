@@ -21,7 +21,7 @@ router.get('/', (req, res, next) => {
   })
 })
 
-router.get('/getLatestInfo', (req, res, next) => {
+router.get('/getInfo', (req, res, next) => {
   externalApiCalls
     .getMatryxTokenInfo(latestVersion)
     .then(result => {

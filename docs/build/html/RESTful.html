@@ -86,32 +86,46 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#platform">Platform</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#getlatestinfo"><strong>/getLatestInfo</strong></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#getlatestaddress"><strong>/getLatestAddress</strong></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#getlatestabi"><strong>/getLatestAbi</strong></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#getinfo-version"><strong>/getInfo/:version</strong></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#getaddress-version"><strong>/getAddress/:version</strong></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#getabi-version"><strong>/getAbi/:version</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#platform-getinfo-version"><strong>/platform/getInfo/:version?</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#platform-getaddress-version"><strong>/platform/getAddress/:version?</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#platform-getabi-version"><strong>/platform/getAbi/:version?</strong></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#tournament">Tournament</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tournaments-getabi-version"><strong>/tournaments/getAbi/:version?</strong></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tournaments"><strong>/tournaments/</strong></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tournaments-count"><strong>/tournaments/count</strong></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tournaments-address-tournamentaddress"><strong>/tournaments/address/:tournamentAddress</strong></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#tournaments-address-tournamentaddress-getowner"><strong>/tournaments/address/:tournamentAddress/getOwner</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tournaments-address-tournamentaddress-owner"><strong>/tournaments/address/:tournamentAddress/owner</strong></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tournaments-address-tournamentaddress-submissioncount"><strong>/tournaments/address/:tournamentAddress/submissionCount</strong></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tournaments-address-tournamentaddress-currentround"><strong>/tournaments/address/:tournamentAddress/currentRound</strong></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tournaments-address-tournamentaddress-round-roundid"><strong>/tournaments/address/:tournamentAddress/round/:roundId</strong></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tournaments-address-tournamentaddress-isentrant-address"><strong>/tournaments/address/:tournamentAddress/isEntrant/:address</strong></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#tournaments-address-tournamentaddress-allroundaddresses"><strong>/tournaments/address/:tournamentAddress/allRoundAddresses</strong></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#tournaments-address-tournamentaddress-iscreator-address"><strong>/tournaments/address/:tournamentAddress/isCreator/:address</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tournaments-address-tournamentaddress-rounds"><strong>/tournaments/address/:tournamentAddress/rounds</strong></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tournaments-category-category"><strong>/tournaments/category/:category</strong></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#round">Round</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#submission">Submission</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#interplanetary-file-system-ipfs">Interplanetary File System (IPFS)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#token">Token</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#round">Round</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rounds-getabi-version"><strong>/rounds/getAbi/:version?</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rounds-address-roundaddress"><strong>/rounds/address/:roundAddress</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#submission">Submission</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submissions-getabi-version"><strong>/submissions/getAbi/:version?</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#submissions-address-submissionaddress"><strong>/submissions/address/:submissionAddress</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#submissions-address-submissionaddress-owner"><strong>/submissions/address/:submissionAddress/owner</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#interplanetary-file-system-ipfs">Interplanetary File System (IPFS)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ipfs-upload"><strong>/ipfs/upload</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#token">Token</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#token-getinfo-version"><strong>/token/getInfo/:version?</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#token-getaddress-version"><strong>/token/getAddress/:version?</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#token-getabi-version"><strong>/token/getAbi/:version?</strong></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ipfs.html">Interacting with Ipfs</a></li>
@@ -206,101 +220,86 @@
 </div>
 <div class="section" id="platform">
 <h2>Platform<a class="headerlink" href="#platform" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="getlatestinfo">
-<h3><strong>/getLatestInfo</strong><a class="headerlink" href="#getlatestinfo" title="Permalink to this headline">¶</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/platform/getLatestInfo</span></code></p>
-<p>Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;addressOfLatestPlatform&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;abi&quot;</span><span class="p">:</span> <span class="p">[]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p><code class="docutils literal notranslate"><span class="pre">abi</span></code> is a large ABI response in JSON parsed format.</p>
-</div>
-<div class="section" id="getlatestaddress">
-<h3><strong>/getLatestAddress</strong><a class="headerlink" href="#getlatestaddress" title="Permalink to this headline">¶</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/platform/getLatestAddress</span></code></p>
-<p>Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;addressOfLatestPlatform&gt;&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="getlatestabi">
-<h3><strong>/getLatestAbi</strong><a class="headerlink" href="#getlatestabi" title="Permalink to this headline">¶</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/platform/getLatestAbi</span></code></p>
+<div class="section" id="platform-getinfo-version">
+<h3><strong>/platform/getInfo/:version?</strong><a class="headerlink" href="#platform-getinfo-version" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/platform/getInfo</span></code></p>
 <p>Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;abi&quot;</span><span class="p">:</span> <span class="p">[]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">abi</span></code> is a large ABI response in JSON parsed format.</p>
-</div>
-<div class="section" id="getinfo-version">
-<h3><strong>/getInfo/:version</strong><a class="headerlink" href="#getinfo-version" title="Permalink to this headline">¶</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/platform/getInfo/master</span></code></p>
-<p>Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;abi&quot;</span><span class="p">:</span> <span class="p">[]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>Where <code class="docutils literal notranslate"><span class="pre">:version</span></code> is the branch of the Matryx Platform you want to use
+<p>Where the optional param <code class="docutils literal notranslate"><span class="pre">:version</span></code> is the branch of the Matryx Platform you want to use
 ie: master, QA, develop.
-It grabs it directly from the /build folder of <a class="reference external" href="http://github.com/matryx/MatryxPlatform">http://github.com/matryx/MatryxPlatform</a></p>
+It grabs it directly from the /build folder of <a class="reference external" href="http://github.com/matryx/MatryxPlatform">http://github.com/matryx/MatryxPlatform</a>.
+If no branch is specified, it will return the latest version.</p>
 <p><code class="docutils literal notranslate"><span class="pre">abi</span></code> is a large ABI response in JSON parsed format for that version of the Matryx Platform.</p>
 </div>
-<div class="section" id="getaddress-version">
-<h3><strong>/getAddress/:version</strong><a class="headerlink" href="#getaddress-version" title="Permalink to this headline">¶</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/platform/getAddress/master</span></code></p>
+<div class="section" id="platform-getaddress-version">
+<h3><strong>/platform/getAddress/:version?</strong><a class="headerlink" href="#platform-getaddress-version" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/platform/getAddress</span></code></p>
 <p>Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;EthereumAddressOfPlatform&gt;&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Where <code class="docutils literal notranslate"><span class="pre">:version</span></code> is the branch of the Matryx Platform you want to use
+<p>Where the optional param <code class="docutils literal notranslate"><span class="pre">:version</span></code> is the branch of the Matryx Platform you want to use
 ie: master, QA, develop.
-It grabs it directly from the /build folder of <a class="reference external" href="http://github.com/matryx/MatryxPlatform">http://github.com/matryx/MatryxPlatform</a></p>
+It grabs it directly from the /build folder of <a class="reference external" href="http://github.com/matryx/MatryxPlatform">http://github.com/matryx/MatryxPlatform</a>.
+If no branch is specified, it will return the latest version.</p>
 </div>
-<div class="section" id="getabi-version">
-<h3><strong>/getAbi/:version</strong><a class="headerlink" href="#getabi-version" title="Permalink to this headline">¶</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/platform/getAbi/master</span></code></p>
+<div class="section" id="platform-getabi-version">
+<h3><strong>/platform/getAbi/:version?</strong><a class="headerlink" href="#platform-getabi-version" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/platform/getAbi</span></code></p>
 <p>Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;abi&quot;</span><span class="p">:</span> <span class="p">[]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Where <code class="docutils literal notranslate"><span class="pre">:version</span></code> is the branch of the Matryx Platform you want to use
+<p>Where the optional param <code class="docutils literal notranslate"><span class="pre">:version</span></code> is the branch of the Matryx Platform you want to use
 ie: master, QA, develop.
-It grabs it directly from the /build folder of <a class="reference external" href="http://github.com/matryx/MatryxPlatform">http://github.com/matryx/MatryxPlatform</a></p>
+It grabs it directly from the /build folder of <a class="reference external" href="http://github.com/matryx/MatryxPlatform">http://github.com/matryx/MatryxPlatform</a>.
+If no branch is specified, it will return the latest version.</p>
 </div>
 </div>
 <div class="section" id="tournament">
 <h2>Tournament<a class="headerlink" href="#tournament" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="tournaments-getabi-version">
+<h3><strong>/tournaments/getAbi/:version?</strong><a class="headerlink" href="#tournaments-getabi-version" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/tournaments/getAbi</span></code></p>
+<p>Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;abi&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Where the optional param <code class="docutils literal notranslate"><span class="pre">:version</span></code> is the branch of the Matryx Platform you want to use
+ie: master, QA, develop.
+It grabs it directly from the /build folder of <a class="reference external" href="http://github.com/matryx/MatryxPlatform">http://github.com/matryx/MatryxPlatform</a>.
+If no branch is specified, it will return the latest version.</p>
+</div>
 <div class="section" id="tournaments">
 <h3><strong>/tournaments/</strong><a class="headerlink" href="#tournaments" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/tournaments/</span></code></p>
 <p>Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-      <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;0x8792123855cca07fcf57d623985e9f96ca34495d&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;tournamentOwner&quot;</span><span class="p">:</span> <span class="s2">&quot;0x41b6f2fad14b9f2a67f2b9783bd74d2c258e033d&quot;</span>
-      <span class="s2">&quot;tournamentTitle&quot;</span><span class="p">:</span> <span class="s2">&quot;title of the tournament&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;tournamentDescription&quot;</span><span class="p">:</span> <span class="s2">&quot;description of the tournament&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;fileHash&quot;</span><span class="p">:</span> <span class="s2">&quot;QmewXg6HCJ8kVcCKSrBXk8fawLru5Po3XaNgd4aGRrNa1N&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;math&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;ipType&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;mtx&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
-      <span class="s2">&quot;currentRound&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-      <span class="s2">&quot;numberOfParticipants&quot;</span><span class="p">:</span> <span class="mi">1</span>
-    <span class="p">}</span>
-  <span class="p">]</span>
+    <span class="s2">&quot;tournaments&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;0xC4C718469c03cc4e0bd4C7De60A7776C4Ce6532F&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;0xdaa0E2ef627bFb864Ed19eFd546542F47E5Ad6A7&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Tournament title&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Tournament description&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;fileHash&quot;</span><span class="p">:</span> <span class="s2">&quot;QmUtR6gEeBRzsGpVquqQZQK8sVUC3h4jHxvK8UbkutLjHL&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;math&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;isClosed&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;bounty&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="s2">&quot;ipType&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;currentRound&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;numberOfParticipants&quot;</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -312,7 +311,7 @@ Can optionally be filtered by owner address by adding <code class="docutils lite
 <p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/tournaments/count</span></code></p>
 <p>Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;tournamentCount&quot;</span><span class="p">:</span> <span class="mi">3</span>
+    <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="mi">1</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -320,37 +319,38 @@ Can optionally be filtered by owner address by adding <code class="docutils lite
 </div>
 <div class="section" id="tournaments-address-tournamentaddress">
 <h3><strong>/tournaments/address/:tournamentAddress</strong><a class="headerlink" href="#tournaments-address-tournamentaddress" title="Permalink to this headline">¶</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/tournaments/address/0x8792123855cca07fcf57d623985e9f96ca34495d</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/tournaments/address/0xC4C718469c03cc4e0bd4C7De60A7776C4Ce6532F</span></code></p>
 <p>Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;tournamentDetails&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;tournamentAddress&quot;</span><span class="p">:</span> <span class="s2">&quot;0x8792123855cca07fcf57d623985e9f96ca34495d&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;authorName&quot;</span><span class="p">:</span> <span class="s2">&quot;0x41b6f2fad14b9f2a67f2b9783bd74d2c258e033d&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;tournamentTitle&quot;</span><span class="p">:</span> <span class="s2">&quot;title of the tournament&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;tournamentDescription&quot;</span><span class="p">:</span> <span class="s2">&quot;description of the tournament&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;fileHash&quot;</span><span class="p">:</span> <span class="s2">&quot;QmewXg6HCJ8kVcCKSrBXk8fawLru5Po3XaNgd4aGRrNa1N&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;tournament&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;0xC4C718469c03cc4e0bd4C7De60A7776C4Ce6532F&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;0xdaa0E2ef627bFb864Ed19eFd546542F47E5Ad6A7&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Tournament title&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Tournament description&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fileHash&quot;</span><span class="p">:</span> <span class="s2">&quot;QmUtR6gEeBRzsGpVquqQZQK8sVUC3h4jHxvK8UbkutLjHL&quot;</span><span class="p">,</span>
         <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;math&quot;</span><span class="p">,</span>
         <span class="s2">&quot;ipType&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;mtx&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
-        <span class="s2">&quot;remainingMtx&quot;</span><span class="p">:</span> <span class="mi">40</span><span class="p">,</span>
+        <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;isClosed&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;bounty&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s2">&quot;remainingMtx&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
         <span class="s2">&quot;currentRound&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="s2">&quot;currentRoundAddress&quot;</span><span class="p">:</span> <span class="s2">&quot;0x7228373cb138d45cd7f12be3fe0a65928aad20c0&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;roundEndTime&quot;</span><span class="p">:</span> <span class="mi">1529703263</span><span class="p">,</span>
+        <span class="s2">&quot;currentRoundAddress&quot;</span><span class="p">:</span> <span class="s2">&quot;0x840Bad637faAA6B603757de95Eb5B11DA0E23f43&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;currentRoundState&quot;</span><span class="p">:</span> <span class="s2">&quot;isClosed&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;roundEndTime&quot;</span><span class="p">:</span> <span class="mi">1534460653000</span><span class="p">,</span>
         <span class="s2">&quot;numberOfParticipants&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="s2">&quot;participationMTX&quot;</span><span class="p">:</span> <span class="mi">2</span>
+        <span class="s2">&quot;entryFee&quot;</span><span class="p">:</span> <span class="mi">2</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>Returns more details for the specified tournament.</p>
 </div>
-<div class="section" id="tournaments-address-tournamentaddress-getowner">
-<h3><strong>/tournaments/address/:tournamentAddress/getOwner</strong><a class="headerlink" href="#tournaments-address-tournamentaddress-getowner" title="Permalink to this headline">¶</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/tournaments/address/0x8792123855cca07fcf57d623985e9f96ca34495d/getOwner</span></code></p>
+<div class="section" id="tournaments-address-tournamentaddress-owner">
+<h3><strong>/tournaments/address/:tournamentAddress/owner</strong><a class="headerlink" href="#tournaments-address-tournamentaddress-owner" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/tournaments/address/0xC4C718469c03cc4e0bd4C7De60A7776C4Ce6532F/owner</span></code></p>
 <p>Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;tournamentAddress&quot;</span><span class="p">:</span> <span class="s2">&quot;0x8792123855cca07fcf57d623985e9f96ca34495d&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;tournamentOwner&quot;</span><span class="p">:</span> <span class="s2">&quot;0x41b6f2fad14b9f2a67f2b9783bd74d2c258e033d&quot;</span>
+    <span class="s2">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;0xdaa0E2ef627bFb864Ed19eFd546542F47E5Ad6A7&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -358,10 +358,10 @@ Can optionally be filtered by owner address by adding <code class="docutils lite
 </div>
 <div class="section" id="tournaments-address-tournamentaddress-submissioncount">
 <h3><strong>/tournaments/address/:tournamentAddress/submissionCount</strong><a class="headerlink" href="#tournaments-address-tournamentaddress-submissioncount" title="Permalink to this headline">¶</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/tournaments/address/0x8792123855cca07fcf57d623985e9f96ca34495d/submissionCount</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/tournaments/address/0xC4C718469c03cc4e0bd4C7De60A7776C4Ce6532F/submissionCount</span></code></p>
 <p>Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="mi">10</span>
+    <span class="s2">&quot;submissionCount&quot;</span><span class="p">:</span> <span class="mi">1</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -369,7 +369,7 @@ Can optionally be filtered by owner address by adding <code class="docutils lite
 </div>
 <div class="section" id="tournaments-address-tournamentaddress-currentround">
 <h3><strong>/tournaments/address/:tournamentAddress/currentRound</strong><a class="headerlink" href="#tournaments-address-tournamentaddress-currentround" title="Permalink to this headline">¶</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/tournaments/address/0x8792123855cca07fcf57d623985e9f96ca34495d/currentRound</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/tournaments/address/0xC4C718469c03cc4e0bd4C7De60A7776C4Ce6532F/currentRound</span></code></p>
 <p>Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;currentRound&quot;</span><span class="p">:</span> <span class="mi">1</span>
@@ -380,16 +380,29 @@ Can optionally be filtered by owner address by adding <code class="docutils lite
 </div>
 <div class="section" id="tournaments-address-tournamentaddress-round-roundid">
 <h3><strong>/tournaments/address/:tournamentAddress/round/:roundId</strong><a class="headerlink" href="#tournaments-address-tournamentaddress-round-roundid" title="Permalink to this headline">¶</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/tournaments/address/0x8792123855cca07fcf57d623985e9f96ca34495d/round/0</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/tournaments/address/0xC4C718469c03cc4e0bd4C7De60A7776C4Ce6532F/round/1</span></code></p>
 <p>Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;tournamentAddress&quot;</span><span class="p">:</span> <span class="s2">&quot;0x8792123855cca07fcf57d623985e9f96ca34495d&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;tournamentTitle&quot;</span><span class="p">:</span> <span class="s2">&quot;title of the tournament&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;tournamentDescription&quot;</span><span class="p">:</span> <span class="s2">&quot;description of the tournament&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;roundMtx&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-        <span class="s2">&quot;roundStatus&quot;</span><span class="p">:</span> <span class="s2">&quot;isOpen&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;submissions&quot;</span><span class="p">:</span> <span class="p">[]</span>
+    <span class="s2">&quot;round&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;tournamentAddress&quot;</span><span class="p">:</span> <span class="s2">&quot;0xC4C718469c03cc4e0bd4C7De60A7776C4Ce6532F&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tournamentTitle&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Tournament title&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tournamentDescription&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Tournament description&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="mi">1534460648000</span><span class="p">,</span>
+        <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="mi">1534460653000</span><span class="p">,</span>
+        <span class="s2">&quot;reviewPeriodDuration&quot;</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>
+        <span class="s2">&quot;bounty&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s2">&quot;closed&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+        <span class="s2">&quot;roundStatus&quot;</span><span class="p">:</span> <span class="s2">&quot;isClosed&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;submissions&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;0xF93F3B5fB680A7658479b5b1119ff599c6115F54&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Submission title&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;0xEcc4DE8F2846F3038C11a9e457634Ad1a3C703dF&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;timeSubmitted&quot;</span><span class="p">:</span> <span class="mi">1534460650000</span><span class="p">,</span>
+                <span class="s2">&quot;winner&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+                <span class="s2">&quot;reward&quot;</span><span class="p">:</span> <span class="mi">10</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -400,46 +413,35 @@ all submissions to the round are returned under the <code class="docutils litera
 </div>
 <div class="section" id="tournaments-address-tournamentaddress-isentrant-address">
 <h3><strong>/tournaments/address/:tournamentAddress/isEntrant/:address</strong><a class="headerlink" href="#tournaments-address-tournamentaddress-isentrant-address" title="Permalink to this headline">¶</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/tournaments/address/0x8792123855cca07fcf57d623985e9f96ca34495d/isEntrant/0x051d2a36630625eeb496b6b25ace6229401dd11f</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/tournaments/address/0xC4C718469c03cc4e0bd4C7De60A7776C4Ce6532F/isEntrant/0xEcc4DE8F2846F3038C11a9e457634Ad1a3C703dF</span></code></p>
 <p>Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;isEntrant&quot;</span><span class="p">:</span> <span class="n">false</span>
+    <span class="s2">&quot;isEntrant&quot;</span><span class="p">:</span> <span class="n">true</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>Returns if <code class="docutils literal notranslate"><span class="pre">:address</span></code> is an entrant of the specified tournament.</p>
 </div>
-<div class="section" id="tournaments-address-tournamentaddress-allroundaddresses">
-<h3><strong>/tournaments/address/:tournamentAddress/allRoundAddresses</strong><a class="headerlink" href="#tournaments-address-tournamentaddress-allroundaddresses" title="Permalink to this headline">¶</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/tournaments/address/0x8792123855cca07fcf57d623985e9f96ca34495d/allRoundAddresses</span></code></p>
+<div class="section" id="tournaments-address-tournamentaddress-rounds">
+<h3><strong>/tournaments/address/:tournamentAddress/rounds</strong><a class="headerlink" href="#tournaments-address-tournamentaddress-rounds" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/tournaments/address/0xC4C718469c03cc4e0bd4C7De60A7776C4Ce6532F/rounds</span></code></p>
 <p>Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="s2">&quot;0x7228373cb138d45cd7f12be3fe0a65928aad20c0&quot;</span>
+    <span class="s2">&quot;rounds&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;0x840Bad637faAA6B603757de95Eb5B11DA0E23f43&quot;</span>
     <span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>Returns all round addresses of the specified tournament.</p>
 </div>
-<div class="section" id="tournaments-address-tournamentaddress-iscreator-address">
-<h3><strong>/tournaments/address/:tournamentAddress/isCreator/:address</strong><a class="headerlink" href="#tournaments-address-tournamentaddress-iscreator-address" title="Permalink to this headline">¶</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/tournaments/address/0x8792123855cca07fcf57d623985e9f96ca34495d/isCreator/0x41b6f2fad14b9f2a67f2b9783bd74d2c258e033d</span></code></p>
-<p>Response:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">true</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>Returns if <code class="docutils literal notranslate"><span class="pre">:address</span></code> is the creator of the specified tournament.</p>
-</div>
 <div class="section" id="tournaments-category-category">
 <h3><strong>/tournaments/category/:category</strong><a class="headerlink" href="#tournaments-category-category" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/tournaments/category/math</span></code></p>
 <p>Response:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;addresses&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="s2">&quot;0x8792123855cca07fcf57d623985e9f96ca34495d&quot;</span>
+    <span class="s2">&quot;tournaments&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;0xC4C718469c03cc4e0bd4C7De60A7776C4Ce6532F&quot;</span>
     <span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
@@ -449,16 +451,174 @@ all submissions to the round are returned under the <code class="docutils litera
 </div>
 <div class="section" id="round">
 <h2>Round<a class="headerlink" href="#round" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="rounds-getabi-version">
+<h3><strong>/rounds/getAbi/:version?</strong><a class="headerlink" href="#rounds-getabi-version" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/rounds/getAbi</span></code></p>
+<p>Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;abi&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Where the optional param <code class="docutils literal notranslate"><span class="pre">:version</span></code> is the branch of the Matryx Platform you want to use
+ie: master, QA, develop.
+It grabs it directly from the /build folder of <a class="reference external" href="http://github.com/matryx/MatryxPlatform">http://github.com/matryx/MatryxPlatform</a>.
+If no branch is specified, it will return the latest version.</p>
+</div>
+<div class="section" id="rounds-address-roundaddress">
+<h3><strong>/rounds/address/:roundAddress</strong><a class="headerlink" href="#rounds-address-roundaddress" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/rounds/address/0x840Bad637faAA6B603757de95Eb5B11DA0E23f43</span></code></p>
+<p>Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;round&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;tournamentAddress&quot;</span><span class="p">:</span> <span class="s2">&quot;0xC4C718469c03cc4e0bd4C7De60A7776C4Ce6532F&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tournamentTitle&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Tournament title&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tournamentDescription&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Tournament description&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="mi">1534460648000</span><span class="p">,</span>
+        <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="mi">1534460653000</span><span class="p">,</span>
+        <span class="s2">&quot;reviewPeriodDuration&quot;</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>
+        <span class="s2">&quot;bounty&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s2">&quot;closed&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+        <span class="s2">&quot;roundStatus&quot;</span><span class="p">:</span> <span class="s2">&quot;isClosed&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;submissions&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;0xF93F3B5fB680A7658479b5b1119ff599c6115F54&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Submission title&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;0xEcc4DE8F2846F3038C11a9e457634Ad1a3C703dF&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;timeSubmitted&quot;</span><span class="p">:</span> <span class="mi">1534460650000</span><span class="p">,</span>
+                <span class="s2">&quot;winner&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+                <span class="s2">&quot;reward&quot;</span><span class="p">:</span> <span class="mi">10</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="submission">
 <h2>Submission<a class="headerlink" href="#submission" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="submissions-getabi-version">
+<h3><strong>/submissions/getAbi/:version?</strong><a class="headerlink" href="#submissions-getabi-version" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/submissions/getAbi</span></code></p>
+<p>Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;abi&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Where the optional param <code class="docutils literal notranslate"><span class="pre">:version</span></code> is the branch of the Matryx Platform you want to use
+ie: master, QA, develop.
+It grabs it directly from the /build folder of <a class="reference external" href="http://github.com/matryx/MatryxPlatform">http://github.com/matryx/MatryxPlatform</a>.
+If no branch is specified, it will return the latest version.</p>
+</div>
+<div class="section" id="submissions-address-submissionaddress">
+<h3><strong>/submissions/address/:submissionAddress</strong><a class="headerlink" href="#submissions-address-submissionaddress" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/submissions/address/0xF93F3B5fB680A7658479b5b1119ff599c6115F54</span></code></p>
+<p>Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;submission&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;0xF93F3B5fB680A7658479b5b1119ff599c6115F54&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Submission title&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;0xEcc4DE8F2846F3038C11a9e457634Ad1a3C703dF&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;reward&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Example Submission description&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;contributors&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;0xFa50807D297F07C6900C7b2809a335189634c7a8&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;0x90E0393786a53D0E1a63a3BB90A92FDc58fd835f&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;0xCB70d29966D4F5dC039B5B50a681dbeACa1B6565&quot;</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;references&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;0xf23616e010e1cB7c7B12dd7C2c63997a00063c2F&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;0x6838E2ed5F59166423d33e38b8880e08DF34accd&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;0x49819cD33c95f583F7B945C02b6895C19C75b981&quot;</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;fileHash&quot;</span><span class="p">:</span> <span class="s2">&quot;QmUtR6gEeBRzsGpVquqQZQK8sVUC3h4jHxvK8UbkutLjHL&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;timeSubmitted&quot;</span><span class="p">:</span> <span class="mi">1534460650000</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="submissions-address-submissionaddress-owner">
+<h3><strong>/submissions/address/:submissionAddress/owner</strong><a class="headerlink" href="#submissions-address-submissionaddress-owner" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/submissions/address/0xF93F3B5fB680A7658479b5b1119ff599c6115F54/owner</span></code></p>
+<p>Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;0xEcc4DE8F2846F3038C11a9e457634Ad1a3C703dF&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="interplanetary-file-system-ipfs">
 <h2>Interplanetary File System (IPFS)<a class="headerlink" href="#interplanetary-file-system-ipfs" title="Permalink to this headline">¶</a></h2>
 <p>IPFS</p>
+<div class="section" id="ipfs-upload">
+<h3><strong>/ipfs/upload</strong><a class="headerlink" href="#ipfs-upload" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">X</span> <span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">explorer</span><span class="o">.</span><span class="n">matryx</span><span class="o">.</span><span class="n">ai</span><span class="o">/</span><span class="n">ipfs</span><span class="o">/</span><span class="n">upload</span> \
+     <span class="o">-</span><span class="n">F</span> <span class="s1">&#39;description=This is a description&#39;</span>
+     <span class="o">-</span><span class="n">F</span> <span class="s1">&#39;jsonContent={&quot;json&quot;:&quot;some json content&quot;}&#39;</span>
+     <span class="o">-</span><span class="n">F</span> <span class="n">filesContent</span><span class="o">=@/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">file</span>
+</pre></div>
+</div>
+<p>Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;descriptionHash&quot;</span><span class="p">:</span> <span class="s2">&quot;QmSVphNHX8uV2mjvJaXLZEwguqpmw4rZ6BpRU8rrhaBy5H&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;folderHash&quot;</span><span class="p">:</span> <span class="s2">&quot;QmeV753pFr8U5k1afXLTXuYAF2wX4pev7Jcjnd8Yf7q4eu&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Uploads content to IPFS for use on a Tournament or Submission. <code class="docutils literal notranslate"><span class="pre">description</span></code>, <code class="docutils literal notranslate"><span class="pre">jsonContent</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">filesContent</span></code> are all optional. Uploaded <code class="docutils literal notranslate"><span class="pre">description</span></code> will be returned as <code class="docutils literal notranslate"><span class="pre">descriptionHash</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">jsonContent</span></code> and <code class="docutils literal notranslate"><span class="pre">filesContent</span></code> will be contained in a folder at <code class="docutils literal notranslate"><span class="pre">folderHash</span></code>.</p>
+</div>
 </div>
 <div class="section" id="token">
 <h2>Token<a class="headerlink" href="#token" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="token-getinfo-version">
+<h3><strong>/token/getInfo/:version?</strong><a class="headerlink" href="#token-getinfo-version" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/token/getInfo</span></code></p>
+<p>Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;abi&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Where the optional param <code class="docutils literal notranslate"><span class="pre">:version</span></code> is the branch of the Matryx Platform you want to use
+ie: master, QA, develop.
+It grabs it directly from the /build folder of <a class="reference external" href="http://github.com/matryx/MatryxPlatform">http://github.com/matryx/MatryxPlatform</a>.
+If no branch is specified, it will return the latest version.</p>
+<p><code class="docutils literal notranslate"><span class="pre">abi</span></code> is a large ABI response in JSON parsed format for that version of the Matryx Platform.</p>
+</div>
+<div class="section" id="token-getaddress-version">
+<h3><strong>/token/getAddress/:version?</strong><a class="headerlink" href="#token-getaddress-version" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/token/getAddress</span></code></p>
+<p>Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;EthereumAddressOfPlatform&gt;&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Where the optional param <code class="docutils literal notranslate"><span class="pre">:version</span></code> is the branch of the Matryx Platform you want to use
+ie: master, QA, develop.
+It grabs it directly from the /build folder of <a class="reference external" href="http://github.com/matryx/MatryxPlatform">http://github.com/matryx/MatryxPlatform</a>.
+If no branch is specified, it will return the latest version.</p>
+</div>
+<div class="section" id="token-getabi-version">
+<h3><strong>/token/getAbi/:version?</strong><a class="headerlink" href="#token-getabi-version" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">-X</span> <span class="pre">GET</span> <span class="pre">http://explorer.matryx.ai/token/getAbi</span></code></p>
+<p>Response:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;abi&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Where the optional param <code class="docutils literal notranslate"><span class="pre">:version</span></code> is the branch of the Matryx Platform you want to use
+ie: master, QA, develop.
+It grabs it directly from the /build folder of <a class="reference external" href="http://github.com/matryx/MatryxPlatform">http://github.com/matryx/MatryxPlatform</a>.
+If no branch is specified, it will return the latest version.</p>
+</div>
 </div>
 </div>
 

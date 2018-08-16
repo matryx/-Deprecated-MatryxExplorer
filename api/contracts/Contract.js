@@ -1,7 +1,6 @@
 const ethers = require('ethers')
 
-// const providerURL = process.env.CUSTOMRPC
-// const provider = new ethers.providers.JsonRpcProvider(providerURL)
+// const provider = new ethers.providers.JsonRpcProvider(process.env.LOCAL_HOST_RPC)
 const provider = new ethers.providers.InfuraProvider('ropsten', 'metamask')
 
 module.exports = class Contract {
