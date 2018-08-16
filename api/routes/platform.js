@@ -33,42 +33,9 @@ router.get('/', (req, res, next) => {
   })
 })
 
-// TODO fix this one...showing up as undefined due to scope
-// Return a message that this route handles all platform specific requests
-router.get('/getLatestInfo', (req, res, next) => {
-  externalApiCalls
-    .getMatryxPlatformInfo(latestVersion)
-    .then(result => {
-      let { address } = result['networks'][networkId]
-      let { abi } = result
-      res.status(200).json({ address, abi })
-    })
-    .catch(errorHelper(res, 'Error getting latest info'))
-})
-
-router.get('/getLatestAddress', (req, res, next) => {
-  externalApiCalls
-    .getMatryxPlatformInfo(latestVersion)
-    .then(result => {
-      let { address } = result['networks'][networkId]
-      res.status(200).json({ address })
-    })
-    .catch(errorHelper(res, 'Error getting latest address'))
-})
-
-router.get('/getLatestAbi', (req, res, next) => {
-  externalApiCalls
-    .getMatryxPlatformInfo(latestVersion)
-    .then(result => {
-      let { abi } = result
-      res.status(200).json({ abi })
-    })
-    .catch(errorHelper(res, 'Error getting latest ABI'))
-})
-
 // Return a confirmation the API is live
-router.get('/getInfo/:version', (req, res, next) => {
-  let { version } = req.params
+router.get('/getInfo/:version?', (req, res, next) => {
+  let version = req.params.version || latestVersion
 
   externalApiCalls
     .getMatryxPlatformInfo(version)
@@ -81,11 +48,11 @@ router.get('/getInfo/:version', (req, res, next) => {
 })
 
 // Return a confirmation the API is live
-router.get('/getAddress/:version', (req, res, next) => {
-  let { version } = req.params
+router.get('/getAddress/:version?', (req, res, next) => {
+  let version = req.params.version || latestVersion
 
   externalApiCalls
-    .getMatryxPlatformAddress(version)
+    .getMatryxPlatformInfo(version)
     .then(result => {
       let { address } = result['networks'][networkId]
       res.status(200).json({ address })
@@ -94,11 +61,11 @@ router.get('/getAddress/:version', (req, res, next) => {
 })
 
 // Return a confirmation the API is live
-router.get('/getAbi/:version', (req, res, next) => {
-  let { version } = req.params
+router.get('/getAbi/:version?', (req, res, next) => {
+  let version = req.params.version || latestVersion
 
   externalApiCalls
-    .getMatryxPlatformAbi(version)
+    .getMatryxPlatformInfo(version)
     .then(result => {
       let { abi } = result
       res.status(200).json({ abi })
