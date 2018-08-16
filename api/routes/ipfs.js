@@ -24,17 +24,6 @@ router.get('/', (req, res, next) => {
   })
 })
 
-// TODO: is this needed?
-router.get('/download/hash/:hash', (req, res, next) => {
-  let { hash } = req.params
-  // TODO: check IPFS hash
-  console.log('>IPFS Router: /download/hash/', hash, 'hit')
-  ipfsCalls
-    .getIpfsFile(hash)
-    .then(message => res.status(200).json({ message }))
-    .catch(errorHelper(res, 'Error getting download link'))
-})
-
 /*
 Takes in a multipart/form-data post call with the following inputs
 @input description (string)
