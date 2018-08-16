@@ -3,10 +3,8 @@ const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 const version = process.env.PLATFORM_VERSION
 const networkId = process.env.NETWORK_ID
 
-let platform, tournament, round, submission
-
 module.exports = new Promise(async (resolve, reject) => {
-  const platform = await externalApiCalls
+  const platformPromise = externalApiCalls
     .getMatryxPlatformInfo(version)
     .then(result => {
       let address = result['networks'][networkId]['address']
@@ -15,20 +13,24 @@ module.exports = new Promise(async (resolve, reject) => {
     })
     .catch(err => console.log('Unable to retrieve Platform ABI', err))
 
-  const tournament = await externalApiCalls
+  const tournamentPromise = externalApiCalls
     .getMatryxTournamentAbi(version)
-    .then(({ abi }) => ({ abi }))
     .catch(err => console.log('Unable to retrieve Tournament ABI', err))
 
-  const round = await externalApiCalls
+  const roundPromise = externalApiCalls
     .getMatryxRoundAbi(version)
-    .then(({ abi }) => ({ abi }))
     .catch(err => console.log('Unable to retrieve Round ABI', err))
 
-  const submission = await externalApiCalls
+  const submissionPromise = externalApiCalls
     .getMatryxSubmissionAbi(version)
-    .then(({ abi }) => ({ abi }))
     .catch(err => console.log('Unable to retrieve Submission ABI', err))
+
+  const [platform, tournament, round, submission] = await Promise.all([
+    platformPromise,
+    tournamentPromise,
+    roundPromise,
+    submissionPromise
+  ])
 
   resolve({
     platform,
