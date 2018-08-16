@@ -84,9 +84,9 @@ roundController.getRoundDetails = async function (roundAddress) {
   const tournamentDescription = await ipfsCalls.getIpfsFile(descriptionHash)
 
   return {
+    tournamentAddress,
     tournamentTitle,
     tournamentDescription,
-    tournamentAddress,
     ...roundDetails,
     roundStatus,
     submissions

@@ -181,7 +181,7 @@ tournamentController.getSubmissionCount = (tournamentAddress) => {
 tournamentController.getCurrentRound = async (tournamentAddress) => {
   const Tournament = new MatryxTournament(tournamentAddress, abis.tournament.abi)
   const currentRoundData = await Tournament.currentRound()
-  return currentRoundData.address
+  return currentRoundData.id
 }
 
 tournamentController.isEntrant = (tournamentAddress, potentialEntrantAddress) => {

@@ -28,22 +28,22 @@ module.exports = class MatryxRound extends Contract {
 
   async getData() {
     let [
-      startTime,
-      endTime,
+      start,
+      end,
       reviewPeriodDuration,
       bounty,
       closed
     ] = await this.contract.getData()
 
     // parse data
-    startTime = +startTime * 1000
-    endTime = +endTime * 1000
+    start = +start * 1000
+    end = +end * 1000
     reviewPeriodDuration = +reviewPeriodDuration * 1000
     bounty = utils.fromWei(bounty)
 
     return {
-      startTime,
-      endTime,
+      start,
+      end,
       reviewPeriodDuration,
       bounty,
       closed
@@ -51,13 +51,13 @@ module.exports = class MatryxRound extends Contract {
   }
 
   async getStartTime() {
-    const startTime = +await this.contract.getStartTime()
-    return startTime * 1000
+    const start = +await this.contract.getStartTime()
+    return start * 1000
   }
 
   async getEndTime() {
-    const endTime = +await this.contract.getEndTime()
-    return endTime * 1000
+    const end = +await this.contract.getEndTime()
+    return end * 1000
   }
 
   async getReviewPeriodDuration() {
