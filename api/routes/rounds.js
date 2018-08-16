@@ -41,7 +41,7 @@ router.get('/address/:roundAddress', (req, res, next) => {
 
   roundController
     .getRoundDetails(roundAddress)
-    .then(data => res.status(200).json({ data }))
+    .then(round => res.status(200).json({ round }))
     .catch(errorHelper(res, 'Error getting round ' + roundAddress))
 })
 
