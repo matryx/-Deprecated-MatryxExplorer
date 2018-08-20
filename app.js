@@ -14,9 +14,18 @@ const submissionRoutes = require('./api/routes/submissions')
 const tokenRoutes = require('./api/routes/token')
 const ipfsRoutes = require('./api/routes/ipfs')
 
-// Enable GZIP compression
-app.use(compression())
-app.use(morgan('dev'))
+const setup = require('./api/helpers/getAbis')
+app.use(async (req, res, next) => {
+  await setup
+  next()
+})
+
+// if not test, enable compress and logging
+if (process.env.NODE_ENV !== 'test') {
+  app.use(compression())
+  app.use(morgan('dev'))
+}
+
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(cors())
