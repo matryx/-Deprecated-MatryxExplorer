@@ -22,19 +22,7 @@ submissionController.getSubmissionOwnerByAddress = (submissionAddress) => {
   return Submission.getOwner()
 }
 
-submissionController.getIpfsDataForSubmission = (ipfsHash) => {
-  console.log('Making gateway call...')
-  return ipfsCalls.getIpfsData(ipfsHash)
-}
-
-submissionController.uploadToIpfs = (files) => {
-  console.log('Making gateway call...')
-  return ipfsCalls.uploadToIpfs(files)
-}
-
 submissionController.getSubmissionByAddress = async (address) => {
-  console.log('Executing submissionController for getting submission details at: ' + '\'' + address + '\'')
-
   const Submission = new MatryxSubmission(address, abis.submission.abi)
 
   let data = await Promise.all([
@@ -73,11 +61,6 @@ submissionController.getSubmissionByAddress = async (address) => {
     fileHash,
     timeSubmitted,
   }
-}
-
-submissionController.isCreator = (submissionAddress, userAddress) => {
-  const Submission = new MatryxSubmission(submissionAddress, abis.submission.abi)
-  return Submission.isOwner(userAddress)
 }
 
 module.exports = submissionController

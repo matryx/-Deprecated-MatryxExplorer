@@ -15,16 +15,20 @@ const { errorHelper } = require('../helpers/responseHelpers')
 
 const MatryxPlatform = require('../contracts/MatryxPlatform')
 
-let Platform
-require('../helpers/getAbis').then(async abis => {
-  Platform = new MatryxPlatform(abis.platform.address, abis.platform.abi)
-  let count = +await Platform.getTournamentCount()
-  console.log(`\nCurrent Matryx Platform Address in use: ${abis.platform.address}`)
-  console.log(`There are ${count} tournaments on the Platform.\n`)
-})
-
 const latestVersion = process.env.PLATFORM_VERSION
 const networkId = process.env.NETWORK_ID
+
+let Platform
+require('../helpers/getAbis').then(async abis => {
+  const { platform } = abis
+  Platform = new MatryxPlatform(platform.address, platform.abi)
+
+  if (process.env.NODE_ENV !== 'test') {
+    let count = +await Platform.getTournamentCount()
+    console.log(`\nCurrent Matryx Platform Address in use: ${platform.address}`)
+    console.log(`There are ${count} tournaments on the Platform.\n`)
+  }
+})
 
 // Return a message that this route handles all platform specific requests
 router.get('/', (req, res, next) => {

@@ -91,8 +91,6 @@ router.get('/address/:tournamentAddress/round/:roundId', async (req, res, next) 
   const { tournamentAddress, roundId } = req.params
   if (!validateAddress(res, tournamentAddress)) return
 
-  console.log('>TournamentRouter: Retrieving Round Details for round ' + roundId + ' of tournmament' + tournamentAddress)
-
   // TODO: Clean the input for the correct response
   // TODO: Check to see how many rounds are in the tournament
   // TODO: check to see if the round is even open at all

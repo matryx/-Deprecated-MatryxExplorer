@@ -65,6 +65,11 @@ ipfsCalls.uploadFiles = async (paths, folder) => {
 }
 
 ipfsCalls.getIpfsFile = async (hash) => {
+  // TODO: if more fetches, mock fetch except ABIs
+  if (process.env.NODE_ENV === 'test') {
+    return 'ipfs data'
+  }
+
   let response = await fetch(ipfsURL + hash)
   return await response.text()
 }

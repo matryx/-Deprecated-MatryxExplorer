@@ -60,8 +60,6 @@ roundController.getSubmissionsFromRound = async (roundAddress) => {
 }
 
 roundController.getRoundDetails = async function (roundAddress) {
-  console.log('>RoundController: Retrieving Round Details for: ' + '\'' + roundAddress + '\'')
-
   const Round = new MatryxRound(roundAddress, abis.round.abi)
 
   let data = await Promise.all([

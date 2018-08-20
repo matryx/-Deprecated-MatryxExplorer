@@ -100,8 +100,6 @@ tournamentController.getAllTournaments = async (query) => {
 // TODO: getDescription only when max gives back a correct hash-> also error handle for this.
 
 tournamentController.getTournamentByAddress = async (address) => {
-  console.log('Executing TournamentController for getting Tournament details at: ' + address)
-
   const Tournament = new MatryxTournament(address, abis.tournament.abi)
 
   const data = await Promise.all([

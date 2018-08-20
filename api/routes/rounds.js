@@ -37,8 +37,6 @@ router.get('/address/:roundAddress', (req, res, next) => {
   let { roundAddress } = req.params
   if (!validateAddress(res, roundAddress)) return
 
-  console.log('>RoundRouter: Retrieving Round Details for: ' + roundAddress)
-
   roundController
     .getRoundDetails(roundAddress)
     .then(round => res.status(200).json({ round }))
