@@ -9,50 +9,87 @@ Nanome 2018
 /*
 Imports
 */
-const externalApiCalls = require('./gateway/externalApiCalls')
 const ipfsCalls = require('./gateway/ipfsCalls')
-const matryxPlatformCalls = require('./gateway/matryxPlatformCalls')
+
+const MatryxTournament = require('../contracts/MatryxTournament')
+const MatryxRound = require('../contracts/MatryxRound')
+const MatryxSubmission = require('../contracts/MatryxSubmission')
+
+let abis
+require('../helpers/getAbis').then(a => abis = a)
 
 let roundController = {}
 
-roundController.getRoundDetails = function (_roundAddress) {
-  console.log('>RoundController: Retrieving Round Details for: ' + '\'' + _roundAddress + '\'')
-  console.log(typeof _roundAddress)
-  return new Promise((resolve, reject) => {
-    let roundResponse = {
-      tournamentTitle: '',
-      tournamentDescription: '',
-      tournamentAddress: '',
-      roundMtx: 0,
-      roundStatus: '',
-      submissions: []
-    }
+roundController.getSubmissionsFromRound = async (roundAddress) => {
+  const Round = new MatryxRound(roundAddress, abis.round.abi)
 
-    let promiseCallStack = []
+  let response = {
+    roundStatus: '',
+    submissions: []
+  }
 
-// TODO: Check to see if the round is the current round of the tournament and return status Only
+  let status = await Round.getState()
+  response.roundStatus = status
 
-    promiseCallStack.push(matryxPlatformCalls.getTournamentInfoFromRoundAddress(_roundAddress))
-    promiseCallStack.push(matryxPlatformCalls.getRoundBounty(_roundAddress))
+  if (['notYetOpen', 'notFunded', 'isOpen', 'inReview', 'hasWinners'].includes(status)) return response
 
-    // This should also return an empty submissions list
-    promiseCallStack.push(matryxPlatformCalls.getSubmissionsFromRound(_roundAddress))
+  if ([/* 'hasWinners', */'isClosed', 'isAbandoned'].includes(status)) {
+    let [winners, addresses] = await Promise.all([
+      Round.getWinningSubmissionAddresses(),
+      Round.getSubmissions()
+    ])
 
-    Promise.all(promiseCallStack).then(function (values) {
-      console.log('The values are: ')
-      console.log(values)
-      roundResponse.tournamentTitle = values[0].tournamentTitle
-      roundResponse.roundMtx = values[1]
-      roundResponse.tournamentDescription = values[0].tournamentDescription
-      roundResponse.tournamentAddress = values[0].tournamentAddress
-      roundResponse.roundStatus = values[2].roundStatusValue
-      roundResponse.submissions = values[2].submissionResults
-      console.log(values[2])
+    let submissionPromises = addresses.map(address => (async () => {
+      const Submission = new MatryxSubmission(address, abis.submission.abi)
 
-      resolve(roundResponse)
-    }).catch(function (err) {
-      reject(err)
-    })
-  })
+      let winner = winners.includes(address)
+
+      let [title, owner, timeSubmitted, reward] = await Promise.all([
+        Submission.getTitle(),
+        Submission.getOwner(),
+        Submission.getTimeSubmitted(),
+        Submission.getTotalWinnings()
+      ])
+
+      return { address, title, owner, timeSubmitted, winner, reward }
+    })())
+
+    response.submissions = await Promise.all(submissionPromises)
+    return response
+  }
+}
+
+roundController.getRoundDetails = async function (roundAddress) {
+  console.log('>RoundController: Retrieving Round Details for: ' + '\'' + roundAddress + '\'')
+
+  const Round = new MatryxRound(roundAddress, abis.round.abi)
+
+  let data = await Promise.all([
+    Round.getTournament(),
+    Round.getData(),
+    roundController.getSubmissionsFromRound(roundAddress)
+  ])
+
+  const [tournamentAddress, roundDetails, submissionsFromRound] = data
+  const { roundStatus, submissions } = submissionsFromRound
+
+  const Tournament = new MatryxTournament(tournamentAddress, abis.tournament.abi)
+
+  data = await Promise.all([
+    Tournament.getTitle(),
+    Tournament.getDescriptionHash()
+  ])
+  const [tournamentTitle, descriptionHash] = data
+
+  const tournamentDescription = await ipfsCalls.getIpfsFile(descriptionHash)
+
+  return {
+    tournamentAddress,
+    tournamentTitle,
+    tournamentDescription,
+    ...roundDetails,
+    roundStatus,
+    submissions
+  }
 }
 module.exports = roundController

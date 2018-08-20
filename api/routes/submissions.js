@@ -6,132 +6,54 @@ Copyright Nanome Inc 2018
 */
 
 const express = require('express')
-const bodyParser = require('body-parser')
-const formidable = require('formidable')
-const tmp = require('tmp')
-const fs = require('fs')
-const util = require('util')
+const router = express.Router()
 
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 const submissionController = require('../controllers/submissionController')
-const ipfsCalls = require('../controllers/gateway/ipfsCalls')
-const fileHandler = require('../controllers/gateway/fileHandler')
-const ethHelper = require('../helpers/ethHelper')
+const { errorHelper, validateAddress } = require('../helpers/responseHelpers')
 
-const router = express.Router()
-
-let jsonParser = bodyParser.json({ extended: true })
-let bodyParserUrlEncoded = bodyParser.urlencoded({ extended: true })
-// let latestVersion = process.env.LATEST_VERSION
-let latestVersion = process.env.PLATFORM_VERSION
+const latestVersion = process.env.PLATFORM_VERSION
 
 // Return a message showing this endpoint series handles submission requests
 router.get('/', (req, res, next) => {
   res.status(200).json({
-        // TODO send back the list of tournaments
     message: 'handling GET requests to /submissions'
   })
 })
 
-router.get('/getLatestAbi', (req, res, next) => {
-  let version = req.params.version
-  try {
-    externalApiCalls.getMatryxSubmissionAbi(latestVersion).then(function (resultingAbi) {
-      console.log(resultingAbi)
-      res.status(200).json({
-        abi: resultingAbi.abi
-      })
-    })
-  } catch (err) {
-    console.log('Error loading the ABI')
-    res.status(500).json({
-      errorMessage: 'Sorry, that version does not exist.',
-      errorMsg: err.message
-    })
-  }
-})
+router.get('/getAbi/:version?', (req, res, next) => {
+  let version = req.params.version || latestVersion
 
-router.get('/getAbi/:version', (req, res, next) => {
-  let version = req.params.version
-  try {
-    externalApiCalls.getMatryxSubmissionAbi(version).then(function (resultingAbi) {
-      console.log(resultingAbi)
-      res.status(200).json({
-        abi: resultingAbi.abi
-      })
-    })// implement catch logic later for v1
-  } catch (err) {
-    console.log('Error loading the ABI')
-    res.status(500).json({
-      errorMessage: 'Sorry, that version does not exist.',
-      errorMsg: err.message
-    })
-  }
+  externalApiCalls
+    .getMatryxSubmissionAbi(version)
+    .then(({ abi }) => res.status(200).json({ abi }))
+    .catch(errorHelper(res, 'Error getting ABI for ' + version))
 })
 
 // Return the submission details for a specific submission address
 router.get('/address/:submissionAddress', (req, res, next) => {
-  const address = req.params.submissionAddress
-  if (!ethHelper.isAddress(address)) {
-    res.status(500).json({
-      errorMsg: 'This is not a valid ethereum address'
-    })
-  } else {
-    details = submissionController.getSubmissionByAddress(address).then(function (result) {
-      res.status(200).json({
-        submissionDetails: result
-      })
-    }).catch((err) => {
-      res.status(500).json({
-        errorMsg: err.message
-      })
-    })
-  }
+  const { submissionAddress } = req.params
+  if (!validateAddress(res, submissionAddress)) return
+
+  submissionController
+    .getSubmissionByAddress(submissionAddress)
+    .then(submission => res.status(200).json({ submission }))
+    .catch(errorHelper(res, 'Error getting submission ' + submissionAddress))
 })
 
 // Return the submission owner/author for a specific submission address
-router.get('/address/:submissionAddress/getOwner', (req, res, next) => {
-  const address = req.params.submissionAddress
-  if (!ethHelper.isAddress(address)) {
-    res.status(500).json({
-      errorMsg: 'This is not a valid ethereum address'
-    })
-  } else {
-    submissionController.getSubmissionOwnerByAddress(address).then(function (result) {
-      res.status(200).json({
-        submissionOwner: result
-      })
-    }).catch(function (err) {
-      res.status(500).json({
-        errorMsg: err.message
-      })
-    })
-  }
-})
+router.get('/address/:submissionAddress/owner', (req, res, next) => {
+  const { submissionAddress } = req.params
+  if (!validateAddress(res, submissionAddress)) return
 
-// Return the submission owner/author for a specific submission address
-router.get('/address/:submissionAddress/isCreator/:userAddress', (req, res, next) => {
-  const submissionAddress = req.params.submissionAddress
-  const userAddress = req.params.userAddress
-  if (!ethHelper.isAddress(submissionAddress) && !ethHelper.isAddress(userAddress)) {
-    res.status(500).json({
-      errorMsg: 'This is not a valid ethereum address'
-    })
-  } else {
-    submissionController.isCreator(submissionAddress, userAddress).then(function (isCreatorBool) {
-      res.status(200).json({
-        result: isCreatorBool
-      })
-    }).catch(function (err) {
-      res.status(500).json({
-        errorMsg: err.message
-      })
-    })
-  }
+  submissionController
+    .getSubmissionOwnerByAddress(submissionAddress)
+    .then(owner => res.status(200).json({ owner }))
+    .catch(errorHelper(res, 'Error getting owner of ' + submissionAddress))
 })
 
 /*
-These are are experiemental or old
+These are experiemental or old
 */
 
 // // Return the submission details for a specific submission address

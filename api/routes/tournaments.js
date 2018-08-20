@@ -6,350 +6,140 @@ Copyright Nanome Inc 2018
 */
 
 const express = require('express')
+const router = express.Router()
+
 const tournamentController = require('../controllers/tournamentController')
 const roundController = require('../controllers/roundController')
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
-const ethHelper = require('../helpers/ethHelper')
-const router = express.Router()
-let latestVersion = process.env.PLATFORM_VERSION
+const { errorHelper, validateAddress } = require('../helpers/responseHelpers')
+
+const latestVersion = process.env.PLATFORM_VERSION
 
 // Return a confirmation the API is live
 router.get('/', (req, res, next) => {
-  try {
-    tournamentController.getAllTournaments().then(function (tournaments) {
-      res.status(200).json({
-        data: tournaments
-      })
-    })
-  } catch (err) {
-    console.log('Error loading the tournaments')
-    res.status(500).json({
-      errorMsg: err.message
-    })
-  }
-})
-
-router.get('/getLatestAbi', (req, res, next) => {
-  try {
-    externalApiCalls.getMatryxTournamentAbi(latestVersion).then(function (resultingAbi) {
-      console.log(resultingAbi)
-      res.status(200).json({
-        abi: resultingAbi.abi
-      })
-    })
-  } catch (err) {
-    console.log('Error loading the ABI')
-    res.status(500).json({
-      errorMsg: err.message
-    })
-  }
+  tournamentController
+    .getAllTournaments(req.query)
+    .then(tournaments => res.status(200).json({ tournaments }))
+    .catch(errorHelper(res, 'Error getting tournaments'))
 })
 
 // TODO: add error response for invalid responses
-router.get('/getAbi/:version', (req, res, next) => {
-  let version = req.params.version
-  try {
-    externalApiCalls.getMatryxTournamentAbi(version).then(function (resultingAbi) {
-      console.log(resultingAbi)
-      res.status(200).json({
-        abi: resultingAbi.abi
-      })
-    })
-  } catch (err) {
-    console.log('Error loading the ABI')
-    res.status(500).json({
-      errorMsg: err.message
-    })
-  }
+router.get('/getAbi/:version?', (req, res, next) => {
+  let version = req.params.version || latestVersion
+
+  externalApiCalls
+    .getMatryxTournamentAbi(version)
+    .then(({ abi }) => res.status(200).json({ abi }))
+    .catch(errorHelper(res, 'Error getting ABI for ' + version))
 })
 
 // Return number of tournaments
 router.get('/count', (req, res, next) => {
-  tournamentController.count().then(function (result) {
-    res.status(200).json({
-      tournamentCount: result
-    })
-  }).catch(function (err) {
-    console.log(err)
-    res.status(500).json({
-      errorMsg: err.message
-    })
-  })
+  tournamentController
+    .count()
+    .then(count => res.status(200).json({ count }))
+    .catch(errorHelper(res, 'Error getting tournament count'))
 })
-
-// Return number of tournaments
-router.get('/allTournaments', (req, res, next) => {
-  tournamentController.getAllTournaments().then(function (tournaments) {
-    res.status(200).json({
-      data: tournaments
-    })
-  }).catch(function (err) {
-    console.log(err)
-    res.status(500).json({
-      errorMsg: err.message
-    })
-  })
-})
-
-// // Return all of the tournaments
-// router.get('/allTournaments', (req, res, next) => {
-//     // TODO replace function with working model+final name
-//   tournamentController.getAllTournaments().then(function (tournaments) {
-//     res.status(200).json({
-//       data: tournaments
-//     })
-//   })
-// })
 
 // Return the tournament details for a specific tournament
 // TODO pass back the tournament details
 router.get('/address/:tournamentAddress', (req, res, next) => {
-  const address = req.params.tournamentAddress
+  const { tournamentAddress } = req.params
+  if (!validateAddress(res, tournamentAddress)) return
 
-  if (!ethHelper.isAddress(address)) {
-    res.status(500).json({
-      errorMsg: 'This is not a valid ethereum address'
-    })
-  } else {
-    try {
-      tournamentController.getTournamentByAddress(address).then(function (result) {
-        res.status(200).json({
-          tournamentDetails: result
-        })
-      }).catch(function (err) {
-        res.status(500).json({
-          errorMsg: err.message
-        })
-      })
-    } catch (err) {
-      res.status(500).json({
-        errorMsg: err.message
-      })
-    }
-  }
+  tournamentController
+    .getTournamentByAddress(tournamentAddress)
+    .then(tournament => res.status(200).json({ tournament }))
+    .catch(errorHelper(res, 'Error getting tournament ' + tournamentAddress))
 })
 
 // Return the tournament owner for a specific tournament
-router.get('/address/:tournamentAddress/getOwner', (req, res, next) => {
-  const address = req.params.tournamentAddress
-  if (!ethHelper.isAddress(address)) {
-    res.status(500).json({
-      errorMsg: 'This is not a valid ethereum address'
-    })
-  } else {
-    tournamentController.getTournamentOwnerByAddress(address).then(function (result) {
-      res.status(200).json({
-        tournamentOwner: result,
-        tournamentAddress: address
-      })
-    }).catch((err) => {
-      res.status(500).json({
-        errorMsg: err.message
-      })
-    })
-  }
+router.get('/address/:tournamentAddress/owner', async (req, res, next) => {
+  const { tournamentAddress } = req.params
+  if (!validateAddress(res, tournamentAddress)) return
+
+  tournamentController
+    .getTournamentOwnerByAddress(tournamentAddress)
+    .then(owner => res.status(200).json({ owner }))
+    .catch(errorHelper(res, 'Error getting owner of ' + tournamentAddress))
 })
 
 // Return the submission count for a specific tournament
 router.get('/address/:tournamentAddress/submissionCount', (req, res, next) => {
-  const address = req.params.tournamentAddress
-  if (!ethHelper.isAddress(address)) {
-    res.status(500).json({
-      errorMsg: 'This is not a valid ethereum address'
-    })
-  } else {
-    tournamentController.getSubmissionCount(address).then(function (result) {
-      res.status(200).json({
-        results: result
-      })
-    }).catch((err) => {
-      res.status(500).json({
-        errorMsg: err.message
-      })
-    })
-  }
+  const { tournamentAddress } = req.params
+  if (!validateAddress(res, tournamentAddress)) return
+
+  tournamentController
+    .getSubmissionCount(tournamentAddress)
+    .then(submissionCount => res.status(200).json({ submissionCount }))
+    .catch(errorHelper(res, 'Error getting submission count for ' + tournamentAddress))
 })
 
 // TODO: Waiting on Max, need to implement the Round is open in order to access this
 // Current Round response given a tournamentAddress
 router.get('/address/:tournamentAddress/currentRound', (req, res, next) => {
-  const address = req.params.tournamentAddress
-  if (!ethHelper.isAddress(address)) {
-    res.status(500).json({
-      errorMsg: 'This is not a valid ethereum address'
-    })
-  } else {
-    tournamentController.getCurrentRound(address).then(function (result) {
-      res.status(200).json({
-        currentRound: result
-      })
-    }).catch((err) => {
-      res.status(500).json({
-        errorMsg: err.message
-      })
-    })
-  }
+  const { tournamentAddress } = req.params
+  if (!validateAddress(res, tournamentAddress)) return
+
+  tournamentController
+    .getCurrentRound(tournamentAddress)
+    .then(currentRound => res.status(200).json({ currentRound }))
+    .catch(errorHelper(res, 'Error getting current round for ' + tournamentAddress))
 })
 
-router.get('/address/:tournamentAddress/round/:roundId', (req, res, next) => {
-  const tournamentAddress = req.params.tournamentAddress
-  const roundId = req.params.roundId
-  if (!ethHelper.isAddress(tournamentAddress)) {
-    res.status(500).json({
-      errorMsg: 'This is not a valid ethereum address'
-    })
-  } else {
-    console.log('>TournamentRouter: Retrieving Round Details for round ' + roundId + ' of tournmament' + tournamentAddress)
+router.get('/address/:tournamentAddress/round/:roundId', async (req, res, next) => {
+  const { tournamentAddress, roundId } = req.params
+  if (!validateAddress(res, tournamentAddress)) return
+
+  console.log('>TournamentRouter: Retrieving Round Details for round ' + roundId + ' of tournmament' + tournamentAddress)
 
   // TODO: Clean the input for the correct response
-// TODO: Check to see how many rounds are in the tournament
-// TODO: check to see if the round is even open at all
+  // TODO: Check to see how many rounds are in the tournament
+  // TODO: check to see if the round is even open at all
 
-    // tournamentController.numberOfRounds(tournamentAddress).then(function(roundCount){
-    //     if(roundId)
-    // })
+  // tournamentController.numberOfRounds(tournamentAddress).then(function(roundCount){
+  //     if(roundId)
+  // })
 
-    tournamentController.getRoundAddress(tournamentAddress, roundId).then(function (roundAddress) {
-      console.log('The round address is: ' + roundAddress)
-      try {
-        roundController.getRoundDetails(roundAddress).then(function (_roundDetails) {
-          res.status(200).json({
-            data: _roundDetails
-          })
-        })
-      } catch (err) {
-        res.status(500).json({
-          errorMsg: err.message
-        })
-      }
-    }).catch((err) => {
-      res.status(500).json({
-        errorMsg: err.message
-      })
-    })
+  try {
+    let roundAddress = await tournamentController.getRoundAddress(tournamentAddress, roundId)
+    let round = await roundController.getRoundDetails(roundAddress)
+    res.status(200).json({ round })
+  } catch (err) {
+    errorHelper(res, 'Error getting round ' + roundId + ' of ' + tournamentAddress)(err)
   }
 })
 
 // Return if the potentantial address given is an entrant for a specific tournament
-router.get('/address/:tournamentAddress/isEntrant/:potentialEntrantAddress', (req, res, next) => {
-  const tournamentAddress = req.params.tournamentAddress
-  const potentialEntrantAddress = req.params.potentialEntrantAddress
-  if (!ethHelper.isAddress(tournamentAddress) || !ethHelper.isAddress(potentialEntrantAddress)) {
-    res.status(500).json({
-      errorMsg: 'This is not a valid ethereum address'
-    })
-  } else {
-    tournamentController.isEntrant(tournamentAddress, potentialEntrantAddress).then(function (result) {
-      res.status(200).json({
-        isEntrant: result,
-        tournamentAddress: tournamentAddress
-      })
-    }).catch((err) => {
-      res.status(500).json({
-        errorMsg: err.message
-      })
-    })
-  }
+router.get('/address/:tournamentAddress/isEntrant/:address', (req, res, next) => {
+  const { tournamentAddress, address } = req.params
+  if (!validateAddress(res, tournamentAddress) || !validateAddress(res, address)) return
+
+  tournamentController
+    .isEntrant(tournamentAddress, address)
+    .then(isEntrant => res.status(200).json({ isEntrant }))
+    .catch(errorHelper(res, 'Error checking if ' + address + ' is entrant of ' + tournamentAddress))
 })
 
 // Return if the potentantial address given is an entrant for a specific tournament
-router.get('/address/:tournamentAddress/allRoundAddresses', (req, res, next) => {
-  const tournamentAddress = req.params.tournamentAddress
-  if (!ethHelper.isAddress(tournamentAddress)) {
-    res.status(500).json({
-      errorMsg: 'This is not a valid ethereum address'
-    })
-  } else {
-    tournamentController.getAllRoundAddresses(tournamentAddress).then(function (result) {
-      res.status(200).json({
-        addresses: result,
-        tournamentAddress: tournamentAddress
-      })
-    }).catch((err) => {
-      res.status(500).json({
-        errorMsg: err.message
-      })
-    })
-  }
+router.get('/address/:tournamentAddress/rounds', (req, res, next) => {
+  const { tournamentAddress } = req.params
+  if (!validateAddress(res, tournamentAddress)) return
+
+  tournamentController
+    .getAllRoundAddresses(tournamentAddress)
+    .then(rounds => res.status(200).json({ rounds }))
+    .catch(errorHelper(res, 'Error getting all round addresses for ' + tournamentAddress))
 })
 
 // Return if the potentantial address given is an entrant for a specific tournament
 router.get('/category/:category', (req, res, next) => {
-  const category = req.params.category
-  tournamentController.getTournamentsByCategory(category).then(function (result) {
-    res.status(200).json({
-      addresses: result
-    })
-  }).catch((err) => {
-    console.log(err)
-    res.status(500).json({
-      errorMessage: err.message
-    })
-  })
+  const { category } = req.params
+  tournamentController
+    .getTournamentsByCategory(category)
+    .then(tournaments => res.status(200).json({ tournaments }))
+    .catch(errorHelper(res, 'Error getting tournaments for ' + category))
 })
-
-// Return if the potentantial address given is an entrant for a specific tournament
-router.get('/address/:tournamentAddress/isCreator/:userAddress', (req, res, next) => {
-  const tournamentAddress = req.params.tournamentAddress
-  const userAddress = req.params.userAddress
-
-  tournamentController.isCreator(tournamentAddress, userAddress).then(function (creatorBool) {
-    res.status(200).json({
-      result: creatorBool
-    })
-  }).catch((err) => {
-    console.log(err)
-    res.status(500).json({
-      errorMessage: err.message
-    })
-  })
-})
-
-/*
-#################################
-These are all TEST or HELPER functions
-#################################
-*/
-
-// // Temp NO IPFS
-// // Return a confirmation the API is live
-// router.get('/', (req, res, next) => {
-//   tournamentController.getAllTournamentsNoIpfs().then(function (tournaments) {
-//     res.status(200).json({
-//       data: tournaments
-//     })
-//   })
-// })
-//
-
-// // TEMP IPFS DOWN
-// // Return the tournament details for a specific tournament
-// // TODO pass back the tournament details
-// router.get('/address/:tournamentAddress', (req, res, next) => {
-//   const address = req.params.tournamentAddress
-//   tournamentController.getTournamentByAddressNoIPFS(address).then(function (result) {
-//     res.status(200).json({
-//       tournamentDetails: result
-//     })
-//   }).catch((err) => {
-//     res.status(300).json({
-//       error: 'Unable to find tournament',
-//       errorMsg: err.name
-//     })
-//   })
-// })
-
-// router.post('/', (req, res, next) => {
-//     res.status(200).json({
-//         message: 'handling POST requests to /products'
-//     });
-// });
-
-/*
-#################################
-These are all EXPERIMENTAL functions
-#################################
-*/
 
 module.exports = router
 

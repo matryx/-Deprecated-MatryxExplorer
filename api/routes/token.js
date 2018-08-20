@@ -6,9 +6,13 @@ Copyright Nanome Inc 2018
 */
 
 const express = require('express')
-const token = require('../../data/matryxToken')
-
 const router = express.Router()
+
+const externalApiCalls = require('../controllers/gateway/externalApiCalls')
+const { errorHelper } = require('../helpers/responseHelpers')
+
+const latestVersion = process.env.PLATFORM_VERSION
+const networkId = process.env.NETWORK_ID
 
 // Return a confirmation the API is live
 router.get('/', (req, res, next) => {
@@ -17,44 +21,35 @@ router.get('/', (req, res, next) => {
   })
 })
 
-// Return a confirmation the API is live
-router.get('/getAbi', (req, res, next) => {
-  try {
-    res.status(200).json({
-      abi: token.abi
+router.get('/getInfo', (req, res, next) => {
+  externalApiCalls
+    .getMatryxTokenInfo(latestVersion)
+    .then(result => {
+      let { address } = result['networks'][networkId]
+      let { abi } = result
+      res.status(200).json({ address, abi })
     })
-  } catch (err) {
-    res.status(500).json({
-      errMsg: err.message
-    })
-  }
+    .catch(errorHelper(res, 'Error getting latest info'))
 })
 
-// Return number of tournaments
 router.get('/getAddress', (req, res, next) => {
-  try {
-    res.status(200).json({
-      address: token.address
+  externalApiCalls
+    .getMatryxTokenInfo(latestVersion)
+    .then(result => {
+      let { address } = result['networks'][networkId]
+      res.status(200).json({ address })
     })
-  } catch (err) {
-    res.status(500).json({
-      errMsg: err.message
-    })
-  }
+    .catch(errorHelper(res, 'Error getting latest address'))
 })
 
-// Return number of tournaments
-router.get('/getLatestInfo', (req, res, next) => {
-  try {
-    res.status(200).json({
-      address: token.address,
-      abi: token.abi
+router.get('/getAbi', (req, res, next) => {
+  externalApiCalls
+    .getMatryxTokenInfo(latestVersion)
+    .then(result => {
+      let { abi } = result
+      res.status(200).json({ abi })
     })
-  } catch (err) {
-    res.status(500).json({
-      errMsg: err.message
-    })
-  }
+    .catch(errorHelper(res, 'Error getting latest ABI'))
 })
 
 module.exports = router
