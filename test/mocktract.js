@@ -17,9 +17,13 @@ const isInvalid = (val, type) => {
   if (val === null) return true
 
   // array types
-  if (type.slice(-2) === '[]') {
-    let subtype = type.slice(0, -2)
-    return Array.isArray(val) && val.every(a => isInvalid(a, subtype))
+  const match = type.match(/(.+)\[(.+)?\]/)
+  if (match) {
+    type = match[1]
+    len = +match[2]
+    if (!Array.isArray(val)) return false
+    if (len && val.length !== +len) return false
+    return val.every(a => isInvalid(a, type))
   }
   // check if number
   if (type.slice(0, 3) === 'int' || type.slice(0, 4) === 'uint') {
