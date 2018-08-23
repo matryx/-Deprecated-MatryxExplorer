@@ -49,7 +49,7 @@ describe('Tournaments tests:', () => {
     })
 
     it('returns count', () => {
-      expect(res.body.count).to.exist
+      expect(res.body.count).to.be.a('number')
     })
   })
 
