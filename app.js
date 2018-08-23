@@ -20,12 +20,8 @@ app.use(async (req, res, next) => {
   next()
 })
 
-// if not test, enable compress and logging
-if (process.env.NODE_ENV !== 'test') {
-  app.use(compression())
-  app.use(morgan('dev'))
-}
-
+app.use(compression())
+app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(cors())

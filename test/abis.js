@@ -1,21 +1,9 @@
-// Require the dev-dependencies
-let chai = require('chai')
-let chaiHttp = require('chai-http')
-let server = require('../server')
-let expect = chai.expect
-let assert = require('assert')
-
-let Contract = require('../api/contracts/Contract')
-let mocktract = require('./mocktract')
-Contract.prototype.setup = function(address, abi) {
-  this.contract = mocktract(address, abi)
-}
-
 const networkID = process.env.NETWORK_ID
 
-// way to mock fetch through fetch's internal Promise
+// way to stub fetch through fetch's internal Promise
 const fetch = require('node-fetch')
 fetch.Promise = function () {
+  console.log('mock fetch')
   return Promise.resolve({
     json: () => ({
       abi: 'abi',
@@ -27,9 +15,6 @@ fetch.Promise = function () {
     })
   })
 }
-
-chai.use(chaiHttp)
-const request = chai.request(server).keepOpen()
 
 describe('ABI tests:', () => {
   let routes = [

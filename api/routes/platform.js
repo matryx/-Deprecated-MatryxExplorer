@@ -23,11 +23,9 @@ require('../helpers/getAbis').then(async abis => {
   const { platform } = abis
   Platform = new MatryxPlatform(platform.address, platform.abi)
 
-  if (process.env.NODE_ENV !== 'test') {
-    let count = +await Platform.getTournamentCount()
-    console.log(`\nCurrent Matryx Platform Address in use: ${platform.address}`)
-    console.log(`There are ${count} tournaments on the Platform.\n`)
-  }
+  let count = +await Platform.getTournamentCount()
+  console.log(`\nCurrent Matryx Platform Address in use: ${platform.address}`)
+  console.log(`There are ${count} tournaments on the Platform.\n`)
 })
 
 // Return a message that this route handles all platform specific requests

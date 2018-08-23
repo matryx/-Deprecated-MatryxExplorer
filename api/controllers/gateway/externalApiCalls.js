@@ -45,9 +45,7 @@ const getInfo = async (contract, branch) => {
   } else {
     let url = contractUrl(branch) + ABIs[contract].json
     let res = await fetch(url)
-    if (process.env.NODE_ENV !== 'test') {
-      console.log('Got ' + contract + ' ABI from MatryxPlatform GitHub for ' + branch)
-    }
+    console.log('Got ' + contract + ' ABI from MatryxPlatform GitHub for ' + branch)
     return res.json()
   }
 }

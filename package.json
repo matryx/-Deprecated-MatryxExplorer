@@ -4,7 +4,7 @@
   "description": "A Node.js RESTful API for reading the Matryx Platform smart contracts",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Running mocha tests\" && NODE_ENV=test mocha --exit",
+    "test": "echo \"Running mocha tests\" && nyc mocha --require test/helper.js --exit",
     "dev": "echo \"Starting MatryxExplorer in development\" && nodemon server.js ",
     "start": "echo \"Starting MatryxExplorer in development with forever\" && forever server.js "
   },
@@ -60,6 +60,7 @@
     "mocha": "^5.0.4",
     "mongoose": "^5.0.16",
     "nodemon": "^1.17.5",
+    "nyc": "^12.0.2",
     "standard": "^11.0.1"
   },
   "resolutions": {
