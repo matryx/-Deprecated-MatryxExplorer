@@ -36,29 +36,35 @@ It puts them in a temp folder and then uploads them to IPFS and returns a hash
 
 */
 router.post('/upload', (req, res, next) => {
+  const errorHandler = errorHelper(next, 'Error uploading content')
+
   try {
     let form = new formidable.IncomingForm()
     let files = []
     let fields = []
+    let progress = 0
 
-    let tmpobj = tmp.dirSync()
-    form.uploadDir = tmpobj.name
+    console.log('\nPOST /ipfs/upload incoming')
 
     form
       .on('field', (field, value) => fields.push([field, value]))
-      .on('file', (field, file) => files.push([field, file]))
+      .on('file', (field, file) => files.push(file))
       .on('progress', (bytesReceived, bytesExpected) => {
         let percent = ((bytesReceived / bytesExpected) * 100) | 0
-        console.log('Uploading: %' + percent + '\r')
+        percent = Math.floor(percent / 25) * 25 // round to 25
+        if (percent > progress) {
+          progress = percent
+          console.log(`  uploading... ${percent}%\r`)
+        }
       })
       .on('end', () => {
         // Logic for handling the files + IPFS
-        console.log('-> Upload Complete')
+        let tmpobj = tmp.dirSync()
         let tempDir = tmpobj.name
 
         files.forEach(file => {
           // made this sync in the slight chance it doesn't execute before next stuff
-          fs.renameSync(file[1].path, form.uploadDir + '/' + file[1].name)
+          fs.renameSync(file.path, tempDir + '/' + file.name)
         })
 
         fields.forEach(([name, content]) => {
@@ -74,18 +80,22 @@ router.post('/upload', (req, res, next) => {
           }
         })
 
+        let dir = fs.readdirSync(tempDir)
+        console.log('\nUploaded files:')
+        dir.forEach(file => console.log('  ' + file))
+
         // Add the tmp folder to IPFS and get back a hash
+        console.log('\nPushing to IPFS...')
         ipfsCalls.pushTmpFolderToIPFS(tempDir).then(([descriptionHash, folderHash]) => {
+          console.log('Pushed to IPFS\n')
           res.status(200).json({ descriptionHash, folderHash })
         })
-
-        let dir = fs.readdirSync(tempDir)
-        console.log('These are the files in the directory:')
-        dir.forEach(file => console.log('  ' + file))
       })
+      .on('error', errorHandler)
+
     form.parse(req)
   } catch (err) {
-    errorHelper(next, 'Error uploading content to Infura IPFS')(err)
+    errorHandler(err)
   }
 })
 
