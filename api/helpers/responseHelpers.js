@@ -1,21 +1,18 @@
 const Web3 = require('web3')
 const web3 = new Web3()
 
-// inputs: response object and optional error log message
+// inputs: next method and optional error log message
 // output: error method that takes in error and sends over response
-const errorHelper = (res, message) => err => {
-  console.error('Error on: ' + res.req.originalUrl + ':')
-  console.error('   ' + err.type + ': ' + err.message)
-  res.status(500).json({ message })
+const errorHelper = (next, response) => error => {
+  response = error && error.response || response
+  next({ ...error, response })
 }
 
 // inputs: response object and address to validate
 // output: true if address valid
-const validateAddress = (res, address) => {
+const validateAddress = (next, address) => {
   if (!web3.isAddress(address)) {
-    res.status(500).json({
-      message: address + ' is not a valid ethereum address'
-    })
+    errorHelper(next, `${address} is not a valid ethereum address`)()
     return false
   }
   return true

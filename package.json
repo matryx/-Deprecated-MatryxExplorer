@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Running mocha tests\" && nyc mocha --require test/helper.js --exit",
     "dev": "echo \"Starting MatryxExplorer in development\" && nodemon server.js ",
-    "start": "echo \"Starting MatryxExplorer in development with forever\" && forever server.js "
+    "start": "echo \"Starting MatryxExplorer in development with forever\" && NODE_ENV=production forever server.js "
   },
   "repository": {
     "type": "git",
