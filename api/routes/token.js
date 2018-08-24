@@ -21,9 +21,11 @@ router.get('/', (req, res, next) => {
   })
 })
 
-router.get('/getInfo', (req, res, next) => {
+router.get('/getInfo/:version?', (req, res, next) => {
+  let version = req.params.version || latestVersion
+
   externalApiCalls
-    .getMatryxTokenInfo(latestVersion)
+    .getMatryxTokenInfo(version)
     .then(result => {
       let { address } = result['networks'][networkId]
       let { abi } = result
@@ -32,9 +34,11 @@ router.get('/getInfo', (req, res, next) => {
     .catch(errorHelper(res, 'Error getting latest info'))
 })
 
-router.get('/getAddress', (req, res, next) => {
+router.get('/getAddress/:version?', (req, res, next) => {
+  let version = req.params.version || latestVersion
+
   externalApiCalls
-    .getMatryxTokenInfo(latestVersion)
+    .getMatryxTokenInfo(version)
     .then(result => {
       let { address } = result['networks'][networkId]
       res.status(200).json({ address })
@@ -42,9 +46,11 @@ router.get('/getAddress', (req, res, next) => {
     .catch(errorHelper(res, 'Error getting latest address'))
 })
 
-router.get('/getAbi', (req, res, next) => {
+router.get('/getAbi/:version?', (req, res, next) => {
+  let version = req.params.version || latestVersion
+
   externalApiCalls
-    .getMatryxTokenInfo(latestVersion)
+    .getMatryxTokenInfo(version)
     .then(result => {
       let { abi } = result
       res.status(200).json({ abi })

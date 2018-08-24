@@ -1,21 +1,3 @@
-const networkID = process.env.NETWORK_ID
-
-// way to stub fetch through fetch's internal Promise
-const fetch = require('node-fetch')
-fetch.Promise = function () {
-  console.log('mock fetch')
-  return Promise.resolve({
-    json: () => ({
-      abi: 'abi',
-      networks: {
-        [networkID]: {
-          address: 'address'
-        }
-      }
-    })
-  })
-}
-
 describe('ABI tests:', () => {
   let routes = [
     { base: '/platform/', routes: ['getInfo', 'getAddress', 'getAbi'] },
@@ -31,7 +13,7 @@ describe('ABI tests:', () => {
       describe(path, () => {
         let err, res
         before(done => {
-          request.get(path).end((e, r) => {
+          request.get(`${path}/valid-branch`).end((e, r) => {
             ;[err, res] = [e, r]
             done()
           })
@@ -55,6 +37,14 @@ describe('ABI tests:', () => {
               expect(res.body.abi).to.equal('abi')
               break
           }
+        })
+
+        it('returns 500 for invalid branch or network error', done => {
+          request.get(`${path}/not-a-branch`).end((err, res) => {
+            expect(err).to.be.null
+            expect(res).to.have.status(500)
+            done()
+          })
         })
       })
     }
