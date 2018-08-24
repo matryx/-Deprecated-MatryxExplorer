@@ -202,9 +202,4 @@ tournamentController.getTournamentsByCategory = (category) => {
   return Platform.getTournamentsByCategory(category)
 }
 
-tournamentController.isCreator = (tournamentAddress, userAddress) => {
-  const Tournament = new MatryxTournament(tournamentAddress, abis.tournament.abi)
-  return Tournament.isOwner(userAddress)
-}
-
 module.exports = tournamentController
