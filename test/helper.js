@@ -9,8 +9,13 @@ global.expect = chai.expect
 
 const Contract = require('../api/contracts/Contract')
 const mocktract = require('./mocktract')
-Contract.prototype.setup = function(address, abi) {
+Contract.prototype.setup = function(address, abi, contract) {
   this.contract = mocktract(address, abi)
+
+  // MatryxRound mock state "isClosed" for full coverage
+  if (contract === 'MatryxRound') {
+    this.contract.getState.mockReturnValue(5)
+  }
 }
 
 // stub getIpfsFile for descriptions

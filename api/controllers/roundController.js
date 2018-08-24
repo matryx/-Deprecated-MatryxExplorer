@@ -31,6 +31,7 @@ roundController.getSubmissionsFromRound = async (roundAddress) => {
   let status = await Round.getState()
   response.roundStatus = status
 
+  // istanbul ignore next
   if (['notYetOpen', 'notFunded', 'isOpen', 'inReview', 'hasWinners'].includes(status)) return response
 
   if ([/* 'hasWinners', */'isClosed', 'isAbandoned'].includes(status)) {

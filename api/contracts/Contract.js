@@ -4,10 +4,11 @@ const ethers = require('ethers')
 const provider = new ethers.providers.InfuraProvider('ropsten', 'metamask')
 
 module.exports = class Contract {
-  constructor(address, abi) {
-    this.setup(address, abi)
+  constructor() {
+    this.setup(...arguments)
   }
 
+  // istanbul ignore next
   setup(address, abi) {
     this.contract = new ethers.Contract(address, abi, provider)
   }
