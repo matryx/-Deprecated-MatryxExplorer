@@ -22,6 +22,7 @@ module.exports = class MatryxRound extends Contract {
       6: 'isAbandoned'
     }
     const state = +await this.contract.getState()
+    // istanbul ignore next
     return states[state] || 'isBroken'
   }
 

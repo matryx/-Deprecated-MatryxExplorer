@@ -34,6 +34,25 @@ describe('Tournaments tests:', () => {
     })
   })
 
+  describe('/tournaments/?owner=0x0000000000000000000000000000000000000000', () => {
+    let err, res
+    before(done => {
+      request.get('/tournaments/?owner=0x0000000000000000000000000000000000000000').end((e, r) => {
+        ;[err, res] = [e, r]
+        done()
+      })
+    })
+
+    it("doesn't error", () => {
+      expect(err).to.be.null
+      expect(res).to.have.status(200)
+    })
+
+    it('returns empty array', () => {
+      expect(res.body.tournaments).to.be.an('array')
+    })
+  })
+
   describe('/tournaments/count', () => {
     let err, res
     before(done => {

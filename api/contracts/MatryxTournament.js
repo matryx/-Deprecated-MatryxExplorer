@@ -34,6 +34,7 @@ module.exports = class MatryxTournament extends Contract {
       4: 'isAbandoned'
     }
     const state = +await this.contract.getState()
+    // istanbul ignore next
     return states[state] || 'isBroken'
   }
 
