@@ -45,7 +45,7 @@ router.get('/getInfo/:version?', (req, res, next) => {
       let { abi } = result
       res.status(200).json({ address, abi })
     })
-    .catch(errorHelper(res, 'Error getting info for ' + version))
+    .catch(errorHelper(next, `Error getting Platform info for ${version}`))
 })
 
 router.get('/getAddress/:version?', (req, res, next) => {
@@ -57,7 +57,7 @@ router.get('/getAddress/:version?', (req, res, next) => {
       let { address } = result['networks'][networkId]
       res.status(200).json({ address })
     })
-    .catch(errorHelper(res, 'Error getting address for ' + version))
+    .catch(errorHelper(next, `Error getting Platform address for ${version}`))
 })
 
 router.get('/getAbi/:version?', (req, res, next) => {
@@ -69,14 +69,14 @@ router.get('/getAbi/:version?', (req, res, next) => {
       let { abi } = result
       res.status(200).json({ abi })
     })
-    .catch(errorHelper(res, 'Error getting ABI for ' + version))
+    .catch(errorHelper(next, `Error getting Platform ABI for ${version}`))
 })
 
 router.get('/getAllCategories', (req, res, next) => {
   Platform
     .getAllCategories()
     .then(categories => res.status(200).json({ categories }))
-    .catch(errorHelper(res, 'Error getting top categories'))
+    .catch(errorHelper(next, 'Error getting top categories'))
 })
 
 module.exports = router

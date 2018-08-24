@@ -28,18 +28,18 @@ router.get('/getAbi/:version?', (req, res, next) => {
   externalApiCalls
     .getMatryxRoundAbi(version)
     .then(({ abi }) => res.status(200).json({ abi }))
-    .catch(errorHelper(res, 'Error getting ABI for ' + version))
+    .catch(errorHelper(next, `Error getting Round ABI for ${version}`))
 })
 
 // TODO: add error response for invalid responses
 router.get('/address/:roundAddress', (req, res, next) => {
   let { roundAddress } = req.params
-  if (!validateAddress(res, roundAddress)) return
+  if (!validateAddress(next, roundAddress)) return
 
   roundController
     .getRoundDetails(roundAddress)
     .then(round => res.status(200).json({ round }))
-    .catch(errorHelper(res, 'Error getting round ' + roundAddress))
+    .catch(errorHelper(next, `Error getting Round ${roundAddress}`))
 })
 
 module.exports = router

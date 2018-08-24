@@ -11,19 +11,19 @@ module.exports = new Promise(async (resolve, reject) => {
       let abi = result.abi
       return { address, abi }
     })
-    .catch(err => console.log('Unable to retrieve Platform ABI', err))
+    .catch(err => console.log('Error getting Platform ABI', err))
 
   const tournamentPromise = externalApiCalls
     .getMatryxTournamentAbi(version)
-    .catch(err => console.log('Unable to retrieve Tournament ABI', err))
+    .catch(err => console.log('Error getting Tournament ABI', err))
 
   const roundPromise = externalApiCalls
     .getMatryxRoundAbi(version)
-    .catch(err => console.log('Unable to retrieve Round ABI', err))
+    .catch(err => console.log('Error getting Round ABI', err))
 
   const submissionPromise = externalApiCalls
     .getMatryxSubmissionAbi(version)
-    .catch(err => console.log('Unable to retrieve Submission ABI', err))
+    .catch(err => console.log('Error getting Submission ABI', err))
 
   const [platform, tournament, round, submission] = await Promise.all([
     platformPromise,

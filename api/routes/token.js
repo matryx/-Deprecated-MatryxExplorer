@@ -29,7 +29,7 @@ router.get('/getInfo', (req, res, next) => {
       let { abi } = result
       res.status(200).json({ address, abi })
     })
-    .catch(errorHelper(res, 'Error getting latest info'))
+    .catch(errorHelper(next, 'Error getting Token info'))
 })
 
 router.get('/getAddress', (req, res, next) => {
@@ -39,7 +39,7 @@ router.get('/getAddress', (req, res, next) => {
       let { address } = result['networks'][networkId]
       res.status(200).json({ address })
     })
-    .catch(errorHelper(res, 'Error getting latest address'))
+    .catch(errorHelper(next, 'Error getting Token address'))
 })
 
 router.get('/getAbi', (req, res, next) => {
@@ -49,7 +49,7 @@ router.get('/getAbi', (req, res, next) => {
       let { abi } = result
       res.status(200).json({ abi })
     })
-    .catch(errorHelper(res, 'Error getting latest ABI'))
+    .catch(errorHelper(next, 'Error getting Token ABI'))
 })
 
 module.exports = router

@@ -85,7 +85,7 @@ router.post('/upload', (req, res, next) => {
       })
     form.parse(req)
   } catch (err) {
-    errorHelper(res, 'Error uploading file')(err)
+    errorHelper(next, 'Error uploading content to Infura IPFS')(err)
   }
 })
 

@@ -15,7 +15,7 @@ const { errorHelper } = require('../helpers/responseHelpers')
 //   Platform
 //     .getActivity()
 //     .then(activity => res.status(200).json({ activity }))
-//     .catch(errorHelper(res, 'Error getting activity'))
+//     .catch(errorHelper(next, 'Error getting activity'))
 // })
 
 module.exports = router
