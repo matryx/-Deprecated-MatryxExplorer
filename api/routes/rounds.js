@@ -10,7 +10,6 @@ const router = express.Router()
 
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 const roundController = require('../controllers/roundController')
-// const matryxPlatformCalls = require('../controllers/gateway/matryxPlatformCalls')
 const { errorHelper, validateAddress } = require('../helpers/responseHelpers')
 
 const latestVersion = process.env.PLATFORM_VERSION
@@ -42,24 +41,5 @@ router.get('/address/:roundAddress', (req, res, next) => {
     .then(round => res.status(200).json({ round }))
     .catch(errorHelper(res, 'Error getting round ' + roundAddress))
 })
-
-// TODO: is this needed?
-// Does this even work? test
-// TODO: add error response for invalid responses
-// router.get('/address/:roundAddress/submission/:submissionIndex', (req, res, next) => {
-//   let { roundAddress, submissionIndex } = req.params
-//   if (!validateAddress(roundAddress)) return
-
-//   matryxPlatformCalls
-//     .getSubmissionAddressFromRound(roundAddress, submissionIndex)
-//     .then(submissionAddress => {
-//       res.status(200).json({
-//         roundAddress,
-//         submissionIndex,
-//         submissionAddress
-//       })
-//     })
-//     .catch(errorHelper(res, 'Error getting submission ' + submissionIndex + ' for ' + roundAddress))
-// })
 
 module.exports = router

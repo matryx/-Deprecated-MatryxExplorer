@@ -35,7 +35,6 @@ router.get('/', (req, res, next) => {
   })
 })
 
-// Return a confirmation the API is live
 router.get('/getInfo/:version?', (req, res, next) => {
   let version = req.params.version || latestVersion
 
@@ -49,7 +48,6 @@ router.get('/getInfo/:version?', (req, res, next) => {
     .catch(errorHelper(res, 'Error getting info for ' + version))
 })
 
-// Return a confirmation the API is live
 router.get('/getAddress/:version?', (req, res, next) => {
   let version = req.params.version || latestVersion
 
@@ -62,7 +60,6 @@ router.get('/getAddress/:version?', (req, res, next) => {
     .catch(errorHelper(res, 'Error getting address for ' + version))
 })
 
-// Return a confirmation the API is live
 router.get('/getAbi/:version?', (req, res, next) => {
   let version = req.params.version || latestVersion
 

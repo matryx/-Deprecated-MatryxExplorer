@@ -8,15 +8,14 @@ Copyright Nanome Inc 2018
 const express = require('express')
 const router = express.Router()
 
-const matryxPlatformCalls = require('../controllers/gateway/matryxPlatformCalls')
 const { errorHelper } = require('../helpers/responseHelpers')
 
-// Finish Backend
-router.get('/', (req, res, next) => {
-  matryxPlatformCalls
-    .getPlatformActivity()
-    .then(activity => res.status(200).json({ activity }))
-    .catch(errorHelper(res, 'Error getting activity'))
-})
+// TODO: activity
+// router.get('/', (req, res, next) => {
+//   Platform
+//     .getActivity()
+//     .then(activity => res.status(200).json({ activity }))
+//     .catch(errorHelper(res, 'Error getting activity'))
+// })
 
 module.exports = router
