@@ -1,3 +1,10 @@
+const chai = require('chai')
+const chaiHttp = require('chai-http')
+const server = require('../server')
+chai.use(chaiHttp)
+global.request = chai.request(server).keepOpen()
+global.expect = chai.expect
+
 const fetchMock = require('fetch-mock')
 fetchMock.mock("begin:https://raw.githubusercontent.com/matryx/MatryxPlatform/not-a-branch/", 500)
 fetchMock.mock("begin:https://raw.githubusercontent.com/matryx/MatryxPlatform/valid-branch", {
@@ -8,7 +15,6 @@ fetchMock.mock("begin:https://raw.githubusercontent.com/matryx/MatryxPlatform/va
     }
   }
 })
-
 
 const Contract = require('../api/contracts/Contract')
 const mocktract = require('./mocktract')
@@ -24,10 +30,3 @@ Contract.prototype.setup = function(address, abi, contract) {
 // stub getIpfsFile for descriptions
 const ipfsCalls = require('../api/controllers/gateway/ipfsCalls')
 ipfsCalls.getIpfsFile = () => 'ipfs data'
-
-const chai = require('chai')
-const chaiHttp = require('chai-http')
-const server = require('../server')
-chai.use(chaiHttp)
-global.request = chai.request(server).keepOpen()
-global.expect = chai.expect
