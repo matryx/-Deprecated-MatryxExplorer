@@ -23,6 +23,7 @@ router.get('/', (req, res, next) => {
 
 // TODO: add error response for invalid responses
 router.get('/getAbi/:version?', (req, res, next) => {
+  // istanbul ignore next
   let version = req.params.version || latestVersion
 
   externalApiCalls

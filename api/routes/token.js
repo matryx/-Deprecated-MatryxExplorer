@@ -22,6 +22,7 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/getInfo/:version?', (req, res, next) => {
+  // istanbul ignore next
   let version = req.params.version || latestVersion
 
   externalApiCalls
@@ -35,6 +36,7 @@ router.get('/getInfo/:version?', (req, res, next) => {
 })
 
 router.get('/getAddress/:version?', (req, res, next) => {
+  // istanbul ignore next
   let version = req.params.version || latestVersion
 
   externalApiCalls
@@ -47,6 +49,7 @@ router.get('/getAddress/:version?', (req, res, next) => {
 })
 
 router.get('/getAbi/:version?', (req, res, next) => {
+  // istanbul ignore next
   let version = req.params.version || latestVersion
 
   externalApiCalls

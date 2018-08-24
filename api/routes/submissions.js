@@ -22,6 +22,7 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/getAbi/:version?', (req, res, next) => {
+  // istanbul ignore next
   let version = req.params.version || latestVersion
 
   externalApiCalls

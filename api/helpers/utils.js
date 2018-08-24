@@ -7,6 +7,7 @@ module.exports = {
     return ethers.utils.toUtf8String(utf8)
   },
 
+  // istanbul ignore next
   stringToBytes(text, len = 0) {
     text = text || ''
     let data = ethers.utils.toUtf8Bytes(text)
@@ -28,6 +29,7 @@ module.exports = {
     return +ethers.utils.formatEther(wei.toString())
   },
 
+  // istanbul ignore next
   toWei(eth) {
     return ethers.utils.parseEther(eth.toString())
   }

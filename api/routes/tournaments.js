@@ -25,6 +25,7 @@ router.get('/', (req, res, next) => {
 
 // TODO: add error response for invalid responses
 router.get('/getAbi/:version?', (req, res, next) => {
+  // istanbul ignore next
   let version = req.params.version || latestVersion
 
   externalApiCalls
@@ -104,6 +105,7 @@ router.get('/address/:tournamentAddress/round/:roundId', async (req, res, next) 
     let round = await roundController.getRoundDetails(roundAddress)
     res.status(200).json({ round })
   } catch (err) {
+    // istanbul ignore next
     errorHelper(next, `Error getting Tournament ${tournamentAddress} Round ${roundId}`)(err)
   }
 })

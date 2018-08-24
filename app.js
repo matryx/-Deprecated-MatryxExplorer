@@ -55,6 +55,8 @@ app.use((error, req, res, next) => {
 
   // istanbul ignore next
   res.status(error.status || 500)
+
+  // istanbul ignore next
   res.json({
     error: {
       message: error.response || 'Something went wrong!',
