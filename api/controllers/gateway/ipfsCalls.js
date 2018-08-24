@@ -8,7 +8,6 @@ https://github.com/ipfs/js-ipfs#use-in-nodejs
 */
 
 const fs = require('fs')
-// const fetch = require('node-fetch')
 const FormData = require('form-data')
 
 const ipfsURL = process.env.IPFS_URL
