@@ -48,10 +48,12 @@ app.use((req, res, next) => {
 })
 
 app.use((error, req, res, next) => {
+  const dev = process.env.NODE_ENV !== 'production'
   res.status(error.status || 500)
   res.json({
     error: {
-      message: error.message
+      message: error.message,
+      error: dev ? error : undefined
     }
   })
 })
