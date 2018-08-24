@@ -14,40 +14,18 @@ let contractUrl = branch => `https://raw.githubusercontent.com/matryx/MatryxPlat
 let externalApiCalls = {}
 
 const ABIs = {
-  'platform': {
-    v1: '../../../data/abi/v1/platform',
-    v2: '../../../data/abi/v2/platform',
-    json: 'MatryxPlatform.json'
-  },
-  'token': { json: 'MatryxToken.json' },
-  'tournament': {
-    v2: '../../../data/abi/v2/tournament',
-    json: 'MatryxTournament.json'
-  },
-  'submission': {
-    v2: '../../../data/abi/v2/submission',
-    json: 'MatryxSubmission.json'
-  },
-  'round': {
-    v2: '../../../data/abi/v2/round',
-    json: 'MatryxRound.json'
-  }
+  platform: 'MatryxPlatform.json',
+  token: 'MatryxToken.json',
+  tournament: 'MatryxTournament.json',
+  submission: 'MatryxSubmission.json',
+  round: 'MatryxRound.json'
 }
 
 const getInfo = async (contract, branch) => {
-  if (branch === 'v1' || branch === 'v2') {
-    let path = ABIs[contract][branch]
-    if (path !== undefined) {
-      return require(path)
-    } else {
-      throw Error(branch + ' ABI does not exist for ' + contract)
-    }
-  } else {
-    let url = contractUrl(branch) + ABIs[contract].json
-    let res = await fetch(url)
-    console.log('Got ' + contract + ' ABI from MatryxPlatform GitHub for ' + branch)
-    return res.json()
-  }
+  const url = contractUrl(branch) + ABIs[contract]
+  const res = await fetch(url)
+  console.log(`Got ${contract} ABI from MatryxPlatform GitHub for ${branch}`)
+  return res.json()
 }
 
 externalApiCalls.getMatryxPlatformInfo  = branch => getInfo('platform', branch)
