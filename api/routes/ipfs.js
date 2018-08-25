@@ -95,6 +95,7 @@ router.post('/upload', (req, res, next) => {
 
     form.parse(req)
   } catch (err) {
+    // istanbul ignore next
     errorHandler(err)
   }
 })

@@ -34,10 +34,12 @@ ipfsCalls.pushTmpFolderToIPFS = async (tempDirectory) => {
 
   let descriptionHash, filesHash
 
+  // istanbul ignore next
   if (descriptionPath) {
     descriptionHash = await ipfsCalls.uploadFiles([descriptionPath], false)
   }
 
+  // istanbul ignore next
   if (filePaths.length) {
     filesHash = await ipfsCalls.uploadFiles(filePaths, true)
   }
@@ -63,6 +65,7 @@ ipfsCalls.uploadFiles = async (paths, folder) => {
   return hash
 }
 
+// istanbul ignore next
 ipfsCalls.getIpfsFile = async (hash) => {
   let response = await fetch(ipfsURL + hash)
   return await response.text()

@@ -15,6 +15,7 @@ fetchMock.mock("begin:https://raw.githubusercontent.com/matryx/MatryxPlatform/va
     }
   }
 })
+fetchMock.mock('begin:https://ipfs.infura.io:5001/api/v0/add', '{"Hash":"ipfs hash"}')
 
 const Contract = require('../api/contracts/Contract')
 const mocktract = require('./mocktract')
