@@ -14,7 +14,12 @@ const submissionRoutes = require('./api/routes/submissions')
 const tokenRoutes = require('./api/routes/token')
 const ipfsRoutes = require('./api/routes/ipfs')
 
-// Enable GZIP compression
+const setup = require('./api/helpers/getAbis')
+app.use(async (req, res, next) => {
+  await setup
+  next()
+})
+
 app.use(compression())
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -35,18 +40,27 @@ app.get('/', (req, res) => {
   res.send('Somewhere, something incredible is waiting to be known. <br> - Carl Sagan')
 })
 
-// Error handling
+// 404 error handling
 app.use((req, res, next) => {
-  const error = new Error('Not Found')
-  error.status = 404
-  next(error)
+  next({ status: 404, response: 'Not Found' })
 })
 
+// error handling
 app.use((error, req, res, next) => {
+  const dev = process.env.NODE_ENV !== 'production'
+
+  console.error(`ERR ${req.originalUrl} - ${error.message || error.response}`)
+  // istanbul ignore next
+  if (error.stack) console.error(`    ${error.stack}`)
+
+  // istanbul ignore next
   res.status(error.status || 500)
+
+  // istanbul ignore next
   res.json({
     error: {
-      message: error.message
+      message: error.response || 'Something went wrong!',
+      error: dev ? error : undefined
     }
   })
 })

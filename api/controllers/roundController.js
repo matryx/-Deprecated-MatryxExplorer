@@ -31,9 +31,10 @@ roundController.getSubmissionsFromRound = async (roundAddress) => {
   let status = await Round.getState()
   response.roundStatus = status
 
+  // istanbul ignore next
   if (['notYetOpen', 'notFunded', 'isOpen', 'inReview', 'hasWinners'].includes(status)) return response
 
-  if ([/* 'hasWinners', */'isClosed', 'isAbandoned'].includes(status)) {
+  else if ([/* 'hasWinners', */'isClosed', 'isAbandoned'].includes(status)) {
     let [winners, addresses] = await Promise.all([
       Round.getWinningSubmissionAddresses(),
       Round.getSubmissions()
@@ -60,8 +61,6 @@ roundController.getSubmissionsFromRound = async (roundAddress) => {
 }
 
 roundController.getRoundDetails = async function (roundAddress) {
-  console.log('>RoundController: Retrieving Round Details for: ' + '\'' + roundAddress + '\'')
-
   const Round = new MatryxRound(roundAddress, abis.round.abi)
 
   let data = await Promise.all([

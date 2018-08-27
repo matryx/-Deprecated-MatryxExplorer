@@ -6,8 +6,6 @@ Nanome 2018
 */
 'use strict'
 
-const fetch = require('node-fetch')
-
 let contractUrl = branch => `https://raw.githubusercontent.com/matryx/MatryxPlatform/${branch}/build/contracts/`
 // let contractUrl = branch => `http://localhost:8081/`
 
@@ -24,6 +22,11 @@ const ABIs = {
 const getInfo = async (contract, branch) => {
   const url = contractUrl(branch) + ABIs[contract]
   const res = await fetch(url)
+
+  if (res.status !== 200) {
+    throw Error(`Error getting ${contract} ABI`)
+  }
+
   console.log(`Got ${contract} ABI from MatryxPlatform GitHub for ${branch}`)
   return res.json()
 }

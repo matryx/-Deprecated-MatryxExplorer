@@ -2,22 +2,31 @@ const Contract = require('./Contract')
 const utils = require('../helpers/utils')
 
 module.exports = class MatryxRound extends Contract {
+  constructor() {
+    super(...arguments, 'MatryxRound')
+  }
+
+  // istanbul ignore next
   async submissionExists(address) {
     return await this.contract.submissionExists(address)
   }
 
   async getState() {
-    let state = await this.contract.getState()
-    if (state == 0) return 'notYetOpen'
-    else if (state == 1) return 'notFunded'
-    else if (state == 2) return 'isOpen'
-    else if (state == 3) return 'inReview'
-    else if (state == 4) return 'hasWinners'
-    else if (state == 5) return 'isClosed'
-    else if (state == 6) return 'isAbandoned'
-    return 'isBroken' // should never be this
+    const states = {
+      0: 'notYetOpen',
+      1: 'notFunded',
+      2: 'isOpen',
+      3: 'inReview',
+      4: 'hasWinners',
+      5: 'isClosed',
+      6: 'isAbandoned'
+    }
+    const state = +await this.contract.getState()
+    // istanbul ignore next
+    return states[state] || 'isBroken'
   }
 
+  // istanbul ignore next
   async getPlatform() {
     return await this.contract.getPlatform()
   }
@@ -27,13 +36,13 @@ module.exports = class MatryxRound extends Contract {
   }
 
   async getData() {
-    let [
+    let {
       start,
       end,
       reviewPeriodDuration,
       bounty,
       closed
-    ] = await this.contract.getData()
+    } = await this.contract.getData()
 
     // parse data
     start = +start * 1000
@@ -50,6 +59,7 @@ module.exports = class MatryxRound extends Contract {
     }
   }
 
+  // istanbul ignore next
   async getStartTime() {
     const start = +await this.contract.getStartTime()
     return start * 1000
@@ -60,21 +70,25 @@ module.exports = class MatryxRound extends Contract {
     return end * 1000
   }
 
+  // istanbul ignore next
   async getReviewPeriodDuration() {
     const duration = +await this.contract.getReviewPeriodDuration()
     return duration * 1000
   }
 
+  // istanbul ignore next
   async getBounty() {
     const bounty = +await this.contract.getBounty()
     return utils.fromWei(bounty)
   }
 
+  // istanbul ignore next
   async getRemainingBounty() {
     const remainingBounty = +await this.contract.getRemainingBounty()
     return utils.fromWei(remainingBounty)
   }
 
+  // istanbul ignore next
   async getTokenAddress() {
     return await this.contract.getTokenAddress()
   }
@@ -84,16 +98,19 @@ module.exports = class MatryxRound extends Contract {
   }
 
   // note: this is used for getting submission balance
+  // istanbul ignore next
   async getBalance(address) {
     const balance = +await this.contract.getBalance(address)
     return utils.fromWei(balance)
   }
 
+  // istanbul ignore next
   async getRoundBalance() {
     const balance = +await this.contract.getRoundBalance()
     return utils.fromWei(balance)
   }
 
+  // istanbul ignore next
   async submissionsChosen() {
     return await this.contract.submissionsChosen()
   }
@@ -102,6 +119,7 @@ module.exports = class MatryxRound extends Contract {
     return await this.contract.getWinningSubmissionAddresses()
   }
 
+  // istanbul ignore next
   async numberOfSubmissions() {
     return +await this.contract.numberOfSubmissions()
   }

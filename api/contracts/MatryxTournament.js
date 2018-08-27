@@ -2,10 +2,12 @@ const Contract = require('./Contract')
 const utils = require('../helpers/utils')
 
 module.exports = class MatryxTournament extends Contract {
+  // istanbul ignore next
   async getPlatform() {
     return await this.contract.getPlatform()
   }
 
+  // istanbul ignore next
   async getTokenAddress() {
     return await this.contract.getTokenAddress()
   }
@@ -14,6 +16,7 @@ module.exports = class MatryxTournament extends Contract {
     return await this.contract.isEntrant(address)
   }
 
+  // istanbul ignore next
   async isRound(address) {
     return await this.contract.isRound(address)
   }
@@ -23,24 +26,27 @@ module.exports = class MatryxTournament extends Contract {
   }
 
   async getState() {
-    let state = +await this.contract.getState()
-    if (state == 0) return 'notYetOpen'
-    else if (state == 1) return 'isOnHold'
-    else if (state == 2) return 'isOpen'
-    else if (state == 3) return 'isClosed'
-    else if (state == 4) return 'isAbandoned'
-    else return 'isBroken' // should never be this
+    const states = {
+      0: 'notYetOpen',
+      1: 'isOnHold',
+      2: 'isOpen',
+      3: 'isClosed',
+      4: 'isAbandoned'
+    }
+    const state = +await this.contract.getState()
+    // istanbul ignore next
+    return states[state] || 'isBroken'
   }
 
   async getData() {
-    let [
+    let {
       category,
       title,
       descriptionHash,
       fileHash,
       initialBounty,
       entryFee
-    ] = await this.contract.getData()
+    } = await this.contract.getData()
 
     // parse data
     category = utils.bytesToString([category])
@@ -66,6 +72,7 @@ module.exports = class MatryxTournament extends Contract {
     return { id, address }
   }
 
+  // istanbul ignore next
   async getCategory() {
     const category = await this.contract.getCategory()
     return utils.bytesToString([category])
@@ -81,6 +88,7 @@ module.exports = class MatryxTournament extends Contract {
     return utils.bytesToString(hash)
   }
 
+  // istanbul ignore next
   async getFileHash() {
     const hash = await this.contract.getFileHash()
     return utils.bytesToString(hash)
@@ -96,11 +104,13 @@ module.exports = class MatryxTournament extends Contract {
     return utils.fromWei(balance)
   }
 
+  // istanbul ignore next
   async getEntryFee() {
     const fee = await this.contract.getEntryFee()
     return utils.fromWei(fee)
   }
 
+  // istanbul ignore next
   async submissionCount() {
     return +await this.contract.submissionCount()
   }
@@ -115,6 +125,7 @@ module.exports = class MatryxTournament extends Contract {
     return await this.contract.getOwner()
   }
 
+  // istanbul ignore next
   async isOwner(address) {
     return await this.contract.isOwner(address)
   }

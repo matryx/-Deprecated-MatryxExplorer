@@ -15,16 +15,18 @@ const { errorHelper } = require('../helpers/responseHelpers')
 
 const MatryxPlatform = require('../contracts/MatryxPlatform')
 
-let Platform
-require('../helpers/getAbis').then(async abis => {
-  Platform = new MatryxPlatform(abis.platform.address, abis.platform.abi)
-  let count = +await Platform.getTournamentCount()
-  console.log(`\nCurrent Matryx Platform Address in use: ${abis.platform.address}`)
-  console.log(`There are ${count} tournaments on the Platform.\n`)
-})
-
 const latestVersion = process.env.PLATFORM_VERSION
 const networkId = process.env.NETWORK_ID
+
+let Platform
+require('../helpers/getAbis').then(async abis => {
+  const { platform } = abis
+  Platform = new MatryxPlatform(platform.address, platform.abi)
+
+  let count = +await Platform.getTournamentCount()
+  console.log(`\nCurrent Matryx Platform Address in use: ${platform.address}`)
+  console.log(`There are ${count} tournaments on the Platform.\n`)
+})
 
 // Return a message that this route handles all platform specific requests
 router.get('/', (req, res, next) => {
@@ -33,8 +35,8 @@ router.get('/', (req, res, next) => {
   })
 })
 
-// Return a confirmation the API is live
 router.get('/getInfo/:version?', (req, res, next) => {
+  // istanbul ignore next
   let version = req.params.version || latestVersion
 
   externalApiCalls
@@ -44,11 +46,11 @@ router.get('/getInfo/:version?', (req, res, next) => {
       let { abi } = result
       res.status(200).json({ address, abi })
     })
-    .catch(errorHelper(res, 'Error getting info for ' + version))
+    .catch(errorHelper(next, `Error getting Platform info for ${version}`))
 })
 
-// Return a confirmation the API is live
 router.get('/getAddress/:version?', (req, res, next) => {
+  // istanbul ignore next
   let version = req.params.version || latestVersion
 
   externalApiCalls
@@ -57,11 +59,11 @@ router.get('/getAddress/:version?', (req, res, next) => {
       let { address } = result['networks'][networkId]
       res.status(200).json({ address })
     })
-    .catch(errorHelper(res, 'Error getting address for ' + version))
+    .catch(errorHelper(next, `Error getting Platform address for ${version}`))
 })
 
-// Return a confirmation the API is live
 router.get('/getAbi/:version?', (req, res, next) => {
+  // istanbul ignore next
   let version = req.params.version || latestVersion
 
   externalApiCalls
@@ -70,14 +72,14 @@ router.get('/getAbi/:version?', (req, res, next) => {
       let { abi } = result
       res.status(200).json({ abi })
     })
-    .catch(errorHelper(res, 'Error getting ABI for ' + version))
+    .catch(errorHelper(next, `Error getting Platform ABI for ${version}`))
 })
 
 router.get('/getAllCategories', (req, res, next) => {
   Platform
     .getAllCategories()
     .then(categories => res.status(200).json({ categories }))
-    .catch(errorHelper(res, 'Error getting top categories'))
+    .catch(errorHelper(next, 'Error getting top categories'))
 })
 
 module.exports = router
