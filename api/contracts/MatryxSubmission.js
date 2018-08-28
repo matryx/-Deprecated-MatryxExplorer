@@ -10,6 +10,7 @@
 const Contract = require('./Contract')
 const utils = require('../helpers/utils')
 
+// NOTE: all istanbul ignores are contract methods currently not being used
 module.exports = class MatryxSubmission extends Contract {
   // istanbul ignore next
   async getTournament() {

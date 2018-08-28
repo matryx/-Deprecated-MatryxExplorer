@@ -13,6 +13,8 @@ const ethers = require('ethers')
 const provider = new ethers.providers.InfuraProvider('ropsten', 'metamask')
 
 module.exports = class Contract {
+  // Contract constructor uses "setup" so that in testing,
+  // can easily replace ethers.Contract with mocktract
   constructor() {
     this.setup(...arguments)
   }
