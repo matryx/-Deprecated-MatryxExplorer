@@ -1,14 +1,12 @@
+/**
+ * roundController.js
+ * Helper methods for getting Round data
+ *
+ * Authors sam@nanome.ai dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
 
-/*
-The Matryx submission controller
-
-authors - sam@nanome.ai
-Nanome 2018
-*/
-
-/*
-Imports
-*/
 const ipfsCalls = require('./gateway/ipfsCalls')
 
 const MatryxTournament = require('../contracts/MatryxTournament')

@@ -1,3 +1,12 @@
+/**
+ * utils.js
+ * Helper methods for converting values from contracts
+ *
+ * Authors dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
+
 const ethers = require('ethers')
 
 module.exports = {

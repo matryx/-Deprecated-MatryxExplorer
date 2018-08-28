@@ -1,9 +1,11 @@
-/*
-MatryxExplorer API routing for all tournament based REST calls
-
-author - sam@nanome.ai
-Copyright Nanome Inc 2018
-*/
+/**
+ * tournaments.js
+ * /tournaments routes for getting Tournament info
+ *
+ * Authors sam@nanome.ai dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
 
 const express = require('express')
 const router = express.Router()
@@ -43,7 +45,6 @@ router.get('/count', (req, res, next) => {
 })
 
 // Return the tournament details for a specific tournament
-// TODO pass back the tournament details
 router.get('/address/:tournamentAddress', (req, res, next) => {
   const { tournamentAddress } = req.params
   if (!validateAddress(next, tournamentAddress)) return
@@ -76,7 +77,6 @@ router.get('/address/:tournamentAddress/submissionCount', (req, res, next) => {
     .catch(errorHelper(next, `Error getting Tournament ${tournamentAddress} Submission count`))
 })
 
-// TODO: Waiting on Max, need to implement the Round is open in order to access this
 // Current Round response given a tournamentAddress
 router.get('/address/:tournamentAddress/currentRound', (req, res, next) => {
   const { tournamentAddress } = req.params

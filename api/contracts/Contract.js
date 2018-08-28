@@ -1,3 +1,12 @@
+/**
+ * Contract.js
+ * Contract base class for ethers Contract abstraction classes
+ *
+ * Authors dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
+
 const ethers = require('ethers')
 
 // const provider = new ethers.providers.JsonRpcProvider(process.env.LOCAL_HOST_RPC)

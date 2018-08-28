@@ -1,9 +1,11 @@
-/*
-MatryxExplorer API routing for all platform based REST calls
-
-author - sam@nanome.ai
-Copyright Nanome Inc 2018
-*/
+/**
+ * platform.js
+ * /platform routes for getting Platform info
+ *
+ * Authors sam@nanome.ai dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
 
 // TODO versioning api calls for the abi and latest platform info
 

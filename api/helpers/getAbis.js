@@ -1,3 +1,12 @@
+/**
+ * getAbis.js
+ * Helper file for getting current ABIs for use throughout the app
+ *
+ * Authors dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root
+ */
+
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 
 const version = process.env.PLATFORM_VERSION

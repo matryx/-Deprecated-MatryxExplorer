@@ -1,9 +1,11 @@
-/*
-MatryxExplorer API routing for all round based REST calls
-
-author - sam@nanome.ai
-Copyright Nanome Inc 2018
-*/
+/**
+ * ipfs.js
+ * /ipfs routes for interacting with IPFS
+ *
+ * Authors sam@nanome.ai dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
 
 const express = require('express')
 const router = express.Router()
@@ -16,11 +18,9 @@ const ipfsCalls = require('../controllers/gateway/ipfsCalls')
 const { errorHelper, validateAddress } = require('../helpers/responseHelpers')
 
 // Return a message that this route handles activity calls
-// TODO return the landing page events to the UI
-// Finish Backend
 router.get('/', (req, res, next) => {
   res.status(200).json({
-    message: 'handles all requests to /ipfs'
+    message: 'handling all requests to /ipfs'
   })
 })
 
