@@ -49,6 +49,7 @@
     "chai-http": "^4.0.0",
     "fetch-mock": "^6.5.2",
     "mocha": "^5.2.0",
+    "node-fetch": "^2.2.0",
     "nodemon": "^1.18.3",
     "nyc": "^13.0.1"
   }
