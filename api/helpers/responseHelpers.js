@@ -1,5 +1,13 @@
-const Web3 = require('web3')
-const web3 = new Web3()
+/**
+ * responseHelpers.js
+ * Helper methods for error handling and validating inputs
+ *
+ * Authors dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
+
+const ethers = require('ethers')
 
 // inputs: next method and optional error log message
 // output: error method that takes in error and sends over response
@@ -8,14 +16,16 @@ const errorHelper = (next, response) => error => {
   next({ ...error, response })
 }
 
-// inputs: response object and address to validate
+// inputs: response next and address to validate
 // output: true if address valid
 const validateAddress = (next, address) => {
-  if (!web3.isAddress(address)) {
+  try {
+    ethers.utils.getAddress(address)
+    return true
+  } catch (err) {
     errorHelper(next, `${address} is not a valid ethereum address`)()
     return false
   }
-  return true
 }
 
 module.exports = {
