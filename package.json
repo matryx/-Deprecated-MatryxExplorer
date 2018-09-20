@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Running mocha tests\" && nyc mocha --require test/helper.js --exit",
     "dev": "echo \"Starting MatryxExplorer in development\" && nodemon server.js ",
-    "start": "echo \"Starting MatryxExplorer in development with forever\" && NODE_ENV=production forever server.js "
+    "start": "echo \"Starting MatryxExplorer with pm2\" && pm2 start server.js "
   },
   "repository": {
     "type": "git",
@@ -34,13 +34,13 @@
     "dotenv": "^5.0.1",
     "ethers": "^3.0.26",
     "express": "^4.16.3",
-    "forever": "^0.15.3",
     "form-data": "^2.3.2",
     "formidable": "^1.2.1",
     "fs": "0.0.1-security",
     "helmet": "^3.13.0",
     "isomorphic-fetch": "^2.2.1",
     "morgan": "^1.9.0",
+    "pm2": "^3.1.3",
     "request": "^2.85.0",
     "tmp": "0.0.33",
     "util": "^0.10.3",
