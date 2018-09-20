@@ -1,26 +1,20 @@
-FROM node:carbon
+FROM node:alpine
+
+RUN apk update && apk upgrade && \
+	apk add --no-cache git
+# Other packages: bash nano
+
+ARG env=production
+
+ENV NODE_ENV=$env
 
 # Create app directory
 WORKDIR /usr/src/app
 
-
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
-
-
-# RUN yarn install
-# If you are building your code for production
-RUN yarn install production
-
-RUN npm install -g forever
-# Bundle app source
 COPY . .
 
-EXPOSE 3000
-EXPOSE 4002
-EXPOSE 5002
-EXPOSE 8081
+RUN yarn install
+
+EXPOSE 3000 4002 5002 8081
 
 CMD ["npm","start"]
