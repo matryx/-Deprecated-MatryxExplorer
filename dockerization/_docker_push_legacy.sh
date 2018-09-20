@@ -1,10 +1,17 @@
-cp ./devDockerfile ../Dockerfile
+#!/bin/bash
+
+FILE=./dev.Dockerfile
+TAG=latest
+IMAGE=matryx-alpha-explorer
+REPO=441665557124.dkr.ecr.us-west-1.amazonaws.com
+
+cp $FILE ../Dockerfile
 
 cd ..
 
 # Build docker
-docker build --no-cache -t matryx-alpha-explorer:latest .
+docker build --no-cache -t $IMAGE:$TAG .
 # Tag docker
-docker tag matryx-alpha-explorer:latest 441665557124.dkr.ecr.us-west-1.amazonaws.com/matryx-alpha-explorer:latest
+docker tag $IMAGE:$TAG $REPO/$IMAGE:$TAG
 # Upload docker to secured repo
-docker push 441665557124.dkr.ecr.us-west-1.amazonaws.com/matryx-alpha-explorer:latest
+docker push $REPO/$IMAGE:$TAG
