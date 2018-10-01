@@ -39,6 +39,7 @@
     "forever": "^0.15.3",
     "form-data": "^2.3.2",
     "formidable": "^1.2.1",
+    "helmet": "^3.13.0",
     "isomorphic-fetch": "^2.2.1",
     "morgan": "^1.9.0",
     "tmp": "^0.0.33"

@@ -1,18 +1,7 @@
-const express = require('express')
-const compression = require('compression')
-const app = express()
-const morgan = require('morgan')
-const bodyParser = require('body-parser')
-const cors = require('cors')
 require('dotenv').config()
 
-const platformRoutes = require('./api/routes/platform')
-const tournamentRoutes = require('./api/routes/tournaments')
-const roundRoutes = require('./api/routes/rounds')
-const submissionRoutes = require('./api/routes/submissions')
-// const activityRoutes = require('./api/routes/activity')
-const tokenRoutes = require('./api/routes/token')
-const ipfsRoutes = require('./api/routes/ipfs')
+const app = require('express')()
+const bodyParser = require('body-parser')
 
 const abis = require('./api/helpers/getAbis')
 
@@ -22,25 +11,26 @@ app.use(async (req, res, next) => {
   next()
 })
 
-app.use(compression())
-app.use(morgan('dev'))
+// Middlewares
+app.use(require('helmet')()) // security headers
+app.use(require('compression')()) // compression
+app.use(require('morgan')('dev')) // logging
+app.use(require('cors')()) // CORS
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-app.use(cors())
 
-app.use('/platform', platformRoutes)
-app.use('/tournaments', tournamentRoutes)
-app.use('/rounds', roundRoutes)
-app.use('/submissions', submissionRoutes)
-// app.use('/activity', activityRoutes)
-app.use('/token', tokenRoutes)
-app.use('/ipfs', ipfsRoutes)
-
-console.log('стремиться к победе')
-
+// Routes
 app.get('/', (req, res) => {
   res.send('Somewhere, something incredible is waiting to be known. <br> - Carl Sagan')
 })
+app.get('/health-check', (req, res) => res.sendStatus(200))
+app.use('/platform', require('./api/routes/platform'))
+app.use('/tournaments', require('./api/routes/tournaments'))
+app.use('/rounds', require('./api/routes/rounds'))
+app.use('/submissions', require('./api/routes/submissions'))
+// app.use('/activity', require('./api/routes/activity'))
+app.use('/token', require('./api/routes/token'))
+app.use('/ipfs', require('./api/routes/ipfs'))
 
 app.get('/update', async (req, res, next) => {
   try {
