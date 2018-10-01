@@ -14,21 +14,25 @@ let contractUrl = branch => `https://raw.githubusercontent.com/matryx/MatryxPlat
 let externalApiCalls = {}
 
 const getInfo = async (contract, branch) => {
-  const url = contractUrl(branch) + `Matryx${contract}.json`
+  const url = contractUrl(branch) + `${contract}.json`
   const res = await fetch(url)
 
   if (res.status !== 200) {
     throw Error(`Error getting ${contract} ABI`)
   }
 
-  console.log(`Got ${contract} ABI from MatryxPlatform GitHub for ${branch}`)
+  if (contract.includes("Matryx")) {
+    console.log(`Got ${contract} ABI from MatryxPlatform GitHub for ${branch}`)
+  }
+
   return res.json()
 }
 
-externalApiCalls.getMatryxPlatformInfo  = branch => getInfo('Platform', branch)
-externalApiCalls.getMatryxTokenInfo     = branch => getInfo('Token', branch)
-externalApiCalls.getMatryxTournamentAbi = branch => getInfo('Tournament', branch)
-externalApiCalls.getMatryxSubmissionAbi = branch => getInfo('Submission', branch)
-externalApiCalls.getMatryxRoundAbi      = branch => getInfo('Round', branch)
+externalApiCalls.getMatryxPlatformInfo  = branch => getInfo('MatryxPlatform', branch)
+externalApiCalls.getMatryxTokenInfo     = branch => getInfo('MatryxToken', branch)
+externalApiCalls.getMatryxTournamentAbi = branch => getInfo('MatryxTournament', branch)
+externalApiCalls.getMatryxSubmissionAbi = branch => getInfo('MatryxSubmission', branch)
+externalApiCalls.getMatryxRoundAbi      = branch => getInfo('MatryxRound', branch)
+externalApiCalls.getMigrationsInfo      = branch => getInfo('Migrations', branch)
 
 module.exports = externalApiCalls

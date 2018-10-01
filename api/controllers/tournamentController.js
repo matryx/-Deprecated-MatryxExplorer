@@ -9,17 +9,17 @@
 
 const ipfsCalls = require('./gateway/ipfsCalls')
 
-const MatryxPlatform = require('../contracts/MatryxPlatform')
 const MatryxTournament = require('../contracts/MatryxTournament')
 const MatryxRound = require('../contracts/MatryxRound')
 
-let Platform, abis
-require('../helpers/getAbis').then(a => {
-  abis = a
-  Platform = new MatryxPlatform(abis.platform.address, abis.platform.abi)
-})
+const abis = require('../helpers/getAbis')
 
+let Platform
 let tournamentController = {}
+
+tournamentController.setPlatform = (platform) => {
+  Platform = platform
+}
 
 tournamentController.count = () => {
   return Platform.getTournamentCount()

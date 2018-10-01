@@ -14,9 +14,11 @@ const submissionRoutes = require('./api/routes/submissions')
 const tokenRoutes = require('./api/routes/token')
 const ipfsRoutes = require('./api/routes/ipfs')
 
-const setup = require('./api/helpers/getAbis')
+const abis = require('./api/helpers/getAbis')
+
+// make sure ABIs loaded before requests
 app.use(async (req, res, next) => {
-  await setup
+  await abis.loadedAbis
   next()
 })
 
@@ -38,6 +40,16 @@ console.log('стремиться к победе')
 
 app.get('/', (req, res) => {
   res.send('Somewhere, something incredible is waiting to be known. <br> - Carl Sagan')
+})
+
+app.get('/update', async (req, res, next) => {
+  try {
+    const updated = await abis.attemptUpdate()
+    const message = updated ? 'ABIs updated' : 'ABIs already up to date'
+    res.status(200).json({ message })
+  } catch (err) {
+    next({ response: 'ABIs update failed' })
+  }
 })
 
 // 404 error handling

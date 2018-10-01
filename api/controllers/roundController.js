@@ -13,8 +13,7 @@ const MatryxTournament = require('../contracts/MatryxTournament')
 const MatryxRound = require('../contracts/MatryxRound')
 const MatryxSubmission = require('../contracts/MatryxSubmission')
 
-let abis
-require('../helpers/getAbis').then(a => abis = a)
+const abis = require('../helpers/getAbis')
 
 let roundController = {}
 
