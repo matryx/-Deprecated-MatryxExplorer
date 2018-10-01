@@ -1,19 +1,16 @@
-/*
-The Matryx submission controller
-
-authors - sam@nanome.ai
-Nanome 2018
-*/
-
-/*
-Imports
-*/
+/**
+ * submissionController.js
+ * Helper methods for getting Submission data
+ *
+ * Authors sam@nanome.ai dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
 
 const ipfsCalls = require('./gateway/ipfsCalls')
 const MatryxSubmission = require('../contracts/MatryxSubmission')
 
-let abis
-require('../helpers/getAbis').then(a => abis = a)
+const abis = require('../helpers/getAbis')
 
 let submissionController = {}
 

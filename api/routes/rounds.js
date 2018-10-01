@@ -1,9 +1,11 @@
-/*
-MatryxExplorer API routing for all round based REST calls
-
-author - sam@nanome.ai
-Copyright Nanome Inc 2018
-*/
+/**
+ * rounds.js
+ * /rounds routes for getting Round info
+ *
+ * Authors sam@nanome.ai dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
 
 const express = require('express')
 const router = express.Router()
@@ -21,7 +23,6 @@ router.get('/', (req, res, next) => {
   })
 })
 
-// TODO: add error response for invalid responses
 router.get('/getAbi/:version?', (req, res, next) => {
   // istanbul ignore next
   let version = req.params.version || latestVersion
@@ -32,7 +33,6 @@ router.get('/getAbi/:version?', (req, res, next) => {
     .catch(errorHelper(next, `Error getting Round ABI for ${version}`))
 })
 
-// TODO: add error response for invalid responses
 router.get('/address/:roundAddress', (req, res, next) => {
   let { roundAddress } = req.params
   if (!validateAddress(next, roundAddress)) return

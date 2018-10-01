@@ -1,6 +1,16 @@
+/**
+ * MatryxSubmission.js
+ * Class for parsing values from MatryxSubmission smart contract
+ *
+ * Authors dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
+
 const Contract = require('./Contract')
 const utils = require('../helpers/utils')
 
+// NOTE: all istanbul ignores are contract methods currently not being used
 module.exports = class MatryxSubmission extends Contract {
   // istanbul ignore next
   async getTournament() {
