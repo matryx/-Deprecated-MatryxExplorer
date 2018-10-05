@@ -24,6 +24,8 @@ app.get('/', (req, res) => {
   res.send('Somewhere, something incredible is waiting to be known. <br> - Carl Sagan')
 })
 app.get('/health-check', (req, res) => res.sendStatus(200))
+
+// Backwards compatibility
 app.use('/platform', require('./api/routes/platform'))
 app.use('/tournaments', require('./api/routes/tournaments'))
 app.use('/rounds', require('./api/routes/rounds'))
@@ -41,6 +43,15 @@ app.get('/update', async (req, res, next) => {
     next({ response: 'ABIs update failed' })
   }
 })
+
+app.get('/v1', (req, res) => res.sendStatus(200))
+app.use('/v1/platform', require('./v1/routes/platform'))
+app.use('/v1/tournaments', require('./v1/routes/tournaments'))
+app.use('/v1/rounds', require('./v1/routes/rounds'))
+app.use('/v1/submissions', require('./v1/routes/submissions'))
+// app.use('/v1/activity', require('./v1/routes/activity'))
+app.use('/v1/token', require('./v1/routes/token'))
+app.use('/v1/ipfs', require('./v1/routes/ipfs'))
 
 // 404 error handling
 app.use((req, res, next) => {
