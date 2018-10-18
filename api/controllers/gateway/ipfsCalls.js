@@ -9,8 +9,7 @@
 
 const fs = require('fs')
 const FormData = require('form-data')
-
-const ipfsURL = process.env.IPFS_URL
+const cache = require('../../../ipfs-cache')
 
 let ipfsCalls = {}
 
@@ -67,8 +66,7 @@ ipfsCalls.uploadFiles = async (paths, folder) => {
 
 // istanbul ignore next
 ipfsCalls.getIpfsFile = async (hash) => {
-  let response = await fetch(ipfsURL + hash)
-  return await response.text()
+  return await cache(hash)
 }
 
 module.exports = ipfsCalls

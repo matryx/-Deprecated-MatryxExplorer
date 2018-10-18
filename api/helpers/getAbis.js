@@ -10,7 +10,7 @@
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 
 const version = process.env.PLATFORM_VERSION
-const networkId = process.env.NETWORK_ID
+const networkId = 3 // ropsten
 
 const getAbis = {
   // update mutex
