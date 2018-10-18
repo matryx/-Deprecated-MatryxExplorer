@@ -29,7 +29,7 @@ module.exports = {
     data = data.match(/.{1,64}/g)
     data = data.map(v => '0x' + v)
     while (data.length < len) {
-      data.push('0x0')
+      data.push('0x00')
     }
     return data
   },
