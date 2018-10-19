@@ -19,7 +19,7 @@ const MatryxPlatform = require('../contracts/MatryxPlatform')
 const abis = require('../helpers/getAbis')
 
 const latestVersion = process.env.PLATFORM_VERSION
-const networkId = process.env.NETWORK_ID
+const networkId = 3 // Ropsten
 
 let Platform, lastUpdate
 

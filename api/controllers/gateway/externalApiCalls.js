@@ -17,7 +17,7 @@ const getInfo = async (contract, branch) => {
   const url = contractUrl(branch) + `${contract}.json`
   const res = await fetch(url)
 
-  if (res.status !== 200) {
+  if (![200, 304].includes(res.status)) {
     throw Error(`Error getting ${contract} ABI`)
   }
 
