@@ -1,3 +1,12 @@
+/**
+ * utils.js
+ * Helper methods for converting values from contracts
+ *
+ * Authors dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
+
 const ethers = require('ethers')
 
 module.exports = {
@@ -7,21 +16,19 @@ module.exports = {
     return ethers.utils.toUtf8String(utf8)
   },
 
-  stringToBytes(text) {
-    let bytes = ethers.utils.toUtf8Bytes(text)
-    return ethers.utils.hexlify(bytes)
-  },
-
-  stringToBytes32(text, requiredLength) {
+  // istanbul ignore next
+  stringToBytes(text, len = 0) {
+    text = text || ''
     let data = ethers.utils.toUtf8Bytes(text)
-    let l = data.length
-    let pad_length = 64 - ((l * 2) % 64)
+    let padding = 64 - ((data.length * 2) % 64)
     data = ethers.utils.hexlify(data)
-    data = data + '0'.repeat(pad_length)
+    data = data + '0'.repeat(padding)
+    if (len <= 0) return data
+
     data = data.substring(2)
     data = data.match(/.{1,64}/g)
     data = data.map(v => '0x' + v)
-    while (data.length < requiredLength) {
+    while (data.length < len) {
       data.push('0x0')
     }
     return data
@@ -31,6 +38,7 @@ module.exports = {
     return +ethers.utils.formatEther(wei.toString())
   },
 
+  // istanbul ignore next
   toWei(eth) {
     return ethers.utils.parseEther(eth.toString())
   }

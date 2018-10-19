@@ -1,39 +1,34 @@
-const Web3 = require('web3')
-const web3 = new Web3()
+/**
+ * responseHelpers.js
+ * Helper methods for error handling and validating inputs
+ *
+ * Authors dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
 
-// inputs: response object and optional error log message
+const ethers = require('ethers')
+
+// inputs: next method and optional error log message
 // output: error method that takes in error and sends over response
-const errorHelper = (res, message) => err => {
-  console.error('Error on: ' + res.req.originalUrl + ':')
-  console.error('   ' + err.type + ': ' + err.message)
-  res.status(500).json({ message })
+const errorHelper = (next, response) => error => {
+  response = error && error.response || response
+  next({ ...error, response })
 }
 
-// inputs: response object and address to validate
+// inputs: response next and address to validate
 // output: true if address valid
-const validateAddress = (res, address) => {
-  if (!web3.isAddress(address)) {
-    res.status(500).json({
-      message: address + ' is not a valid ethereum address'
-    })
+const validateAddress = (next, address) => {
+  try {
+    ethers.utils.getAddress(address)
+    return true
+  } catch (err) {
+    errorHelper(next, `${address} is not a valid ethereum address`)()
     return false
   }
-  return true
-}
-
-// input:  function that follows node's error first callback standard
-// output: function that returns a Promise instead
-const promisify = fn => function () {
-  return new Promise((resolve, reject) => {
-    fn(...arguments, (err, res) => {
-      if (err) reject(err)
-      else resolve(res)
-    })
-  })
 }
 
 module.exports = {
   errorHelper,
-  validateAddress,
-  promisify
+  validateAddress
 }

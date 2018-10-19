@@ -1,14 +1,13 @@
-/*
-The MatryxExplorer IPFS calls file
-
-authors - sam@nanome.ai
-Nanome 2018
-
-https://github.com/ipfs/js-ipfs#use-in-nodejs
-*/
+/**
+ * ipfsCalls.js
+ * Helper methods for uploading data to IPFS
+ *
+ * Authors sam@nanome.ai dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
 
 const fs = require('fs')
-const fetch = require('node-fetch')
 const FormData = require('form-data')
 
 const ipfsURL = process.env.IPFS_URL
@@ -35,10 +34,12 @@ ipfsCalls.pushTmpFolderToIPFS = async (tempDirectory) => {
 
   let descriptionHash, filesHash
 
+  // istanbul ignore next
   if (descriptionPath) {
     descriptionHash = await ipfsCalls.uploadFiles([descriptionPath], false)
   }
 
+  // istanbul ignore next
   if (filePaths.length) {
     filesHash = await ipfsCalls.uploadFiles(filePaths, true)
   }
@@ -64,6 +65,7 @@ ipfsCalls.uploadFiles = async (paths, folder) => {
   return hash
 }
 
+// istanbul ignore next
 ipfsCalls.getIpfsFile = async (hash) => {
   let response = await fetch(ipfsURL + hash)
   return await response.text()

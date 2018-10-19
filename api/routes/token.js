@@ -1,9 +1,11 @@
-/*
-MatryxExplorer API routing for all tournament based REST calls
-
-author - sam@nanome.ai
-Copyright Nanome Inc 2018
-*/
+/**
+ * token.js
+ * /token routes for getting Token info
+ *
+ * Authors sam@nanome.ai dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
 
 const express = require('express')
 const router = express.Router()
@@ -17,39 +19,48 @@ const networkId = process.env.NETWORK_ID
 // Return a confirmation the API is live
 router.get('/', (req, res, next) => {
   res.status(200).json({
-    message: 'handling requests to /MatryxToken'
+    message: 'handling GET requests to /token'
   })
 })
 
-router.get('/getInfo', (req, res, next) => {
+router.get('/getInfo/:version?', (req, res, next) => {
+  // istanbul ignore next
+  let version = req.params.version || latestVersion
+
   externalApiCalls
-    .getMatryxTokenInfo(latestVersion)
+    .getMatryxTokenInfo(version)
     .then(result => {
       let { address } = result['networks'][networkId]
       let { abi } = result
       res.status(200).json({ address, abi })
     })
-    .catch(errorHelper(res, 'Error getting latest info'))
+    .catch(errorHelper(next, 'Error getting Token info'))
 })
 
-router.get('/getAddress', (req, res, next) => {
+router.get('/getAddress/:version?', (req, res, next) => {
+  // istanbul ignore next
+  let version = req.params.version || latestVersion
+
   externalApiCalls
-    .getMatryxTokenInfo(latestVersion)
+    .getMatryxTokenInfo(version)
     .then(result => {
       let { address } = result['networks'][networkId]
       res.status(200).json({ address })
     })
-    .catch(errorHelper(res, 'Error getting latest address'))
+    .catch(errorHelper(next, 'Error getting Token address'))
 })
 
-router.get('/getAbi', (req, res, next) => {
+router.get('/getAbi/:version?', (req, res, next) => {
+  // istanbul ignore next
+  let version = req.params.version || latestVersion
+
   externalApiCalls
-    .getMatryxTokenInfo(latestVersion)
+    .getMatryxTokenInfo(version)
     .then(result => {
       let { abi } = result
       res.status(200).json({ abi })
     })
-    .catch(errorHelper(res, 'Error getting latest ABI'))
+    .catch(errorHelper(next, 'Error getting Token ABI'))
 })
 
 module.exports = router

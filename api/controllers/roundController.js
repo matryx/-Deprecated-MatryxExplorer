@@ -1,22 +1,19 @@
+/**
+ * roundController.js
+ * Helper methods for getting Round data
+ *
+ * Authors sam@nanome.ai dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
 
-/*
-The Matryx submission controller
-
-authors - sam@nanome.ai
-Nanome 2018
-*/
-
-/*
-Imports
-*/
 const ipfsCalls = require('./gateway/ipfsCalls')
 
 const MatryxTournament = require('../contracts/MatryxTournament')
 const MatryxRound = require('../contracts/MatryxRound')
 const MatryxSubmission = require('../contracts/MatryxSubmission')
 
-let abis
-require('../helpers/getAbis').then(a => abis = a)
+const abis = require('../helpers/getAbis')
 
 let roundController = {}
 
@@ -31,9 +28,10 @@ roundController.getSubmissionsFromRound = async (roundAddress) => {
   let status = await Round.getState()
   response.roundStatus = status
 
+  // istanbul ignore next
   if (['notYetOpen', 'notFunded', 'isOpen', 'inReview', 'hasWinners'].includes(status)) return response
 
-  if ([/* 'hasWinners', */'isClosed', 'isAbandoned'].includes(status)) {
+  else if ([/* 'hasWinners', */'isClosed', 'isAbandoned'].includes(status)) {
     let [winners, addresses] = await Promise.all([
       Round.getWinningSubmissionAddresses(),
       Round.getSubmissions()
@@ -60,8 +58,6 @@ roundController.getSubmissionsFromRound = async (roundAddress) => {
 }
 
 roundController.getRoundDetails = async function (roundAddress) {
-  console.log('>RoundController: Retrieving Round Details for: ' + '\'' + roundAddress + '\'')
-
   const Round = new MatryxRound(roundAddress, abis.round.abi)
 
   let data = await Promise.all([

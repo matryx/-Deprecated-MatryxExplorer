@@ -1,59 +1,38 @@
-/*
-The Matryx Platform Smart Contract interaction file
-
-authors - sam@nanome.ai
-Nanome 2018
-*/
-'use strict'
-
-const fetch = require('node-fetch')
+/**
+ * externalApiCalls.js
+ * Helper methods for getting address and ABI of
+ * contracts from MatryxPlatform GitHub
+ *
+ * Authors sam@nanome.ai dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
 
 let contractUrl = branch => `https://raw.githubusercontent.com/matryx/MatryxPlatform/${branch}/build/contracts/`
 // let contractUrl = branch => `http://localhost:8081/`
 
 let externalApiCalls = {}
 
-const ABIs = {
-  'platform': {
-    v1: '../../../data/abi/v1/platform',
-    v2: '../../../data/abi/v2/platform',
-    json: 'MatryxPlatform.json'
-  },
-  'token': { json: 'MatryxToken.json' },
-  'tournament': {
-    v2: '../../../data/abi/v2/tournament',
-    json: 'MatryxTournament.json'
-  },
-  'submission': {
-    v2: '../../../data/abi/v2/submission',
-    json: 'MatryxSubmission.json'
-  },
-  'round': {
-    v2: '../../../data/abi/v2/round',
-    json: 'MatryxRound.json'
-  }
-}
-
 const getInfo = async (contract, branch) => {
-  if (branch === 'v1' || branch === 'v2') {
-    let path = ABIs[contract][branch]
-    if (path !== undefined) {
-      return require(path)
-    } else {
-      throw Error(branch + ' ABI does not exist for ' + contract)
-    }
-  } else {
-    let url = contractUrl(branch) + ABIs[contract].json
-    let res = await fetch(url)
-    console.log('Got ' + contract + ' ABI from MatryxPlatform GitHub for ' + branch)
-    return res.json()
+  const url = contractUrl(branch) + `${contract}.json`
+  const res = await fetch(url)
+
+  if (res.status !== 200) {
+    throw Error(`Error getting ${contract} ABI`)
   }
+
+  if (contract.includes("Matryx")) {
+    console.log(`Got ${contract} ABI from MatryxPlatform GitHub for ${branch}`)
+  }
+
+  return res.json()
 }
 
-externalApiCalls.getMatryxPlatformInfo  = branch => getInfo('platform', branch)
-externalApiCalls.getMatryxTokenInfo     = branch => getInfo('token', branch)
-externalApiCalls.getMatryxTournamentAbi = branch => getInfo('tournament', branch)
-externalApiCalls.getMatryxSubmissionAbi = branch => getInfo('submission', branch)
-externalApiCalls.getMatryxRoundAbi      = branch => getInfo('round', branch)
+externalApiCalls.getMatryxPlatformInfo  = branch => getInfo('MatryxPlatform', branch)
+externalApiCalls.getMatryxTokenInfo     = branch => getInfo('MatryxToken', branch)
+externalApiCalls.getMatryxTournamentAbi = branch => getInfo('MatryxTournament', branch)
+externalApiCalls.getMatryxSubmissionAbi = branch => getInfo('MatryxSubmission', branch)
+externalApiCalls.getMatryxRoundAbi      = branch => getInfo('MatryxRound', branch)
+externalApiCalls.getMigrationsInfo      = branch => getInfo('Migrations', branch)
 
 module.exports = externalApiCalls

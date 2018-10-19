@@ -1,22 +1,23 @@
-/*
-MatryxExplorer API routing for all round based REST calls
-
-author - sam@nanome.ai
-Copyright Nanome Inc 2018
-*/
+/**
+ * activity.js
+ * /activity routes for getting Platform activity
+ *
+ * Authors sam@nanome.ai dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
 
 const express = require('express')
 const router = express.Router()
 
-const matryxPlatformCalls = require('../controllers/gateway/matryxPlatformCalls')
 const { errorHelper } = require('../helpers/responseHelpers')
 
-// Finish Backend
-router.get('/', (req, res, next) => {
-  matryxPlatformCalls
-    .getPlatformActivity()
-    .then(activity => res.status(200).json({ activity }))
-    .catch(errorHelper(res, 'Error getting activity'))
-})
+// TODO: activity
+// router.get('/', (req, res, next) => {
+//   Platform
+//     .getActivity()
+//     .then(activity => res.status(200).json({ activity }))
+//     .catch(errorHelper(next, 'Error getting activity'))
+// })
 
 module.exports = router

@@ -4,3 +4,9 @@ node_modules
 .DS_Store
 .node-*
 .vscode
+.nyc*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+!.gitkeep

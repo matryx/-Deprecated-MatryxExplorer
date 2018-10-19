@@ -1,27 +1,25 @@
-/*
-The Matryx Tournament controller
-
-authors - sam@nanome.ai
-Nanome 2018
-*/
-
-/*
-Imports
-*/
+/**
+ * tournamentController.js
+ * Helper methods for getting Tournament data
+ *
+ * Authors sam@nanome.ai dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
 
 const ipfsCalls = require('./gateway/ipfsCalls')
 
-const MatryxPlatform = require('../contracts/MatryxPlatform')
 const MatryxTournament = require('../contracts/MatryxTournament')
 const MatryxRound = require('../contracts/MatryxRound')
 
-let Platform, abis
-require('../helpers/getAbis').then(a => {
-  abis = a
-  Platform = new MatryxPlatform(abis.platform.address, abis.platform.abi)
-})
+const abis = require('../helpers/getAbis')
 
+let Platform
 let tournamentController = {}
+
+tournamentController.setPlatform = (platform) => {
+  Platform = platform
+}
 
 tournamentController.count = () => {
   return Platform.getTournamentCount()
@@ -48,7 +46,6 @@ tournamentController.getAllTournaments = async (query) => {
   let promises = addresses.map(address => (async () => {
     const Tournament = new MatryxTournament(address, abis.tournament.abi)
 
-    // TODO: remove either totalRounds or currentRound; they are the same
     // let ts = Date.now()
     const data = await Promise.all([
       Tournament.getData(),
@@ -100,8 +97,6 @@ tournamentController.getAllTournaments = async (query) => {
 // TODO: getDescription only when max gives back a correct hash-> also error handle for this.
 
 tournamentController.getTournamentByAddress = async (address) => {
-  console.log('Executing TournamentController for getting Tournament details at: ' + address)
-
   const Tournament = new MatryxTournament(address, abis.tournament.abi)
 
   const data = await Promise.all([
@@ -194,7 +189,7 @@ tournamentController.getAllRoundAddresses = (tournamentAddress) => {
   return Tournament.getRounds()
 }
 
-// TODO roundId-1 here because ID is 1-based, index is 0-based
+// roundId-1 here because ID is 1-based, index is 0-based
 tournamentController.getRoundAddress = async (tournamentAddress, roundId) => {
   const rounds = await tournamentController.getAllRoundAddresses(tournamentAddress)
   return rounds[roundId - 1]
@@ -202,11 +197,6 @@ tournamentController.getRoundAddress = async (tournamentAddress, roundId) => {
 
 tournamentController.getTournamentsByCategory = (category) => {
   return Platform.getTournamentsByCategory(category)
-}
-
-tournamentController.isCreator = (tournamentAddress, userAddress) => {
-  const Tournament = new MatryxTournament(tournamentAddress, abis.tournament.abi)
-  return Tournament.isOwner(userAddress)
 }
 
 module.exports = tournamentController

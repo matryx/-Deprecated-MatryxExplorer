@@ -1,9 +1,11 @@
-/*
-MatryxExplorer API routing for all tournament based REST calls
-
-author - sam@nanome.ai
-Copyright Nanome Inc 2018
-*/
+/**
+ * tournaments.js
+ * /tournaments routes for getting Tournament info
+ *
+ * Authors sam@nanome.ai dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
 
 const express = require('express')
 const router = express.Router()
@@ -13,24 +15,41 @@ const roundController = require('../controllers/roundController')
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 const { errorHelper, validateAddress } = require('../helpers/responseHelpers')
 
+const MatryxPlatform = require('../contracts/MatryxPlatform')
+const abis = require('../helpers/getAbis')
+
 const latestVersion = process.env.PLATFORM_VERSION
+
+let Platform, lastUpdate
+
+// before each call, check if Platform updated
+router.use((req, res, next) => {
+  if (lastUpdate !== abis.lastUpdate) {
+    Platform = new MatryxPlatform(abis.platform.address, abis.platform.abi)
+    tournamentController.setPlatform(Platform)
+    lastUpdate = abis.lastUpdate
+  }
+
+  next()
+})
 
 // Return a confirmation the API is live
 router.get('/', (req, res, next) => {
   tournamentController
     .getAllTournaments(req.query)
     .then(tournaments => res.status(200).json({ tournaments }))
-    .catch(errorHelper(res, 'Error getting tournaments'))
+    .catch(errorHelper(next, 'Error getting Tournaments'))
 })
 
 // TODO: add error response for invalid responses
 router.get('/getAbi/:version?', (req, res, next) => {
+  // istanbul ignore next
   let version = req.params.version || latestVersion
 
   externalApiCalls
     .getMatryxTournamentAbi(version)
     .then(({ abi }) => res.status(200).json({ abi }))
-    .catch(errorHelper(res, 'Error getting ABI for ' + version))
+    .catch(errorHelper(next, `Error getting Tournament ABI for ${version}`))
 })
 
 // Return number of tournaments
@@ -38,60 +57,56 @@ router.get('/count', (req, res, next) => {
   tournamentController
     .count()
     .then(count => res.status(200).json({ count }))
-    .catch(errorHelper(res, 'Error getting tournament count'))
+    .catch(errorHelper(next, 'Error getting Tournament count'))
 })
 
 // Return the tournament details for a specific tournament
-// TODO pass back the tournament details
 router.get('/address/:tournamentAddress', (req, res, next) => {
   const { tournamentAddress } = req.params
-  if (!validateAddress(res, tournamentAddress)) return
+  if (!validateAddress(next, tournamentAddress)) return
 
   tournamentController
     .getTournamentByAddress(tournamentAddress)
     .then(tournament => res.status(200).json({ tournament }))
-    .catch(errorHelper(res, 'Error getting tournament ' + tournamentAddress))
+    .catch(errorHelper(next, `Error getting Tournament ${tournamentAddress}`))
 })
 
 // Return the tournament owner for a specific tournament
-router.get('/address/:tournamentAddress/owner', async (req, res, next) => {
+router.get('/address/:tournamentAddress/owner', (req, res, next) => {
   const { tournamentAddress } = req.params
-  if (!validateAddress(res, tournamentAddress)) return
+  if (!validateAddress(next, tournamentAddress)) return
 
   tournamentController
     .getTournamentOwnerByAddress(tournamentAddress)
     .then(owner => res.status(200).json({ owner }))
-    .catch(errorHelper(res, 'Error getting owner of ' + tournamentAddress))
+    .catch(errorHelper(next, `Error getting ${tournamentAddress} owner`))
 })
 
 // Return the submission count for a specific tournament
 router.get('/address/:tournamentAddress/submissionCount', (req, res, next) => {
   const { tournamentAddress } = req.params
-  if (!validateAddress(res, tournamentAddress)) return
+  if (!validateAddress(next, tournamentAddress)) return
 
   tournamentController
     .getSubmissionCount(tournamentAddress)
     .then(submissionCount => res.status(200).json({ submissionCount }))
-    .catch(errorHelper(res, 'Error getting submission count for ' + tournamentAddress))
+    .catch(errorHelper(next, `Error getting Tournament ${tournamentAddress} Submission count`))
 })
 
-// TODO: Waiting on Max, need to implement the Round is open in order to access this
 // Current Round response given a tournamentAddress
 router.get('/address/:tournamentAddress/currentRound', (req, res, next) => {
   const { tournamentAddress } = req.params
-  if (!validateAddress(res, tournamentAddress)) return
+  if (!validateAddress(next, tournamentAddress)) return
 
   tournamentController
     .getCurrentRound(tournamentAddress)
     .then(currentRound => res.status(200).json({ currentRound }))
-    .catch(errorHelper(res, 'Error getting current round for ' + tournamentAddress))
+    .catch(errorHelper(next, `Error getting Tournament ${tournamentAddress} current round`))
 })
 
 router.get('/address/:tournamentAddress/round/:roundId', async (req, res, next) => {
   const { tournamentAddress, roundId } = req.params
-  if (!validateAddress(res, tournamentAddress)) return
-
-  console.log('>TournamentRouter: Retrieving Round Details for round ' + roundId + ' of tournmament' + tournamentAddress)
+  if (!validateAddress(next, tournamentAddress)) return
 
   // TODO: Clean the input for the correct response
   // TODO: Check to see how many rounds are in the tournament
@@ -106,30 +121,31 @@ router.get('/address/:tournamentAddress/round/:roundId', async (req, res, next) 
     let round = await roundController.getRoundDetails(roundAddress)
     res.status(200).json({ round })
   } catch (err) {
-    errorHelper(res, 'Error getting round ' + roundId + ' of ' + tournamentAddress)(err)
+    // istanbul ignore next
+    errorHelper(next, `Error getting Tournament ${tournamentAddress} Round ${roundId}`)(err)
   }
 })
 
 // Return if the potentantial address given is an entrant for a specific tournament
 router.get('/address/:tournamentAddress/isEntrant/:address', (req, res, next) => {
   const { tournamentAddress, address } = req.params
-  if (!validateAddress(res, tournamentAddress) || !validateAddress(res, address)) return
+  if (!validateAddress(next, tournamentAddress) || !validateAddress(next, address)) return
 
   tournamentController
     .isEntrant(tournamentAddress, address)
     .then(isEntrant => res.status(200).json({ isEntrant }))
-    .catch(errorHelper(res, 'Error checking if ' + address + ' is entrant of ' + tournamentAddress))
+    .catch(errorHelper(next, `Error checking if ${address} is entrant of ${tournamentAddress}`))
 })
 
 // Return if the potentantial address given is an entrant for a specific tournament
 router.get('/address/:tournamentAddress/rounds', (req, res, next) => {
   const { tournamentAddress } = req.params
-  if (!validateAddress(res, tournamentAddress)) return
+  if (!validateAddress(next, tournamentAddress)) return
 
   tournamentController
     .getAllRoundAddresses(tournamentAddress)
     .then(rounds => res.status(200).json({ rounds }))
-    .catch(errorHelper(res, 'Error getting all round addresses for ' + tournamentAddress))
+    .catch(errorHelper(next, `Error getting Tournament ${tournamentAddress} Round addresses`))
 })
 
 // Return if the potentantial address given is an entrant for a specific tournament
@@ -138,7 +154,7 @@ router.get('/category/:category', (req, res, next) => {
   tournamentController
     .getTournamentsByCategory(category)
     .then(tournaments => res.status(200).json({ tournaments }))
-    .catch(errorHelper(res, 'Error getting tournaments for ' + category))
+    .catch(errorHelper(next, `Error getting Tournaments for category ${category}`))
 })
 
 module.exports = router
