@@ -10,7 +10,7 @@ fetchMock.mock("begin:https://raw.githubusercontent.com/matryx/MatryxPlatform/no
 fetchMock.mock("begin:https://raw.githubusercontent.com/matryx/MatryxPlatform/valid-branch", {
   abi: 'abi',
   networks: {
-    [process.env.NETWORK_ID]: {
+    "3": {
       address: 'address'
     }
   }
