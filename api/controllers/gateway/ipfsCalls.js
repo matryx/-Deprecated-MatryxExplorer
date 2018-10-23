@@ -1,11 +1,11 @@
-/*
-The MatryxExplorer IPFS calls file
-
-authors - sam@nanome.ai
-Nanome 2018
-
-https://github.com/ipfs/js-ipfs#use-in-nodejs
-*/
+/**
+ * ipfsCalls.js
+ * Helper methods for uploading data to IPFS
+ *
+ * Authors sam@nanome.ai dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
 
 const fs = require('fs')
 const FormData = require('form-data')

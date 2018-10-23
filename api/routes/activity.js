@@ -1,9 +1,11 @@
-/*
-MatryxExplorer API routing for all round based REST calls
-
-author - sam@nanome.ai
-Copyright Nanome Inc 2018
-*/
+/**
+ * activity.js
+ * /activity routes for getting Platform activity
+ *
+ * Authors sam@nanome.ai dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
 
 const express = require('express')
 const router = express.Router()

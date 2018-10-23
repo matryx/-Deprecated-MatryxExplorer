@@ -1,9 +1,11 @@
-/*
-MatryxExplorer API routing for all tournament based REST calls
-
-author - sam@nanome.ai
-Copyright Nanome Inc 2018
-*/
+/**
+ * tournaments.js
+ * /tournaments routes for getting Tournament info
+ *
+ * Authors sam@nanome.ai dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
 
 const express = require('express')
 const router = express.Router()
@@ -13,7 +15,23 @@ const roundController = require('../controllers/roundController')
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 const { errorHelper, validateAddress } = require('../helpers/responseHelpers')
 
+const MatryxPlatform = require('../contracts/MatryxPlatform')
+const abis = require('../helpers/getAbis')
+
 const latestVersion = process.env.PLATFORM_VERSION
+
+let Platform, lastUpdate
+
+// before each call, check if Platform updated
+router.use((req, res, next) => {
+  if (lastUpdate !== abis.lastUpdate) {
+    Platform = new MatryxPlatform(abis.platform.address, abis.platform.abi)
+    tournamentController.setPlatform(Platform)
+    lastUpdate = abis.lastUpdate
+  }
+
+  next()
+})
 
 // Return a confirmation the API is live
 router.get('/', (req, res, next) => {
@@ -43,7 +61,6 @@ router.get('/count', (req, res, next) => {
 })
 
 // Return the tournament details for a specific tournament
-// TODO pass back the tournament details
 router.get('/address/:tournamentAddress', (req, res, next) => {
   const { tournamentAddress } = req.params
   if (!validateAddress(next, tournamentAddress)) return
@@ -76,7 +93,6 @@ router.get('/address/:tournamentAddress/submissionCount', (req, res, next) => {
     .catch(errorHelper(next, `Error getting Tournament ${tournamentAddress} Submission count`))
 })
 
-// TODO: Waiting on Max, need to implement the Round is open in order to access this
 // Current Round response given a tournamentAddress
 router.get('/address/:tournamentAddress/currentRound', (req, res, next) => {
   const { tournamentAddress } = req.params

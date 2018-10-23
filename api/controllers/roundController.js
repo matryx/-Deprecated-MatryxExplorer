@@ -1,22 +1,19 @@
+/**
+ * roundController.js
+ * Helper methods for getting Round data
+ *
+ * Authors sam@nanome.ai dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
 
-/*
-The Matryx submission controller
-
-authors - sam@nanome.ai
-Nanome 2018
-*/
-
-/*
-Imports
-*/
 const ipfsCalls = require('./gateway/ipfsCalls')
 
 const MatryxTournament = require('../contracts/MatryxTournament')
 const MatryxRound = require('../contracts/MatryxRound')
 const MatryxSubmission = require('../contracts/MatryxSubmission')
 
-let abis
-require('../helpers/getAbis').then(a => abis = a)
+const abis = require('../helpers/getAbis')
 
 let roundController = {}
 

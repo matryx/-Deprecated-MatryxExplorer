@@ -1,9 +1,11 @@
-/*
-MatryxExplorer API routing for all tournament based REST calls
-
-author - sam@nanome.ai
-Copyright Nanome Inc 2018
-*/
+/**
+ * token.js
+ * /token routes for getting Token info
+ *
+ * Authors sam@nanome.ai dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
 
 const express = require('express')
 const router = express.Router()
@@ -17,7 +19,7 @@ const networkId = process.env.NETWORK_ID
 // Return a confirmation the API is live
 router.get('/', (req, res, next) => {
   res.status(200).json({
-    message: 'handling requests to /MatryxToken'
+    message: 'handling GET requests to /token'
   })
 })
 

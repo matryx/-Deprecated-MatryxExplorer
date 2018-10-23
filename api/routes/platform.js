@@ -1,9 +1,11 @@
-/*
-MatryxExplorer API routing for all platform based REST calls
-
-author - sam@nanome.ai
-Copyright Nanome Inc 2018
-*/
+/**
+ * platform.js
+ * /platform routes for getting Platform info
+ *
+ * Authors sam@nanome.ai dev@nanome.ai
+ * Copyright (c) 2018, Nanome Inc
+ * Licensed under ISC. See LICENSE.md in project root.
+ */
 
 // TODO versioning api calls for the abi and latest platform info
 
@@ -14,17 +16,32 @@ const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 const { errorHelper } = require('../helpers/responseHelpers')
 
 const MatryxPlatform = require('../contracts/MatryxPlatform')
+const abis = require('../helpers/getAbis')
 
 const latestVersion = process.env.PLATFORM_VERSION
 const networkId = process.env.NETWORK_ID
 
-let Platform
-require('../helpers/getAbis').then(async abis => {
-  const { platform } = abis
-  Platform = new MatryxPlatform(platform.address, platform.abi)
+let Platform, lastUpdate
+
+const updatePlatform = () => {
+  Platform = new MatryxPlatform(abis.platform.address, abis.platform.abi)
+  lastUpdate = abis.lastUpdate
+}
+
+router.use((req, res, next) => {
+  // istanbul ignore next
+  if (lastUpdate !== abis.lastUpdate) {
+    updatePlatform()
+  }
+
+  next()
+})
+
+abis.loadedAbis.then(async () => {
+  updatePlatform()
 
   let count = +await Platform.getTournamentCount()
-  console.log(`\nCurrent Matryx Platform Address in use: ${platform.address}`)
+  console.log(`\nCurrent Matryx Platform Address in use: ${abis.platform.address}`)
   console.log(`There are ${count} tournaments on the Platform.\n`)
 })
 
