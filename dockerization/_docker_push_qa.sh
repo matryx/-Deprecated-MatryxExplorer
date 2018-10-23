@@ -1,7 +1,7 @@
 #!/bin/bash
 
-FILE=./dev.Dockerfile
-TAG=latest
+FILE=./prod.Dockerfile
+TAG=qa
 IMAGE=matryx-alpha-explorer
 REPO=441665557124.dkr.ecr.us-west-1.amazonaws.com
 
