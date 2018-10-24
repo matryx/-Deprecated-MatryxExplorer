@@ -14,7 +14,7 @@ const MatryxPlatform = require('../contracts/MatryxPlatform')
 const networkId = process.env.NETWORK_ID
 
 const loadArtifact = name => {
-  const path = `./v1/artifacts/${name}.json`
+  const path = `./v3/artifacts/${name}.json`
   const artifact = fs.readFileSync(path, 'utf8')
   return JSON.parse(artifact)
 }

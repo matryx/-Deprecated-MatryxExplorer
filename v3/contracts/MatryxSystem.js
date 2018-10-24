@@ -29,9 +29,10 @@ module.exports = class MatryxSystem extends Contract {
     const types = {
       0: 'Unknown',
       1: 'Platform',
-      2: 'Tournament',
-      3: 'Round',
-      4: 'Submission'
+      2: 'User',
+      3: 'Tournament',
+      4: 'Round',
+      5: 'Submission'
     }
     const type = +await this.contract.getContractType(address)
     return types[type]
