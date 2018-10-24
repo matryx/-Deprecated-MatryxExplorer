@@ -2,7 +2,7 @@ describe('Rounds tests:', () => {
   describe('/rounds/', () => {
     let err, res
     before(done => {
-      request.get('/rounds/').end((e, r) => {
+      request.get('/v2/rounds/').end((e, r) => {
         ;[err, res] = [e, r]
         done()
       })
@@ -18,7 +18,7 @@ describe('Rounds tests:', () => {
     let err, res
     before(done => {
       request
-        .get('/rounds/address/0x0000000000000000000000000000000000000000')
+        .get('/v2/rounds/address/0x0000000000000000000000000000000000000000')
         .end((e, r) => {
           ;[err, res] = [e, r]
           done()
@@ -31,7 +31,7 @@ describe('Rounds tests:', () => {
     })
 
     it('status 500 for invalid address', done => {
-      request.get('/rounds/address/not-an-address').end((err, res) => {
+      request.get('/v2/rounds/address/not-an-address').end((err, res) => {
         expect(res).to.have.status(500)
         done()
       })

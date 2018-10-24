@@ -2,7 +2,7 @@ describe('Submissions tests:', () => {
   describe('/submissions/', () => {
     let err, res
     before(done => {
-      request.get('/submissions/').end((e, r) => {
+      request.get('/v2/submissions/').end((e, r) => {
         ;[err, res] = [e, r]
         done()
       })
@@ -18,7 +18,7 @@ describe('Submissions tests:', () => {
     let err, res
     before(done => {
       request
-        .get('/submissions/address/0x0000000000000000000000000000000000000000')
+        .get('/v2/submissions/address/0x0000000000000000000000000000000000000000')
         .end((e, r) => {
           ;[err, res] = [e, r]
           done()
@@ -31,7 +31,7 @@ describe('Submissions tests:', () => {
     })
 
     it('status 500 for invalid address', done => {
-      request.get('/submissions/address/not-an-address').end((err, res) => {
+      request.get('/v2/submissions/address/not-an-address').end((err, res) => {
         expect(res).to.have.status(500)
         done()
       })
@@ -59,7 +59,7 @@ describe('Submissions tests:', () => {
     let err, res
     before(done => {
       request
-        .get('/submissions/address/0x0000000000000000000000000000000000000000/owner')
+        .get('/v2/submissions/address/0x0000000000000000000000000000000000000000/owner')
         .end((e, r) => {
           ;[err, res] = [e, r]
           done()
@@ -73,7 +73,7 @@ describe('Submissions tests:', () => {
 
     it('status 500 for invalid address', done => {
       request
-        .get('/submissions/address/not-an-address/owner')
+        .get('/v2/submissions/address/not-an-address/owner')
         .end((err, res) => {
           expect(res).to.have.status(500)
           done()

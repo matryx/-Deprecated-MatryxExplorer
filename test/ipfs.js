@@ -1,7 +1,7 @@
 describe('IPFS tests:', () => {
   describe('/ipfs/', () => {
     it("doesn't error", done => {
-      request.get('/ipfs/').end((err, res) => {
+      request.get('/v2/ipfs/').end((err, res) => {
         expect(err).to.be.null
         expect(res).to.have.status(200)
         done()
