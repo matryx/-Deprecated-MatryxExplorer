@@ -1,10 +1,10 @@
 describe('ABI tests:', () => {
   let routes = [
-    { base: '/platform/', routes: ['getInfo', 'getAddress', 'getAbi'] },
-    { base: '/token/', routes: ['getInfo', 'getAddress', 'getAbi'] },
-    { base: '/tournaments/', routes: ['getAbi'] },
-    { base: '/submissions/', routes: ['getAbi'] },
-    { base: '/rounds/', routes: ['getAbi'] }
+    { base: '/v2/platform/', routes: ['getInfo', 'getAddress', 'getAbi'] },
+    { base: '/v2/token/', routes: ['getInfo', 'getAddress', 'getAbi'] },
+    { base: '/v2/tournaments/', routes: ['getAbi'] },
+    { base: '/v2/submissions/', routes: ['getAbi'] },
+    { base: '/v2/rounds/', routes: ['getAbi'] }
   ]
 
   for (const route of routes) {

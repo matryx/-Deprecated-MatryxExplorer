@@ -2,7 +2,7 @@ describe('Tournaments tests:', () => {
   describe('/tournaments/', () => {
     let err, res
     before(done => {
-      request.get('/tournaments/').end((e, r) => {
+      request.get('/v2/tournaments/').end((e, r) => {
         ;[err, res] = [e, r]
         done()
       })
@@ -37,7 +37,7 @@ describe('Tournaments tests:', () => {
   describe('/tournaments/?owner=0x0000000000000000000000000000000000000000', () => {
     let err, res
     before(done => {
-      request.get('/tournaments/?owner=0x0000000000000000000000000000000000000000').end((e, r) => {
+      request.get('/v2/tournaments/?owner=0x0000000000000000000000000000000000000000').end((e, r) => {
         ;[err, res] = [e, r]
         done()
       })
@@ -56,7 +56,7 @@ describe('Tournaments tests:', () => {
   describe('/tournaments/count', () => {
     let err, res
     before(done => {
-      request.get('/tournaments/count/').end((e, r) => {
+      request.get('/v2/tournaments/count/').end((e, r) => {
         ;[err, res] = [e, r]
         done()
       })
@@ -76,7 +76,7 @@ describe('Tournaments tests:', () => {
     let err, res
     before(done => {
       request
-        .get('/tournaments/address/0x0000000000000000000000000000000000000000')
+        .get('/v2/tournaments/address/0x0000000000000000000000000000000000000000')
         .end((e, r) => {
           ;[err, res] = [e, r]
           done()
@@ -89,7 +89,7 @@ describe('Tournaments tests:', () => {
     })
 
     it('status 500 for invalid address', done => {
-      request.get('/tournaments/address/not-an-address').end((err, res) => {
+      request.get('/v2/tournaments/address/not-an-address').end((err, res) => {
         expect(res).to.have.status(500)
         done()
       })
@@ -124,7 +124,7 @@ describe('Tournaments tests:', () => {
     let err, res
     before(done => {
       request
-        .get('/tournaments/address/0x0000000000000000000000000000000000000000/owner')
+        .get('/v2/tournaments/address/0x0000000000000000000000000000000000000000/owner')
         .end((e, r) => {
           ;[err, res] = [e, r]
           done()
@@ -138,7 +138,7 @@ describe('Tournaments tests:', () => {
 
     it('status 500 for invalid address', done => {
       request
-        .get('/tournaments/address/not-an-address/owner')
+        .get('/v2/tournaments/address/not-an-address/owner')
         .end((err, res) => {
           expect(res).to.have.status(500)
           done()
@@ -154,7 +154,7 @@ describe('Tournaments tests:', () => {
     let err, res
     before(done => {
       request
-        .get('/tournaments/address/0x0000000000000000000000000000000000000000/submissionCount')
+        .get('/v2/tournaments/address/0x0000000000000000000000000000000000000000/submissionCount')
         .end((e, r) => {
           ;[err, res] = [e, r]
           done()
@@ -168,7 +168,7 @@ describe('Tournaments tests:', () => {
 
     it('status 500 for invalid address', done => {
       request
-        .get('/tournaments/address/not-an-address/submissionCount')
+        .get('/v2/tournaments/address/not-an-address/submissionCount')
         .end((err, res) => {
           expect(res).to.have.status(500)
           done()
@@ -184,7 +184,7 @@ describe('Tournaments tests:', () => {
     let err, res
     before(done => {
       request
-        .get('/tournaments/address/0x0000000000000000000000000000000000000000/currentRound')
+        .get('/v2/tournaments/address/0x0000000000000000000000000000000000000000/currentRound')
         .end((e, r) => {
           ;[err, res] = [e, r]
           done()
@@ -198,7 +198,7 @@ describe('Tournaments tests:', () => {
 
     it('status 500 for invalid address', done => {
       request
-        .get('/tournaments/address/not-an-address/currentRound')
+        .get('/v2/tournaments/address/not-an-address/currentRound')
         .end((err, res) => {
           expect(res).to.have.status(500)
           done()
@@ -214,7 +214,7 @@ describe('Tournaments tests:', () => {
     let err, res
     before(done => {
       request
-        .get('/tournaments/address/0x0000000000000000000000000000000000000000/round/1')
+        .get('/v2/tournaments/address/0x0000000000000000000000000000000000000000/round/1')
         .end((e, r) => {
           ;[err, res] = [e, r]
           done()
@@ -228,7 +228,7 @@ describe('Tournaments tests:', () => {
 
     it('status 500 for invalid address', done => {
       request
-        .get('/tournaments/address/not-an-address/round/1')
+        .get('/v2/tournaments/address/not-an-address/round/1')
         .end((err, res) => {
           expect(res).to.have.status(500)
           done()
@@ -258,7 +258,7 @@ describe('Tournaments tests:', () => {
     let err, res
     before(done => {
       request
-        .get('/tournaments/address/0x0000000000000000000000000000000000000000/isEntrant/0x0000000000000000000000000000000000000000')
+        .get('/v2/tournaments/address/0x0000000000000000000000000000000000000000/isEntrant/0x0000000000000000000000000000000000000000')
         .end((e, r) => {
           ;[err, res] = [e, r]
           done()
@@ -272,7 +272,7 @@ describe('Tournaments tests:', () => {
 
     it('status 500 for invalid tournament address', done => {
       request
-        .get('/tournaments/address/not-an-address/isEntrant/0x0000000000000000000000000000000000000000')
+        .get('/v2/tournaments/address/not-an-address/isEntrant/0x0000000000000000000000000000000000000000')
         .end((err, res) => {
           expect(res).to.have.status(500)
           done()
@@ -281,7 +281,7 @@ describe('Tournaments tests:', () => {
 
     it('status 500 for invalid entrant address', done => {
       request
-        .get('/tournaments/address/0x0000000000000000000000000000000000000000/isEntrant/not-an-address')
+        .get('/v2/tournaments/address/0x0000000000000000000000000000000000000000/isEntrant/not-an-address')
         .end((err, res) => {
           expect(res).to.have.status(500)
           done()
@@ -297,7 +297,7 @@ describe('Tournaments tests:', () => {
     let err, res
     before(done => {
       request
-        .get('/tournaments/address/0x0000000000000000000000000000000000000000/rounds')
+        .get('/v2/tournaments/address/0x0000000000000000000000000000000000000000/rounds')
         .end((e, r) => {
           ;[err, res] = [e, r]
           done()
@@ -311,7 +311,7 @@ describe('Tournaments tests:', () => {
 
     it('status 500 for invalid address', done => {
       request
-        .get('/tournaments/address/not-an-address/rounds')
+        .get('/v2/tournaments/address/not-an-address/rounds')
         .end((err, res) => {
           expect(res).to.have.status(500)
           done()
@@ -327,7 +327,7 @@ describe('Tournaments tests:', () => {
     let err, res
     before(done => {
       request
-        .get('/tournaments/category/math')
+        .get('/v2/tournaments/category/math')
         .end((e, r) => {
           ;[err, res] = [e, r]
           done()

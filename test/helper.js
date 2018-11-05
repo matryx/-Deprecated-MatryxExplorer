@@ -10,14 +10,14 @@ fetchMock.mock("begin:https://raw.githubusercontent.com/matryx/MatryxPlatform/no
 fetchMock.mock("begin:https://raw.githubusercontent.com/matryx/MatryxPlatform/valid-branch", {
   abi: 'abi',
   networks: {
-    [process.env.NETWORK_ID]: {
+    "3": {
       address: 'address'
     }
   }
 })
 fetchMock.mock('begin:https://ipfs.infura.io:5001/api/v0/add', '{"Hash":"ipfs hash"}')
 
-const Contract = require('../api/contracts/Contract')
+const Contract = require('../v2/contracts/Contract')
 const mocktract = require('./mocktract')
 Contract.prototype.setup = function(address, abi, contract) {
   this.contract = mocktract(address, abi)
@@ -29,5 +29,5 @@ Contract.prototype.setup = function(address, abi, contract) {
 }
 
 // stub getIpfsFile for descriptions
-const ipfsCalls = require('../api/controllers/gateway/ipfsCalls')
+const ipfsCalls = require('../v2/controllers/gateway/ipfsCalls')
 ipfsCalls.getIpfsFile = () => 'ipfs data'
