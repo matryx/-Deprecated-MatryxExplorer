@@ -4,7 +4,7 @@ RUN apk update && apk upgrade && \
 	apk add --no-cache git
 # Other packages: bash nano
 
-ARG env=production
+ARG env=develop
 
 ENV NODE_ENV=$env
 
