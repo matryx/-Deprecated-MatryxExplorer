@@ -25,14 +25,15 @@ tournamentController.count = () => {
   return Platform.getTournamentCount()
 }
 
-tournamentController.getAllTournaments = async (query) => {
-  // Get all the tournament addresses
+tournamentController.getTournaments = async (query) => {
+  // default to getting first 20 Tournaments
+  const params = { startIndex: 0, count: 20, ...query }
 
   let addresses
-  if (query && query.owner) {
-    addresses = await Platform.getTournamentsByUser(query.owner)
+  if (params.owner) {
+    addresses = await Platform.getTournamentsByUser(params.owner)
   } else {
-    addresses = await Platform.getTournaments()
+    addresses = await Platform.getTournaments(params.startIndex, params.count)
   }
 
   let promises = addresses.map(async address => {

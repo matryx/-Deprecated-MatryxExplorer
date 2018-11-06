@@ -33,7 +33,7 @@ router.use((req, res, next) => {
 // Return a confirmation the API is live
 router.get('/', (req, res, next) => {
   tournamentController
-    .getAllTournaments(req.query)
+    .getTournaments(req.query)
     .then(tournaments => res.status(200).json({ tournaments }))
     .catch(errorHelper(next, 'Error getting Tournaments'))
 })
