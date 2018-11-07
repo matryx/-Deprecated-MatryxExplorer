@@ -634,14 +634,14 @@
           }
         ],
         "contractDependencies": [
-          25,
           86,
           98,
           212,
           350,
+          25,
+          939,
           531,
-          742,
-          939
+          742
         ],
         "contractKind": "contract",
         "documentation": "Matryx Ethereum token.",
@@ -964,14 +964,14 @@
           }
         ],
         "contractDependencies": [
-          25,
           86,
           98,
           212,
           350,
+          25,
+          939,
           531,
-          742,
-          939
+          742
         ],
         "contractKind": "contract",
         "documentation": "Matryx Ethereum token.",
@@ -1217,5 +1217,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-10-16T18:11:08.133Z"
+  "updatedAt": "2018-11-07T00:04:31.078Z"
 }

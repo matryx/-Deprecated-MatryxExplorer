@@ -10,7 +10,7 @@
 const ethers = require('ethers')
 
 // const provider = new ethers.providers.JsonRpcProvider(process.env.LOCAL_HOST_RPC)
-const provider = new ethers.providers.InfuraProvider('kovan', 'metamask')
+const provider = new ethers.providers.InfuraProvider('ropsten', 'metamask')
 
 module.exports = class Contract {
   // Contract constructor uses "setup" so that in testing,

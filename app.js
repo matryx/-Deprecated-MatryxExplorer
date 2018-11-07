@@ -56,7 +56,7 @@ app.get('/v2/update', async (req, res, next) => {
   }
 })
 
-// Kovan / epic-refactor
+// epic-refactor
 app.get('/v3', (req, res) => res.sendStatus(200))
 app.use('/v3/platform', require('./v3/routes/platform'))
 app.use('/v3/tournaments', require('./v3/routes/tournaments'))
