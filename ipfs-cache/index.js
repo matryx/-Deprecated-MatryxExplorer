@@ -1,12 +1,12 @@
 const env = process.env.NODE_ENV || 'development'
 const config = require('./knexfile')[env]
+const knex = require('knex')(config)
 
 const ipfsURL = process.env.IPFS_URL
 
 const pendingLookups = {}
 
 module.exports = async function (hash) {
-  const knex = require('knex')(config)
 
   const results = await knex('ipfs').where({ hash })
   let { content } = results[0] || {}
