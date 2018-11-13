@@ -45,7 +45,8 @@ tournamentController.getTournaments = async (query) => {
       Tournament.getOwner(),
       Tournament.getState(),
       Tournament.getCurrentRound(),
-      Tournament.getEntrantCount()
+      Tournament.getEntrantCount(),
+      Tournament.getSubmissionCount()
     ])
     // console.log(address, 'took', Date.now() - ts, 'ms')
 
@@ -54,7 +55,8 @@ tournamentController.getTournaments = async (query) => {
       owner,
       state,
       currentRound,
-      entrantCount
+      entrantCount,
+      submissionCount
     ] = data
 
     const {
@@ -80,7 +82,8 @@ tournamentController.getTournaments = async (query) => {
       entryFee,
       ipType: '',
       currentRound: currentRound.id,
-      entrantCount
+      entrantCount,
+      submissionCount
     }
   })
 
@@ -99,7 +102,8 @@ tournamentController.getTournamentByAddress = async (address) => {
     Tournament.getBalance(),
     Tournament.getState(),
     Tournament.getCurrentRound(),
-    Tournament.getEntrantCount()
+    Tournament.getEntrantCount(),
+    Tournament.getSubmissionCount()
   ])
 
   const [
@@ -108,7 +112,8 @@ tournamentController.getTournamentByAddress = async (address) => {
     remainingMtx,
     state,
     currentRoundData,
-    entrantCount
+    entrantCount,
+    submissionCount
   ] = data
 
   const {
@@ -152,6 +157,7 @@ tournamentController.getTournamentByAddress = async (address) => {
     currentRoundState,
     roundEndTime,
     entrantCount,
+    submissionCount
     // submissions
   }
 }
