@@ -17,19 +17,6 @@ const { errorHelper, validateAddress } = require('../helpers/responseHelpers')
 const MatryxPlatform = require('../contracts/MatryxPlatform')
 const abis = require('../helpers/getAbis')
 
-let Platform, lastUpdate
-
-// before each call, check if Platform updated
-router.use((req, res, next) => {
-  if (lastUpdate !== abis.lastUpdate) {
-    Platform = new MatryxPlatform(abis.platform.address, abis.platform.abi)
-    tournamentController.setPlatform(Platform)
-    lastUpdate = abis.lastUpdate
-  }
-
-  next()
-})
-
 // Return a confirmation the API is live
 router.get('/', (req, res, next) => {
   tournamentController

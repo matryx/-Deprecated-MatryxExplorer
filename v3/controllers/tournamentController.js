@@ -13,19 +13,17 @@ const MatryxTournament = require('../contracts/MatryxTournament')
 const MatryxRound = require('../contracts/MatryxRound')
 
 const abis = require('../helpers/getAbis')
+const contracts = require('../helpers/getContracts')
 
-let Platform
 let tournamentController = {}
 
-tournamentController.setPlatform = (platform) => {
-  Platform = platform
-}
-
 tournamentController.count = () => {
+  const Platform = contracts.platform
   return Platform.getTournamentCount()
 }
 
 tournamentController.getTournaments = async (query) => {
+  const Platform = contracts.platform
   // default to getting first 20 Tournaments
   const params = { startIndex: 0, count: 20, ...query }
 
@@ -195,6 +193,7 @@ tournamentController.getRoundAddress = async (tournamentAddress, roundId) => {
 }
 
 tournamentController.getTournamentsByCategory = (category) => {
+  const Platform = contracts.platform
   return Platform.getTournamentsByCategory(category)
 }
 
