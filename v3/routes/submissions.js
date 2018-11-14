@@ -11,7 +11,7 @@ const express = require('express')
 const router = express.Router()
 
 const submissionController = require('../controllers/submissionController')
-const { errorHelper, validateAddress } = require('../helpers/responseHelpers')
+const { errorHelper, validateSubmission } = require('../helpers/responseHelpers')
 
 const abis = require('../helpers/getAbis')
 
@@ -27,9 +27,9 @@ router.get('/getAbi', (req, res, next) => {
 })
 
 // Return the submission details for a specific submission address
-router.get('/address/:submissionAddress', (req, res, next) => {
+router.get('/address/:submissionAddress', async (req, res, next) => {
   const { submissionAddress } = req.params
-  if (!validateAddress(next, submissionAddress)) return
+  if (!await validateSubmission(next, submissionAddress)) return
 
   submissionController
     .getSubmissionByAddress(submissionAddress)
@@ -38,9 +38,9 @@ router.get('/address/:submissionAddress', (req, res, next) => {
 })
 
 // Return the submission owner/author for a specific submission address
-router.get('/address/:submissionAddress/owner', (req, res, next) => {
+router.get('/address/:submissionAddress/owner', async (req, res, next) => {
   const { submissionAddress } = req.params
-  if (!validateAddress(next, submissionAddress)) return
+  if (!await validateSubmission(next, submissionAddress)) return
 
   submissionController
     .getSubmissionOwnerByAddress(submissionAddress)
