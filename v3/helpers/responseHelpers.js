@@ -8,12 +8,13 @@
  */
 
 const ethers = require('ethers')
+const contracts = require('../helpers/getContracts')
 
 // inputs: next method and optional error log message
 // output: error method that takes in error and sends over response
 const errorHelper = (next, response) => error => {
   response = error && error.response || response
-  next({ message: error.message, response })
+  next({ message: error.message, response, status: error.status })
 }
 
 // inputs: response next and address to validate
@@ -28,7 +29,55 @@ const validateAddress = (next, address) => {
   }
 }
 
+// inputs: response next and potential Tournament address
+// output: true if address is Tournament
+const validateTournament = async (next, address) => {
+  if (!validateAddress(next, address)) return
+
+  const Platform = contracts.platform
+  const isT = await Platform.isTournament(address)
+  if (!isT) {
+    const error = new Error(`Tournament ${address} not found`)
+    error.status = 404
+    errorHelper(next, error.message)(error)
+  }
+  return isT
+}
+
+// inputs: response next and potential Round address
+// output: true if address is Round
+const validateRound = async (next, address) => {
+  if (!validateAddress(next, address)) return
+
+  const Platform = contracts.platform
+  const isR = await Platform.isRound(address)
+  if (!isR) {
+    const error = new Error(`Round ${address} not found`)
+    error.status = 404
+    errorHelper(next, error.message)(error)
+  }
+  return isR
+}
+
+// inputs: response next and potential Submission address
+// output: true if address is Submission
+const validateSubmission = async (next, address) => {
+  if (!validateAddress(next, address)) return
+
+  const Platform = contracts.platform
+  const isS = await Platform.isSubmission(address)
+  if (!isS) {
+    const error = new Error(`Submission ${address} not found`)
+    error.status = 404
+    errorHelper(next, error.message)(error)
+  }
+  return isS
+}
+
 module.exports = {
   errorHelper,
-  validateAddress
+  validateAddress,
+  validateTournament,
+  validateRound,
+  validateSubmission
 }

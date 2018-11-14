@@ -23,6 +23,18 @@ module.exports = class MatryxPlatform extends Contract {
     return await this.contract.hasEnteredMatryx(address)
   }
 
+  async isTournament(address) {
+    return await this.contract.isTournament(address)
+  }
+
+  async isRound(address) {
+    return await this.contract.isRound(address)
+  }
+
+  async isSubmission(address) {
+    return await this.contract.isSubmission(address)
+  }
+
   // Tournament
 
   async getTournamentCount() {

@@ -11,7 +11,7 @@ const express = require('express')
 const router = express.Router()
 
 const roundController = require('../controllers/roundController')
-const { errorHelper, validateAddress } = require('../helpers/responseHelpers')
+const { errorHelper, validateRound } = require('../helpers/responseHelpers')
 
 const abis = require('../helpers/getAbis')
 
@@ -26,9 +26,9 @@ router.get('/getAbi', (req, res, next) => {
   res.status(200).json(abis.round)
 })
 
-router.get('/address/:roundAddress', (req, res, next) => {
+router.get('/address/:roundAddress', async (req, res, next) => {
   let { roundAddress } = req.params
-  if (!validateAddress(next, roundAddress)) return
+  if (!await validateRound(next, roundAddress)) return
 
   roundController
     .getRoundDetails(roundAddress)
