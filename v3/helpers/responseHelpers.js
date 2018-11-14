@@ -23,7 +23,7 @@ const validateAddress = (next, address) => {
     ethers.utils.getAddress(address)
     return true
   } catch (err) {
-    errorHelper(next, `${address} is not a valid ethereum address`)()
+    errorHelper(next, `${address} is not a valid ethereum address`)(err)
     return false
   }
 }
