@@ -8,6 +8,7 @@
  */
 
 const fs = require('fs')
+const EventEmitter = require('events')
 const MatryxSystem = require('../contracts/MatryxSystem')
 const MatryxPlatform = require('../contracts/MatryxPlatform')
 
@@ -19,15 +20,23 @@ const loadArtifact = name => {
   return JSON.parse(artifact)
 }
 
-const getAbis = {
-  // update mutex
-  updateInProgress: false,
-  lastUpdate: null,
-  system: null,
-  platform: null,
-  tournament: null,
-  round: null,
-  submission: null,
+class ABIs extends EventEmitter {
+  constructor() {
+    super()
+
+    this.updateInProgress = false
+    this.lastUpdate = null
+    this.system = null
+    this.platform = null
+    this.tournament = null
+    this.round = null
+    this.submission = null
+
+    this.loadedAbis = new Promise(async done => {
+      await this.update()
+      done()
+    })
+  }
 
   async attemptUpdate() {
     const { updatedAt } = loadArtifact('Migrations')
@@ -35,7 +44,7 @@ const getAbis = {
 
     await this.update()
     return true
-  },
+  }
 
   async update() {
     this.updateInProgress = true
@@ -65,19 +74,15 @@ const getAbis = {
     const tokenAddress = (await platform.getInfo()).token
 
     abis.token.address = tokenAddress
+    abis.system.address = systemAddress
     abis.platform.address = platformAddress
     Object.assign(this, abis)
 
     const { updatedAt } = loadArtifact('Migrations')
     this.lastUpdate = updatedAt
     this.updateInProgress = false
+    this.emit('update', this)
   }
 }
 
-// TODO: error handling on initial app abi load
-getAbis.loadedAbis = new Promise(async done => {
-  await getAbis.update()
-  done()
-})
-
-module.exports = getAbis
+module.exports = new ABIs()
