@@ -27,6 +27,7 @@ class ABIs extends EventEmitter {
     this.updateInProgress = false
     this.lastUpdate = null
     this.system = null
+    this.user = null
     this.platform = null
     this.tournament = null
     this.round = null
@@ -52,6 +53,7 @@ class ABIs extends EventEmitter {
     const artifacts = {
       token: loadArtifact('MatryxToken'),
       system: loadArtifact('MatryxSystem'),
+      user: loadArtifact('IMatryxUser'),
       platform: loadArtifact('IMatryxPlatform'),
       tournament: loadArtifact('IMatryxTournament'),
       round: loadArtifact('IMatryxRound'),
@@ -63,7 +65,10 @@ class ABIs extends EventEmitter {
 
     // TODO: put in .env
     const version = 1 // await system.getVersion()
-    const platformAddress = await system.getContract(version, 'MatryxPlatform')
+    const [userAddress, platformAddress] = await Promise.all([
+      system.getContract(version, 'MatryxUser'),
+      system.getContract(version, 'MatryxPlatform')
+    ])
 
     const abis = {}
     Object.entries(artifacts).forEach(([name, artifact]) => {
@@ -75,6 +80,7 @@ class ABIs extends EventEmitter {
 
     abis.token.address = tokenAddress
     abis.system.address = systemAddress
+    abis.user.address = userAddress
     abis.platform.address = platformAddress
     Object.assign(this, abis)
 
