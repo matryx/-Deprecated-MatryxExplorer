@@ -1,6 +1,6 @@
 /**
- * users.js
- * /users routes for getting User info
+ * user.js
+ * /user routes for getting User info
  *
  * Authors dev@nanome.ai
  * Copyright (c) 2018, Nanome Inc
@@ -18,7 +18,7 @@ const abis = require('../helpers/getAbis')
 // Return a confirmation the API is live
 router.get('/', (req, res, next) => {
   res.status(200).json({
-    message: 'handling GET requests to /users'
+    message: 'handling GET requests to /user'
   })
 })
 

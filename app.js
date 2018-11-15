@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
 app.get('/health-check', (req, res) => res.sendStatus(200))
 
 // Current routes
-app.use('/users', require(`./${version}/routes/users`))
+app.use('/user', require(`./${version}/routes/user`))
 app.use('/platform', require(`./${version}/routes/platform`))
 app.use('/tournaments', require(`./${version}/routes/tournaments`))
 app.use('/rounds', require(`./${version}/routes/rounds`))
@@ -59,7 +59,7 @@ app.get('/v2/update', async (req, res, next) => {
 
 // epic-refactor
 app.get('/v3', (req, res) => res.sendStatus(200))
-app.use('/v3/users', require('./v3/routes/users'))
+app.use('/v3/user', require('./v3/routes/user'))
 app.use('/v3/platform', require('./v3/routes/platform'))
 app.use('/v3/tournaments', require('./v3/routes/tournaments'))
 app.use('/v3/rounds', require('./v3/routes/rounds'))
