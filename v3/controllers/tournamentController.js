@@ -11,6 +11,7 @@ const ipfsCalls = require('./gateway/ipfsCalls')
 
 const MatryxTournament = require('../contracts/MatryxTournament')
 const MatryxRound = require('../contracts/MatryxRound')
+const MatryxSubmission = require('../contracts/MatryxSubmission')
 
 const abis = require('../helpers/getAbis')
 const contracts = require('../helpers/getContracts')
@@ -103,7 +104,8 @@ tournamentController.getTournamentByAddress = async (address) => {
     Tournament.getState(),
     Tournament.getCurrentRound(),
     Tournament.getEntrantCount(),
-    Tournament.getSubmissionCount()
+    Tournament.getSubmissionCount(),
+    Tournament.getRounds()
   ])
 
   const [
@@ -113,7 +115,8 @@ tournamentController.getTournamentByAddress = async (address) => {
     state,
     currentRoundData,
     entrantCount,
-    submissionCount
+    submissionCount,
+    rounds
   ] = data
 
   const {
@@ -140,6 +143,27 @@ tournamentController.getTournamentByAddress = async (address) => {
     Round.getEnd()
   ])
 
+  // get previous round winners
+  const winnersPromises = rounds.map(async rAddress => {
+    const Round = new MatryxRound(rAddress, abis.round.abi)
+
+    const winningSubs = await Round.getWinningSubmissions()
+    const winningSubPromises = winningSubs.map(async sAddress => {
+      const Submission = new MatryxSubmission(sAddress, abis.submission.abi)
+
+      const [title, reward] = await Promise.all([
+        Submission.getTitle(),
+        Submission.getTotalWinnings()
+      ])
+
+      return { address: sAddress, title, reward }
+    })
+
+    return await Promise.all(winningSubPromises)
+  })
+
+  const winners = await Promise.all(winnersPromises)
+
   return {
     address,
     owner,
@@ -157,7 +181,8 @@ tournamentController.getTournamentByAddress = async (address) => {
     currentRoundState,
     roundEndTime,
     entrantCount,
-    submissionCount
+    submissionCount,
+    winners
     // submissions
   }
 }
