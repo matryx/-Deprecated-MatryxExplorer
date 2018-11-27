@@ -7,7 +7,6 @@ const ipfsURL = process.env.IPFS_URL
 const pendingLookups = {}
 
 module.exports = async function (hash) {
-
   const results = await knex('ipfs').where({ hash })
   let { content } = results[0] || {}
   if (content) return content
@@ -22,9 +21,14 @@ module.exports = async function (hash) {
         resolve(content)
 
         await knex('ipfs').insert({ hash, content })
-        delete pendingLookups[hash]
       } catch (err) {
-        reject(err)
+        if (err.status === 504) {
+          resolve("Error getting description. Please try again later.")
+        } else {
+          reject(err)
+        }
+      } finally {
+        delete pendingLookups[hash]
       }
     })
   }
