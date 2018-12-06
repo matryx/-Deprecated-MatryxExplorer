@@ -60,6 +60,9 @@ tournamentController.getTournaments = async (query) => {
       submissionCount
     ] = data
 
+    const Round = new MatryxRound(currentRound.address, abis.round.abi)
+    const currentRoundState = await Round.getState()
+
     const {
       title,
       category,
@@ -83,6 +86,8 @@ tournamentController.getTournaments = async (query) => {
       entryFee,
       ipType: '',
       currentRound: currentRound.id,
+      currentRoundAddress: currentRound.address,
+      currentRoundState,
       entrantCount,
       submissionCount
     }
