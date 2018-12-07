@@ -14,30 +14,14 @@ const router = express.Router()
 
 const { errorHelper } = require('../helpers/responseHelpers')
 
-const MatryxPlatform = require('../contracts/MatryxPlatform')
 const abis = require('../helpers/getAbis')
+const contracts = require('../helpers/getContracts')
 
-let Platform, lastUpdate
-
-const updatePlatform = () => {
-  Platform = new MatryxPlatform(abis.platform.address, abis.platform.abi)
-  lastUpdate = abis.lastUpdate
-}
-
-router.use((req, res, next) => {
-  // istanbul ignore next
-  if (lastUpdate !== abis.lastUpdate) {
-    updatePlatform()
-  }
-
-  next()
-})
-
-abis.loadedAbis.then(async () => {
-  updatePlatform()
+abis.on('update', async () => {
+  const Platform = contracts.platform
 
   let count = +(await Platform.getTournamentCount())
-  console.log(`\nCurrent Matryx Platform Address in use: ${abis.platform.address}`)
+  console.log(`\nCurrent Matryx Platform Address in use: ${Platform.contract.address}`)
   console.log(`There are ${count} tournaments on the Platform.\n`)
 })
 
@@ -63,6 +47,8 @@ router.get('/getAbi', (req, res, next) => {
 })
 
 router.get('/getCategories', (req, res, next) => {
+  const Platform = contracts.platform
+
   Platform.getCategories()
     .then(categories => res.status(200).json({ categories }))
     .catch(errorHelper(next, 'Error getting top categories'))
