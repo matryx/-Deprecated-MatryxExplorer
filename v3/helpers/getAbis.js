@@ -13,11 +13,21 @@ const MatryxSystem = require('../contracts/MatryxSystem')
 const MatryxPlatform = require('../contracts/MatryxPlatform')
 
 const networkId = process.env.NETWORK_ID
+const branch = process.env.ARTIFACTS_BRANCH
 
-const loadArtifact = name => {
-  const path = `./v3/artifacts/${name}.json`
-  const artifact = fs.readFileSync(path, 'utf8')
-  return JSON.parse(artifact)
+const contractUrl = branch => `https://raw.githubusercontent.com/matryx/MatryxPlatformArtifacts/${branch}/artifacts/`
+
+const loadArtifact = async name => {
+  const url = contractUrl(branch) + `${name}.json`
+  const res = await fetch(url)
+
+  if (!res.ok) {
+    throw new Error(`Error getting ${name} ABI`)
+  }
+
+  console.log(`Got ${name} from Artifacts GitHub`)
+
+  return res.json()
 }
 
 class ABIs extends EventEmitter {
@@ -40,7 +50,7 @@ class ABIs extends EventEmitter {
   }
 
   async attemptUpdate() {
-    const { updatedAt } = loadArtifact('Migrations')
+    const { updatedAt } = await loadArtifact('Migrations')
     if (this.lastUpdate === updatedAt || this.updateInProgress) return false
 
     await this.update()
@@ -50,24 +60,33 @@ class ABIs extends EventEmitter {
   async update() {
     this.updateInProgress = true
 
+    const jsons = await Promise.all([
+      loadArtifact('MatryxToken'),
+      loadArtifact('MatryxSystem'),
+      loadArtifact('IMatryxUser'),
+      loadArtifact('IMatryxPlatform'),
+      loadArtifact('IMatryxTournament'),
+      loadArtifact('IMatryxRound'),
+      loadArtifact('IMatryxSubmission'),
+      loadArtifact('Migrations')
+    ])
+
+    const [
+      token, system, user, platform, tournament, round, submission, migrations
+    ] = jsons
+
     const artifacts = {
-      token: loadArtifact('MatryxToken'),
-      system: loadArtifact('MatryxSystem'),
-      user: loadArtifact('IMatryxUser'),
-      platform: loadArtifact('IMatryxPlatform'),
-      tournament: loadArtifact('IMatryxTournament'),
-      round: loadArtifact('IMatryxRound'),
-      submission: loadArtifact('IMatryxSubmission')
+      token, system, user, platform, tournament, round, submission
     }
 
-    const systemAddress = artifacts.system.networks[networkId].address
-    const system = new MatryxSystem(systemAddress, artifacts.system.abi)
+    const systemAddress = system.networks[networkId].address
+    const System = new MatryxSystem(systemAddress, system.abi)
 
     // TODO: put in .env
     const version = 1 // await system.getVersion()
     const [userAddress, platformAddress] = await Promise.all([
-      system.getContract(version, 'MatryxUser'),
-      system.getContract(version, 'MatryxPlatform')
+      System.getContract(version, 'MatryxUser'),
+      System.getContract(version, 'MatryxPlatform')
     ])
 
     const abis = {}
@@ -75,8 +94,8 @@ class ABIs extends EventEmitter {
       abis[name] = { abi: artifact.abi }
     })
 
-    const platform = new MatryxPlatform(platformAddress, artifacts.platform.abi)
-    const tokenAddress = (await platform.getInfo()).token
+    const Platform = new MatryxPlatform(platformAddress, platform.abi)
+    const tokenAddress = (await Platform.getInfo()).token
 
     abis.token.address = tokenAddress
     abis.system.address = systemAddress
@@ -84,8 +103,7 @@ class ABIs extends EventEmitter {
     abis.platform.address = platformAddress
     Object.assign(this, abis)
 
-    const { updatedAt } = loadArtifact('Migrations')
-    this.lastUpdate = updatedAt
+    this.lastUpdate = migrations.updatedAt
     this.updateInProgress = false
     this.emit('update', this)
   }
