@@ -76,7 +76,13 @@ class ABIs extends EventEmitter {
     ] = jsons
 
     const artifacts = {
-      token, system, user, platform, tournament, round, submission
+      token,
+      system,
+      user,
+      platform,
+      tournament,
+      round,
+      submission
     }
 
     const systemAddress = system.networks[networkId].address
