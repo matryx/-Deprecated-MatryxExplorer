@@ -4,7 +4,7 @@ RUN apk update && apk upgrade && \
 	apk add --no-cache git
 # Other packages: bash nano
 
-ARG env=production
+ARG env=develop
 
 ENV NODE_ENV=$env
 
@@ -15,6 +15,6 @@ COPY . .
 
 RUN yarn install
 
-EXPOSE 3000 4002 5002 8081
+EXPOSE 3000 4002 4002/udp 5002 8081
 
 CMD ["npm","start"]
