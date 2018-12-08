@@ -15,7 +15,7 @@ An open-source node.js api to read the MatryxPlatform and interact with IPFS to 
 
 
 ### Check out our full documentation at [matryx.readthedocs.io](matryx.readthedocs.io)
-
+### Read the Whitepaper at [nanome.ai/matryx](https://nanome.ai/public-src/downloads/matryx-whitepaper.pdf)
 
 # Running the API
 
