@@ -12,6 +12,16 @@ const router = express.Router()
 
 const abis = require('./helpers/getAbis')
 
+router.get('/update', async (req, res, next) => {
+  try {
+    const updated = await abis.attemptUpdate()
+    const message = updated ? 'ABIs updated' : 'ABIs already up to date'
+    res.status(200).json({ message })
+  } catch (err) {
+    next({ response: 'ABIs update failed' })
+  }
+})
+
 // make sure ABIs are loaded before continuing request
 router.use(async (req, res, next) => {
   await abis.loadedAbis
@@ -28,14 +38,5 @@ router.use('/submissions', require('./routes/submissions'))
 router.use('/token', require('./routes/token'))
 router.use('/ipfs', require('./routes/ipfs'))
 
-router.get('/update', async (req, res, next) => {
-  try {
-    const updated = await abis.attemptUpdate()
-    const message = updated ? 'ABIs updated' : 'ABIs already up to date'
-    res.status(200).json({ message })
-  } catch (err) {
-    next({ response: 'ABIs update failed' })
-  }
-})
 
 module.exports = router

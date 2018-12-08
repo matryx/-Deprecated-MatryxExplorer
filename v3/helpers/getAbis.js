@@ -60,58 +60,63 @@ class ABIs extends EventEmitter {
   async update() {
     this.updateInProgress = true
 
-    const jsons = await Promise.all([
-      loadArtifact('MatryxToken'),
-      loadArtifact('MatryxSystem'),
-      loadArtifact('IMatryxUser'),
-      loadArtifact('IMatryxPlatform'),
-      loadArtifact('IMatryxTournament'),
-      loadArtifact('IMatryxRound'),
-      loadArtifact('IMatryxSubmission'),
-      loadArtifact('Migrations')
-    ])
+    try {
+      const jsons = await Promise.all([
+        loadArtifact('MatryxToken'),
+        loadArtifact('MatryxSystem'),
+        loadArtifact('IMatryxUser'),
+        loadArtifact('IMatryxPlatform'),
+        loadArtifact('IMatryxTournament'),
+        loadArtifact('IMatryxRound'),
+        loadArtifact('IMatryxSubmission'),
+        loadArtifact('Migrations')
+      ])
 
-    const [
-      token, system, user, platform, tournament, round, submission, migrations
-    ] = jsons
+      const [
+        token, system, user, platform, tournament, round, submission, migrations
+      ] = jsons
 
-    const artifacts = {
-      token,
-      system,
-      user,
-      platform,
-      tournament,
-      round,
-      submission
+      const artifacts = {
+        token,
+        system,
+        user,
+        platform,
+        tournament,
+        round,
+        submission
+      }
+
+      const systemAddress = system.networks[networkId].address
+      const System = new MatryxSystem(systemAddress, system.abi)
+
+      // TODO: put in .env
+      const version = 1 // await system.getVersion()
+      const [userAddress, platformAddress] = await Promise.all([
+        System.getContract(version, 'MatryxUser'),
+        System.getContract(version, 'MatryxPlatform')
+      ])
+
+      const abis = {}
+      Object.entries(artifacts).forEach(([name, artifact]) => {
+        abis[name] = { abi: artifact.abi }
+      })
+
+      const Platform = new MatryxPlatform(platformAddress, platform.abi)
+      const tokenAddress = (await Platform.getInfo()).token
+
+      abis.token.address = tokenAddress
+      abis.system.address = systemAddress
+      abis.user.address = userAddress
+      abis.platform.address = platformAddress
+      Object.assign(this, abis)
+
+      this.lastUpdate = migrations.updatedAt
+      this.emit('update', this)
+    } catch (err) {
+      throw err
+    } finally {
+      this.updateInProgress = false
     }
-
-    const systemAddress = system.networks[networkId].address
-    const System = new MatryxSystem(systemAddress, system.abi)
-
-    // TODO: put in .env
-    const version = 1 // await system.getVersion()
-    const [userAddress, platformAddress] = await Promise.all([
-      System.getContract(version, 'MatryxUser'),
-      System.getContract(version, 'MatryxPlatform')
-    ])
-
-    const abis = {}
-    Object.entries(artifacts).forEach(([name, artifact]) => {
-      abis[name] = { abi: artifact.abi }
-    })
-
-    const Platform = new MatryxPlatform(platformAddress, platform.abi)
-    const tokenAddress = (await Platform.getInfo()).token
-
-    abis.token.address = tokenAddress
-    abis.system.address = systemAddress
-    abis.user.address = userAddress
-    abis.platform.address = platformAddress
-    Object.assign(this, abis)
-
-    this.lastUpdate = migrations.updatedAt
-    this.updateInProgress = false
-    this.emit('update', this)
   }
 }
 
