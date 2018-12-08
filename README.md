@@ -14,12 +14,12 @@ An open-source node.js api to read the MatryxPlatform and interact with IPFS to 
 [![dependencies Status](https://david-dm.org/matryx/MatryxExplorer/status.svg)](https://david-dm.org/matryx/MatryxExplorer)
 
 
-### Check out our full documentation at matryx.readthedocs.io
+### Check out our full documentation at [matryx.readthedocs.io](matryx.readthedocs.io)
 
 
 # Running the API
 
-## To run the API, downloaded the dependencies
+## Downloaded the dependencies
 
 ```
 yarn install
