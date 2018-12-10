@@ -10,9 +10,9 @@ const httpsPort = process.env.HTTPS_PORT || 3443
 
 const httpsOptions = {
   key: fs.readFileSync('./certs/local.key'),
-	cert: fs.readFileSync('./certs/local.crt'),
-	requestCert: false,
-	rejectUnauthorized: false
+  cert: fs.readFileSync('./certs/local.crt'),
+  requestCert: false,
+  rejectUnauthorized: false
 }
 
 const httpServer = http.createServer(app)
