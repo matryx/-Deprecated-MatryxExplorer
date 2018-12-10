@@ -1,3 +1,4 @@
+require("dotenv").config()
 require('isomorphic-fetch')
 const http = require('http')
 const https = require('https')
@@ -8,8 +9,8 @@ const httpPort = process.env.HTTP_PORT || 3000
 const httpsPort = process.env.HTTPS_PORT || 3443
 
 const httpsOptions = {
-  key: fs.readFileSync('./local.key'),
-	cert: fs.readFileSync('./local.crt'),
+  key: fs.readFileSync('./certs/local.key'),
+	cert: fs.readFileSync('./certs/local.crt'),
 	requestCert: false,
 	rejectUnauthorized: false
 }
