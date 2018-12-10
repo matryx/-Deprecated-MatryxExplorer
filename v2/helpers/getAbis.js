@@ -7,9 +7,10 @@
  * Licensed under ISC. See LICENSE.md in project root
  */
 
+const config = require('../../config')
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 
-const version = process.env.PLATFORM_VERSION
+const version = config.PLATFORM_VERSION
 const networkId = 3 // ropsten
 
 const getAbis = {

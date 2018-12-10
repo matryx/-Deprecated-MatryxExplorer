@@ -7,13 +7,13 @@
  * Licensed under ISC. See LICENSE.md in project root
  */
 
-const fs = require('fs')
 const EventEmitter = require('events')
+const config = require('../../config')
 const MatryxSystem = require('../contracts/MatryxSystem')
 const MatryxPlatform = require('../contracts/MatryxPlatform')
 
-const networkId = process.env.NETWORK_ID
-const branch = process.env.ARTIFACTS_BRANCH
+const networkId = config.NETWORK_ID
+const branch = config.ARTIFACTS_BRANCH
 
 const contractUrl = branch => `https://raw.githubusercontent.com/matryx/MatryxPlatformArtifacts/${branch}/artifacts/`
 

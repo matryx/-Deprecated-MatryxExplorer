@@ -10,11 +10,12 @@
 const express = require('express')
 const router = express.Router()
 
+const config = require('../../config')
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 const roundController = require('../controllers/roundController')
 const { errorHelper, validateAddress } = require('../helpers/responseHelpers')
 
-const latestVersion = process.env.PLATFORM_VERSION
+const latestVersion = config.PLATFORM_VERSION
 
 // Return a list of all rounds
 router.get('/', (req, res, next) => {

@@ -1,8 +1,9 @@
 const env = process.env.NODE_ENV || 'development'
 const config = require('./knexfile')[env]
 const knex = require('knex')(config)
+const appConfig = require('../config')
 
-const ipfsURL = process.env.IPFS_URL
+const ipfsURL = appConfig.IPFS_URL
 
 const pendingLookups = {}
 
