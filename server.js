@@ -1,12 +1,29 @@
 require('isomorphic-fetch')
 const http = require('http')
+const https = require('https')
+const fs = require('fs')
 const app = require('./app')
 
-const port = process.env.PORT || 3000
-const server = http.createServer(app)
+const httpPort = process.env.HTTP_PORT || 3000
+const httpsPort = process.env.HTTPS_PORT || 3443
+
+const httpsOptions = {
+  key: fs.readFileSync('./local.key'),
+	cert: fs.readFileSync('./local.crt'),
+	requestCert: false,
+	rejectUnauthorized: false
+}
+
+const httpServer = http.createServer(app)
+const httpsServer = https.createServer(httpsOptions, app)
 
 console.log('стремиться к победе')
 
-server.listen(port)
+httpServer.listen(httpPort, () => {
+  console.log(`HTTP server running at http://localhost:${httpPort}`)
+})
+httpsServer.listen(httpsPort, () => {
+  console.log(`HTTPS server running at https://localhost:${httpsPort}`)
+})
 
-module.exports = server
+module.exports = httpServer
