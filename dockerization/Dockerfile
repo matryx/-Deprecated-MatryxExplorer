@@ -15,6 +15,6 @@ COPY . .
 
 RUN yarn install
 
-EXPOSE 3000 3443
+EXPOSE 3000 3443 4002 5002 8081
 
 CMD ["npm","start"]
