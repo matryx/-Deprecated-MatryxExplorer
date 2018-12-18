@@ -8,8 +8,7 @@
  * Licensed under ISC. See LICENSE.md in project root.
  */
 
-const config = require('../../../config')
-const latestBranch = config.PLATFORM_VERSION
+const latestBranch = process.env.PLATFORM_VERSION || "QA"
 
 let contractUrl = branch => `https://raw.githubusercontent.com/matryx/MatryxPlatform/${branch}/build/contracts/`
 // let contractUrl = branch => `http://localhost:8081/`

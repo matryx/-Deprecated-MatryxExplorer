@@ -1,8 +1,7 @@
 const app = require('express')()
 const bodyParser = require('body-parser')
-const config = require('./config')
 
-const version = config.CURRENT_VERSION
+const version = process.env.CURRENT_VERSION || "v3"
 
 // Middlewares
 app.use(require('helmet')()) // security headers

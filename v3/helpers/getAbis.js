@@ -8,12 +8,11 @@
  */
 
 const EventEmitter = require('events')
-const config = require('../../config')
 const MatryxSystem = require('../contracts/MatryxSystem')
 const MatryxPlatform = require('../contracts/MatryxPlatform')
 
-const networkId = config.NETWORK_ID
-const branch = config.ARTIFACTS_BRANCH
+const networkId = process.env.NETWORK_ID || "3"
+const branch = process.env.ARTIFACTS_BRANCH || "staging"
 
 const contractUrl = branch => `https://raw.githubusercontent.com/matryx/MatryxPlatformArtifacts/${branch}/artifacts/`
 
@@ -49,7 +48,7 @@ class ABIs extends EventEmitter {
     })
   }
 
-  async attemptUpdate() {
+  async attemptUpdate () {
     const { updatedAt } = await loadArtifact('Migrations')
     if (this.lastUpdate === updatedAt || this.updateInProgress) return false
 
@@ -57,7 +56,7 @@ class ABIs extends EventEmitter {
     return true
   }
 
-  async update() {
+  async update () {
     this.updateInProgress = true
 
     try {
