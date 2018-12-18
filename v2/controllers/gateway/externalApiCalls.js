@@ -8,12 +8,16 @@
  * Licensed under ISC. See LICENSE.md in project root.
  */
 
+const config = require('../../../config')
+const latestBranch = config.PLATFORM_VERSION
+
 let contractUrl = branch => `https://raw.githubusercontent.com/matryx/MatryxPlatform/${branch}/build/contracts/`
 // let contractUrl = branch => `http://localhost:8081/`
 
 let externalApiCalls = {}
 
 const getInfo = async (contract, branch) => {
+  branch = branch || latestBranch
   const url = contractUrl(branch) + `${contract}.json`
   const res = await fetch(url)
 
@@ -28,11 +32,11 @@ const getInfo = async (contract, branch) => {
   return res.json()
 }
 
-externalApiCalls.getMatryxPlatformInfo  = branch => getInfo('MatryxPlatform', branch)
-externalApiCalls.getMatryxTokenInfo     = branch => getInfo('MatryxToken', branch)
+externalApiCalls.getMatryxPlatformInfo = branch => getInfo('MatryxPlatform', branch)
+externalApiCalls.getMatryxTokenInfo = branch => getInfo('MatryxToken', branch)
 externalApiCalls.getMatryxTournamentAbi = branch => getInfo('MatryxTournament', branch)
 externalApiCalls.getMatryxSubmissionAbi = branch => getInfo('MatryxSubmission', branch)
-externalApiCalls.getMatryxRoundAbi      = branch => getInfo('MatryxRound', branch)
-externalApiCalls.getMigrationsInfo      = branch => getInfo('Migrations', branch)
+externalApiCalls.getMatryxRoundAbi = branch => getInfo('MatryxRound', branch)
+externalApiCalls.getMigrationsInfo = branch => getInfo('Migrations', branch)
 
 module.exports = externalApiCalls

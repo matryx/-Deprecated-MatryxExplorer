@@ -10,7 +10,6 @@
 const express = require('express')
 const router = express.Router()
 
-const config = require('../../config')
 const tournamentController = require('../controllers/tournamentController')
 const roundController = require('../controllers/roundController')
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
@@ -18,8 +17,6 @@ const { errorHelper, validateAddress } = require('../helpers/responseHelpers')
 
 const MatryxPlatform = require('../contracts/MatryxPlatform')
 const abis = require('../helpers/getAbis')
-
-const latestVersion = config.PLATFORM_VERSION
 
 let Platform, lastUpdate
 
@@ -44,9 +41,7 @@ router.get('/', (req, res, next) => {
 
 // TODO: add error response for invalid responses
 router.get('/getAbi/:version?', (req, res, next) => {
-  // istanbul ignore next
-  let version = req.params.version || latestVersion
-
+  const { version } = req.params
   externalApiCalls
     .getMatryxTournamentAbi(version)
     .then(({ abi }) => res.status(200).json({ abi }))

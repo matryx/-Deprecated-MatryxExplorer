@@ -10,12 +10,9 @@
 const express = require('express')
 const router = express.Router()
 
-const config = require('../../config')
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 const roundController = require('../controllers/roundController')
 const { errorHelper, validateAddress } = require('../helpers/responseHelpers')
-
-const latestVersion = config.PLATFORM_VERSION
 
 // Return a list of all rounds
 router.get('/', (req, res, next) => {
@@ -25,8 +22,7 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/getAbi/:version?', (req, res, next) => {
-  // istanbul ignore next
-  let version = req.params.version || latestVersion
+  const { version } = req.params
 
   externalApiCalls
     .getMatryxRoundAbi(version)

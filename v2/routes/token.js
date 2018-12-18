@@ -10,11 +10,9 @@
 const express = require('express')
 const router = express.Router()
 
-const config = require('../../config')
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 const { errorHelper } = require('../helpers/responseHelpers')
 
-const latestVersion = config.PLATFORM_VERSION
 const networkId = 3 // Ropsten
 
 // Return a confirmation the API is live
@@ -25,8 +23,7 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/getInfo/:version?', (req, res, next) => {
-  // istanbul ignore next
-  let version = req.params.version || latestVersion
+  const { version } = req.params
 
   externalApiCalls
     .getMatryxTokenInfo(version)
@@ -39,8 +36,7 @@ router.get('/getInfo/:version?', (req, res, next) => {
 })
 
 router.get('/getAddress/:version?', (req, res, next) => {
-  // istanbul ignore next
-  let version = req.params.version || latestVersion
+  const { version } = req.params
 
   externalApiCalls
     .getMatryxTokenInfo(version)
@@ -52,8 +48,7 @@ router.get('/getAddress/:version?', (req, res, next) => {
 })
 
 router.get('/getAbi/:version?', (req, res, next) => {
-  // istanbul ignore next
-  let version = req.params.version || latestVersion
+  const { version } = req.params
 
   externalApiCalls
     .getMatryxTokenInfo(version)
