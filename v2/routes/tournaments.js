@@ -10,6 +10,7 @@
 const express = require('express')
 const router = express.Router()
 
+const config = require('../../config')
 const tournamentController = require('../controllers/tournamentController')
 const roundController = require('../controllers/roundController')
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
@@ -18,7 +19,7 @@ const { errorHelper, validateAddress } = require('../helpers/responseHelpers')
 const MatryxPlatform = require('../contracts/MatryxPlatform')
 const abis = require('../helpers/getAbis')
 
-const latestVersion = process.env.PLATFORM_VERSION
+const latestVersion = config.PLATFORM_VERSION
 
 let Platform, lastUpdate
 
