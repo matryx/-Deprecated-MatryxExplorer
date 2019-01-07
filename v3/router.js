@@ -37,6 +37,6 @@ router.use('/submissions', require('./routes/submissions'))
 // router.use('/activity', require('./routes/activity'))
 router.use('/token', require('./routes/token'))
 router.use('/ipfs', require('./routes/ipfs'))
-
+router.use('/vote', require('./routes/vote'))
 
 module.exports = router
