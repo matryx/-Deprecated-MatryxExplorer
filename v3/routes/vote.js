@@ -1,9 +1,14 @@
 const router = require('express').Router()
 const db = require('../dbService')
 
+router.get('/', (req, res, next) => {
+  res.status(200).json({
+    success: true,
+    results: {}
+  })
+})
 router.post('/', async (req, res, next) => {
   const { voter, vote_content, vote } = req.body
-
   let upvote
   if (vote === 'up') {
     upvote = 1

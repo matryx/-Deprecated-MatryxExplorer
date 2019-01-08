@@ -38,5 +38,6 @@ router.use('/submissions', require('./routes/submissions'))
 router.use('/token', require('./routes/token'))
 router.use('/ipfs', require('./routes/ipfs'))
 router.use('/vote', require('./routes/vote'))
+router.use('/signature', require('./routes/signature'))
 
 module.exports = router
