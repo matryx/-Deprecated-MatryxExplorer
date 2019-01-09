@@ -1,8 +1,8 @@
 
 exports.up = function(knex, Promise) {
-  return knex.schema.createTable('votes', table => {
-    table.string('vote_content')
+  return knex.schema.createTable('vote', table => {
     table.string('voter')
+    table.string('recipient')
     table.integer('upvote')
     table.timestamps(true, true)
   })
