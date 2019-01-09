@@ -12,6 +12,10 @@ app.use(require('cookie-parser')(process.env.SECRET || 'Yum!')) // 🍪
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(bodyParser.text())
+app.use((req, res, next) => {
+  req.args = Object.assign({}, req.params, req.query, req.body)
+  next()
+})
 
 // Routes
 app.get('/', (req, res) => {
