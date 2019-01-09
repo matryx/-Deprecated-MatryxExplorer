@@ -10,6 +10,10 @@ app.use(require('morgan')('dev')) // logging
 app.use(require('cors')()) // CORS
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+app.use((req, res, next) => {
+  req.args = Object.assign({}, req.params, req.query, req.body)
+  next()
+})
 
 // Routes
 app.get('/', (req, res) => {
