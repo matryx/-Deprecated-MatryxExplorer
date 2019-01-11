@@ -1,6 +1,5 @@
 const Joi = require('joi')
 const db = require('./index')
-const table = db('vote')
 
 function objToLowerCase(oldObj = {}, specificKeys = []) {
   return Object.keys(oldObj).reduce((newObj, currentKey) => {
@@ -31,7 +30,7 @@ module.exports = {
     })
     const whereParams = objToLowerCase(cleaned)
 
-    let query = table.select('voter', 'recipient', 'direction')
+    let query = db('vote').select('voter', 'recipient', 'direction')
 
     const whereClause = Object.keys(whereParams).reduce((newObj, currentKey) => {
       const value = whereParams[currentKey]
@@ -55,6 +54,7 @@ module.exports = {
     })
     const { voter, recipient, direction } = objToLowerCase(cleaned)
 
+    const table = db('vote')
     const query = table.where({
       voter,
       recipient,
