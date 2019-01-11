@@ -7,7 +7,7 @@ const asyncWrap = require('../middleware/asyncWrap')
 router.get('/', asyncWrap(async (req, res) => {
   const results = await getVotes(req.args)
   res.json({
-    succes: true,
+    success: true,
     results: results
   })
 }))
