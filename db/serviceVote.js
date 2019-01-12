@@ -56,7 +56,6 @@ module.exports = {
       db('vote').where({ recipient, direction: 'up' }).count(), // = something like [ { 'count(*)': 2 } ]
       db('vote').where({ recipient, direction: 'down' }).count() // = something like [ { 'count(*)': 2 } ]
     ])
-    console.log(recipient, votesUpResults, votesDownResults)
     const votesUp = votesUpResults[0]['count(*)']
     const votesDown = votesDownResults[0]['count(*)']
     return {
