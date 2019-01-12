@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { getVotes, castVote } = require('../../db/serviceVote')
+const { getVotes, castVote, getVoteCount } = require('../../db/serviceVote')
 const jsonParse = require('../middleware/jsonParse') // For cross-origin cookies. Must accept String or FormData
 const confirmSignature = require('../middleware/signature')
 const asyncWrap = require('../middleware/asyncWrap')
@@ -25,6 +25,14 @@ router.post('/', jsonParse, confirmSignature, asyncWrap(async (req, res) => {
       recipient,
       direction
     }
+  })
+}))
+
+router.get('/distribution', asyncWrap(async (req, res) => {
+  const results = await getVoteDistribution(req.args)
+  res.json({
+    success: true,
+    results: results
   })
 }))
 

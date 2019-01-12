@@ -11,7 +11,7 @@ const router = require('express').Router()
 
 const tournamentController = require('../controllers/tournamentController')
 const roundController = require('../controllers/roundController')
-const { getVotes } = require('../../db/serviceVote')
+const { getVoteDistribution } = require('../../db/serviceVote')
 const { errorHelper, validateAddress, validateTournament } = require('../helpers/responseHelpers')
 
 const abis = require('../helpers/getAbis')
@@ -39,15 +39,15 @@ router.get('/count', (req, res, next) => {
 
 // Return the tournament details for a specific tournament
 router.get('/address/:tournamentAddress', async (req, res, next) => {
+  const { tournamentAddress } = req.params
   try {
-    const { tournamentAddress } = req.params
     if (!await validateTournament(next, tournamentAddress)) return
 
-    const [tournament, votes] = await Promise.all([
+    const [tournament, voteDistribution,] = await Promise.all([
       tournamentController.getTournamentByAddress(tournamentAddress),
-      getVotes({ recipient: tournamentAddress })
+      getVoteDistribution({ recipient: tournamentAddress })
     ])
-    tournament.votes = votes
+    tournament.voteDistribution = voteDistribution
 
     return res.status(200).json({ tournament })
   } catch (error) {

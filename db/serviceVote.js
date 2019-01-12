@@ -46,6 +46,25 @@ module.exports = {
     return query
   },
 
+  async getVoteDistribution(params) {
+    const cleaned = validate(params, {
+      recipient: validWeb3Address.required()
+    })
+    const { recipient } = objToLowerCase(cleaned)
+
+    const [votesUpResults, votesDownResults] = await Promise.all([
+      db('vote').where({ recipient, direction: 'up' }).count(), // = something like [ { 'count(*)': 2 } ]
+      db('vote').where({ recipient, direction: 'down' }).count() // = something like [ { 'count(*)': 2 } ]
+    ])
+    console.log(recipient, votesUpResults, votesDownResults)
+    const votesUp = votesUpResults[0]['count(*)']
+    const votesDown = votesDownResults[0]['count(*)']
+    return {
+      up: votesUp,
+      down: votesDown
+    }
+  },
+
   async castVote(params) {
     const cleaned = validate(params, {
       voter: validWeb3Address.required(),
@@ -54,8 +73,7 @@ module.exports = {
     })
     const { voter, recipient, direction } = objToLowerCase(cleaned)
 
-    const table = db('vote')
-    const query = table.where({
+    const query = db('vote').where({
       voter,
       recipient,
     })
@@ -69,7 +87,7 @@ module.exports = {
         direction
       })
     }
-    return table.insert({
+    return db('vote').insert({
       voter,
       recipient,
       direction
