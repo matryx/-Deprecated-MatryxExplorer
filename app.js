@@ -8,7 +8,7 @@ app.use(require('helmet')()) // security headers
 app.use(require('compression')()) // compression
 app.use(require('morgan')('dev')) // logging
 app.use(require('cors')()) // CORS
-app.use(require('cookie-parser')(process.env.SECRET || 'Yum!')) // 🍪
+app.use(require('cookie-parser')(process.env.COOKIES_SECRET || 'Yum!')) // 🍪
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(bodyParser.text())
