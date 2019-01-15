@@ -12,6 +12,7 @@ const Joi = require('joi')
 const jwt = require('jsonwebtoken');
 const sig = require('eth-sig-util')
 
+const auth = require('../middleware/auth')
 const asyncWrap = require('../middleware/asyncWrap')
 const { getWeb3User } = require('../../db/serviceUser')
 const userController = require('../controllers/userController')
@@ -76,6 +77,13 @@ router.post('/login', asyncWrap(async (req, res) => {
       user,
       token
     }
+  })
+}))
+
+router.get('/session', auth, asyncWrap(async (req, res) => {
+  res.status(200).json({
+    success: true,
+    results: req.user
   })
 }))
 
