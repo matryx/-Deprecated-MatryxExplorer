@@ -44,7 +44,7 @@ router.post('/login', asyncWrap(async (req, res) => {
   }
 
   // Validate the inputs
-  const { owner, signature } = Joi.attempt(args.web3Signature,
+  const { owner, signature } = Joi.attempt(args,
     {
       owner: Joi.string().trim().length(42).required(),
       signature: Joi.string().trim().length(132).required(),
