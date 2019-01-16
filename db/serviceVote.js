@@ -19,7 +19,7 @@ function validate(input, schema) {
   return Joi.attempt(input, schema, { abortEarly: false })
 }
 const validWeb3Address = Joi.string().trim().length(42)
-const validDirection = Joi.string().trim().default('').allow('up', 'down', '')
+const validDirection = Joi.string().trim().allow('up', 'down', '', null).default('')
 
 module.exports = {
   getVotes(params) {
