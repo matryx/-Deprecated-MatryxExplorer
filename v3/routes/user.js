@@ -14,7 +14,7 @@ const sig = require('eth-sig-util')
 
 const auth = require('../middleware/auth')
 const asyncWrap = require('../middleware/asyncWrap')
-const { getWeb3User } = require('../../db/serviceUser')
+const { getWeb3User, updateUser } = require('../../db/serviceUser')
 const userController = require('../controllers/userController')
 const { errorHelper, validateAddress } = require('../helpers/responseHelpers')
 
@@ -84,6 +84,17 @@ router.get('/session', auth, asyncWrap(async (req, res) => {
   res.status(200).json({
     success: true,
     results: req.user
+  })
+}))
+
+router.post('/update', auth, asyncWrap(async (req, res) => {
+  const user = await updateUser({
+    id: req.user.id,
+    updates: req.args.updates
+  })
+  res.status(200).json({
+    success: true,
+    results: user
   })
 }))
 

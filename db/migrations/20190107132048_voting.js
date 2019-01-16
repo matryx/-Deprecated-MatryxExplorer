@@ -3,7 +3,7 @@ exports.up = function(knex, Promise) {
   return Promise.all([
     knex.schema.createTable('user', table => {
       table.increments('id');
-      table.string('web3_address').unique()
+      table.string('eth_address').unique()
       table.string('email')
       table.timestamps(true, true)
     }),

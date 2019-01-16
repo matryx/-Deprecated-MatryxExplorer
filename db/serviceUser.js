@@ -1,8 +1,12 @@
 const Joi = require('joi')
 const db = require('./index')
 
-const selectUser = () => {
-  return db('user').select('id', 'web3_address', 'email')
+function validate(input, schema) {
+  return Joi.attempt(input, schema, { abortEarly: false })
+}
+
+const selectUser = (columns = ['id', 'eth_address', 'email']) => {
+  return db('user').select(columns)
 }
 
 module.exports = {
@@ -14,16 +18,29 @@ module.exports = {
 
   async getWeb3User(address) {
     const valid = Joi.attempt(address, Joi.string().trim().length(42))
-    const web3_address = valid.toLowerCase()
+    const eth_address = valid.toLowerCase()
 
-    const existingUsers = await selectUser().where({ web3_address })
+    const existingUsers = await selectUser().where({ eth_address })
     if (existingUsers.length) {
       return existingUsers[0]
     }
 
     // Create the user then return the infos
-    await db('user').insert({ web3_address })
-    const newUsers = await selectUser().where({ web3_address })
+    await db('user').insert({ eth_address })
+    const newUsers = await selectUser().where({ eth_address })
     return newUsers[0]
+  },
+
+  async updateUser(params) {
+    const { id, updates } = validate(params, {
+      id: Joi.number().required(),
+      updates: Joi.object().keys({
+        email: Joi.string().trim().email().allow('', null).empty('').default('')
+      })
+    })
+
+    await db('user').where({ id }).update({ email: updates.email })
+    const users = await selectUser().where({ id })
+    return users[0]
   },
 }

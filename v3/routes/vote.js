@@ -12,7 +12,7 @@ router.get('/', asyncWrap(async (req, res) => {
 }))
 
 router.post('/', auth, asyncWrap(async (req, res) => {
-  const voter = req.user.web3_address
+  const voter = req.user.eth_address
   const { recipient, direction } = req.args
   await castVote({ voter, recipient, direction })
 
