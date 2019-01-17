@@ -18,14 +18,14 @@ function objToLowerCase(oldObj = {}, specificKeys = []) {
 function validate(input, schema) {
   return Joi.attempt(input, schema, { abortEarly: false })
 }
-const validWeb3Address = Joi.string().trim().length(42)
+const validEthAddress = Joi.string().trim().regex(/^0x[0-9A-Fa-f]{40}$/)
 const validDirection = Joi.string().trim().allow('up', 'down', '', null).default('')
 
 module.exports = {
   getVotes(params) {
     const cleaned = validate(params, {
-      voter: validWeb3Address,
-      recipient: validWeb3Address,
+      voter: validEthAddress,
+      recipient: validEthAddress,
       direction: validDirection
     })
     const whereParams = objToLowerCase(cleaned)
@@ -48,7 +48,7 @@ module.exports = {
 
   async getVoteDistribution(params) {
     const cleaned = validate(params, {
-      recipient: validWeb3Address.required()
+      recipient: validEthAddress.required()
     })
     const { recipient } = objToLowerCase(cleaned)
 
@@ -66,8 +66,8 @@ module.exports = {
 
   async castVote(params) {
     const cleaned = validate(params, {
-      voter: validWeb3Address.required(),
-      recipient: validWeb3Address.required(),
+      voter: validEthAddress.required(),
+      recipient: validEthAddress.required(),
       direction: validDirection
     })
     const { voter, recipient, direction } = objToLowerCase(cleaned)

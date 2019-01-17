@@ -5,19 +5,21 @@ function validate(input, schema) {
   return Joi.attempt(input, schema, { abortEarly: false })
 }
 
+const validEthAddress = Joi.string().trim().regex(/^0x[0-9A-Fa-f]{40}$/)
+
 const selectUser = (columns = ['id', 'eth_address', 'email']) => {
   return db('user').select(columns)
 }
 
 module.exports = {
   async getUserById(id) {
-    const userId = Joi.attempt(id, Joi.number());
+    const userId = validate(id, Joi.number());
     const users = await selectUser().where({ id: userId })
     return users[0] || null
   },
 
   async getWeb3User(address) {
-    const valid = Joi.attempt(address, Joi.string().trim().length(42))
+    const valid = validate(address, validEthAddress)
     const eth_address = valid.toLowerCase()
 
     const existingUsers = await selectUser().where({ eth_address })

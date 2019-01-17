@@ -80,12 +80,12 @@ router.post('/login', asyncWrap(async (req, res) => {
   })
 }))
 
-router.get('/session', auth, asyncWrap(async (req, res) => {
+router.get('/session', auth, (req, res) => {
   res.status(200).json({
     success: true,
     results: req.user
   })
-}))
+})
 
 router.post('/update', auth, asyncWrap(async (req, res) => {
   const user = await updateUser({
