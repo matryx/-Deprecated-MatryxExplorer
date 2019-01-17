@@ -90,7 +90,9 @@ router.get('/session', auth, asyncWrap(async (req, res) => {
 router.post('/update', auth, asyncWrap(async (req, res) => {
   const user = await updateUser({
     id: req.user.id,
-    updates: req.args.updates
+    updates: {
+      email: req.args.updates.email
+    }
   })
   res.status(200).json({
     success: true,

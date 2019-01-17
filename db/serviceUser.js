@@ -39,7 +39,7 @@ module.exports = {
       })
     })
 
-    await db('user').where({ id }).update({ email: updates.email })
+    await db('user').where({ id }).update(updates)
     const users = await selectUser().where({ id })
     return users[0]
   },
