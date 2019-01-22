@@ -8,10 +8,17 @@ app.use(require('helmet')()) // security headers
 app.use(require('compression')()) // compression
 app.use(require('morgan')('dev')) // logging
 app.use(require('cors')()) // CORS
+app.use(require('cookie-parser')(process.env.COOKIES_SECRET || 'Yum!')) // 🍪
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+app.use(bodyParser.text())
 app.use((req, res, next) => {
-  req.args = Object.assign({}, req.params, req.query, req.body)
+  req.args = {}
+  Array('params', 'query', 'body').forEach(reqKey => {
+    if (typeof req[reqKey] === 'object') {
+      Object.assign(req.args, req[reqKey])
+    }
+  });
   next()
 })
 
@@ -38,11 +45,16 @@ app.use((error, req, res, next) => {
   // istanbul ignore next
   if (error.stack) console.error(`    ${error.stack}`)
 
-  // istanbul ignore next
-  res.status(error.status || 500)
+  if (error.isJoi) {
+    delete error.isJoi
+    return res.status(403).json({
+      success: false,
+      error: error
+    })
+  }
 
   // istanbul ignore next
-  res.json({
+  res.status(error.status || 500).json({
     error: {
       message: error.response || 'Something went wrong!',
       error: dev ? error : undefined

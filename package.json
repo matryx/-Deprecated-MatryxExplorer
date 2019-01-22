@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Running mocha tests\" && nyc mocha --require test/helper.js --exit",
-    "dev": "echo \"Starting MatryxExplorer in development\" && knex migrate:latest --knexfile ipfs-cache/knexfile.js && nodemon server.js ",
-    "start": "echo \"Starting MatryxExplorer with pm2\" && knex migrate:latest --knexfile ipfs-cache/knexfile.js && pm2-runtime start server.js "
+    "dev": "echo \"Starting MatryxExplorer in development\" && knex migrate:latest --knexfile db/knexfile.js && nodemon server.js ",
+    "start": "echo \"Starting MatryxExplorer with pm2\" && knex migrate:latest --knexfile db/knexfile.js && pm2-runtime start server.js "
   },
   "repository": {
     "type": "git",
@@ -32,14 +32,18 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "compression": "^1.7.3",
+    "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
     "dotenv": "^6.0.0",
+    "eth-sig-util": "^2.1.0",
     "ethers": "^3.0.27",
     "express": "^4.16.3",
     "form-data": "^2.3.2",
     "formidable": "^1.2.1",
     "helmet": "^3.13.0",
     "isomorphic-fetch": "^2.2.1",
+    "joi": "^14.3.1",
+    "jsonwebtoken": "^8.4.0",
     "knex": "^0.15.2",
     "morgan": "^1.9.0",
     "pg": "^7.5.0",
