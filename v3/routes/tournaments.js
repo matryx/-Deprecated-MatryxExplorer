@@ -7,11 +7,11 @@
  * Licensed under ISC. See LICENSE.md in project root.
  */
 
-const express = require('express')
-const router = express.Router()
+const router = require('express').Router()
 
 const tournamentController = require('../controllers/tournamentController')
 const roundController = require('../controllers/roundController')
+const { getVoteDistribution } = require('../../db/serviceVote')
 const { errorHelper, validateAddress, validateTournament } = require('../helpers/responseHelpers')
 
 const abis = require('../helpers/getAbis')
@@ -40,12 +40,19 @@ router.get('/count', (req, res, next) => {
 // Return the tournament details for a specific tournament
 router.get('/address/:tournamentAddress', async (req, res, next) => {
   const { tournamentAddress } = req.params
-  if (!await validateTournament(next, tournamentAddress)) return
+  try {
+    if (!await validateTournament(next, tournamentAddress)) return
 
-  tournamentController
-    .getTournamentByAddress(tournamentAddress)
-    .then(tournament => res.status(200).json({ tournament }))
-    .catch(errorHelper(next, `Error getting Tournament ${tournamentAddress}`))
+    const [tournament, voteDistribution,] = await Promise.all([
+      tournamentController.getTournamentByAddress(tournamentAddress),
+      getVoteDistribution({ recipient: tournamentAddress })
+    ])
+    tournament.voteDistribution = voteDistribution
+
+    return res.status(200).json({ tournament })
+  } catch (error) {
+    errorHelper(next, `Error getting Tournament ${tournamentAddress}`)
+  }
 })
 
 // Return the tournament owner for a specific tournament

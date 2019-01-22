@@ -15,7 +15,7 @@ describe('IPFS tests:', () => {
         .post('/ipfs/upload')
         .field('description', 'test')
         .field('jsonContent', '{"json":"test"}')
-        .attach('filesContent', './.env', '.env')
+        .attach('filesContent', './README.md', 'README')
         .end((err, res) => {
           expect(res.body.descriptionHash).to.equal('ipfs hash')
           expect(res.body.folderHash).to.equal('ipfs hash')

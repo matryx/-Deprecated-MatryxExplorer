@@ -9,7 +9,7 @@
 
 const fs = require('fs')
 const FormData = require('form-data')
-const cache = require('../../../ipfs-cache')
+const { cache } = require('../../../db/serviceIpfs')
 
 let ipfsCalls = {}
 

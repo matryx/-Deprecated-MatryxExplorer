@@ -18,7 +18,6 @@ const { errorHelper } = require('../helpers/responseHelpers')
 const MatryxPlatform = require('../contracts/MatryxPlatform')
 const abis = require('../helpers/getAbis')
 
-const latestVersion = process.env.PLATFORM_VERSION
 const networkId = 3 // Ropsten
 
 let Platform, lastUpdate
@@ -53,8 +52,7 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/getInfo/:version?', (req, res, next) => {
-  // istanbul ignore next
-  let version = req.params.version || latestVersion
+  const { version } = req.params
 
   externalApiCalls
     .getMatryxPlatformInfo(version)
@@ -67,8 +65,7 @@ router.get('/getInfo/:version?', (req, res, next) => {
 })
 
 router.get('/getAddress/:version?', (req, res, next) => {
-  // istanbul ignore next
-  let version = req.params.version || latestVersion
+  const { version } = req.params
 
   externalApiCalls
     .getMatryxPlatformInfo(version)
@@ -80,8 +77,7 @@ router.get('/getAddress/:version?', (req, res, next) => {
 })
 
 router.get('/getAbi/:version?', (req, res, next) => {
-  // istanbul ignore next
-  let version = req.params.version || latestVersion
+  const { version } = req.params
 
   externalApiCalls
     .getMatryxPlatformInfo(version)
