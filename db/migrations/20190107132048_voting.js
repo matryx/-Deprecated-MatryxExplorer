@@ -13,10 +13,13 @@ exports.up = function(knex, Promise) {
       table.string('recipient')
       table.string('direction')
       table.timestamps(true, true)
-    }),
+    })
   ])
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTableIfExists('votes')
+  return Promise.all([
+    knex.schema.dropTableIfExists('user'),
+    knex.schema.dropTableIfExists('vote')
+  ])
 };
