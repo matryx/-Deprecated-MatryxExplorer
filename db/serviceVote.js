@@ -53,14 +53,16 @@ module.exports = {
     const { recipient } = objToLowerCase(cleaned)
 
     const [votesUpResults, votesDownResults] = await Promise.all([
-      db('vote').where({ recipient, direction: 'up' }).count(), // = something like [ { 'count(*)': 2 } ]
-      db('vote').where({ recipient, direction: 'down' }).count() // = something like [ { 'count(*)': 2 } ]
+      db('vote').where({ recipient, direction: 'up' }).count(),
+      db('vote').where({ recipient, direction: 'down' }).count()
     ])
-    const votesUp = votesUpResults[0]['count(*)']
-    const votesDown = votesDownResults[0]['count(*)']
+    // SQLite returns [ { 'count(*)': 2 } ] while Postgres returns [ { count: 2 } ]
+    const isSqlite = typeof votesUpResults[0]['count(*)'] !== 'undefined'
+    const countKey = isSqlite ? 'count(*)' : 'count'
+
     return {
-      up: votesUp,
-      down: votesDown
+      up: votesUpResults[0][countKey],
+      down: votesDownResults[0][countKey]
     }
   },
 
