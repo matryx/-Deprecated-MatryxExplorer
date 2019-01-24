@@ -14,7 +14,6 @@ const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 const submissionController = require('../controllers/submissionController')
 const { errorHelper, validateAddress } = require('../helpers/responseHelpers')
 
-const latestVersion = process.env.PLATFORM_VERSION
 
 // Return a message showing this endpoint series handles submission requests
 router.get('/', (req, res, next) => {
@@ -24,8 +23,7 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/getAbi/:version?', (req, res, next) => {
-  // istanbul ignore next
-  let version = req.params.version || latestVersion
+  const { version } = req.params
 
   externalApiCalls
     .getMatryxSubmissionAbi(version)

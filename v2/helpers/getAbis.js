@@ -9,7 +9,7 @@
 
 const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 
-const version = process.env.PLATFORM_VERSION
+const version = process.env.PLATFORM_VERSION || "QA"
 const networkId = 3 // ropsten
 
 const getAbis = {

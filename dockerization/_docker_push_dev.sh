@@ -1,16 +1,16 @@
 #!/bin/bash
 
-FILE=./dev.Dockerfile
 TAG=dev
+
+FILE=./dockerization/Dockerfile
 IMAGE=matryx-alpha-explorer
 REPO=441665557124.dkr.ecr.us-west-1.amazonaws.com
 
-cp $FILE ../Dockerfile
-
+# Set the context to project root
 cd ..
 
 # Build docker
-docker build --no-cache -t $IMAGE:$TAG .
+docker build -f $FILE --no-cache -t $IMAGE:$TAG .
 # Tag docker
 docker tag $IMAGE:$TAG $REPO/$IMAGE:$TAG
 # Upload docker to secured repo

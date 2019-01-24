@@ -14,8 +14,6 @@ const externalApiCalls = require('../controllers/gateway/externalApiCalls')
 const roundController = require('../controllers/roundController')
 const { errorHelper, validateAddress } = require('../helpers/responseHelpers')
 
-const latestVersion = process.env.PLATFORM_VERSION
-
 // Return a list of all rounds
 router.get('/', (req, res, next) => {
   res.status(200).json({
@@ -24,8 +22,7 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/getAbi/:version?', (req, res, next) => {
-  // istanbul ignore next
-  let version = req.params.version || latestVersion
+  const { version } = req.params
 
   externalApiCalls
     .getMatryxRoundAbi(version)
