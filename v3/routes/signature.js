@@ -10,7 +10,10 @@ router.get('/', (req, res) => {
     .fill(0)
     .map(() => Math.floor(36 * Math.random()).toString(36))
     .join('')
-  const message = 'Signingature request ID: ' + unique
+    .toUpperCase()
+
+  // message must not be 32 characters in order for MetaMask to display as text
+  const message = 'Signature request ID ' + unique
 
   res.cookie(cookie, message, { maxAge: 30 * 1000, signed: true });
   res.json({ message })
