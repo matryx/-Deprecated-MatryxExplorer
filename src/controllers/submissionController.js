@@ -36,6 +36,7 @@ submissionController.getSubmission = async (roundAddress, commitHash) => {
     owner,
     title,
     description,
+    contentHash,
     fileHash: contentHash,
     reward,
     timeSubmitted
