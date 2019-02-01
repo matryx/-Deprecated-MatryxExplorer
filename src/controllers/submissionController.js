@@ -8,9 +8,9 @@
  */
 
 const ipfsCalls = require('./gateway/ipfsCalls')
-const MatryxSubmission = require('../contracts/MatryxSubmission')
 
 const abis = require('../helpers/getAbis')
+const contracts = require('../helpers/getContracts')
 
 let submissionController = {}
 

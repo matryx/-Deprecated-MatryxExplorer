@@ -3,7 +3,7 @@ require('isomorphic-fetch')
 const http = require('http')
 const https = require('https')
 const fs = require('fs')
-const app = require('./app')
+const app = require('./src/app')
 
 const httpPort = process.env.HTTP_PORT || 3000
 const httpsPort = process.env.HTTPS_PORT || 3443

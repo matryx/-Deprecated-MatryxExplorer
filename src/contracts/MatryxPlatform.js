@@ -41,29 +41,13 @@ module.exports = class MatryxPlatform extends Contract {
     return +await this.contract.getTournamentCount()
   }
 
-  async getTournaments(startIndex = 0, count = 0) {
-    return await this.contract.getTournaments(startIndex, count)
-  }
-
-  // Category
-
-  async getCategories(startIndex = 0, count = 0) {
-    const categories = await this.contract.getCategories(startIndex, count)
-    return categories.map(c => utils.bytesToString([c]))
-  }
-
-  async getTournamentsByCategory(category, startIndex = 0, count = 0) {
-    let bytes = utils.stringToBytes(category)
-    return await this.contract.getTournamentsByCategory(bytes, startIndex, count)
+  async getTournaments() {
+    return await this.contract.getTournaments()
   }
 
   // User
 
   async getTournamentsByUser(address) {
     return await this.contract.getTournamentsByUser(address)
-  }
-
-  async getSubmissionsByUser(address) {
-    return await this.contract.getSubmissionsByUser(address)
   }
 }

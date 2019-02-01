@@ -37,7 +37,7 @@ module.exports = class MatryxRound extends Contract {
 
   async getData() {
     const { info, details } = await this.contract.getData()
-    let { tournament, submissions, winners, closed } = info
+    let { tournament, allSubmissions, winners, closed } = info
     let { start, end, review, bounty } = details
 
     // parse data
@@ -50,7 +50,7 @@ module.exports = class MatryxRound extends Contract {
 
     return {
       tournament,
-      submissions,
+      submissions: allSubmissions,
       winners,
       start,
       end,
@@ -89,8 +89,8 @@ module.exports = class MatryxRound extends Contract {
     return utils.fromWei(remainingBounty)
   }
 
-  async getSubmissions(startIndex = 0, count = 0) {
-    return await this.contract.getSubmissions(startIndex, count)
+  async getSubmissions() {
+    return await this.contract.getSubmissions()
   }
 
   async getSubmissionCount() {

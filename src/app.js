@@ -1,8 +1,6 @@
 const app = require('express')()
 const bodyParser = require('body-parser')
 
-const version = process.env.CURRENT_VERSION || "v3"
-
 // Middlewares
 app.use(require('helmet')()) // security headers
 app.use(require('compression')()) // compression
@@ -28,9 +26,7 @@ app.get('/', (req, res) => {
 })
 app.get('/health-check', (req, res) => res.sendStatus(200))
 
-app.use('/v2', require('./v2/router'))
-app.use('/v3', require('./v3/router'))
-app.use('/', require(`./${version}/router`))
+app.use('/', require(`./router`))
 
 // 404 error handling
 app.use((req, res, next) => {

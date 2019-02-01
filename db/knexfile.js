@@ -12,10 +12,10 @@ module.exports = {
   production: {
     client: 'postgresql',
     connection: {
-      host: process.env.IPFS_CACHE_HOST,
-      database: process.env.IPFS_CACHE_NAME,
-      user: process.env.IPFS_CACHE_USER,
-      password: process.env.IPFS_CACHE_PASS
+      host: process.env.DB_HOST,
+      database: process.env.DB_NAME,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS
     },
     pool: {
       min: 2,

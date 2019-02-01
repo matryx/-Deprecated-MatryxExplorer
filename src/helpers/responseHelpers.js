@@ -62,8 +62,6 @@ const validateRound = async (next, address) => {
 // inputs: response next and potential Submission address
 // output: true if address is Submission
 const validateSubmission = async (next, address) => {
-  if (!validateAddress(next, address)) return
-
   const Platform = contracts.platform
   const isS = await Platform.isSubmission(address)
   if (!isS) {

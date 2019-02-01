@@ -38,9 +38,9 @@ class ABIs extends EventEmitter {
     this.system = null
     this.user = null
     this.platform = null
+    this.commit = null
     this.tournament = null
     this.round = null
-    this.submission = null
 
     this.loadedAbis = new Promise(async done => {
       await this.update()
@@ -65,14 +65,14 @@ class ABIs extends EventEmitter {
         loadArtifact('MatryxSystem'),
         loadArtifact('IMatryxUser'),
         loadArtifact('IMatryxPlatform'),
+        loadArtifact('IMatryxCommit'),
         loadArtifact('IMatryxTournament'),
         loadArtifact('IMatryxRound'),
-        loadArtifact('IMatryxSubmission'),
         loadArtifact('Migrations')
       ])
 
       const [
-        token, system, user, platform, tournament, round, submission, migrations
+        token, system, user, platform, commit, tournament, round, migrations
       ] = jsons
 
       const artifacts = {
@@ -80,9 +80,9 @@ class ABIs extends EventEmitter {
         system,
         user,
         platform,
+        commit,
         tournament,
-        round,
-        submission
+        round
       }
 
       const systemAddress = system.networks[networkId].address
@@ -90,9 +90,10 @@ class ABIs extends EventEmitter {
 
       // TODO: put in .env
       const version = 1 // await system.getVersion()
-      const [userAddress, platformAddress] = await Promise.all([
+      const [userAddress, platformAddress, commitAddress] = await Promise.all([
         System.getContract(version, 'MatryxUser'),
-        System.getContract(version, 'MatryxPlatform')
+        System.getContract(version, 'MatryxPlatform'),
+        System.getContract(version, 'MatryxCommit')
       ])
 
       const abis = {}
@@ -107,6 +108,7 @@ class ABIs extends EventEmitter {
       abis.system.address = systemAddress
       abis.user.address = userAddress
       abis.platform.address = platformAddress
+      abis.commit.address = commitAddress
       Object.assign(this, abis)
 
       this.lastUpdate = migrations.updatedAt
