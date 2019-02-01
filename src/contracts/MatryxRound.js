@@ -89,6 +89,17 @@ module.exports = class MatryxRound extends Contract {
     return utils.fromWei(remainingBounty)
   }
 
+  async getSubmission(sHash) {
+    const submission = await this.contract.getSubmission(sHash)
+    let { title, descHash, reward } = submission
+
+    title = utils.bytesToString(title)
+    descHash = utils.bytesToString(descHash)
+    reward = utils.fromWei(reward)
+
+    return { title, descHash, reward }
+  }
+
   async getSubmissions() {
     return await this.contract.getSubmissions()
   }

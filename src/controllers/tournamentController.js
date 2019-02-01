@@ -11,7 +11,6 @@ const ipfsCalls = require('./gateway/ipfsCalls')
 
 const MatryxTournament = require('../contracts/MatryxTournament')
 const MatryxRound = require('../contracts/MatryxRound')
-const MatryxSubmission = require('../contracts/MatryxSubmission')
 
 const abis = require('../helpers/getAbis')
 const contracts = require('../helpers/getContracts')
@@ -27,14 +26,11 @@ tournamentController.getTournaments = async (query) => {
   const User = contracts.user
   const Platform = contracts.platform
 
-  // default to getting first 20 Tournaments
-  const params = { startIndex: 0, count: 20, ...query }
-
   let addresses
-  if (params.owner) {
-    addresses = await User.getTournaments(params.owner)
+  if (query.owner) {
+    addresses = await User.getTournaments(query.owner)
   } else {
-    addresses = await Platform.getTournaments(params.startIndex, params.count)
+    addresses = await Platform.getTournaments()
   }
 
   let promises = addresses.map(async address => {
@@ -153,15 +149,9 @@ tournamentController.getTournamentByAddress = async (address) => {
     const Round = new MatryxRound(rAddress, abis.round.abi)
 
     const winningSubs = await Round.getWinningSubmissions()
-    const winningSubPromises = winningSubs.map(async sAddress => {
-      const Submission = new MatryxSubmission(sAddress, abis.submission.abi)
-
-      const [title, reward] = await Promise.all([
-        Submission.getTitle(),
-        Submission.getTotalWinnings()
-      ])
-
-      return { address: sAddress, title, reward }
+    const winningSubPromises = winningSubs.map(async sHash => {
+      const { title, reward } = await Round.getSubmission(sHash)
+      return { commitHash: sHash, title, reward }
     })
 
     return await Promise.all(winningSubPromises)
@@ -218,10 +208,9 @@ tournamentController.getAllRoundAddresses = (tournamentAddress) => {
   return Tournament.getRounds()
 }
 
-// roundId-1 here because ID is 1-based, index is 0-based
-tournamentController.getRoundAddress = async (tournamentAddress, roundId) => {
+tournamentController.getRoundAddress = async (tournamentAddress, roundIndex) => {
   const rounds = await tournamentController.getAllRoundAddresses(tournamentAddress)
-  return rounds[roundId - 1]
+  return rounds[roundIndex]
 }
 
 tournamentController.getTournamentsByCategory = (category) => {

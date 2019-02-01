@@ -11,7 +11,7 @@ const express = require('express')
 const router = express.Router()
 
 const submissionController = require('../controllers/submissionController')
-const { errorHelper, validateSubmission } = require('../helpers/responseHelpers')
+const { errorHelper, validateRound, validateTournament } = require('../helpers/responseHelpers')
 
 const abis = require('../helpers/getAbis')
 
@@ -26,26 +26,32 @@ router.get('/getAbi', (req, res, next) => {
   res.status(200).json(abis.submission)
 })
 
-// Return the submission details for a specific submission address
-router.get('/address/:submissionAddress', async (req, res, next) => {
-  const { submissionAddress } = req.params
-  if (!await validateSubmission(next, submissionAddress)) return
+// Return the submission details for a round address and commit hash
+router.get('/by-round', async (req, res, next) => {
+  const { roundAddress, commitHash } = req.args
+  if (!await validateRound(next, roundAddress)) return
+
+  // TODO validate commit
+  // if (!await validateCommit(next, commitHash)) return
 
   submissionController
-    .getSubmissionByAddress(submissionAddress)
+    .getSubmission(roundAddress, commitHash)
     .then(submission => res.status(200).json({ submission }))
-    .catch(errorHelper(next, `Error getting Submission ${submissionAddress}`))
+    .catch(errorHelper(next, `Error getting Submission ${commitHash} on Round ${roundAddress}`))
 })
 
-// Return the submission owner/author for a specific submission address
-router.get('/address/:submissionAddress/owner', async (req, res, next) => {
-  const { submissionAddress } = req.params
-  if (!await validateSubmission(next, submissionAddress)) return
+// Return the submission details for a tournament address, round index, and commit hash
+router.get('/by-tournament', async (req, res, next) => {
+  const { tournamentAddress, roundIndex, commitHash } = req.args
+  if (!await validateTournament(next, tournamentAddress)) return
+
+  // TODO validate commit
+  // if (!await validateCommit(next, commitHash)) return
 
   submissionController
-    .getSubmissionOwnerByAddress(submissionAddress)
-    .then(owner => res.status(200).json({ owner }))
-    .catch(errorHelper(next, `Error getting Submission ${submissionAddress} owner`))
+    .getSubmissionFromTournament(tournamentAddress, roundIndex, commitHash)
+    .then(submission => res.status(200).json({ submission }))
+    .catch(errorHelper(next, `Error getting Submission ${commitHash} on Tournament ${tournamentAddress}`))
 })
 
 module.exports = router

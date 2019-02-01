@@ -36,7 +36,6 @@ module.exports = class MatryxTournament extends Contract {
   async getDetails() {
     let {
       title,
-      category,
       descHash,
       fileHash,
       bounty,
@@ -45,7 +44,6 @@ module.exports = class MatryxTournament extends Contract {
 
     // parse data
     title = utils.bytesToString(title)
-    category = utils.bytesToString([category])
     descHash = utils.bytesToString(descHash)
     fileHash = utils.bytesToString(fileHash)
     bounty = utils.fromWei(bounty)
@@ -53,7 +51,7 @@ module.exports = class MatryxTournament extends Contract {
 
     return {
       title,
-      category,
+      // category, // TODO categories in db
       descHash,
       fileHash,
       bounty,

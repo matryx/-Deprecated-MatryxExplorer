@@ -35,13 +35,13 @@ const validateTournament = async (next, address) => {
   if (!validateAddress(next, address)) return
 
   const Platform = contracts.platform
-  const isT = await Platform.isTournament(address)
-  if (!isT) {
+  const isTournament = await Platform.isTournament(address)
+  if (!isTournament) {
     const error = new Error(`Tournament ${address} not found`)
     error.status = 404
     errorHelper(next, error.message)(error)
   }
-  return isT
+  return isTournament
 }
 
 // inputs: response next and potential Round address
@@ -50,26 +50,20 @@ const validateRound = async (next, address) => {
   if (!validateAddress(next, address)) return
 
   const Platform = contracts.platform
-  const isR = await Platform.isRound(address)
-  if (!isR) {
+  const isRound = await Platform.isRound(address)
+  if (!isRound) {
     const error = new Error(`Round ${address} not found`)
     error.status = 404
     errorHelper(next, error.message)(error)
   }
-  return isR
+  return isRound
 }
 
-// inputs: response next and potential Submission address
-// output: true if address is Submission
-const validateSubmission = async (next, address) => {
-  const Platform = contracts.platform
-  const isS = await Platform.isSubmission(address)
-  if (!isS) {
-    const error = new Error(`Submission ${address} not found`)
-    error.status = 404
-    errorHelper(next, error.message)(error)
-  }
-  return isS
+// inputs: response next and potential Commit hash
+// output: true if address is Commit
+const validateCommit = async (next, hash) => {
+  // TODO validate with joi
+  throw new Error("validateCommit not yet implemented")
 }
 
 module.exports = {
@@ -77,5 +71,5 @@ module.exports = {
   validateAddress,
   validateTournament,
   validateRound,
-  validateSubmission
+  validateCommit
 }

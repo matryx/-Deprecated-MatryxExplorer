@@ -11,13 +11,14 @@ const ipfsCalls = require('./gateway/ipfsCalls')
 
 const MatryxTournament = require('../contracts/MatryxTournament')
 const MatryxRound = require('../contracts/MatryxRound')
-const MatryxSubmission = require('../contracts/MatryxSubmission')
 
 const abis = require('../helpers/getAbis')
+const contracts = require('../helpers/getContracts')
 
 let roundController = {}
 
 roundController.getSubmissionsFromRound = async (roundAddress) => {
+  const Commit = contracts.commit
   const Round = new MatryxRound(roundAddress, abis.round.abi)
 
   let response = {
@@ -37,19 +38,18 @@ roundController.getSubmissionsFromRound = async (roundAddress) => {
       Round.getSubmissions()
     ])
 
-    let submissionPromises = submissions.map(async address => {
-      const Submission = new MatryxSubmission(address, abis.submission.abi)
-
-      let winner = winners.includes(address)
-
-      let [owner, title, timeSubmitted, reward] = await Promise.all([
-        Submission.getOwner(),
-        Submission.getTitle(),
-        Submission.getTimeSubmitted(),
-        Submission.getTotalWinnings()
+    let submissionPromises = submissions.map(async sHash => {
+      const [submission, commit] = await Promise.all([
+        Round.getSubmission(sHash),
+        Commit.getCommit(sHash)
       ])
 
-      return { address, owner, title, winner, reward, timeSubmitted }
+      let winner = winners.includes(sHash)
+
+      const { title, timeSubmitted, reward } = submission
+      const { owner } = commit
+
+      return { commitHash: sHash, owner, title, winner, reward, timeSubmitted }
     })
 
     response.submissions = await Promise.all(submissionPromises)

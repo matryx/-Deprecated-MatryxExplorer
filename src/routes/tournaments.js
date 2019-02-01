@@ -88,8 +88,8 @@ router.get('/address/:tournamentAddress/currentRound', async (req, res, next) =>
     .catch(errorHelper(next, `Error getting Tournament ${tournamentAddress} current round`))
 })
 
-router.get('/address/:tournamentAddress/round/:roundId', async (req, res, next) => {
-  const { tournamentAddress, roundId } = req.params
+router.get('/address/:tournamentAddress/round/:roundIndex', async (req, res, next) => {
+  const { tournamentAddress, roundIndex } = req.params
   if (!await validateTournament(next, tournamentAddress)) return
 
   // TODO: Clean the input for the correct response
@@ -97,12 +97,12 @@ router.get('/address/:tournamentAddress/round/:roundId', async (req, res, next) 
   // TODO: check to see if the round is even open at all
 
   try {
-    let roundAddress = await tournamentController.getRoundAddress(tournamentAddress, roundId)
+    let roundAddress = await tournamentController.getRoundAddress(tournamentAddress, roundIndex)
     let round = await roundController.getRoundDetails(roundAddress)
     res.status(200).json({ round })
   } catch (err) {
     // istanbul ignore next
-    errorHelper(next, `Error getting Tournament ${tournamentAddress} Round ${roundId}`)(err)
+    errorHelper(next, `Error getting Tournament ${tournamentAddress} Round ${roundIndex}`)(err)
   }
 })
 

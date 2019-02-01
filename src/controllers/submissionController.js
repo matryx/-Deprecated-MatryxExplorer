@@ -9,45 +9,45 @@
 
 const ipfsCalls = require('./gateway/ipfsCalls')
 
+const MatryxTournament = require('../contracts/MatryxTournament')
+const MatryxRound = require('../contracts/MatryxRound')
+
 const abis = require('../helpers/getAbis')
 const contracts = require('../helpers/getContracts')
 
 let submissionController = {}
 
-submissionController.getSubmissionOwnerByAddress = (submissionAddress) => {
-  const Submission = new MatryxSubmission(submissionAddress, abis.submission.abi)
-  return Submission.getOwner()
-}
+submissionController.getSubmission = async (roundAddress, commitHash) => {
+  const Commit = contracts.commit
+  const Round = new MatryxRound(roundAddress, abis.round.abi)
 
-submissionController.getSubmissionByAddress = async (address) => {
-  const Submission = new MatryxSubmission(address, abis.submission.abi)
+  const [submission, commit] = await Promise.all([
+    Round.getSubmission(commitHash),
+    Commit.getCommit(commitHash)
+  ])
 
-  let data = await Submission.getData()
-
-  const {
-    owner,
-    title,
-    descHash,
-    fileHash,
-    contributors,
-    references,
-    reward,
-    timeSubmitted
-  } = data
+  const { title, descHash, timeSubmitted, reward } = submission
+  const { owner, contentHash } = commit
 
   const description = await ipfsCalls.getIpfsFile(descHash)
 
   return {
-    address,
+    commitHash,
     owner,
     title,
     description,
-    fileHash,
-    contributors,
-    references,
+    fileHash: contentHash,
     reward,
-    timeSubmitted,
+    timeSubmitted
   }
+}
+
+submissionController.getSubmissionFromTournament = async (tournamentAddress, roundIndex, commitHash) => {
+  const Tournament = new MatryxTournament(tournamentAddress, abis.tournament.abi)
+  const rounds = await Tournament.getRounds()
+  const roundAddress = rounds[roundIndex]
+
+  return submissionController.getSubmission(roundAddress, commitHash)
 }
 
 module.exports = submissionController
