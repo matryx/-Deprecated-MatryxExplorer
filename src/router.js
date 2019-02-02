@@ -9,10 +9,11 @@
 
 const express = require('express')
 const router = express.Router()
+const asyncWrap = require('./middleware/asyncWrap')
 
 const abis = require('./helpers/getAbis')
 
-router.get('/update', async (req, res, next) => {
+router.get('/update', asyncWrap(async (req, res, next) => {
   try {
     const updated = await abis.attemptUpdate()
     const message = updated ? 'ABIs updated' : 'ABIs already up to date'
@@ -20,13 +21,13 @@ router.get('/update', async (req, res, next) => {
   } catch (err) {
     next({ response: 'ABIs update failed' })
   }
-})
+}))
 
 // make sure ABIs are loaded before continuing request
-router.use(async (req, res, next) => {
+router.use(asyncWrap(async (req, res, next) => {
   await abis.loadedAbis
   next()
-})
+}))
 
 router.get('/', (req, res) => res.sendStatus(200))
 router.use('/user', require('./routes/user'))

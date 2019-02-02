@@ -13,6 +13,7 @@ const tournamentController = require('../controllers/tournamentController')
 const roundController = require('../controllers/roundController')
 const { getVoteDistribution } = require('../../db/serviceVote')
 const { errorHelper, validateAddress, validateTournament } = require('../helpers/responseHelpers')
+const asyncWrap = require('../middleware/asyncWrap')
 
 const abis = require('../helpers/getAbis')
 
@@ -38,7 +39,7 @@ router.get('/count', (req, res, next) => {
 })
 
 // Return the tournament details for a specific tournament
-router.get('/address/:tournamentAddress', async (req, res, next) => {
+router.get('/address/:tournamentAddress', asyncWrap(async (req, res, next) => {
   const { tournamentAddress } = req.params
   try {
     if (!await validateTournament(next, tournamentAddress)) return
@@ -53,10 +54,10 @@ router.get('/address/:tournamentAddress', async (req, res, next) => {
   } catch (error) {
     errorHelper(next, `Error getting Tournament ${tournamentAddress}`)
   }
-})
+}))
 
 // Return the tournament owner for a specific tournament
-router.get('/address/:tournamentAddress/owner', async (req, res, next) => {
+router.get('/address/:tournamentAddress/owner', asyncWrap(async (req, res, next) => {
   const { tournamentAddress } = req.params
   if (!await validateTournament(next, tournamentAddress)) return
 
@@ -64,10 +65,10 @@ router.get('/address/:tournamentAddress/owner', async (req, res, next) => {
     .getTournamentOwnerByAddress(tournamentAddress)
     .then(owner => res.status(200).json({ owner }))
     .catch(errorHelper(next, `Error getting ${tournamentAddress} owner`))
-})
+}))
 
 // Return the submission count for a specific tournament
-router.get('/address/:tournamentAddress/submissionCount', async (req, res, next) => {
+router.get('/address/:tournamentAddress/submissionCount', asyncWrap(async (req, res, next) => {
   const { tournamentAddress } = req.params
   if (!await validateTournament(next, tournamentAddress)) return
 
@@ -75,10 +76,10 @@ router.get('/address/:tournamentAddress/submissionCount', async (req, res, next)
     .getSubmissionCount(tournamentAddress)
     .then(submissionCount => res.status(200).json({ submissionCount }))
     .catch(errorHelper(next, `Error getting Tournament ${tournamentAddress} Submission count`))
-})
+}))
 
 // Current Round response given a tournamentAddress
-router.get('/address/:tournamentAddress/currentRound', async (req, res, next) => {
+router.get('/address/:tournamentAddress/currentRound', asyncWrap(async (req, res, next) => {
   const { tournamentAddress } = req.params
   if (!await validateTournament(next, tournamentAddress)) return
 
@@ -86,9 +87,9 @@ router.get('/address/:tournamentAddress/currentRound', async (req, res, next) =>
     .getCurrentRound(tournamentAddress)
     .then(currentRound => res.status(200).json({ currentRound }))
     .catch(errorHelper(next, `Error getting Tournament ${tournamentAddress} current round`))
-})
+}))
 
-router.get('/address/:tournamentAddress/round/:roundIndex', async (req, res, next) => {
+router.get('/address/:tournamentAddress/round/:roundIndex', asyncWrap(async (req, res, next) => {
   const { tournamentAddress, roundIndex } = req.params
   if (!await validateTournament(next, tournamentAddress)) return
 
@@ -104,10 +105,10 @@ router.get('/address/:tournamentAddress/round/:roundIndex', async (req, res, nex
     // istanbul ignore next
     errorHelper(next, `Error getting Tournament ${tournamentAddress} Round ${roundIndex}`)(err)
   }
-})
+}))
 
 // Return if the potentantial address given is an entrant for a specific tournament
-router.get('/address/:tournamentAddress/isEntrant/:address', async (req, res, next) => {
+router.get('/address/:tournamentAddress/isEntrant/:address', asyncWrap(async (req, res, next) => {
   const { tournamentAddress, address } = req.params
   if (!await validateTournament(next, tournamentAddress)) return
   if (!validateAddress(next, address)) return
@@ -116,10 +117,10 @@ router.get('/address/:tournamentAddress/isEntrant/:address', async (req, res, ne
     .isEntrant(tournamentAddress, address)
     .then(isEntrant => res.status(200).json({ isEntrant }))
     .catch(errorHelper(next, `Error checking if ${address} is entrant of ${tournamentAddress}`))
-})
+}))
 
 // Return if the potentantial address given is an entrant for a specific tournament
-router.get('/address/:tournamentAddress/rounds', async (req, res, next) => {
+router.get('/address/:tournamentAddress/rounds', asyncWrap(async (req, res, next) => {
   const { tournamentAddress } = req.params
   if (!await validateTournament(next, tournamentAddress)) return
 
@@ -127,7 +128,7 @@ router.get('/address/:tournamentAddress/rounds', async (req, res, next) => {
     .getAllRoundAddresses(tournamentAddress)
     .then(rounds => res.status(200).json({ rounds }))
     .catch(errorHelper(next, `Error getting Tournament ${tournamentAddress} Round addresses`))
-})
+}))
 
 // Return if the potentantial address given is an entrant for a specific tournament
 router.get('/category/:category', (req, res, next) => {
