@@ -32,6 +32,7 @@ router.use(asyncWrap(async (req, res, next) => {
 router.get('/', (req, res) => res.sendStatus(200))
 router.use('/user', require('./routes/user'))
 router.use('/platform', require('./routes/platform'))
+router.use('/commit', require('./routes/commit'))
 router.use('/tournaments', require('./routes/tournaments'))
 router.use('/rounds', require('./routes/rounds'))
 router.use('/submissions', require('./routes/submissions'))
