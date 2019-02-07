@@ -81,17 +81,22 @@ module.exports = {
     const results = await query
 
     if (!direction) {
-      return query.del()
-    }
-    if (results.length) {
-      return query.update({
+      await query.del();
+    } else if (results.length) {
+      await query.update({
         direction
-      })
+      });
+    } else {
+      await db("vote").insert({
+        voter,
+        recipient,
+        direction
+      });
     }
-    return db('vote').insert({
+    return {
       voter,
       recipient,
       direction
-    })
+    };
   }
 }

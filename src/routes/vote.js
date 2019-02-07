@@ -14,16 +14,12 @@ router.get('/', asyncWrap(async (req, res) => {
 router.post('/', auth, asyncWrap(async (req, res) => {
   const voter = req.user.eth_address
   const { recipient, direction } = req.args
-  await castVote({ voter, recipient, direction })
+  const results = await castVote({ voter, recipient, direction });
 
   res.status(200).json({
     success: true,
-    results: {
-      voter,
-      recipient,
-      direction
-    }
-  })
+    results: results
+  });
 }))
 
 module.exports = router
