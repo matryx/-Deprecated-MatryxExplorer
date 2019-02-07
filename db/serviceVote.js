@@ -19,7 +19,7 @@ function validate(input, schema) {
   return Joi.attempt(input, schema, { abortEarly: false })
 }
 const validEthAddress = Joi.string().trim().regex(/^0x[0-9A-Fa-f]{40}$/)
-const validDirection = Joi.string().trim().allow('up', 'down', '', null).default('')
+const validDirection = Joi.string().trim().valid('up', 'down', '', null).default('')
 
 module.exports = {
   getVotes(params) {
