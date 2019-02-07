@@ -18,7 +18,7 @@ router.post('/', auth, asyncWrap(async (req, res) => {
 
   res.status(200).json({
     success: true,
-    results: results
+    results
   });
 }))
 
