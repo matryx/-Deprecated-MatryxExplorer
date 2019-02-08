@@ -43,12 +43,12 @@ describe('Rounds tests:', () => {
 
     it('matches round details structure', () => {
       let round = res.body.round
-      expect(round.tournamentAddress).to.be.a('string')
+      expect(round.tournament).to.be.a('string')
       expect(round.tournamentTitle).to.be.a('string')
       expect(round.tournamentDescription).to.be.a('string')
       expect(round.start).to.be.a('number')
       expect(round.end).to.be.a('number')
-      expect(round.reviewPeriodDuration).to.be.a('number')
+      expect(round.review).to.be.a('number')
       expect(round.bounty).to.be.a('number')
       expect(round.closed).to.be.a('boolean')
       expect(round.roundStatus).to.be.a('string')

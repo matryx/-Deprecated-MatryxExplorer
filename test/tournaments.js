@@ -19,7 +19,6 @@ describe('Tournaments tests:', () => {
 
     it('item in array matches tournament structure', () => {
       let tournament = res.body.tournaments[0]
-      console.log(res.body)
       expect(tournament).to.be.an('object')
       expect(tournament.address).to.be.a('string')
       expect(tournament.owner).to.be.a('string')
