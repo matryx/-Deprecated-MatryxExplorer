@@ -3,7 +3,8 @@ describe('Tournaments tests:', () => {
     let err, res
     before(done => {
       request.get('/tournaments/').end((e, r) => {
-        ;[err, res] = [e, r]
+        err = e
+        res = r
         done()
       })
     })
@@ -37,7 +38,8 @@ describe('Tournaments tests:', () => {
     let err, res
     before(done => {
       request.get('/tournaments/?owner=0x0000000000000000000000000000000000000000').end((e, r) => {
-        ;[err, res] = [e, r]
+        err = e
+        res = r
         done()
       })
     })
@@ -56,7 +58,8 @@ describe('Tournaments tests:', () => {
     let err, res
     before(done => {
       request.get('/tournaments/count/').end((e, r) => {
-        ;[err, res] = [e, r]
+        err = e
+        res = r
         done()
       })
     })
@@ -77,7 +80,8 @@ describe('Tournaments tests:', () => {
       request
         .get('/tournaments/address/0x0000000000000000000000000000000000000000')
         .end((e, r) => {
-          ;[err, res] = [e, r]
+          err = e
+          res = r
           done()
         })
     })
@@ -124,7 +128,8 @@ describe('Tournaments tests:', () => {
       request
         .get('/tournaments/address/0x0000000000000000000000000000000000000000/owner')
         .end((e, r) => {
-          ;[err, res] = [e, r]
+          err = e
+          res = r
           done()
         })
     })
@@ -154,7 +159,8 @@ describe('Tournaments tests:', () => {
       request
         .get('/tournaments/address/0x0000000000000000000000000000000000000000/submissionCount')
         .end((e, r) => {
-          ;[err, res] = [e, r]
+          err = e
+          res = r
           done()
         })
     })
@@ -184,7 +190,8 @@ describe('Tournaments tests:', () => {
       request
         .get('/tournaments/address/0x0000000000000000000000000000000000000000/currentRound')
         .end((e, r) => {
-          ;[err, res] = [e, r]
+          err = e
+          res = r
           done()
         })
     })
@@ -214,7 +221,8 @@ describe('Tournaments tests:', () => {
       request
         .get('/tournaments/address/0x0000000000000000000000000000000000000000/round/0')
         .end((e, r) => {
-          ;[err, res] = [e, r]
+          err = e
+          res = r
           done()
         })
     })
@@ -258,7 +266,8 @@ describe('Tournaments tests:', () => {
       request
         .get('/tournaments/address/0x0000000000000000000000000000000000000000/isEntrant/0x0000000000000000000000000000000000000000')
         .end((e, r) => {
-          ;[err, res] = [e, r]
+          err = e
+          res = r
           done()
         })
     })
@@ -297,7 +306,8 @@ describe('Tournaments tests:', () => {
       request
         .get('/tournaments/address/0x0000000000000000000000000000000000000000/rounds')
         .end((e, r) => {
-          ;[err, res] = [e, r]
+          err = e
+          res = r
           done()
         })
     })
