@@ -18,7 +18,9 @@ const contractUrl = branch => `https://raw.githubusercontent.com/matryx/MatryxPl
 
 const loadArtifact = async name => {
   const url = contractUrl(branch) + `${name}.json`
-  const res = await fetch(url)
+  const res = await fetch(url).catch(e => {
+    console.log('in loadArtifacts', e)
+  })
 
   if (!res.ok) {
     throw new Error(`Error getting ${name} ABI`)
@@ -43,16 +45,22 @@ class ABIs extends EventEmitter {
     this.round = null
 
     this.loadedAbis = new Promise(async done => {
-      await this.update()
+      await this.update().catch(e => {
+        console.log('in loadArtifacts', e)
+      })
       done()
     })
   }
 
   async attemptUpdate () {
-    const { updatedAt } = await loadArtifact('Migrations')
+    const { updatedAt } = await loadArtifact('Migrations').catch(e => {
+      console.log('in attemptUpdate/load', e)
+    })
     if (this.lastUpdate === updatedAt || this.updateInProgress) return false
 
-    await this.update()
+    await this.update().catch(e => {
+      console.log('in attemptUpdate/update', e)
+    })
     return true
   }
 
@@ -114,6 +122,7 @@ class ABIs extends EventEmitter {
       this.lastUpdate = migrations.updatedAt
       this.emit('update', this)
     } catch (err) {
+      console.log('in update', err)
       throw err
     } finally {
       this.updateInProgress = false
