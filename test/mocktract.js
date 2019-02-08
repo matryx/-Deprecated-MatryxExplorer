@@ -70,7 +70,7 @@ const mocktract = (address, abi) => {
     string: 'string',
     bool: true,
     uint256: BigNumber(1),
-    bytes32: '0x00000000000000000000000000000000000000000000000000000000000000000'
+    bytes32: '0x00000000000000000000000000000000000000000000000000000000000000'
   }
 
   contract.mockReturnType = (type, value) => {

@@ -2,7 +2,7 @@ describe('Tournaments tests:', () => {
   describe('/tournaments/', () => {
     let err, res
     before(done => {
-      request.get('/v2/tournaments/').end((e, r) => {
+      request.get('/tournaments/').end((e, r) => {
         ;[err, res] = [e, r]
         done()
       })
@@ -19,25 +19,25 @@ describe('Tournaments tests:', () => {
 
     it('item in array matches tournament structure', () => {
       let tournament = res.body.tournaments[0]
+      console.log(res.body)
       expect(tournament).to.be.an('object')
       expect(tournament.address).to.be.a('string')
       expect(tournament.owner).to.be.a('string')
       expect(tournament.title).to.be.a('string')
       expect(tournament.description).to.be.a('string')
       expect(tournament.fileHash).to.be.a('string')
-      expect(tournament.category).to.be.a('string')
       expect(tournament.state).to.be.a('string')
       expect(tournament.bounty).to.be.a('number')
       expect(tournament.ipType).to.be.a('string')
       expect(tournament.currentRound).to.be.a('number')
-      expect(tournament.numberOfParticipants).to.be.a('number')
+      expect(tournament.entrantCount).to.be.a('number')
     })
   })
 
   describe('/tournaments/?owner=0x0000000000000000000000000000000000000000', () => {
     let err, res
     before(done => {
-      request.get('/v2/tournaments/?owner=0x0000000000000000000000000000000000000000').end((e, r) => {
+      request.get('/tournaments/?owner=0x0000000000000000000000000000000000000000').end((e, r) => {
         ;[err, res] = [e, r]
         done()
       })
@@ -56,7 +56,7 @@ describe('Tournaments tests:', () => {
   describe('/tournaments/count', () => {
     let err, res
     before(done => {
-      request.get('/v2/tournaments/count/').end((e, r) => {
+      request.get('/tournaments/count/').end((e, r) => {
         ;[err, res] = [e, r]
         done()
       })
@@ -76,7 +76,7 @@ describe('Tournaments tests:', () => {
     let err, res
     before(done => {
       request
-        .get('/v2/tournaments/address/0x0000000000000000000000000000000000000000')
+        .get('/tournaments/address/0x0000000000000000000000000000000000000000')
         .end((e, r) => {
           ;[err, res] = [e, r]
           done()
@@ -89,7 +89,7 @@ describe('Tournaments tests:', () => {
     })
 
     it('status 500 for invalid address', done => {
-      request.get('/v2/tournaments/address/not-an-address').end((err, res) => {
+      request.get('/tournaments/address/not-an-address').end((err, res) => {
         expect(res).to.have.status(500)
         done()
       })
@@ -106,7 +106,6 @@ describe('Tournaments tests:', () => {
       expect(tournament.title).to.be.a('string')
       expect(tournament.description).to.be.a('string')
       expect(tournament.fileHash).to.be.a('string')
-      expect(tournament.category).to.be.a('string')
       expect(tournament.ipType).to.be.a('string')
       expect(tournament.state).to.be.a('string')
       expect(tournament.bounty).to.be.a('number')
@@ -115,7 +114,7 @@ describe('Tournaments tests:', () => {
       expect(tournament.currentRoundAddress).to.be.a('string')
       expect(tournament.currentRoundState).to.be.a('string')
       expect(tournament.roundEndTime).to.be.a('number')
-      expect(tournament.numberOfParticipants).to.be.a('number')
+      expect(tournament.entrantCount).to.be.a('number')
       expect(tournament.entryFee).to.be.a('number')
     })
   })
@@ -124,7 +123,7 @@ describe('Tournaments tests:', () => {
     let err, res
     before(done => {
       request
-        .get('/v2/tournaments/address/0x0000000000000000000000000000000000000000/owner')
+        .get('/tournaments/address/0x0000000000000000000000000000000000000000/owner')
         .end((e, r) => {
           ;[err, res] = [e, r]
           done()
@@ -138,7 +137,7 @@ describe('Tournaments tests:', () => {
 
     it('status 500 for invalid address', done => {
       request
-        .get('/v2/tournaments/address/not-an-address/owner')
+        .get('/tournaments/address/not-an-address/owner')
         .end((err, res) => {
           expect(res).to.have.status(500)
           done()
@@ -154,7 +153,7 @@ describe('Tournaments tests:', () => {
     let err, res
     before(done => {
       request
-        .get('/v2/tournaments/address/0x0000000000000000000000000000000000000000/submissionCount')
+        .get('/tournaments/address/0x0000000000000000000000000000000000000000/submissionCount')
         .end((e, r) => {
           ;[err, res] = [e, r]
           done()
@@ -168,7 +167,7 @@ describe('Tournaments tests:', () => {
 
     it('status 500 for invalid address', done => {
       request
-        .get('/v2/tournaments/address/not-an-address/submissionCount')
+        .get('/tournaments/address/not-an-address/submissionCount')
         .end((err, res) => {
           expect(res).to.have.status(500)
           done()
@@ -184,7 +183,7 @@ describe('Tournaments tests:', () => {
     let err, res
     before(done => {
       request
-        .get('/v2/tournaments/address/0x0000000000000000000000000000000000000000/currentRound')
+        .get('/tournaments/address/0x0000000000000000000000000000000000000000/currentRound')
         .end((e, r) => {
           ;[err, res] = [e, r]
           done()
@@ -198,7 +197,7 @@ describe('Tournaments tests:', () => {
 
     it('status 500 for invalid address', done => {
       request
-        .get('/v2/tournaments/address/not-an-address/currentRound')
+        .get('/tournaments/address/not-an-address/currentRound')
         .end((err, res) => {
           expect(res).to.have.status(500)
           done()
@@ -214,7 +213,7 @@ describe('Tournaments tests:', () => {
     let err, res
     before(done => {
       request
-        .get('/v2/tournaments/address/0x0000000000000000000000000000000000000000/round/1')
+        .get('/tournaments/address/0x0000000000000000000000000000000000000000/round/0')
         .end((e, r) => {
           ;[err, res] = [e, r]
           done()
@@ -228,7 +227,7 @@ describe('Tournaments tests:', () => {
 
     it('status 500 for invalid address', done => {
       request
-        .get('/v2/tournaments/address/not-an-address/round/1')
+        .get('/tournaments/address/not-an-address/round/1')
         .end((err, res) => {
           expect(res).to.have.status(500)
           done()
@@ -240,13 +239,13 @@ describe('Tournaments tests:', () => {
     })
 
     it('matches round details structure', () => {
-      let round = res.body.round
-      expect(round.tournamentAddress).to.be.a('string')
+      const round = res.body.round
+      expect(round.tournament).to.be.a('string')
       expect(round.tournamentTitle).to.be.a('string')
       expect(round.tournamentDescription).to.be.a('string')
       expect(round.start).to.be.a('number')
       expect(round.end).to.be.a('number')
-      expect(round.reviewPeriodDuration).to.be.a('number')
+      expect(round.review).to.be.a('number')
       expect(round.bounty).to.be.a('number')
       expect(round.closed).to.be.a('boolean')
       expect(round.roundStatus).to.be.a('string')
@@ -258,7 +257,7 @@ describe('Tournaments tests:', () => {
     let err, res
     before(done => {
       request
-        .get('/v2/tournaments/address/0x0000000000000000000000000000000000000000/isEntrant/0x0000000000000000000000000000000000000000')
+        .get('/tournaments/address/0x0000000000000000000000000000000000000000/isEntrant/0x0000000000000000000000000000000000000000')
         .end((e, r) => {
           ;[err, res] = [e, r]
           done()
@@ -272,7 +271,7 @@ describe('Tournaments tests:', () => {
 
     it('status 500 for invalid tournament address', done => {
       request
-        .get('/v2/tournaments/address/not-an-address/isEntrant/0x0000000000000000000000000000000000000000')
+        .get('/tournaments/address/not-an-address/isEntrant/0x0000000000000000000000000000000000000000')
         .end((err, res) => {
           expect(res).to.have.status(500)
           done()
@@ -281,7 +280,7 @@ describe('Tournaments tests:', () => {
 
     it('status 500 for invalid entrant address', done => {
       request
-        .get('/v2/tournaments/address/0x0000000000000000000000000000000000000000/isEntrant/not-an-address')
+        .get('/tournaments/address/0x0000000000000000000000000000000000000000/isEntrant/not-an-address')
         .end((err, res) => {
           expect(res).to.have.status(500)
           done()
@@ -297,7 +296,7 @@ describe('Tournaments tests:', () => {
     let err, res
     before(done => {
       request
-        .get('/v2/tournaments/address/0x0000000000000000000000000000000000000000/rounds')
+        .get('/tournaments/address/0x0000000000000000000000000000000000000000/rounds')
         .end((e, r) => {
           ;[err, res] = [e, r]
           done()
@@ -311,7 +310,7 @@ describe('Tournaments tests:', () => {
 
     it('status 500 for invalid address', done => {
       request
-        .get('/v2/tournaments/address/not-an-address/rounds')
+        .get('/tournaments/address/not-an-address/rounds')
         .end((err, res) => {
           expect(res).to.have.status(500)
           done()
@@ -320,27 +319,6 @@ describe('Tournaments tests:', () => {
 
     it('returns rounds', () => {
       expect(res.body.rounds).to.be.an('array')
-    })
-  })
-
-  describe('/tournaments/category/:category', () => {
-    let err, res
-    before(done => {
-      request
-        .get('/v2/tournaments/category/math')
-        .end((e, r) => {
-          ;[err, res] = [e, r]
-          done()
-        })
-    })
-
-    it("doesn't error", () => {
-      expect(err).to.be.null
-      expect(res).to.have.status(200)
-    })
-
-    it('returns tournaments', () => {
-      expect(res.body.tournaments).to.be.an('array')
     })
   })
 })

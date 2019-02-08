@@ -2,7 +2,7 @@ describe('Platform tests:', () => {
   describe('/platform/', () => {
     let err, res
     before(done => {
-      request.get('/v2/platform/').end((e, r) => {
+      request.get('/platform/').end((e, r) => {
         ;[err, res] = [e, r]
         done()
       })
@@ -18,7 +18,7 @@ describe('Platform tests:', () => {
     let err, res
     before(done => {
       request
-        .get('/v2/platform/getAllCategories')
+        .get('/platform/getAllCategories')
         .end((e, r) => {
           ;[err, res] = [e, r]
           done()
