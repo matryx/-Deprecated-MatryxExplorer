@@ -76,7 +76,7 @@ describe('Tournaments tests:', () => {
 
   describe('/tournaments/address/:tournamentAddress', () => {
     let err, res
-    before(done => {
+    before(done => {   
       request.get('/tournaments/address/0x0000000000000000000000000000000000000000').end((e, r) => {
         err = e
         res = r
