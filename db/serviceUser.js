@@ -37,7 +37,7 @@ module.exports = {
     const { id, updates } = validate(params, {
       id: Joi.number().required(),
       updates: Joi.object().keys({
-        email: Joi.string().trim().email().allow('', null).empty('').default('')
+        email: Joi.string().trim().email().valid('', null).empty('').default('')
       })
     })
 
