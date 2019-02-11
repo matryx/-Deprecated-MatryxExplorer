@@ -12,8 +12,6 @@
 const express = require('express')
 const router = express.Router()
 
-const { errorHelper } = require('../helpers/responseHelpers')
-
 const abis = require('../helpers/getAbis')
 const contracts = require('../helpers/getContracts')
 
@@ -44,14 +42,6 @@ router.get('/getAddress', (req, res, next) => {
 router.get('/getAbi', (req, res, next) => {
   const { abi } = abis.platform
   res.status(200).json({ abi })
-})
-
-router.get('/getCategories', (req, res, next) => {
-  const Platform = contracts.platform
-
-  Platform.getCategories()
-    .then(categories => res.status(200).json({ categories }))
-    .catch(errorHelper(next, 'Error getting top categories'))
 })
 
 module.exports = router

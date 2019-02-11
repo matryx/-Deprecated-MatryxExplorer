@@ -34,4 +34,8 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
-      - run: npm test
+      - run:
+          name: Testing application
+          command: npm test
+          environment:
+            ARTIFACTS_BRANCH: QA
