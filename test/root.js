@@ -1,7 +1,7 @@
 describe('Base Route tests:', () => {
   describe('/', () => {
     it("doesn't error", done => {
-      request.get('/v2/').end((err, res) => {
+      request.get('/').end((err, res) => {
         expect(err).to.be.null
         expect(res).to.have.status(200)
         done()
@@ -13,7 +13,7 @@ describe('Base Route tests:', () => {
     let err, res
     before(done => {
       request
-        .get('/v2/404')
+        .get('/404')
         .end((e, r) => {
           ;[err, res] = [e, r]
           done()

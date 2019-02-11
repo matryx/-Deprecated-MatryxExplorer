@@ -130,15 +130,6 @@ router.get('/address/:tournamentAddress/rounds', asyncWrap(async (req, res, next
     .catch(errorHelper(next, `Error getting Tournament ${tournamentAddress} Round addresses`))
 }))
 
-// Return if the potentantial address given is an entrant for a specific tournament
-router.get('/category/:category', (req, res, next) => {
-  const { category } = req.params
-  tournamentController
-    .getTournamentsByCategory(category)
-    .then(tournaments => res.status(200).json({ tournaments }))
-    .catch(errorHelper(next, `Error getting Tournaments for category ${category}`))
-})
-
 module.exports = router
 
 // TODO Swagger integration

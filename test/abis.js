@@ -1,10 +1,9 @@
 describe('ABI tests:', () => {
   let routes = [
-    { base: '/v2/platform/', routes: ['getInfo', 'getAddress', 'getAbi'] },
-    { base: '/v2/token/', routes: ['getInfo', 'getAddress', 'getAbi'] },
-    { base: '/v2/tournaments/', routes: ['getAbi'] },
-    { base: '/v2/submissions/', routes: ['getAbi'] },
-    { base: '/v2/rounds/', routes: ['getAbi'] }
+    { base: '/platform/', routes: ['getInfo', 'getAddress', 'getAbi'] },
+    { base: '/token/', routes: ['getInfo', 'getAddress', 'getAbi'] },
+    { base: '/tournaments/', routes: ['getAbi'] },
+    { base: '/rounds/', routes: ['getAbi'] }
   ]
 
   for (const route of routes) {
@@ -13,7 +12,7 @@ describe('ABI tests:', () => {
       describe(path, () => {
         let err, res
         before(done => {
-          request.get(`${path}/valid-branch`).end((e, r) => {
+          request.get(path).end((e, r) => {
             ;[err, res] = [e, r]
             done()
           })
@@ -27,24 +26,16 @@ describe('ABI tests:', () => {
         it('has correct data', () => {
           switch (subroute) {
             case 'getInfo':
-              expect(res.body.address).to.equal('address')
-              expect(res.body.abi).to.equal('abi')
+              expect(res.body.address).to.equal('0x0000000000000000000000000000000000000000')
+              expect(Array.isArray(res.body.abi)).to.equal(true)
               break
             case 'getAddress':
-              expect(res.body.address).to.equal('address')
+              expect(res.body.address).to.equal('0x0000000000000000000000000000000000000000')
               break
             case 'getAbi':
-              expect(res.body.abi).to.equal('abi')
+              expect(Array.isArray(res.body.abi)).to.equal(true)
               break
           }
-        })
-
-        it('returns 500 for invalid branch or network error', done => {
-          request.get(`${path}/not-a-branch`).end((err, res) => {
-            expect(err).to.be.null
-            expect(res).to.have.status(500)
-            done()
-          })
         })
       })
     }

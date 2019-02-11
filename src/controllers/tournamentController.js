@@ -15,7 +15,7 @@ const MatryxRound = require('../contracts/MatryxRound')
 const abis = require('../helpers/getAbis')
 const contracts = require('../helpers/getContracts')
 
-let tournamentController = {}
+const tournamentController = {}
 
 tournamentController.count = () => {
   const Platform = contracts.platform
@@ -211,11 +211,6 @@ tournamentController.getAllRoundAddresses = (tournamentAddress) => {
 tournamentController.getRoundAddress = async (tournamentAddress, roundIndex) => {
   const rounds = await tournamentController.getAllRoundAddresses(tournamentAddress)
   return rounds[roundIndex]
-}
-
-tournamentController.getTournamentsByCategory = (category) => {
-  const Platform = contracts.platform
-  return Platform.getTournamentsByCategory(category)
 }
 
 module.exports = tournamentController

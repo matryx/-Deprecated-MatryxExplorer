@@ -4,7 +4,7 @@
   "description": "A Node.js RESTful API for reading the Matryx Platform smart contracts",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Running mocha tests\" && nyc mocha --require test/helper.js --exit",
+    "test": "echo \"Running mocha tests\" && knex migrate:latest --knexfile db/knexfile.js && nyc mocha --require test/helper.js --exit",
     "dev": "echo \"Starting MatryxExplorer in development\" && knex migrate:latest --knexfile db/knexfile.js && nodemon server.js ",
     "start": "echo \"Starting MatryxExplorer with pm2\" && knex migrate:latest --knexfile db/knexfile.js && pm2-runtime start server.js "
   },
